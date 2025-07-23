@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>论文解析报告</title>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<style>
+  body { font-family: Arial, sans-serif; line-height: 1.6; }
+  .section { margin-bottom: 30px; }
+  h2 { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 5px; }
+  .original { 
+    background-color: #f8f9fa; 
+    border: 1px solid #ced4da; 
+    padding: 15px; 
+    margin-bottom: 10px;
+    border-radius: 5px;
+  }
+  .translation { 
+    background-color: #e8f5e9; 
+    border: 1px solid #c8e6c9; 
+    padding: 15px; 
+    border-radius: 5px;
+  }
+  .term { color: #e53935; font-weight: bold; }
+  .formula-container { 
+    background-color: #fffde7; 
+    padding: 15px; 
+    text-align: center; 
+    margin: 20px 0;
+    border-radius: 5px;
+  }
+  .term-list { list-style-type: none; padding: 0; }
+  .term-list li { margin-bottom: 15px; }
+</style>
+</head>
+<body>
+
+<h1>论文解析报告</h1>
+
+<!-- 内容理解部分 -->
+<div class="section">
+  <h2>1. 内容理解</h2>
+  <p>本文探讨了大型语言模型（LLMs）在推理能力方面的最新进展，重点关注了开源模型的发展现状。核心研究问题是如何在中等规模稠密模型（32B参数）上实现接近专家混合模型（MoE）的推理性能，同时避免使用私有数据或复杂架构。作者提出的解决方案是AM-Thinking-v1模型，通过精心设计的训练后流程（包括监督微调和强化学习），在多个数学和代码生成基准测试中超越了同类模型甚至部分大型MoE模型。研究强调了数据处理质量（去重、去噪、真实性验证）和分阶段训练策略（难度感知查询选择、两阶段训练）的关键作用，为平衡模型性能与部署效率提供了新方向。</p>
+</div>
+
+<!-- 内容翻译部分 -->
+<div class="section">
+  <h2>2. 内容翻译</h2>
+  
+  <div class="original">
+    <strong>1 Introduction</strong><br>
+    Over the past six months, <span class="term">large language models (LLMs)</span> have demonstrated remarkable improvements in <span class="term">reasoning</span>, particularly in domains such as mathematical problem solving and code generation—tasks that require sophisticated logical inference. These advancements are expanding the practical applicability of LLMs across a broader range of real-world scenarios.<br>
+    The release of DeepSeek-R1[1] has shown that open-source communities are increasingly capable of building models that rival proprietary systems such as OpenAI’s o1[2], Google’s Gemini 2.5[3], and Anthropic’s Claude 3.7[4]. More recently, the emergence of Qwen3-235B-A22B[5] has further advanced the <span class="term">reasoning</span> frontier of open-source models. However, many recent breakthroughs rely on extremely large-scale <span class="term">Mixture-of-Experts (MoE)</span> architectures, which impose significant infrastructure burdens and make model deployment and fine-tuning considerably more complex.<br>
+    In contrast, <span class="term">dense models</span> of moderate size (e.g., 32B) offer better efficiency and deployability, yet often lag behind their <span class="term">MoE</span> counterparts in <span class="term">reasoning</span> performance. This contrast raises a critical research question: Can we unlock the <span class="term">reasoning</span> potential of 32B-scale <span class="term">dense models</span>—without relying on private data or massive <span class="term">MoE</span> architectures—through a carefully designed <span class="term">post-training pipeline</span>?
+  </div>
+  <div class="translation">
+    <strong>1 引言</strong><br>
+    过去六个月中，<span class="term">大型语言模型（LLMs）</span>在<span class="term">推理</span>能力方面展现出显著进步，尤其在数学问题求解和代码生成等需要复杂逻辑推断的领域。这些进展正将LLMs的实际应用扩展到更广泛的现实场景中。<br>
+    DeepSeek-R1[1]的发布表明，开源社区已能构建媲美OpenAI o1[2]、Google Gemini 2.5[3]和Anthropic Claude 3.7[4]等专有系统的模型。近期出现的Qwen3-235B-A22B[5]进一步提升了开源模型的<span class="term">推理</span>前沿水平。然而，当前许多突破依赖超大规模<span class="term">专家混合架构（MoE）</span>，这带来显著基础设施负担，并大幅增加模型部署和微调的复杂性。<br>
+    相比之下，中等规模（如32B参数）的<span class="term">稠密模型</span>具有更优效率和可部署性，但其<span class="term">推理</span>性能常落后于<span class="term">MoE</span>模型。这引出一个关键研究问题：能否通过精心设计的<span class="term">训练后流程</span>，在不依赖私有数据或庞大<span class="term">MoE</span>架构的前提下，释放32B规模<span class="term">稠密模型</span>的推理潜力？
+  </div>
+
+  <div class="original">
+    To explore this question, we introduce and open-source AM-Thinking-v1, a <span class="term">reasoning</span>-optimized language model built upon the publicly available Qwen2.5-32B[6,7] base model. Our model achieves state-of-the-art performance among <span class="term">dense models</span> of comparable size and even outperforms much larger <span class="term">MoE</span> models in several <span class="term">reasoning</span> benchmarks. Specifically, AM-Thinking-v1 achieves impressive scores of 85.3 and 74.4 on AIME2024[8] and AIME2025[9], two challenging math competition-style benchmarks, and 70.3 on LiveCodeBench[10], a widely used benchmark for evaluating code generation. It surpasses DeepSeek-R1 (671B <span class="term">MoE</span>) and approaches or matches the performance of other top-tier <span class="term">MoE</span> models such as Qwen3-235B-A22B and Seed1.5-Thinking[11], despite having only a fraction of their parameters.
+  </div>
+  <div class="translation">
+    为此，我们推出并开源AM-Thinking-v1——基于公开模型Qwen2.5-32B[6,7]构建的<span class="term">推理</span>优化语言模型。该模型在同等规模<span class="term">稠密模型</span>中达到最先进性能，并在多个<span class="term">推理</span>基准测试中超越更大的<span class="term">MoE</span>模型。具体而言，AM-Thinking-v1在数学竞赛基准AIME2024[8]和AIME2025[9]分别获得85.3和74.4的高分，在代码生成基准LiveCodeBench[10]获得70.3分。尽管参数规模仅为对手的零头，它仍超越DeepSeek-R1（671B <span class="term">MoE</span>），并接近或匹配Qwen3-235B-A22B和Seed1.5-Thinking[11]等顶级<span class="term">MoE</span>模型。
+  </div>
+
+  <div class="original">
+    Our success stems from a meticulously designed <span class="term">post-training</span> framework that leverages publicly available training queries. We applied strict preprocessing to various open-source queries and instructions, including deduplication, removal of low-quality or multi-modal queries (e.g., those involving images), and thorough decontamination with respect to our evaluation benchmarks. In particular, for mathematical queries—where we observed a high prevalence of noisy items—we constructed a comprehensive data processing pipeline that spans query filtering and ground-truth verification.
+  </div>
+  <div class="translation">
+    我们的成功源于精心设计的<span class="term">训练后</span>框架，该框架利用公开可用的训练查询。我们对各类开源查询和指令进行严格预处理，包括去重、移除低质量或多模态查询（如图像相关查询），以及针对评估基准的彻底去污染处理。尤其在数学查询中（噪声项高发领域），我们构建了覆盖查询过滤和真值验证的完整数据处理流程。
+  </div>
+
+  <div class="original">
+    The <span class="term">post-training pipeline</span> comprises two main stages: <span class="term">Supervised Fine-Tuning (SFT)</span> and <span class="term">Reinforcement Learning (RL)</span>. Starting from Qwen2.5-32B base model, we apply <span class="term">SFT</span> using a cold-start dataset that encourages a "<span class="term">think-then-answer</span>" pattern and builds initial <span class="term">reasoning</span> capability. During <span class="term">RL</span>, we incorporate <span class="term">difficulty-aware query selection</span> and a two-stage training procedure to ensure both training stability and progressive improvement in performance.
+  </div>
+  <div class="translation">
+    <span class="term">训练后流程</span>包含两个主要阶段：<span class="term">监督微调（SFT）</span>和<span class="term">强化学习（RL）</span>。从Qwen2.5-32B基础模型出发，我们使用冷启动数据集进行<span class="term">SFT</span>，该数据集鼓励"<span class="term">先思考后回答</span>"模式并建立初步<span class="term">推理</span>能力。在<span class="term">RL</span>阶段，我们采用<span class="term">难度感知查询选择</span>和两阶段训练流程，确保训练稳定性与性能渐进提升。
+  </div>
+
+  <div class="original">
+    In summary, AM-Thinking-v1 demonstrates that even without large-scale <span class="term">MoE</span> architectures, <span class="term">dense models</span> at the 32B scale can achieve <span class="term">reasoning</span> capabilities comparable to the best available models. We hope this work serves as a practical reference for the community, highlighting how careful <span class="term">post-training</span> design can bridge the performance gap while retaining the deployability advantages of moderate-scale models. This offers a promising direction for future research at the intersection of scalability, accessibility, and <span class="term">reasoning</span> performance.
+  </div>
+  <div class="translation">
+    总之，AM-Thinking-v1证明即使没有大规模<span class="term">MoE</span>架构，32B规模的<span class="term">稠密模型</span>也能实现媲美顶尖模型的<span class="term">推理</span>能力。本研究为社区提供实用参考，证明精心设计的<span class="term">训练后</span>方案能在保持中等规模模型部署优势的同时弥合性能差距，为可扩展性、可访问性与<span class="term">推理</span>性能的交叉研究指明新方向。
+  </div>
+
+  <div class="original">
+    <strong>2 Data</strong><br>
+    All queries used in our training come from publicly available datasets. We begin by deduplicating the queries and filtering out low-quality ones. For mathematical queries with ground-truth answers, we further verify the correctness of the provided ground truth. Additionally, we filter model-generated responses based on quality and assign difficulty levels to each query based on the pass rate observed across multiple response attempts.
+  </div>
+  <div class="translation">
+    <strong>2 数据</strong><br>
+    训练所用查询均来自公开数据集。我们首先对查询去重并过滤低质量项。对于含真值答案的数学查询，我们进一步验证所提供真值的正确性。此外，基于质量筛选模型生成响应，并根据多次响应尝试的通过率为每个查询分配难度等级。
+  </div>
+</div>
+
+<!-- 摘要总结部分 -->
+<div class="section">
+  <h2>3. 摘要总结</h2>
+  <p>本文提出AM-Thinking-v1模型，解决了中等规模稠密模型（32B参数）在推理任务中性能落后于专家混合模型（MoE）的关键问题。通过创新的训练后流程设计：1）监督微调阶段建立"先思考后回答"的推理模式；2）强化学习阶段采用难度感知查询选择和两阶段训练策略。该方案仅使用公开数据即在数学竞赛基准（AIME2024/2025）和代码生成基准（LiveCodeBench）上超越DeepSeek-R1等大型MoE模型。核心贡献在于证明：精心设计的数据处理（去噪/真值验证）和训练策略可使稠密模型达到顶级推理性能，同时保持部署效率优势，为可扩展AI系统提供新路径。</p>
+</div>
+
+<!-- 术语识别部分 -->
+<div class="section">
+  <h2>4. 术语识别</h2>
+  <ul class="term-list">
+    <li><span class="term">大型语言模型（Large Language Models, LLMs）</span>：基于海量文本训练的深度学习模型，能理解和生成人类语言，具备文本推理、代码生成等能力。</li>
+    <li><span class="term">推理（Reasoning）</span>：模型执行逻辑推断的能力，包括数学问题求解、代码生成等需要多步思维链的任务。</li>
+    <li><span class="term">专家混合架构（Mixture-of-Experts, MoE）</span>：稀疏激活的模型架构，每层动态选择部分专家网络处理输入，显著扩大参数量（如千亿级）但增加部署复杂度。</li>
+    <li><span class="term">稠密模型（Dense Models）</span>：传统全连接架构，所有参数参与每次计算，相比MoE具有更高计算效率和部署便利性。</li>
+    <li><span class="term">训练后流程（Post-training Pipeline）</span>：预训练后的优化阶段，包括监督微调（SFT）和强化学习（RL），用于专项能力提升。</li>
+    <li><span class="term">监督微调（Supervised Fine-Tuning, SFT）</span>：使用标注数据调整预训练模型参数，建立特定行为模式（如"先思考后回答"）。</li>
+    <li><span class="term">强化学习（Reinforcement Learning, RL）</span>：通过奖励机制优化模型行为，本文中结合难度感知查询选择实现渐进式提升。</li>
+    <li><span class="term">难度感知查询选择（Difficulty-aware Query Selection）</span>：根据历史通过率为训练查询分配难度等级，实现由易到难的渐进学习策略。</li>
+    <li><span class="term">先思考后回答（Think-then-Answer）</span>：模型首先生成推理过程再输出最终答案的模式，显著提升复杂问题解决能力。</li>
+  </ul>
+</div>
+
+</body>
+</html>

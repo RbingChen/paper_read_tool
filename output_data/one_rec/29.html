@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>OneRec 技术报告分析</title>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    h1 { color: #333; text-align: center; }
+    h2 { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 5px; }
+    .original { background-color: #f0f0f0; border: 1px solid #cccccc; padding: 15px; margin-bottom: 10px; }
+    .translation { background-color: #e0ffe0; border: 1px solid #2ecc71; padding: 15px; margin-bottom: 20px; }
+    .figure { background-color: #ffffcc; border: 1px solid #f39c12; padding: 15px; margin: 10px 0; text-align: center; }
+    .term-highlight { color: red; font-weight: bold; }
+    .formula-container { text-align: center; margin: 15px 0; }
+    .formula { display: inline-block; }
+    .formula-number { font-style: italic; margin-top: 5px; }
+    .section { margin-bottom: 30px; }
+    ul { list-style-type: none; padding-left: 0; }
+    li { margin-bottom: 10px; padding: 8px; background-color: #f9f9f9; border-left: 4px solid #3498db; }
+  </style>
+</head>
+<body>
+  <h1>OneRec 技术报告分析</h1>
+  
+  <div class="section">
+    <h2>内容理解</h2>
+    <p>该文本是 OneRec 技术报告的一部分，主要聚焦于在线 A/B 测试的实现细节。核心内容涉及推荐系统在高并发场景下的优化策略：系统通过缓存机制处理峰值 QPS（每秒查询数）超过 400k 的负载，将流量分为实时流量和降级（缓存）流量。OneRec 的实验针对降级流量进行升级，原因包括：1) 原有缓存牺牲了及时性，影响用户体验；2) OneRec 的高效端到端管道和优化 MFU（最常使用算法）显著降低了系统 OPEX（运营支出），同时提升性能。实验设置中，实验组流量占比 5%，其中 25% 的降级流量应用 OneRec，结果显示在应用停留时间上提升 0.54% 和 1.24%。为严谨比较，额外设置 1% 缓存禁用组（全实时流量），OneRec 仍表现优越。图 13 展示了 OneRec 与缓存禁用策略在 LT7 指标（长期 7 天指标）上的增长趋势对比，突显 OneRec 的更强改进趋势。整体上，文本强调 OneRec 作为新架构在技术迭代、资源优化和团队协作方面的优势。</p>
+  </div>
+  
+  <div class="section">
+    <h2>内容翻译</h2>
+    <p>以下为英文原文与中文翻译的对照，按文本结构分块呈现（标题、图示、子标题、正文段落）。</p>
+    
+    <div class="original">
+      <strong>OneRec Technical Report</strong>
+    </div>
+    <div class="translation">
+      <strong>OneRec 技术报告</strong>
+    </div>
+    
+    <div class="figure">
+      <strong>图示内容（数据描述）</strong><br>
+      -0.04%-0.02%0.00%0.02%0.04%0.06%0.08%RelativeImprovementin LT7metrics<br>
+      Day 1Day 2Day 3Day 4Day 5Day 6Day 7Day 8Day 9Day 10Day 11Day 12Day 13Day 14Day 15Day 16Day 17Day 18Day19Day 20Day 21Day 22OneRecCaching Disable
+    </div>
+    <div class="translation">
+      <strong>图示内容（数据描述）</strong><br>
+      -0.04%-0.02%0.00%0.02%0.04%0.06%0.08%LT7指标的相对改进<br>
+      Day 1 Day 2 Day 3 Day 4 Day 5 Day 6 Day 7 Day 8 Day 9 Day 10 Day 11 Day 12 Day 13 Day 14 Day 15 Day 16 Day 17 Day 18 Day 19 Day 20 Day 21 Day 22 OneRec 缓存禁用
+    </div>
+    
+    <div class="figure">
+      <strong>Figure 13|Comparative analysis of OneRec vs. Caching Disabled Architecture on LT7 growth trends.</strong>
+    </div>
+    <div class="translation">
+      <strong>图13 | OneRec 与缓存禁用架构在 LT7 增长趋势上的比较分析。</strong>
+    </div>
+    
+    <div class="original">
+      <strong>B. Implementation Details of Online A/B Test</strong>
+    </div>
+    <div class="translation">
+      <strong>B. 在线 A/B 测试的实现细节</strong>
+    </div>
+    
+    <div class="original">
+      In this section, we present the implementation details of <span class="term-highlight">OneRec</span> in online <span class="term-highlight">A/B testing</span>. In recommendation systems, a user’s request typically triggers various system modules to generate real-time recommendation results. However, in practical applications, the massive <span class="term-highlight">QPS (Queries Per Second)</span> (the peak <span class="term-highlight">QPS</span> can exceed 400k) necessitates substantial resources to handle such high concurrency. To address this, our system incorporates a caching mechanism: for each user request, the system returns \(k\) recommendation results. Apart from the items actually exposed, the remaining items are stored as candidates in a cache pool. When the system experiences a high <span class="term-highlight">QPS</span> load, cached results are retrieved for display, achieving a trade-off between resource usage and real-time performance. Thus, we broadly categorize <span class="term-highlight">QPS</span> into real-time and degraded (cached) traffic, and <span class="term-highlight">OneRec</span>’s online experiment specifically upgrades this degraded portion. There are two primary reasons for this experimental setup:
+      1. The previous caching mechanism significantly sacrificed the benefits of timeliness, affecting user experience during peak evening hours with high request volumes. While “disabling the caching mechanism” would incur substantial resource costs, <span class="term-highlight">OneRec</span>’s highly efficient end-to-end pipeline and optimized <span class="term-highlight">MFU (Most Frequently Used)</span> drastically reduce the system’s <span class="term-highlight">OPEX (Operational Expenditure)</span> while delivering notable performance improvements.
+      2. <span class="term-highlight">OneRec</span> represents an entirely new architecture, introducing a fresh paradigm for technical iteration, business optimization, and team collaboration. We use this portion of traffic as a starting point to continuously explore technical boundaries and team collaboration mechanisms, building a robust foundation for handling more traffic.
+      As mentioned in Section 4.5, our experimental group traffic is 5%, with <span class="term-highlight">OneRec</span> applied to 25% of the degraded traffic within this group. Despite this limited scope, we observe significant performance gains across two scenarios, achieving 0.54% and 1.24% improvements in app stay time. For a more rigorous comparison, we allocate an additional 1% experimental group with caching disabled (all traffic requesting real-time recommendations). Even against this baseline, <span class="term-highlight">OneRec</span> demonstrates superior performance (shown in Table 13). We also observe the <span class="term-highlight">LT7 metrics</span> growth patterns between <span class="term-highlight">OneRec</span> and the <span class="term-highlight">caching disabled</span> strategy. Figure 13 indicates that <span class="term-highlight">OneRec</span> exhibits significantly stronger improvement trends.
+      30
+    </div>
+    <div class="translation">
+      在本节中，我们介绍了 <span class="term-highlight">OneRec</span> 在在线 <span class="term-highlight">A/B 测试</span>中的实现细节。在推荐系统中，用户请求通常触发各种系统模块生成实时推荐结果。然而，在实际应用中，巨大的 <span class="term-highlight">QPS（每秒查询数）</span>（峰值 <span class="term-highlight">QPS</span> 可超过 400k）需要大量资源来处理如此高的并发。为了解决这个问题，我们的系统采用了缓存机制：对于每个用户请求，系统返回 \(k\) 个推荐结果。除了实际暴露的项目外，其余项目作为候选存储在缓存池中。当系统经历高 <span class="term-highlight">QPS</span> 负载时，检索缓存结果进行显示，实现了资源使用和实时性能之间的权衡。因此，我们大致将 <span class="term-highlight">QPS</span> 分为实时流量和降级（缓存）流量，而 <span class="term-highlight">OneRec</span> 的在线实验专门升级这部分降级流量。这种实验设置有两个主要原因：
+      1. 之前的缓存机制显著牺牲了及时性的好处，影响了在请求量高的晚间高峰时段的用户体验。虽然“禁用缓存机制”会带来大量资源成本，但 <span class="term-highlight">OneRec</span> 的高效端到端管道和优化的 <span class="term-highlight">MFU（最常使用）</span>显著减少了系统的 <span class="term-highlight">OPEX（运营支出）</span>，同时提供了显著的性能改进。
+      2. <span class="term-highlight">OneRec</span> 代表了一种全新的架构，引入了技术迭代、业务优化和团队协作的新范式。我们使用这部分流量作为起点，持续探索技术边界和团队协作机制，为处理更多流量建立坚实基础。
+      如第 4.5 节所述，我们的实验组流量为 5%，其中 25% 的降级流量应用了 <span class="term-highlight">OneRec</span>。尽管范围有限，我们在两种场景中观察到显著的性能提升，在应用停留时间上实现了 0.54% 和 1.24% 的改进。为了更严格的比较，我们分配了额外的 1% 实验组，其中缓存被禁用（所有流量请求实时推荐）。即使与这个基线相比，<span class="term-highlight">OneRec</span> 也表现出优越的性能（如表 13 所示）。我们还观察了 <span class="term-highlight">OneRec</span> 和 <span class="term-highlight">缓存禁用</span>策略之间的 <span class="term-highlight">LT7 指标</span>增长模式。图 13 表明，<span class="term-highlight">OneRec</span> 展现出明显更强的改进趋势。
+      30
+    </div>
+    <div class="formula-container">
+      <div class="formula">\( k \)</div>
+      <div class="formula-number">公式 (1): 表示每次用户请求返回的推荐结果数量，是缓存机制中的关键参数。</div>
+    </div>
+  </div>
+  
+  <div class="section">
+    <h2>摘要总结</h2>
+    <p>本报告摘要概括了 OneRec 在线 A/B 测试的核心内容：系统通过缓存机制处理高并发 QPS（峰值超 400k），将流量分为实时和降级（缓存）流量。OneRec 针对降级流量进行升级，利用高效端到端管道和优化 MFU 减少 OPEX，同时提升性能。实验在 5% 流量组中进行（其中 25% 应用 OneRec），结果显示应用停留时间提升 0.54% 和 1.24%。与缓存禁用组（全实时流量）相比，OneRec 表现更优，图 13 证实其在 LT7 指标上有更强改进趋势。这突显了 OneRec 在资源优化、及时性改善和团队协作方面的创新架构价值。</p>
+  </div>
+  
+  <div class="section">
+    <h2>术语识别</h2>
+    <ul>
+      <li><span class="term-highlight">QPS (Queries Per Second)</span>: 每秒查询数，衡量系统处理请求的并发能力。在推荐系统中，高 QPS（如峰值超过 400k）表示大量用户请求，需缓存机制优化资源使用。</li>
+      <li><span class="term-highlight">MFU (Most Frequently Used)</span>: 最常使用算法，一种缓存优化策略。通过优先保留高频访问项，提升系统效率。在 OneRec 中，优化 MFU 降低了 OPEX。</li>
+      <li><span class="term-highlight">OPEX (Operational Expenditure)</span>: 运营支出，指系统运行和维护的成本，包括服务器、带宽等资源消耗。OneRec 的高效设计显著减少了 OPEX。</li>
+      <li><span class="term-highlight">LT7 metrics</span>: 长期 7 天指标，可能指用户行为指标（如应用停留时间）。在实验中，用于衡量 OneRec 与缓存禁用策略的性能增长趋势。</li>
+      <li><span class="term-highlight">k</span>: 数学符号，表示每次用户请求返回的推荐结果数量。在缓存机制中，部分结果实时生成，部分存储为缓存候选。</li>
+      <li><span class="term-highlight">OneRec</span>: 推荐系统架构名称，代表一种高效端到端管道，专注于技术迭代和资源优化，提升实时性能。</li>
+      <li><span class="term-highlight">Caching Disabled</span>: 缓存禁用策略，指系统完全依赖实时推荐，无缓存机制。作为实验基线，用于对比 OneRec 的性能优势。</li>
+      <li><span class="term-highlight">A/B Test</span>: A/B 测试，一种实验方法，通过对比不同策略（如 OneRec 与缓存禁用）评估性能改进。</li>
+      <li><span class="term-highlight">Degraded Traffic</span>: 降级流量，指系统在高负载时使用缓存结果的流量部分。OneRec 实验针对此部分进行升级。</li>
+    </ul>
+  </div>
+</body>
+</html>

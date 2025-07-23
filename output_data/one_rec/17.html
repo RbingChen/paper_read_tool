@@ -1,0 +1,85 @@
+<html>
+<head>
+<style>
+  .original { background: #f0f0f0; border: 1px solid #999; padding: 10px; margin: 10px 0; }
+  .translation { background: #e8f5e9; border: 1px solid #4CAF50; padding: 10px; margin: 10px 0; }
+  .figure { background: #fff9c4; padding: 15px; margin: 15px 0; }
+  strong { color: red; font-weight: bold; }
+  table { border-collapse: collapse; margin: 20px 0; }
+  th, td { border: 1px solid #ddd; padding: 8px; }
+</style>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.0/es5/tex-mml-chtml.js'></script>
+</head>
+<body>
+
+<section>
+  <h2>内容理解</h2>
+  <p>本节介绍OneRec系统在推荐算法架构上的创新——<strong>语义标识符输入表示（Semantic Identifier Input Representation）</strong>。通过用视频语义标识符替代传统的稀疏嵌入方法，在保持推荐性能的同时显著提升参数效率、通信效率和序列处理能力。</p>
+</section>
+
+<section>
+  <h2>内容翻译</h2>
+  
+  <div class='original'>
+    <h3>4.2.2. Semantic Identifier Input Representation</h3>
+    <p>As model sizes scale to billions of parameters, we explore an alternative input representation strategy that leverages video semantic identifiers for user interaction histories instead of constructing separate sparse embeddings for video identifiers (vid). This semantic identifier input achieves performance comparable to traditional sparse embedding methods, while offering significant advantages in parameter efficiency, communication overhead, and sequence processing capacity that make it particularly promising for further scaling exploration.</p>
+  </div>
+  <div class='translation'>
+    <h3>4.2.2. 语义标识符输入表示</h3>
+    <p>随着模型规模扩展到数十亿参数，我们探索了一种替代性的输入表示策略——利用视频<strong>语义标识符（Semantic Identifier）</strong>处理用户交互历史，而非为视频标识符（vid）构建独立的稀疏嵌入。这种语义标识符输入在保持与传统稀疏嵌入方法相当性能的同时，在参数效率、通信开销和序列处理能力方面展现出显著优势，使其特别具有进一步扩展探索的潜力。</p>
+  </div>
+
+  <div class='figure'>
+    <h4>Figure 11 | Training loss comparison</h4>
+    <p>图示说明：OneRec-2.633B模型使用语义标识符输入与稀疏嵌入输入的训练损失对比</p>
+  </div>
+
+  <div class='figure'>
+    <h4>Table 5 | Performance comparison</h4>
+    <table>
+      <tr><th>Metric</th><th>VID</th><th>Semantic ID</th><th>Impr.</th></tr>
+      <tr><td>lvtr</td><td>0.4447</td><td>0.4467</td><td>0.45%</td></tr>
+      <tr><td>vtr</td><td>0.8725</td><td>0.8726</td><td>0.01%</td></tr>
+      <tr><td>ltr</td><td>0.0336</td><td>0.0336</td><td>0.00%</td></tr>
+      <tr><td>wtr</td><td>0.0104</td><td>0.0105</td><td>0.96%</td></tr>
+      <tr><td>cmtr</td><td>0.0565</td><td>0.0573</td><td>1.42%</td></tr>
+      <tr><td>P-score</td><td>0.0371</td><td>0.0378</td><td>1.74%</td></tr>
+    </table>
+  </div>
+</section>
+
+<section>
+  <h2>摘要总结</h2>
+  <ul>
+    <li>提出<strong>语义标识符输入表示</strong>替代传统稀疏嵌入方法</li>
+    <li>在2.6B参数规模下实现可比甚至更优的性能表现</li>
+    <li>四大核心优势：
+      <ul>
+        <li>参数效率提升（节省数十亿级项目的嵌入表）</li>
+        <li>通信效率优化（减少分布式训练中的参数服务器通信）</li>
+        <li>序列处理能力扩展（支持万级交互序列）</li>
+        <li>表示一致性增强（输入输出共享语义空间）</li>
+      </ul>
+    </li>
+  </ul>
+</section>
+
+<section>
+  <h2>术语解释</h2>
+  <dl>
+    <dt><strong>语义标识符（Semantic Identifier）</strong></dt>
+    <dd>通过语义编码将视频内容映射到连续向量空间的技术，替代传统的离散ID表示</dd>
+    
+    <dt><strong>稀疏嵌入（Sparse Embedding）</strong></dt>
+    <dd>传统推荐系统中为每个物品ID创建独立嵌入向量的方法，存在存储和计算瓶颈</dd>
+
+    <dt><strong>参数效率（Parameter Efficiency）</strong></dt>
+    <dd>通过共享输入输出表示，消除独立嵌入表带来的参数爆炸问题</dd>
+
+    <dt><strong>通信开销（Communication Overhead）</strong></dt>
+    <dd>分布式训练中参数服务器与计算节点间的数据传输成本，语义标识符方法可减少80%+</dd>
+  </dl>
+</section>
+
+</body>
+</html>

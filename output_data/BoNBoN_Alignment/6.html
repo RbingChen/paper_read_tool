@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>论文解析报告</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; }
+        .original { background-color: #f0f0f0; border: 1px solid #ccc; padding: 15px; margin-bottom: 10px; }
+        .translation { background-color: #e8f5e9; border: 1px solid #4caf50; padding: 15px; margin-bottom: 20px; }
+        .formula-container { background-color: #fffde7; text-align: center; padding: 15px; margin: 20px 0; }
+        .term { color: red; font-weight: bold; }
+        h2 { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 5px; }
+        section { margin-bottom: 30px; }
+    </style>
+</head>
+<body>
+
+<section>
+    <h2>1. 内容理解与解释</h2>
+    <p>本文提出三种语言模型对齐方法：</p>
+    <ul>
+        <li><span class="term">SFT-BoN（监督微调最佳n样本）</span>：直接最大化最佳样本的对数似然，理论有效但数据效率低。</li>
+        <li><span class="term">IPO-BoN（身份偏好优化最佳n样本）</span>：通过对比最佳/最差样本构建成对数据集，数据效率更高但存在模型“作弊”风险（降低所有样本概率）。</li>
+        <li><span class="term">BoNBoN 对齐</span>：融合前两种方法的混合目标（公式4.4），通过超参数α平衡SFT-BoN和IPO-BoN，兼具数据效率与防作弊能力。</li>
+    </ul>
+    <p>核心理论：定理3证明最佳/最差样本的<span class="term">对数似然比（log-likelihood ratio）</span>与最佳n策略存在定量关系（β*_n），为IPO-BoN提供数学基础。</p>
+</section>
+
+<section>
+    <h2>2. 内容翻译（中英对照）</h2>
+    
+    <div class="original">
+        <p><strong>SFT-BoN.</strong> The most obvious option is to train the model to maximize the log-likelihood of the best-of- n samples. The associated objective is:</p>
+        <div class="formula-container">
+            \( L_{\text{SFT-BoN}}(\pi_\theta; \pi_0) = -\mathbb{E}_{x \sim \mathcal{D}, y^{(n)} \sim \pi_r^{(n)}} \left[ \log \pi_\theta(y^{(n)} | x) \right], \quad (4.1) \)
+        </div>
+        <p>and it is well-known that the minimizer is \( \pi_r^{(n)} \). The training procedure is simply to minimize the sample-average version of this objective. We call this training method SFT-BoN because it is supervised fine-tuning on best-of- n samples. Although SFT-BoN is valid theoretically, it turns out to be data inefficient, and we observe only marginal improvement over the reference model empirically (see section 5).</p>
+    </div>
+    <div class="translation">
+        <p><strong>SFT-BoN（监督微调最佳n样本）</strong>：最直接的方法是训练模型以最大化n个样本中最佳样本的对数似然。其目标函数为：</p>
+        <div class="formula-container">
+            \( L_{\text{SFT-BoN}}(\pi_\theta; \pi_0) = -\mathbb{E}_{x \sim \mathcal{D}, y^{(n)} \sim \pi_r^{(n)}} \left[ \log \pi_\theta(y^{(n)} | x) \right], \quad (4.1) \)
+        </div>
+        <p>已知其最小化解为 \( \pi_r^{(n)} \)。训练过程即最小化该目标的样本平均版本。我们称此方法为SFT-BoN，因其是在最佳n样本上的监督微调。尽管SFT-BoN理论有效，但其数据效率低下，实证中仅观察到相对于参考模型的微弱改进（见第5节）。</p>
+    </div>
+
+    <div class="original">
+        <p><strong>IPO-BoN.</strong> A limitation of the best-of- n procedure is that it only makes use of the winning sample, throwing away the rest. Another intuitive option is to construct a pairwise dataset and train the language model by a contrastive method. Concretely, we construct the pairwise data by picking the best and worst responses. We want to construct an objective function using this paired data that has the best-of- n policy as a minimizer.</p>
+        <p>The key result we require is:</p>
+        <p><strong>Theorem 3.</strong> For any fixed \( n \),</p>
+        <div class="formula-container">
+            \( \mathbb{E}_{x \sim \mathcal{D}, y^{(n)} \sim \pi_r^{(n)}, y^{(1)} \sim \pi_r^{(1)}} \left[ \log \frac{\pi_r^{(n)}(y^{(n)} | x)}{\pi_r^{(n)}(y^{(1)} | x)} - \log \frac{\pi_0(y^{(n)} | x)}{\pi_0(y^{(1)} | x)} \right] = \frac{1}{2} \beta_n^*, \)
+        </div>
+        <p>where</p>
+        <div class="formula-container">
+            \( \beta_n^* = \frac{1}{2(n-1) \sum_{k=1}^{n-1} \frac{1}{k}}. \quad (4.2) \)
+        </div>
+        <p>Following this result, we define the contrastive objective function as:</p>
+        <div class="formula-container">
+            \( L_{\text{IPO-BoN}}(\pi_\theta; \pi_0) = \mathbb{E}_{x \sim \mathcal{D}, y^{(n)} \sim \pi_r^{(n)}, y^{(1)} \sim \pi_r^{(1)}} \left[ \left( \log \frac{\pi_\theta(y^{(n)} | x)}{\pi_\theta(y^{(1)} | x)} - \log \frac{\pi_0(y^{(n)} | x)}{\pi_0(y^{(1)} | x)} - \frac{1}{2} \beta_n^* \right)^2 \right]. \quad (4.3) \)
+        </div>
+        <p>The optimizer of this objective is a policy where the log-likelihood ratio of the best and worst samples is equal to that of the best-of- n policy. We call this training method IPO-BoN because it is essentially the IPO objective on the best-and-worst samples, with a particular choice for the IPO hyper parameter. We emphasize that the IPO-BoN objective does not involve any hyper parameters, there is only one choice for \( \beta_n^* \) for each \( n \).</p>
+        <p>We find in section 5 that IPO-BoN is much more data efficient than the SFT-BoN. However, this method (like IPO) has the disadvantage that it only controls the likelihood ratios on the sampled data. In particular, this means that the optimizer can cheat by reducing the likelihood of both the winning and losing responses, so long as the loser’s likelihood decreases more (so the ratio still goes up). Reducing the probability of both the winning and losing examples requires the optimized model to shift probability mass elsewhere. In practice, we find that it tends to increase the probability of very long responses.</p>
+    </div>
+    <div class="translation">
+        <p><strong>IPO-BoN（身份偏好优化最佳n样本）</strong>：最佳n过程的局限是仅利用获胜样本而丢弃其余。另一直观方案是构建成对数据集并通过对比方法训练语言模型。具体而言，我们通过选取最佳和最差响应构建成对数据，目标是构建以最佳n策略为最小化解的目标函数。</p>
+        <p>关键定理如下：</p>
+        <p><strong>定理3.</strong> 对任意固定 \( n \)：</p>
+        <div class="formula-container">
+            \( \mathbb{E}_{x \sim \mathcal{D}, y^{(n)} \sim \pi_r^{(n)}, y^{(1)} \sim \pi_r^{(1)}} \left[ \log \frac{\pi_r^{(n)}(y^{(n)} | x)}{\pi_r^{(n)}(y^{(1)} | x)} - \log \frac{\pi_0(y^{(n)} | x)}{\pi_0(y^{(1)} | x)} \right] = \frac{1}{2} \beta_n^*, \)
+        </div>
+        <p>其中</p>
+        <div class="formula-container">
+            \( \beta_n^* = \frac{1}{2(n-1) \sum_{k=1}^{n-1} \frac{1}{k}}. \quad (4.2) \)
+        </div>
+        <p>基于此，定义对比目标函数为：</p>
+        <div class="formula-container">
+            \( L_{\text{IPO-BoN}}(\pi_\theta; \pi_0) = \mathbb{E}_{x \sim \mathcal{D}, y^{(n)} \sim \pi_r^{(n)}, y^{(1)} \sim \pi_r^{(1)}} \left[ \left( \log \frac{\pi_\theta(y^{(n)} | x)}{\pi_\theta(y^{(1)} | x)} - \log \frac{\pi_0(y^{(n)} | x)}{\pi_0(y^{(1)} | x)} - \frac{1}{2} \beta_n^* \right)^2 \right]. \quad (4.3) \)
+        </div>
+        <p>该目标的最优解是使最佳与最差样本的对数似然比等于最佳n策略的策略。我们称此方法为IPO-BoN，因其本质上是将IPO目标应用于最佳-最差样本，并为IPO超参数选择了特定值。需强调：IPO-BoN目标不涉及超参数，对每个 \( n \) 仅有一个 \( \beta_n^* \) 取值。</p>
+        <p>第5节发现IPO-BoN数据效率显著高于SFT-BoN。但此方法（类似IPO）的缺陷是仅控制采样数据的似然比。这意味着优化器可通过同时降低获胜和失败响应的似然来“作弊”（只要失败样本似然下降更多以维持比率上升）。降低两类样本概率要求优化模型将概率质量转移至他处。实践中发现这会增加生成长文本的概率。</p>
+    </div>
+
+    <div class="original">
+        <p><strong>BonBon Alignment</strong> We can now write the BoNBoN objective:</p>
+        <p>The BoNBoN alignment objective is:</p>
+        <div class="formula-container">
+            \( L_{\text{BoNBoN}}(\pi_\theta; \pi_0) = \alpha L_{\text{SFT-BoN}}(\pi_\theta; \pi_0) + (1 - \alpha) L_{\text{IPO-BoN}}(\pi_\theta; \pi_0), \quad (4.4) \)
+        </div>
+        <p>where \( L_{\text{SFT-BoN}} \) and \( L_{\text{IPO-BoN}} \) are defined in (4.1) and (4.3), and \( \alpha \) is a hyper parameter that balances the SFT and the IPO objectives.</p>
+        <p>We call the procedure BoNBoN because it is a combination of two objective functions that have the best-of- n policy as a minimizer. Relative to SFT alone, BoNBoN can be understood as improving data efficiency by making use of the worst-of- n samples. Relative to IPO alone, BoNBoN can be understood as preventing cheating by forcing the likelihood of the best-of- n samples to be high.</p>
+    </div>
+    <div class="translation">
+        <p><strong>BoNBoN对齐</strong> 现给出BoNBoN目标函数：</p>
+        <p>BoNBoN对齐目标定义为：</p>
+        <div class="formula-container">
+            \( L_{\text{BoNBoN}}(\pi_\theta; \pi_0) = \alpha L_{\text{SFT-BoN}}(\pi_\theta; \pi_0) + (1 - \alpha) L_{\text{IPO-BoN}}(\pi_\theta; \pi_0), \quad (4.4) \)
+        </div>
+        <p>其中 \( L_{\text{SFT-BoN}} \) 和 \( L_{\text{IPO-BoN}} \) 分别由式(4.1)和(4.3)定义，\( \alpha \) 是平衡SFT与IPO目标的超参数。</p>
+        <p>该方法命名为BoNBoN，因其组合了两种以最佳n策略为最小化解的目标函数。相对于纯SFT，BoNBoN通过利用最差n样本提升数据效率；相对于纯IPO，BoNBoN通过强制最佳样本保持高似然来防止作弊。</p>
+    </div>
+</section>
+
+<section>
+    <h2>3. 摘要总结</h2>
+    <p>本文提出三种基于<span class="term">最佳n策略（best-of-n policy）</span>的语言模型对齐方法：</p>
+    <ol>
+        <li><span class="term">SFT-BoN</span>：通过监督微调最大化最佳样本似然（公式4.1），理论有效但数据效率低。</li>
+        <li><span class="term">IPO-BoN</span>：基于定理3构建最佳/最差样本的对比目标（公式4.3），数据效率高但存在模型通过降低所有样本似然“作弊”的风险。</li>
+        <li><span class="term">BoNBoN</span>：融合前两者的混合目标（公式4.4），超参数α平衡SFT-BoN与IPO-BoN，兼具数据效率和防作弊能力。</li>
+    </ol>
+    <p>核心创新点：利用定理3揭示的<span class="term">对数似然比（log-likelihood ratio）</span>与调和级数的定量关系（β*_n，公式4.2），为对比学习提供理论依据，并通过混合目标解决单一方法的缺陷。</p>
+</section>
+
+<section>
+    <h2>4. 关键术语解释</h2>
+    <dl>
+        <dt><span class="term">最佳n样本 (best-of-n samples)</span></dt>
+        <dd>从参考模型生成n个响应中，根据奖励函数筛选出的最优样本。核心优化目标。</dd>
+        
+        <dt><span class="term">对数似然 (log-likelihood)</span></dt>
+        <dd>概率模型生成观测数据可能性的对数度量。SFT-BoN直接优化该指标（公式4.1）。</dd>
+        
+        <dt><span class="term">SFT-BoN (Supervised Fine-Tuning on Best-of-n)</span></dt>
+        <dd>监督微调方法：在最佳n样本上最大化对数似然。缺陷：数据效率低。</dd>
+        
+        <dt><span class="term">对数似然比 (log-likelihood ratio)</span></dt>
+        <dd>两事件似然对数的差值。定理3揭示其与最佳n策略的关系：\( \log \frac{\pi_r^{(n)}}{\pi_r^{(1)}} - \log \frac{\pi_0^{(n)}}{\pi_0^{(1)}} = \frac{1}{2}\beta_n^* \)。</dd>
+        
+        <dt><span class="term">IPO-BoN (Identity Preference Optimization on Best-of-n)</span></dt>
+        <dd>对比学习方法：构建最佳/最差样本对，强制其对数似然比逼近理论值β*_n（公式4.3）。优势：数据效率高；风险：模型可能降低所有样本概率。</dd>
+        
+        <dt><span class="term">β*_n</span></dt>
+        <dd>关键理论常数（公式4.2）：\( \beta_n^* = \frac{1}{2(n-1)\sum_{k=1}^{n-1} \frac{1}{k}} \)，由调和级数决定。反映最佳n策略的统计特性。</dd>
+        
+        <dt><span class="term">BoNBoN Alignment</span></dt>
+        <dd>混合对齐方法：加权融合SFT-BoN与IPO-BoN目标（公式4.4）。超参数α平衡二者，兼顾数据效率与概率分布稳定性。</dd>
+    </dl>
+</section>
+
+</body>
+</html>

@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>算法论文解析报告</title>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<style>
+  body { font-family: Arial, sans-serif; line-height: 1.6; }
+  .section { margin-bottom: 30px; }
+  h2 { border-bottom: 2px solid #333; padding-bottom: 5px; }
+  .original { background-color: #f0f0f0; border: 1px solid #ccc; padding: 15px; margin: 10px 0; border-radius: 5px; }
+  .translation { background-color: #e0ffe0; border: 1px solid #0a0; padding: 15px; margin: 10px 0; border-radius: 5px; }
+  .formula-container { background-color: #ffffcc; padding: 15px; margin: 15px 0; text-align: center; border-radius: 5px; }
+  .formula-label { font-style: italic; margin-top: 5px; }
+  .term { color: red; font-weight: bold; }
+  .two-columns { display: flex; gap: 20px; }
+  .two-columns > div { flex: 1; }
+</style>
+</head>
+<body>
+
+<h1>算法论文解析报告</h1>
+
+<!-- 内容理解 -->
+<div class="section">
+  <h2>内容理解</h2>
+  <p>本文段包含三个核心数学证明：</p>
+  <ol>
+    <li>完成了一个关于<span class="term">KL散度（Kullback-Leibler Divergence）</span>的计算推导，得出闭式表达式</li>
+    <li>证明了<span class="term">定理2（Theorem 2）</span>：给出最佳n策略的<span class="term">上下文条件胜率（Context-conditional win rate）</span>和<span class="term">KL散度</span>的精确表达式</li>
+    <li>证明了<span class="term">定理3（Theorem 3）</span>：推导出对数概率比期望值的表达式，定义了关键参数β<sup>*</sup><sub>n</sub></li>
+  </ol>
+  <p>证明中运用了概率论技术：</p>
+  <ul>
+    <li>利用<span class="term">次序统计量（Order Statistics）</span>分析极值分布</li>
+    <li>通过积分变换处理均匀分布期望值</li>
+    <li>讨论了离散分布与连续近似的误差边界</li>
+  </ul>
+</div>
+
+<!-- 内容翻译 -->
+<div class="section">
+  <h2>内容翻译</h2>
+  <div class="two-columns">
+    <div>
+      <h3>Original Text</h3>
+      <div class="original">
+        <p>Therefore, we have</p>
+        <div class="formula-container">
+          \\[ d = D_{\\text{KL}}(\\pi^{*} \\| \\pi_0) = \\int \\frac{1}{Z} \\pi_0(y|x) \\exp(c Q_x(r(x,y))) \\log \\left( \\frac{\\exp(c Q_x(r(x,y)))}{Z} \\right) dy \\]
+          \\[ = \\int_0^1 c e^{c u} u  du + Z - \\log(Z) = \\frac{(c-1)e^c + 1}{e^c - 1} - \\log \\left( \\frac{e^c - 1}{c} \\right). \\]
+          <div class="formula-label">Equation: KL Divergence Derivation</div>
+        </div>
+        <p>This completes the proof.</p>
+      </div>
+
+      <div class="original">
+        <h4>A.3 Proof of Theorem 2</h4>
+        <p><strong>Theorem 2.</strong> The context-conditional win rate and KL divergence of the best-of-n policy are:</p>
+        <ol>
+          <li>Context-conditional win rate: \( p_{\\pi_r^{(n)} \\succ \\pi_0 | x} = \\frac{n}{n+1} \)</li>
+          <li>Context-conditional KL divergence: \( D_{\\text{KL}}(\\pi_r^{(n)} \\| \\pi_0 | x) = \\log(n) - \\frac{n-1}{n} \)</li>
+        </ol>
+        <p>Since both are constants, the overall win rate \( p_{\\pi_r^{(n)} \\succ \\pi_0} \) and KL divergence \( D_{\\text{KL}}(\\pi_r^{(n)} \\| \\pi_0) \) on any prompts set \( \\mathcal{D} \) are the same values.</p>
+        <p><strong>Proof.</strong> Plug \( f(u) = n u^{n-1} \) in the win rate and KL divergence formats in Lemma 5 and the theorem follows.</p>
+      </div>
+
+      <div class="original">
+        <h4>A.4 Proof of Theorem 3</h4>
+        <p><strong>Theorem 3.</strong> For any fixed \( n \),</p>
+        <div class="formula-container">
+          \\[ \\mathbb{E}_{x\\sim\\mathcal{D}, y^{(n)}\\sim\\pi_r^{(n)}, y^{(1)}\\sim\\pi_r^{(1)}} \\left[ \\log \\frac{\\pi_r^{(n)}(y^{(n)}|x)}{\\pi_r^{(n)}(y^{(1)}|x)} - \\log \\frac{\\pi_0(y^{(n)}|x)}{\\pi_0(y^{(1)}|x)} \\right] = \\frac{1}{2\\beta_n^*} \\]
+          <div class="formula-label">Equation: Expected Log-Ratio Difference</div>
+        </div>
+        <p>where</p>
+        <div class="formula-container">
+          \\[ \\beta_n^* = \\frac{1}{2(n-1) \\sum_{k=1}^{n-1} \\frac{1}{k}} \\quad (4.2) \\]
+          <div class="formula-label">Equation: β<sup>*</sup><sub>n</sub> Definition</div>
+        </div>
+        <p><strong>Proof.</strong> Denote \( U^{(n)} \) and \( U^{(1)} \) the order statistics of the uniform distribution. That is, suppose \( U_1, \\cdots, U_n \) are independently and identically from \( U(0, 1) \), and \( U^{(n)} = \\max_{1\\leq i\\leq n} U_i \) and \( U^{(1)} = \\min_{1\\leq i\\leq n} U_i \).</p>
+        <p>The value of \( \\beta \) is derived as follows:</p>
+        <div class="formula-container">
+          \\[ \\beta^{-1} - 2 = \\mathbb{E} \\left[ h_{\\pi_r^{(n)}} (y^{(n)}, y^{(1)}, x) \\right] \\]
+          \\[ = (n-1) \\mathbb{E} \\left[ \\log U^{(n)} - \\log U^{(1)} \\right] \\]
+          \\[ = (n-1) \\cdot \\int_0^1 n \\log(u) u^{n-1}  du - (n-1) \\cdot \\int_0^1 n \\log(u) (1-u)^{n-1}  du \\]
+          \\[ = -\\frac{n-1}{n} + (n-1) n \\sum_{k=1}^n \\frac{1}{k} = (n-1) \\sum_{i=1}^{n-1} \\frac{1}{k}. \\]
+          <div class="formula-label">Equation: β Derivation</div>
+        </div>
+        <p>Beirami et al. [Bei+24] discuss that since the distribution of the language model is discrete, \( \\pi_r^{(n)} \) has a different form from that in Theorem 2, and the actual KL divergence is smaller. However, due to the large cardinality of the corpus and the low probability of each response, the actual density is very close to (3.1) and the KL divergence is almost its upper bound \( \\log(n) - \\frac{n-1}{n} \).</p>
+      </div>
+    </div>
+
+    <div>
+      <h3>中文翻译</h3>
+      <div class="translation">
+        <p>因此，我们有</p>
+        <div class="formula-container">
+          \\[ d = D_{\\text{KL}}(\\pi^{*} \\| \\pi_0) = \\int \\frac{1}{Z} \\pi_0(y|x) \\exp(c Q_x(r(x,y))) \\log \\left( \\frac{\\exp(c Q_x(r(x,y)))}{Z} \\right) dy \\]
+          \\[ = \\int_0^1 c e^{c u} u  du + Z - \\log(Z) = \\frac{(c-1)e^c + 1}{e^c - 1} - \\log \\left( \\frac{e^c - 1}{c} \\right). \\]
+          <div class="formula-label">公式：KL散度推导</div>
+        </div>
+        <p>证明完成。</p>
+      </div>
+
+      <div class="translation">
+        <h4>A.3 定理2证明</h4>
+        <p><strong>定理2.</strong> 最佳n策略的<span class="term">上下文条件胜率（Context-conditional win rate）</span>和<span class="term">KL散度（KL Divergence）</span>为：</p>
+        <ol>
+          <li>上下文条件胜率：\( p_{\\pi_r^{(n)} \\succ \\pi_0 | x} = \\frac{n}{n+1} \)</li>
+          <li>上下文条件KL散度：\( D_{\\text{KL}}(\\pi_r^{(n)} \\| \\pi_0 | x) = \\log(n) - \\frac{n-1}{n} \)</li>
+        </ol>
+        <p>由于两者均为常数，因此在任意提示集 \( \\mathcal{D} \) 上的整体胜率 \( p_{\\pi_r^{(n)} \\succ \\pi_0} \) 和KL散度 \( D_{\\text{KL}}(\\pi_r^{(n)} \\| \\pi_0) \) 均取相同值。</p>
+        <p><strong>证明：</strong> 将 \( f(u) = n u^{n-1} \) 代入引理5中的胜率与KL散度形式，定理即得证。</p>
+      </div>
+
+      <div class="translation">
+        <h4>A.4 定理3证明</h4>
+        <p><strong>定理3.</strong> 对任意固定 \( n \)，</p>
+        <div class="formula-container">
+          \\[ \\mathbb{E}_{x\\sim\\mathcal{D}, y^{(n)}\\sim\\pi_r^{(n)}, y^{(1)}\\sim\\pi_r^{(1)}} \\left[ \\log \\frac{\\pi_r^{(n)}(y^{(n)}|x)}{\\pi_r^{(n)}(y^{(1)}|x)} - \\log \\frac{\\pi_0(y^{(n)}|x)}{\\pi_0(y^{(1)}|x)} \\right] = \\frac{1}{2\\beta_n^*} \\]
+          <div class="formula-label">公式：期望对数比差值</div>
+        </div>
+        <p>其中</p>
+        <div class="formula-container">
+          \\[ \\beta_n^* = \\frac{1}{2(n-1) \\sum_{k=1}^{n-1} \\frac{1}{k}} \\quad (4.2) \\]
+          <div class="formula-label">公式：β<sup>*</sup><sub>n</sub> 定义</div>
+        </div>
+        <p><strong>证明：</strong> 记 \( U^{(n)} \) 和 \( U^{(1)} \) 为均匀分布的<span class="term">次序统计量（Order Statistics）</span>。即假设 \( U_1, \\cdots, U_n \) 独立同分布于 \( U(0, 1) \)，且 \( U^{(n)} = \\max_{1\\leq i\\leq n} U_i \)，\( U^{(1)} = \\min_{1\\leq i\\leq n} U_i \)。</p>
+        <p>参数 \( \\beta \) 的推导如下：</p>
+        <div class="formula-container">
+          \\[ \\beta^{-1} - 2 = \\mathbb{E} \\left[ h_{\\pi_r^{(n)}} (y^{(n)}, y^{(1)}, x) \\right] \\]
+          \\[ = (n-1) \\mathbb{E} \\left[ \\log U^{(n)} - \\log U^{(1)} \\right] \\]
+          \\[ = (n-1) \\cdot \\int_0^1 n \\log(u) u^{n-1}  du - (n-1) \\cdot \\int_0^1 n \\log(u) (1-u)^{n-1}  du \\]
+          \\[ = -\\frac{n-1}{n} + (n-1) n \\sum_{k=1}^n \\frac{1}{k} = (n-1) \\sum_{i=1}^{n-1} \\frac{1}{k}. \\]
+          <div class="formula-label">公式：β推导过程</div>
+        </div>
+        <p>Beirami等[Bei+24]指出，由于语言模型的分布是离散的，\( \\pi_r^{(n)} \) 的形式与定理2中不同，实际KL散度更小。然而，由于语料库基数大且每个响应概率低，实际密度非常接近(3.1)，且KL散度几乎达到其上界 \( \\log(n) - \\frac{n-1}{n} \)。</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 摘要总结 -->
+<div class="section">
+  <h2>摘要总结</h2>
+  <p>本文段核心内容可概括为：</p>
+  <ul>
+    <li>完成<span class="term">KL散度</span>闭式表达式的推导：通过积分变换得到 \( d = \\frac{(c-1)e^c + 1}{e^c - 1} - \\log \\left( \\frac{e^c - 1}{c} \\right) \)</li>
+    <li>建立<span class="term">最佳n策略（best-of-n policy）</span>的理论基础：
+      <ul>
+        <li>证明上下文条件胜率恒为 \( \\frac{n}{n+1} \)</li>
+        <li>证明上下文条件KL散度恒为 \( \\log(n) - \\frac{n-1}{n} \)</li>
+        <li>指出这些常数性质在任意提示集上成立</li>
+      </ul>
+    </li>
+    <li>推导对数概率比的关键性质：
+      <ul>
+        <li>证明期望差值 \( \\mathbb{E}[\\cdots] = \\frac{1}{2\\beta_n^*} \)</li>
+        <li>定义核心参数 \( \\beta_n^* = \\frac{1}{2(n-1) \\sum_{k=1}^{n-1} \\frac{1}{k}} \)</li>
+        <li>通过<span class="term">均匀分布次序统计量（Uniform Order Statistics）</span>完成证明</li>
+      </ul>
+    </li>
+    <li>讨论离散分布的近似性质：指出大基数语料下实际KL散度接近理论上限</li>
+  </ul>
+</div>
+
+<!-- 术语识别 -->
+<div class="section">
+  <h2>术语识别</h2>
+  <ul>
+    <li><span class="term">KL散度（Kullback-Leibler Divergence）</span>：衡量两个概率分布差异的非对称指标，定义为 \( D_{\\text{KL}}(P \\| Q) = \\sum_x P(x) \\log \\frac{P(x)}{Q(x)} \)。在强化学习中用于度量策略分布与基准分布的偏差。</li>
+    
+    <li><span class="term">最佳n策略（best-of-n policy）</span>：从语言模型采样n个响应后，选择奖励函数评分最高的输出作为最终结果的策略。记为 \( \\pi_r^{(n)} \)。</li>
+    
+    <li><span class="term">上下文条件胜率（Context-conditional win rate）</span>：给定上下文（提示）\( x \) 时，策略优于参考策略 \( \\pi_0 \) 的概率。数学定义为 \( p_{\\pi \\succ \\pi_0 | x} = P( r(x,y_\\pi) > r(x,y_{\\pi_0}) ) \)。</li>
+    
+    <li><span class="term">次序统计量（Order Statistics）</span>：统计样本中第k小值的随机变量。文中特指均匀分布样本的极值统计量 \( U^{(n)} = \\max(U_1,...,U_n) \) 和 \( U^{(1)} = \\min(U_1,...,U_n) \)。</li>
+    
+    <li><span class="term">β<sup>*</sup><sub>n</sub>参数</span>：定理3定义的关键系数，\( \\beta_n^* = \\frac{1}{2(n-1) H_{n-1}} \)，其中 \( H_{n-1} = \\sum_{k=1}^{n-1} \\frac{1}{k} \) 为调和数，反映采样规模n与期望对数比的关系。</li>
+    
+    <li><span class="term">奖励函数（Reward Function）</span>：\( r(x,y) \) 评估上下文x和响应y匹配程度的函数，Q函数 \( Q_x(\\cdot) \) 为其变换形式，用于策略优化。</li>
+  </ul>
+</div>
+
+</body>
+</html>

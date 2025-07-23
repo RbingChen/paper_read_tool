@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>论文解析报告</title>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<style>
+  body { font-family: Arial, sans-serif; line-height: 1.6; }
+  .original { 
+    background-color: #f0f0f0; 
+    border: 1px solid #ccc; 
+    padding: 15px; 
+    margin-bottom: 10px;
+    border-radius: 5px;
+  }
+  .translation { 
+    background-color: #e8f5e9; 
+    border: 1px solid #4caf50; 
+    padding: 15px; 
+    margin-bottom: 20px;
+    border-radius: 5px;
+  }
+  .term { 
+    color: red; 
+    font-weight: bold; 
+  }
+  .section { margin-bottom: 30px; }
+  h2 { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 5px; }
+  h3 { color: #2980b9; }
+  .formula-container { 
+    text-align: center; 
+    margin: 15px 0;
+  }
+</style>
+</head>
+<body>
+
+<div class="section">
+  <h2>1. 内容理解</h2>
+  <p>该文本描述了强化学习（RL）训练管道的设计与优化：</p>
+  <ul>
+    <li>采用两阶段训练策略：第一阶段使用数学和代码查询数据集，当性能停滞时转入第二阶段</li>
+    <li>第二阶段移除已完全掌握的样本（100%准确率），新增通用对话和指令遵循数据</li>
+    <li>使用<strong class="term">GRPO（Group Relative Policy Optimization）</strong>算法，移除了KL约束并优化长响应处理</li>
+    <li>实施严格同策略训练：每批次256查询，每查询采样16次rollout</li>
+    <li>学习率与生成长度分阶段配置：第一阶段高学习率（4×10⁻⁶）短序列，第二阶段低学习率（1×10⁻⁶）长序列</li>
+    <li>基于<strong class="term">verl框架</strong>实现分布式训练，重点优化rollout阶段的效率问题</li>
+    <li>发现长序列生成导致<strong class="term">长尾效应（long-tail effect）</strong>，造成GPU利用率不足</li>
+  </ul>
+</div>
+
+<div class="section">
+  <h2>2. 内容翻译</h2>
+  
+  <div class="original">
+    <p>either too easy or excessively difficult, which could lead to stagnation or instability during training.<br>
+    We ultimately retain 32k and 22k math and code queries, respectively.<br>
+    Our RL pipeline consists of two stages. When the model’s performance plateaus in the first stage,<br>
+    we transition to the second stage. In Stage 2, we remove all math and code queries that the model<br>
+    answered correctly with 100% accuracy in Stage 1, and supplement the training set with 15k general<br>
+    chat and 5k instruction-following data to improve broader generalization.</p>
+  </div>
+  <div class="translation">
+    <p>避免训练样本过易或过难导致训练停滞或不稳定。<br>
+    最终保留32k数学查询和22k代码查询。<br>
+    RL训练管道分为两个阶段：当模型在第一阶段性能达到平台期时，<br>
+    转入第二阶段。此阶段移除所有第一阶段100%正确的数学/代码查询，<br>
+    并补充15k通用对话数据和5k指令遵循数据以提升泛化能力。</p>
+  </div>
+  
+  <div class="original">
+    <p>We adapt <strong class="term">Group Relative Policy Optimization (GRPO)</strong>[ 52] as our training algorithm. Despite being a<br>
+    simplified and lightweight variant of <strong class="term">Proximal Policy Optimization (PPO)</strong>[ 53], we find that GRPO<br>
+    offers strong training stability and effective performance gains. The training is configured as follows:</p>
+    <ul>
+      <li>No <strong class="term">KL Constraint</strong>. We remove the KL penalty originally used in GRPO, allowing for more substantial policy updates.</li>
+      <li>Handling Overlong Responses. For responses exceeding a certain length threshold during rollout, we set their advantages to zero to prevent them from influencing parameter updates.</li>
+      <li>Strict <strong class="term">on-policy training</strong>. Each training batch consists of 256 queries, and for every query, we sample 16 rollouts. The policy model only updates once following each exploration stage.</li>
+      <li>Two-stage Generation and Learning Rate Schedule. In Stage 1, we limit the maximum response length to 24K tokens and use a relatively high learning rate of 4×10⁻⁶. In Stage 2, we increase the maximum response length to 32K and reduce the learning rate to 1×10⁻⁶.</li>
+    </ul>
+  </div>
+  <div class="translation">
+    <p>采用<strong class="term">分组相对策略优化（GRPO）</strong>[52]作为训练算法。尽管是<strong class="term">近端策略优化（PPO）</strong>[53]的轻量简化版，<br>
+    但GRPO展现出优秀的训练稳定性和性能提升。训练配置如下：</p>
+    <ul>
+      <li>无<strong class="term">KL约束</strong>：移除GRPO原有的KL惩罚项，允许更大幅度的策略更新</li>
+      <li>处理过长响应：rollout中超长响应的优势值设为零，避免影响参数更新</li>
+      <li>严格<strong class="term">同策略训练</strong>：每批次256查询，每查询采样16次rollout，策略模型每次探索后仅更新一次</li>
+      <li>两阶段生成长度与学习率：阶段1最大响应24K token，学习率
+        <div class="formula-container">
+          \(4 \times 10^{-6}\)
+        </div>
+        阶段2最大响应32K token，学习率
+        <div class="formula-container">
+          \(1 \times 10^{-6}\)
+        </div>
+      </li>
+    </ul>
+  </div>
+  
+  <div class="original">
+    <p>In our early experiments across models of varying parameter scales, we observe that using a larger<br>
+    learning rate in the first training stage enables the model to reach convergence more quickly, whereas<br>
+    a smaller learning rate requires significantly more training steps to achieve similar performance.<br>
+    Although both approaches eventually lead to comparable outcomes, we adopt a larger learning rate in<br>
+    the first stage to accelerate convergence and reduce overall training costs.</p>
+  </div>
+  <div class="translation">
+    <p>在不同规模模型的实验中，第一阶段使用较高学习率能更快收敛，<br>
+    而低学习率需更多训练步数才能达到同等性能。虽然最终结果相似，<br>
+    但采用高学习率可加速收敛并降低训练成本。</p>
+  </div>
+  
+  <div class="original">
+    <h3>4.3 RL Framework</h3>
+    <p>Our training pipeline is built upon the <strong class="term">verl framework</strong> [ 54], using GRPO[ 52] for reinforcement<br>
+    learning. verl is an open-source RL framework. Integrated with <strong class="term">vLLM</strong>[ 55], <strong class="term">FSDP</strong>, and <strong class="term">Megatron-LM</strong>[56],<br>
+    verl enables scalable RL training across 1000+ GPUs.<br>
+    We expand verl further with modifications to best suit our training strategy.</p>
+  </div>
+  <div class="translation">
+    <h3>4.3 RL框架</h3>
+    <p>训练管道基于<strong class="term">verl框架</strong>[54]，使用GRPO[52]进行强化学习。<br>
+    verl是集成<strong class="term">vLLM</strong>[55]、<strong class="term">FSDP</strong>和<strong class="term">Megatron-LM</strong>[56]的开源框架，<br>
+    支持跨1000+GPU的可扩展训练。我们针对训练策略对verl进行了扩展修改。</p>
+  </div>
+  
+  <div class="original">
+    <h3>4.3.1 Rollout Speed Optimization</h3>
+    <p>RL with online sample generation (rollout) on large LLMs often suffers from long training periods.<br>
+    Each training step takes several minutes to tens of minutes. Unlike <strong class="term">SFT</strong> or <strong class="term">DPO</strong>, online GRPO requires<br>
+    policy model sample generation during each step, increasing per-step latency. This rollout phase<br>
+    occupies more than 70% elapsed time of one training step from our observation, thus optimization is<br>
+    needed.</p>
+  </div>
+  <div class="translation">
+    <h3>4.3.1 Rollout速度优化</h3>
+    <p>大语言模型的在线样本生成（rollout）常导致训练周期过长，<br>
+    单步训练需数分钟至数十分钟。与<strong class="term">监督微调（SFT）</strong>或<strong class="term">直接偏好优化（DPO）</strong>不同，<br>
+    在线GRPO需每步生成策略样本，增加单步延迟。观测显示rollout阶段占单步训练时间70%以上，亟需优化。</p>
+  </div>
+  
+  <div class="original">
+    <p>Some recent works also investigated on the efficiency of the rollout phase. [ 57] proposed partial<br>
+    rollouts to divide long sequences into each rollout step. While feasible, it introduced additional<br>
+    effort to manage the replay buffer. [ 11] sought to decouple model evolution from runtime execution<br>
+    allowing for a dynamic mixture of on/off-policy samples. We use pure on-policy in this work.<br>
+    Although already accelerated by fast inferencing frameworks like vLLM and sglang, the speed of the<br>
+    rollout phase in verl can still be optimized:</p>
+  </div>
+  <div class="translation">
+    <p>近期研究探索了rollout效率优化：[57]提出将长序列拆分的部分rollout方案，<br>
+    但需额外管理回放缓冲区；[11]尝试解耦模型演进与运行时执行，支持同策略/离策略样本混合。<br>
+    本研究采用纯同策略。尽管已使用vLLM等推理框架加速，verl的rollout仍有优化空间：</p>
+  </div>
+  
+  <div class="original">
+    <p>First, the training is synchronized. The whole generation batch must all be completed before we<br>
+    can move on to the next phase. We have to wait for the longest sequences in a batch to complete,<br>
+    causing a <strong class="term">long-tail effect</strong>. Furthermore, longer sequences have lower tokens per second due to the<br>
+    nonlinear cost of self-attention and limited GPU memory bandwidth for kv-cache. For a 32B model<br>
+    on a typical 4x A100 vLLM instance, We can observe a roughly 60 tokens/s when sequence length<br>
+    is short and only about 50 tokens/s at 32k length. This long-tail effect leads to significant idle time<br>
+    across faster workers and underutilized GPU capacity.</p>
+  </div>
+  <div class="translation">
+    <p>首先，训练是同步的：必须等待整批生成完成才能进入下一阶段。<br>
+    需等待批次中最长序列完成，导致<strong class="term">长尾效应</strong>。且长序列因自注意力非线性计算开销<br>
+    和kv缓存的GPU带宽限制，token/s吞吐量更低。在4xA100的vLLM实例上运行32B模型时，<br>
+    短序列约60 token/s，32K长序列仅50 token/s。该效应导致计算单元空闲和GPU利用率不足。</p>
+  </div>
+</div>
+
+<div class="section">
+  <h2>3. 摘要总结</h2>
+  <p>本文提出两阶段强化学习训练框架：第一阶段使用数学/代码查询数据集，当性能停滞时转入第二阶段；第二阶段移除已完全掌握的样本，加入通用对话和指令数据提升泛化能力。采用轻量级GRPO算法，移除了KL约束并优化长响应处理，实施严格同策略训练。实验表明第一阶段高学习率可加速收敛。基于verl框架实现分布式训练，重点解决rollout阶段的长尾效应问题——因同步等待长序列生成导致GPU利用率不足。</p>
+</div>
+
+<div class="section">
+  <h2>4. 术语识别</h2>
+  <ul>
+    <li><strong class="term">GRPO (Group Relative Policy Optimization)</strong>：分组相对策略优化，PPO的轻量级变体，通过分组比较提升训练稳定性</li>
+    <li><strong class="term">PPO (Proximal Policy Optimization)</strong>：近端策略优化，通过约束策略更新幅度确保训练稳定的RL算法</li>
+    <li><strong class="term">KL Constraint (KL约束)</strong>：KL散度惩罚项，防止新策略偏离原始策略过远，本文被移除以允许更大更新</li>
+    <li><strong class="term">on-policy training (同策略训练)</strong>：使用当前策略生成的数据进行训练，与离策略学习相对</li>
+    <li><strong class="term">rollout (展开)</strong>：在RL中指使用当前策略生成行动序列的过程，消耗70%+训练时间</li>
+    <li><strong class="term">long-tail effect (长尾效应)</strong>：因等待批次中最长序列完成而导致的GPU空闲现象，显著降低利用率</li>
+    <li><strong class="term">verl framework (verl框架)</strong>：集成vLLM/FSDP/Megatron-LM的分布式RL框架，支持千卡级训练</li>
+    <li><strong class="term">SFT (Supervised Fine-Tuning)</strong>：监督微调，使用标注数据微调预训练模型的基础方法</li>
+    <li><strong class="term">DPO (Direct Preference Optimization)</strong>：直接偏好优化，通过人类偏好数据优化策略的算法</li>
+    <li><strong class="term">kv-cache (键值缓存)</strong>：推理时存储注意力键值对的缓存机制，长序列受限于GPU带宽</li>
+  </ul>
+</div>
+
+</body>
+</html>

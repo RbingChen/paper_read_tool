@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>OneRec技术报告分析</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        body { font-family: 'Segoe UI', Arial, sans-serif; line-height: 1.6; }
+        .original { 
+            background-color: #f5f5f5; 
+            border: 1px solid #ddd; 
+            padding: 15px; 
+            margin-bottom: 5px; 
+            border-radius: 4px;
+        }
+        .translation { 
+            background-color: #e8f5e9; 
+            border: 1px solid #4caf50; 
+            padding: 15px; 
+            margin-bottom: 20px; 
+            border-radius: 4px;
+        }
+        .figure { 
+            background-color: #fffde7; 
+            padding: 15px; 
+            margin: 15px 0; 
+            border-left: 4px solid #ffd600;
+        }
+        .term { 
+            color: #d32f2f; 
+            font-weight: bold; 
+        }
+        section { margin-bottom: 30px; }
+        h2 { border-bottom: 2px solid #eee; padding-bottom: 5px; }
+        li { margin-bottom: 8px; }
+    </style>
+</head>
+<body>
+
+<h1>OneRec技术报告分析</h1>
+
+<!-- 内容翻译 -->
+<section>
+    <h2>📖 内容翻译</h2>
+    
+    <div class="original">
+        <strong>OneRec Technical Report</strong>
+        <h3>4.2. Scaling</h3>
+        <h4>4.2.1. Training Scaling</h4>
+        <p>Parameters Scaling The OneRec series includes models of varying sizes: OneRec-0.015B, OneRec-0.121B, OneRec-0.935B, and OneRec-2.633B, as detailed in Table 1. We investigated the impact of model parameter count on performance. Figure 9 illustrates the loss curves for these models, demonstrating a clear scaling trend where larger models achieve lower loss as training progresses. This indicates a strong capability for performance improvement with increased model size.</p>
+    </div>
+    <div class="translation">
+        <strong>OneRec技术报告</strong>
+        <h3>4.2. 扩展性</h3>
+        <h4>4.2.1. 训练扩展</h4>
+        <p><span class="term">参数扩展（Parameters Scaling）</span> OneRec系列包含不同规模的模型：OneRec-0.015B、OneRec-0.121B、OneRec-0.935B和OneRec-2.633B（详见表1）。我们研究了模型参数量对性能的影响。图9展示了这些模型的损失曲线，呈现出明确的扩展趋势：随着训练进行，更大规模的模型获得更低的损失值。这表明通过增加模型规模可显著提升性能。</p>
+    </div>
+    
+    <div class="original">
+        <p>Regarding the influence of training data size, our experiments show that performance converges rapidly within the initial approximately 10 billion samples. While the rate of improvement diminishes significantly beyond this point, performance does not completely plateau and continues to benefit, albeit more slowly, from additional data (i.e., beyond 100 billion samples). This suggests that while substantial gains are achieved early in training, further, more gradual improvements are possible with larger datasets.</p>
+    </div>
+    <div class="translation">
+        <p>关于<span class="term">训练数据规模（training data size）</span>的影响，实验表明性能在初始约100亿样本内快速收敛。超过此规模后改进速率显著下降，但性能并未完全停滞，仍能从更多数据中持续获益（如超过1000亿样本），尽管速度较慢。这表明训练初期可获得显著收益，而更大数据集仍能带来渐进式改进。</p>
+    </div>
+    
+    <div class="figure">
+        <strong>Figure 9</strong> | Comparison of loss curves for different OneRec model sizes, showing loss scaling with training samples.
+    </div>
+    <div class="figure">
+        <strong>图9</strong> | 不同规模OneRec模型的损失曲线对比，展示损失随训练样本的扩展趋势。
+    </div>
+    
+    <div class="original">
+        <p>As model parameters scale up, load balancing among experts becomes a critical issue. Uneven expert utilization can lead to training inefficiency and suboptimal performance. We adopt DeepSeek’s loss-free load balancing strategy (Liu et al., 2024), which maintains expert utilization balance without introducing additional loss terms. With this strategy, we observe a loss reduction of 0.2, demonstrating its effectiveness in improving convergence for scaled OneRec models.</p>
+    </div>
+    <div class="translation">
+        <p>随着模型参数扩展，<span class="term">专家间负载均衡（load balancing among experts）</span>成为关键问题。专家利用率不均衡会导致训练效率低下和次优性能。我们采用DeepSeek的<span class="term">无损失负载均衡策略（loss-free load balancing strategy）</span>（Liu等，2024），该策略在不引入额外损失项的情况下维持专家利用率平衡。应用此策略后，我们观察到损失降低0.2，证明其能有效提升扩展版OneRec模型的收敛性。</p>
+    </div>
+    
+    <div class="original">
+        <p>Beyond parameter scaling, we conduct additional experiments to validate the effectiveness of scaling across other key dimensions using our 0.935B model. These experiments encompass feature scaling (examining the impact of comprehensive feature engineering), codebook scaling (investigating the effect of vocabulary size expansion), and inference scaling (analyzing the influence of beam search parameters). Each dimension demonstrates distinct scaling behaviors and provides valuable insights for future model optimization.</p>
+    </div>
+    <div class="translation">
+        <p>除参数扩展外，我们使用0.935B模型进行了额外实验，验证其他关键维度的扩展效果：<br>
+        • <span class="term">特征扩展（feature scaling）</span>：检验综合特征工程的影响<br>
+        • <span class="term">码本扩展（codebook scaling）</span>：研究词汇表规模扩大的效果<br>
+        • <span class="term">推理扩展（inference scaling）</span>：分析束搜索参数的影响<br>
+        每个维度均展现出独特的扩展行为，为未来模型优化提供了宝贵洞见。</p>
+    </div>
+</section>
+
+<!-- 内容理解 -->
+<section>
+    <h2>🧠 内容理解</h2>
+    <p>本段系统研究了OneRec推荐系统模型的扩展性（Scaling）特性：</p>
+    <ol>
+        <li><strong>参数扩展规律</strong>：模型规模（0.015B→2.633B）与性能呈正相关，更大模型在训练中更快降低损失值</li>
+        <li><strong>数据规模效应</strong>：训练数据在100亿样本内收益显著，超过1000亿样本后进入边际收益递减阶段</li>
+        <li><strong>负载均衡创新</strong>：采用无损失负载均衡策略解决专家模型扩展时的利用率不均问题，实现0.2的损失降低</li>
+        <li><strong>多维度扩展</strong>：在特征工程、词汇表大小、推理参数等维度验证扩展效果，揭示各维度的独特优化路径</li>
+    </ol>
+    <p>核心认知：模型扩展需综合考虑参数量、数据量、架构优化（负载均衡）及多维度协同，才能实现最优性能提升。</p>
+</section>
+
+<!-- 摘要总结 -->
+<section>
+    <h2>📌 摘要总结</h2>
+    <p>本节核心研究OneRec推荐系统的扩展性特性：</p>
+    <ul>
+        <li>✅ <strong>参数扩展性</strong>：模型规模（0.015B~2.633B）与性能正相关，大模型损失下降更快</li>
+        <li>📊 <strong>数据规模效应</strong>：100亿样本内快速收敛，1000亿样本以上仍具渐进收益</li>
+        <li>⚖️ <strong>负载均衡突破</strong>：采用无损失负载均衡策略，显著提升专家模型效率（损失↓0.2）</li>
+        <li>🧩 <strong>多维度验证</strong>：特征/码本/推理扩展均展现独特优化路径，为模型设计提供新洞见</li>
+    </ul>
+    <p>结论：通过参数、数据、架构的协同扩展，可显著提升推荐系统性能，且各扩展维度存在差异化优化策略。</p>
+</section>
+
+<!-- 术语识别 -->
+<section>
+    <h2>🔍 术语识别</h2>
+    <ul>
+        <li><span class="term">Parameters Scaling（参数扩展）</span>：通过增加模型参数量（如从0.015B到2.633B）提升模型容量的方法，实验证明更大模型能更快降低训练损失</li>
+        <li><span class="term">Loss Curves（损失曲线）</span>：模型训练过程中损失值随时间/迭代次数的变化图示（Figure 9），用于可视化扩展趋势</li>
+        <li><span class="term">Load Balancing among Experts（专家间负载均衡）</span>：多专家模型架构中，确保各专家模块利用率均衡的技术，避免部分专家过载导致的效率瓶颈</li>
+        <li><span class="term">Loss-free Load Balancing Strategy（无损失负载均衡策略）</span>：DeepSeek提出的创新方法（Liu等，2024），在不增加额外损失项的前提下优化专家利用率</li>
+        <li><span class="term">Feature Scaling（特征扩展）</span>：通过增强特征工程（如特征组合、高阶特征）提升模型表达能力的扩展维度</li>
+        <li><span class="term">Codebook Scaling（码本扩展）</span>：扩大嵌入层词汇表规模以增强模型语义捕捉能力的扩展方法</li>
+        <li><span class="term">Inference Scaling（推理扩展）</span>：调整推理阶段参数（如束搜索宽度）平衡预测质量与计算效率的技术</li>
+        <li><span class="term">Scaling Trend（扩展趋势）</span>：模型性能随规模（参数/数据/计算）增长的规律性变化模式</li>
+    </ul>
+</section>
+
+</body>
+</html>

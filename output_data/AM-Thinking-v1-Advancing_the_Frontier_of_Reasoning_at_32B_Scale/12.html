@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>学术文献解析</title>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<style>
+  body { font-family: 'Segoe UI', sans-serif; line-height: 1.6; }
+  .section { margin-bottom: 2rem; }
+  h2 { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 0.5rem; }
+  .original { background-color: #f8f9fa; border: 1px solid #dee2e6; padding: 15px; margin: 10px 0; border-radius: 5px; }
+  .translation { background-color: #e8f5e9; border: 1px solid #c8e6c9; padding: 15px; margin: 10px 0; border-radius: 5px; }
+  .term { color: #e74c3c; font-weight: bold; }
+  .reference-item { margin-bottom: 1.5rem; }
+  .formula-container { background-color: #fffde7; padding: 15px; margin: 15px 0; text-align: center; border-radius: 5px; }
+  .formula-number { display: block; font-style: italic; margin-top: 5px; }
+</style>
+</head>
+<body>
+
+<!-- 内容理解 -->
+<div class="section">
+  <h2>内容理解</h2>
+  <p>该文本是计算机科学领域（特别是大型语言模型方向）的参考文献列表，主要聚焦于：</p>
+  <ul>
+    <li>2023-2025年间发布的<strong class="term">大型语言模型（Large Language Models, LLMs）</strong>技术报告</li>
+    <li>提升模型<strong class="term">数学推理能力（Mathematical Reasoning）</strong>的创新方法</li>
+    <li>数学问题数据集（如<strong class="term">AIME</strong>、<strong class="term">AMC</strong>）及其评估框架</li>
+    <li>基于<strong class="term">强化学习（Reinforcement Learning）</strong>的训练技术</li>
+  </ul>
+  <p>文献来源涵盖顶级研究机构（DeepSeek-AI、OpenAI、Google DeepMind等）和学术平台（arXiv、GitHub、Hugging Face）。</p>
+</div>
+
+<!-- 内容翻译 -->
+<div class="section">
+  <h2>内容翻译</h2>
+  
+  <div class="reference-item">
+    <div class="original">
+      [1] DeepSeek-AI, Daya Guo, Dejian Yang, Haowei Zhang, Junxiao Song, Ruoyu Zhang, Runxin Xu, Qihao Zhu, Shirong Ma, Peiyi Wang, Xiao Bi, et al. Deepseek-r1: Incentivizing reasoning capability in llms via reinforcement learning, 2025.
+    </div>
+    <div class="translation">
+      [1] DeepSeek-AI, Daya Guo, Dejian Yang 等研究者。Deepseek-R1：通过<strong class="term">强化学习（Reinforcement Learning）</strong>提升LLMs的推理能力，2025年。
+    </div>
+  </div>
+  
+  <div class="reference-item">
+    <div class="original">
+      [2] OpenAI. Learning to reason with llms, 2024.
+    </div>
+    <div class="translation">
+      [2] OpenAI。让LLMs学会推理，2024年。
+    </div>
+  </div>
+  
+  <div class="reference-item">
+    <div class="original">
+      [8] MAA. American invitational mathematics examination - aime. https://maa.org/math-competitions/american-invitational-mathematics-examination-aime, feb 2024. Accessed in February 2024.
+    </div>
+    <div class="translation">
+      [8] 美国数学协会（MAA）。美国数学邀请赛（AIME）。https://maa.org/math-competitions/american-invitational-mathematics-examination-aime，2024年2月发布，2024年2月访问。
+    </div>
+  </div>
+  
+  <div class="reference-item">
+    <div class="original">
+      [9] Yixin Ye, Yang Xiao, Tiantian Mi, and Pengfei Liu. Aime-preview: A rigorous and immediate evaluation framework for advanced mathematical reasoning. https://github.com/GAIR-NLP/AIME-Preview, 2025. GitHub repository.
+    </div>
+    <div class="translation">
+      [9] Yixin Ye, Yang Xiao 等研究者。AIME-Preview：面向高级数学推理的严谨即时评估框架。https://github.com/GAIR-NLP/AIME-Preview，2025年（GitHub仓库）。
+    </div>
+  </div>
+  
+  <div class="reference-item">
+    <div class="original">
+      [13] Alon Albalak, Duy Phung, Nathan Lile, et al. Big-math: A large-scale, high-quality math dataset for reinforcement learning in language models, 2025.
+    </div>
+    <div class="translation">
+      [13] Alon Albalak, Duy Phung 等研究者。Big-Math：面向语言模型<strong class="term">强化学习</strong>的大规模高质量数学数据集，2025年。
+    </div>
+  </div>
+  
+  <div class="reference-item">
+    <div class="original">
+      [16] Longhui Yu, Weisen Jiang, Han Shi, et al. Metamath: Bootstrap your own mathematical questions for large language models. arXiv preprint arXiv:2309.12284, 2023.
+    </div>
+    <div class="translation">
+      [16] Longhui Yu, Weisen Jiang 等研究者。MetaMath：为大型语言模型自举生成数学问题。arXiv预印本 arXiv:2309.12284，2023年。
+    </div>
+  </div>
+  
+  <div class="reference-item">
+    <div class="original">
+      [18] Zhiwei He, Tian Liang, Jiahao Xu, et al. Deepmath-103k: A large-scale, challenging, decontaminated, and verifiable mathematical dataset for advancing reasoning. 2025.
+    </div>
+    <div class="translation">
+      [18] Zhiwei He, Tian Liang 等研究者。Deepmath-103k：用于推进推理能力的大规模、高挑战性、去污染且可验证的数学数据集，2025年。
+    </div>
+  </div>
+</div>
+
+<!-- 摘要总结 -->
+<div class="section">
+  <h2>摘要总结</h2>
+  <p>该参考文献集系统收录了2023-2025年间<strong class="term">大型语言模型（LLMs）</strong>在数学推理领域的前沿研究，核心主题包括：</p>
+  <ul>
+    <li><strong>模型创新</strong>：DeepSeek-R1、Gemini 2.5、Claude 3.7等模型通过<strong class="term">强化学习</strong>提升推理能力</li>
+    <li><strong>评估框架</strong>：AIME-Preview、LiveCodeBench等工具提供对数学能力的严谨评测</li>
+    <li><strong>数据集建设</strong>：Big-Math、MetaMath、Deepmath-103k等数据集解决训练数据质量瓶颈</li>
+    <li><strong>技术方法</strong>：强化学习、自举问题生成、测试时缩放等创新方法</li>
+    <li><strong>数据来源</strong>：AMC/AIME等数学竞赛提供高质量问题语料</li>
+  </ul>
+  <p>整体展现了LLMs数学推理方向「模型-数据-评测」三位一体的技术演进。</p>
+</div>
+
+<!-- 术语识别 -->
+<div class="section">
+  <h2>术语解释</h2>
+  <ul>
+    <li><strong class="term">强化学习（Reinforcement Learning, RL）</strong>：机器学习范式，智能体通过环境交互获得奖励信号优化行为策略。在LLMs中用于提升复杂推理能力（如文献[1][11]）</li>
+    
+    <li><strong class="term">数学推理（Mathematical Reasoning）</strong>：LLMs解决数学问题的能力，包括逻辑推导、符号运算和多步解题（核心研究目标，见文献[1][9][18]）</li>
+    
+    <li><strong class="term">AIME（American Invitational Mathematics Examination）</strong>：美国数学邀请赛，提供高难度数学问题，用作LLMs评测基准（文献[8][9]）</li>
+    
+    <li><strong class="term">去污染数据集（Decontaminated Dataset）</strong>：确保测试数据未在训练中出现，防止评测失真（如Deepmath-103k的设计原则[18]）</li>
+    
+    <li><strong class="term">自举问题生成（Bootstrap Question Generation）</strong>：利用模型自身能力迭代生成新训练数据（MetaMath方法的核心[16]）</li>
+    
+    <li><strong class="term">测试时缩放（Test-Time Scaling）</strong>：模型推理阶段的动态调整技术（s1方法的核心[14]）</li>
+  </ul>
+</div>
+
+</body>
+</html>

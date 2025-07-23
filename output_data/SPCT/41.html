@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>LLM评分系统论文解析</title>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    body { font-family: Arial, sans-serif; line-height: 1.6; }
+    .original { background-color: #f5f5f5; border: 1px solid #ddd; padding: 15px; margin: 10px 0; }
+    .translation { background-color: #e8f5e9; border: 1px solid #4caf50; padding: 15px; margin: 10px 0; }
+    .term { color: red; font-weight: bold; }
+    .formula-container { text-align: center; margin: 20px 0; }
+    .formula { background-color: #fffde7; padding: 10px; display: inline-block; }
+    h3 { color: #2c3e50; border-bottom: 2px solid #eee; padding-bottom: 5px; }
+  </style>
+</head>
+<body>
+
+<!-- 内容理解 -->
+<h2>1. 内容理解</h2>
+<p>本文描述了一个基于大语言模型（<span class="term">LLM-as-a-Judge</span>）的响应评分框架。核心是通过定义多维评价标准（指令遵循度、有用性、详细度、相关性），让<span class="term">LLM</span>自动评估候选回复的质量。流程包括：解析对话上下文、提取响应内容、根据通用标准推导具体权重、严格对比分析、最终输出结构化评分报告（含具体标准、分析过程和<span class="term">\boxed{}</span>格式的分数）。强调评分需严格遵循标准并逐步推理。</p>
+
+<!-- 内容翻译 -->
+<h2>2. 内容翻译</h2>
+
+<div class="original">
+  <h3>Preprint. Under review.</h3>
+  <p><strong>#### Responses to be Scored ####</strong><br>
+  [The Begin of Response]
+{the response}
+[The End of Response]
+</p>
+  <p><strong>#### Output Format Requirements ####</strong><br>
+  Output with three lines<br>
+  Specific Criteria: &lt;Other potential criteria specific to the query and the context, and the weights of each criteria&gt;.<br>
+  Analysis: &lt;Compare different responses based on given Criteria&gt;.<br>
+  Scores: &lt;the overall comprehensive score of the response, e.g., oxed{x}&gt;.</p>
+  <p><strong>Meta RM Prompt:</strong><br>
+  Please score the responses.</p>
+  <p><strong>#### Conversation Context ####</strong> 
+{conversation context & query}
+</p>
+  <p><strong>#### Responses to be Scored ####</strong><br>
+  [The Begin of Response i]
+{the i-th response}
+[The End of Response i]
+</p>
+  <p><strong>Response:</strong><br>
+  {principle & critique}</p>
+</div>
+
+<div class="translation">
+  <h3>预印本。评审中。</h3>
+  <p><strong>#### 待评分响应 ####</strong><br>
+  [响应开始]
+{响应内容}
+[响应结束]
+</p>
+  <p><strong>#### 输出格式要求 ####</strong><br>
+  输出包含三行：<br>
+  具体标准：&lt;根据查询和上下文衍生的其他潜在标准，以及各标准权重&gt;。<br>
+  分析：&lt;基于给定标准对比不同响应&gt;。<br>
+  分数：&lt;响应的综合得分，例如 oxed{x}&gt;。</p>
+  <p><strong>元奖励模型（Meta RM）提示：</strong><br>
+  请对这些响应进行评分。</p>
+  <p><strong>#### 对话上下文 ####</strong> 
+{对话上下文 & 查询}
+</p>
+  <p><strong>#### 待评分响应 ####</strong><br>
+  [响应 i 开始]
+{第 i 个响应}
+[响应 i 结束]
+</p>
+  <p><strong>响应：</strong><br>
+  {原则与评价}</p>
+</div>
+
+<div class="original">
+  <h3>LLM-as-a-Judge</h3>
+  <p>You are a skilled little expert at scoring responses... Your judgement needs to be as strict as possible.</p>
+  <p><strong>#### Evaluation Criteria ####</strong><br>
+  <strong>1. Instruction Adherence:</strong><br>
+  - Fully Adhered: The response fully complies with all instructions and requirements...<br>
+  <strong>2. Usefulness:</strong><br>
+  - Highly Useful: The response provides comprehensive and accurate information...<br>
+  <strong>3. Level of Detail:</strong><br>
+  - Very Detailed: The response includes ample details covering all aspects...<br>
+  <strong>4. Relevance:</strong><br>
+  - Highly Relevant: The response is highly relevant to the question...</p>
+</div>
+
+<div class="translation">
+  <h3>大语言模型作为评分者（LLM-as-a-Judge）</h3>
+  <p>你是一个熟练的评分小专家... 你的评判需要尽可能严格。</p>
+  <p><strong>#### 评估标准 ####</strong><br>
+  <strong>1. 指令遵循度（Instruction Adherence）：</strong><br>
+  - 完全遵循：响应完全符合问题的所有指示和要求...<br>
+  <strong>2. 有用性（Usefulness）：</strong><br>
+  - 高度有用：响应提供全面准确的信息...<br>
+  <strong>3. 详细程度（Level of Detail）：</strong><br>
+  - 非常详细：响应包含涵盖问题所有方面的充分细节...<br>
+  <strong>4. 相关性（Relevance）：</strong><br>
+  - 高度相关：响应与问题高度相关...</p>
+</div>
+
+<!-- 摘要总结 -->
+<h2>3. 摘要总结</h2>
+<p>本文提出了一套利用<span class="term">大语言模型（LLM-as-a-Judge）</span>自动评估文本响应质量的框架。核心内容包括：</p>
+<ol>
+  <li><strong>评分流程</strong>：输入对话上下文和候选响应，由<span class="term">LLM</span>基于四维标准（指令遵循度、有用性、详细度、相关性）进行严格对比分析。</li>
+  <li><strong>结构化输出</strong>：要求生成三部分内容（具体标准及权重、对比分析、<span class="term">\boxed{}</span>格式的综合得分）。</li>
+  <li><strong>评估标准细则</strong>：明确定义了四个核心维度的分级描述（如“完全遵循”到“未遵循”）及示例。</li>
+  <li><strong>执行原则</strong>：强调需逐步推理、严格应用标准，确保评分客观性。</li>
+</ol>
+
+<!-- 术语识别 -->
+<h2>4. 术语识别</h2>
+<dl>
+  <dt><span class="term">LLM-as-a-Judge</span> (大语言模型作为评分者)</dt>
+  <dd>指使用大语言模型（LLM）作为自动评分者的范式，通过预定义的标准评估文本响应质量。</dd>
+  
+  <dt><span class="term">Instruction Adherence</span> (指令遵循度)</dt>
+  <dd>评估响应是否完全遵循用户查询中所有明确要求和指示的标准。分为“完全遵循”、“部分遵循”、“基本遵循”、“未遵循”四级。</dd>
+  
+  <dt><span class="term">Meta RM</span> (元奖励模型)</dt>
+  <dd>指用于指导评分过程的元模型或提示框架（本文中特指要求LLM评分的指令模板）。</dd>
+  
+  <dt><span class="term">\boxed{x}</span> (框定分数)</dt>
+  <dd>最终评分的标准化输出格式，其中x为综合得分值。数学公式表示为：
+    <div class="formula-container">
+      <div class="formula">\( \text{Scores}: \boxed{x} \)</div>
+      <div>(公式1：评分输出格式)</div>
+    </div>
+  </dd>
+  
+  <dt><span class="term">Specific Criteria & Weights</span> (具体标准与权重)</dt>
+  <dd>根据当前对话上下文和查询动态生成的评估维度及其重要性分配，是通用标准（Evaluation Criteria）在具体场景下的细化。</dd>
+</dl>
+
+</body>
+</html>

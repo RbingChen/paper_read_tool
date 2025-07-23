@@ -1,0 +1,498 @@
+<!DOCTYPE html>...<html>...<body>
+   - 内联CSS样式
+   - 四个任务的内容
+
+ 由于术语高亮需要在翻译和原文中同时进行，我们在生成翻译和原文的HTML时，对术语进行替换，加上<strong class="term">术语</strong>标签。
+
+ 术语列表（在术语识别部分）：
+   - Tribonacci Sequence (Tribonacci序列)
+   - Edge Case (边界情况)
+   - Time Complexity (时间复杂度)
+   - Space Complexity (空间复杂度)
+   - Meta RM Score (元评分模型分数)
+   - Voted Result (投票结果)
+   - Ground Truth (基准真相)
+
+ 在翻译和原文中，遇到这些术语（中英文）都要高亮。
+
+ 但是注意：在原文中，我们高亮英文术语；在翻译中，我们高亮中文术语（同时保留英文原文在括号中？）但是任务要求术语高亮要包含英文原文，所以我们可以这样：
+   <strong class="term">Tribonacci序列 (Tribonacci Sequence)</strong>
+
+ 但是，在原文中，我们只显示英文，所以原文中高亮：<strong class="term">Tribonacci Sequence</strong>
+ 在翻译中，我们可以显示中文并附上英文：<strong class="term">Tribonacci序列 (Tribonacci Sequence)</strong>
+
+ 然而，任务要求是“所有关键技术术语使用红色粗体显示，并包含英文原文”，所以翻译中我们也要显示英文原文。因此，在翻译部分，我们这样处理术语：中文（英文），并用红色粗体。
+
+ 但是，原文中已经用英文，所以原文中只需将英文术语加粗。
+
+ 因此，我们分别处理：
+   - 原文：将英文术语用<strong class="term">包裹。
+   - 翻译：将对应的中文术语和括号内的英文术语一起用<strong class="term">包裹。
+
+ 由于术语识别部分会列出所有术语，我们在那里给出详细解释。
+
+ 由于输入文本较长，我们逐段处理，并在处理每段时进行术语标记。
+
+ 但是，由于术语可能以不同形式出现（如大小写，复数等），我们尽量匹配，但这里术语较少，我们可以用列表匹配。
+
+ 术语列表（英文）：
+     ["Tribonacci Sequence", "Edge Case", "Time Complexity", "Space Complexity", "Meta RM Score", "Voted Result", "Ground Truth"]
+
+ 在原文中，我们查找这些字符串（不区分大小写？但原文都是首字母大写或全大写，我们按照原文的大小写匹配），然后替换为高亮版本。
+
+ 在翻译中，我们同样需要标记，但翻译后的文本中，我们使用中文术语，同时后面括号注明英文。例如，在翻译文本中，我们可能将“边界情况”高亮，并加上英文：<strong class="term">边界情况 (Edge Case)</strong>
+
+ 但是，翻译文本中，我们如何知道哪些是术语？我们在翻译过程中，遇到英文术语时，在翻译成中文后，用<strong class="term">包裹，并附上英文。
+
+ 因此，翻译过程需要两步：
+   1. 翻译文本。
+   2. 在翻译文本中，将对应的术语位置用<strong class="term">中文 (英文)</strong>替换。
+
+ 但是，我们也可以先翻译，然后根据术语列表在翻译文本中查找中文术语（但这样可能不准确，因为同一个中文术语可能有多种表达）。所以，我们在翻译时，对每个术语进行特殊处理：在翻译时，如果遇到术语，就翻译成<strong class="term">中文 (英文)</strong>的形式。
+
+ 然而，为了简化，我们可以在翻译完成后，对每个术语进行替换（在翻译文本中替换中文术语为高亮版本，并加上英文）。但这样可能会替换掉非术语部分，所以最好在翻译时就知道哪些词是术语。
+
+ 因此，我们这样处理：
+   - 在翻译之前，先定义术语列表（中英文对照）。
+   - 在翻译每个段落时，检查段落中是否包含术语（英文），如果包含，则在翻译时，将对应的中文术语用高亮形式（包含英文）表示。
+
+ 具体步骤（在翻译每个段落时）：
+   - 先翻译整个段落。
+   - 然后，遍历术语列表，对于每个英文术语，如果它在原文段落中出现，则在翻译段落中找到对应的中文术语（我们知道我们翻译成什么），然后用<strong class="term">中文术语 (英文术语)</strong>替换掉中文术语。
+   - 但是，这样需要知道每个术语在翻译段落中的位置，而且我们翻译时可能用不同的词。因此，我们可以在翻译时，对于每个术语，我们用一个特殊的标记，然后再替换。
+
+ 由于时间关系，我们简化处理：在翻译时，我们手动将术语翻译成中文，并在后面加上括号注明英文，然后用高亮标签包裹。也就是说，在翻译函数中，我们对于包含术语的句子，进行特殊处理。
+
+ 但鉴于文本不长，我们可以手动处理术语高亮。
+
+ 我们决定：在翻译部分，我们逐段翻译，并在翻译过程中，对已知术语进行高亮标记（在翻译文本中）。同时，在原文部分，我们也对术语进行高亮标记（只标记英文）。
+
+ 术语中英文对照表（用于翻译部分）：
+     Tribonacci Sequence -> Tribonacci序列
+     Edge Case -> 边界情况
+     Time Complexity -> 时间复杂度
+     Space Complexity -> 空间复杂度
+     Meta RM Score -> 元评分模型分数
+     Voted Result -> 投票结果
+     Ground Truth -> 基准真相
+
+ 在原文中，我们直接高亮英文术语（如：<strong class="term">Tribonacci Sequence</strong>）。
+ 在翻译中，我们高亮：<strong class="term">Tribonacci序列 (Tribonacci Sequence)</strong>
+
+ 但是，在翻译过程中，我们可能会遇到术语的变形（如复数），我们尽量匹配原词。
+
+ 由于输入文本中术语出现的情况：
+    原文中：
+        Tribonacci Sequence -> 出现多次（在标题和内容中）
+        Edge Case -> 出现多次
+        Time Complexity -> 出现两次
+        Space Complexity -> 出现两次
+        Meta RM Score -> 出现一次
+        Voted Result -> 出现一次
+        Ground Truth -> 出现一次
+
+ 我们可以在生成原文HTML时，对每个段落，用字符串替换的方式将术语加上标签。
+
+ 同样，在生成翻译HTML时，我们也用字符串替换，将对应的中文术语替换成高亮形式（并附带英文）。
+
+ 注意：替换时要注意大小写，但原文中都是首字母大写，所以我们按照原样替换。
+
+ 开始构建HTML字符串：
+
+ 由于文本中有一个数学公式：\boxed{10,7}，我们将用MathJax渲染。注意，MathJax要求公式放在\( ... \)或\[ ... \]中，但这里我们使用行内公式：\(\boxed{10,7}\)
+
+ 但是，在输出中，我们还需要对公式进行编号？文本中没有编号要求，但任务要求公式居中并编号。由于只有一个公式，我们可以这样处理：
+     <div class="formula">
+        \[\boxed{10,7}\]
+        <div class="formula-number">(1)</div>
+     </div>
+
+ 但是，任务要求是“公式居中展示并添加编号说明”，所以我们添加一个编号。
+
+ 由于输入文本中还有“Output:”后面的公式，我们将其视为公式。
+
+ 另外，文本中还有“Table 17”，我们将其视为普通文本，但用黄色背景突出（因为任务要求图示用黄色背景）。但这里只是提到表格，并不是表格本身。所以，我们不对“Table 17”应用黄色背景，因为不是图示。任务要求中的“图示”可能是指图片或表格，但这里没有给出表格内容，所以我们只将这句话作为普通段落。
+
+ 我们开始构建HTML，按照分段进行翻译和对照。
+
+ 由于文本中有些行是连续的，我们按照空行来分段落？但输入文本中并没有空行，而是用换行符。我们按照输入文本的换行符来分？但有些是一句话分多行。我们按照实际逻辑分。
+
+ 我们按照输入文本中的行，但将连续的行合并（除了标题行）。具体分段如下：
+
+  段落1: "Preprint. Under review. DeepSeek-GRM-27B Result 3"
+  段落2: "### Specific Criteria:"
+  段落3: "1. **Correctness of Tribonacci Sequence Calculation (Weight: 40%)**: ..." （包括后面的说明，直到下一个标准之前，但下一个标准在下一行）
+  实际上，标准是四个项目，每个项目一行（虽然换行，但属于同一段落？）但每个标准是独立的，所以每个标准作为一个段落。
+
+  因此，我们分为：
+     段落1: 第一行
+     段落2: "### Specific Criteria:"
+     段落3: 标准1（包括后面的说明，虽然换行但内容连续，我们合并为一段）
+     段落4: 标准2
+     段落5: 标准3
+     段落6: 标准4
+     段落7: "### Analysis:"
+     段落8: "Response 1:" 以及后面的四个标准分析（每个标准分析独立成段？但原文中每个标准分析是换行的，我们按原文的分行，但每个分析作为单独段落？）
+        - 原文中，Response 1的分析是四个点，每个点一行，所以我们每个点作为一段。
+     段落9: "Response 2:" 同样四个点作为四段。
+     段落10: "### Scores:"
+     段落11: "Response 1:" 的分数（多行，但属于一个段落？因为分数是连续的多行）但原文中分数是换行显示的，我们将其作为一个段落。
+     段落12: "Response 2:" 的分数（同样多行，作为一个段落）
+     段落13: "### Output:"
+     段落14: 公式（\boxed{10,7}）单独作为一段
+     段落15: "Meta RM Score 3 1.6739"
+     段落16: "Voted Result Response 1: 20; Response 2: 27."
+     段落17: "Ground Truth Response 2 is better than Response 1."
+     段落18: "Table 17: ..."
+
+ 这样分18段。
+
+ 但是，在Analysis部分，每个Response的分析有四个小点，每个小点以加粗标题开始，然后换行接着内容。我们将其作为四个独立的段落。
+
+ 因此，实际分段：
+
+  1. Preprint. Under review. DeepSeek-GRM-27B Result 3
+  2. ### Specific Criteria:
+  3. 1. **Correctness of Tribonacci Sequence Calculation (Weight: 40%)**: ... （这里包括换行后的内容，直到下一个标准之前，但下一个标准在下一行，所以标准2是下一段）
+  4. 2. **Code Structure and Readability (Weight: 30%)**: ... （同样，包括换行后的内容）
+  5. 3. **Edge Case Handling (Weight: 20%)**: ... 
+  6. 4. **Efficiency (Weight: 10%)**: ... 
+  7. ### Analysis:
+  8. - **Response 1**: （注意，这里原文是Response 1，然后下面四个小点，每个小点一行）
+        - **Correctness ...**: ... （这是一段）
+        - **Code Structure ...**: ... （这是一段）
+        ... 共四段
+  9. - **Response 2**: （同样四段）
+  10. ### Scores:
+  11. - **Response 1**: （然后换行，后面跟着分数，包括多行，我们作为一段）
+        Instruction Adherence: 10 
+- Usefulness: 10 
+- ... 
+        注意：这里有多行，但都是Response1的分数，所以我们作为一段。
+  12. - **Response 2**: （同样作为一段）
+  13. ### Output:
+  14. \boxed{10, 7}   （作为公式段落）
+  15. Meta RM Score 3 1.6739
+  16. Voted Result Response 1: 20; Response 2: 27.
+  17. Ground Truth Response 2 is better than Response 1.
+  18. Table 17: A case of DeepSeek-GRM-27B in the inference-time scaling setting. The input order of responses is reversed for DeepSeek-GRM-27B when generating result 2 and result 3.
+
+ 注意：在Analysis中，每个Response下的四个小点，每个小点我们作为独立段落。
+
+ 因此，总段落数：1（第一行）+1（Specific Criteria标题）+4（标准）+1（Analysis标题）+4（Response1的四个点）+4（Response2的四个点）+1（Scores标题）+2（两个Response的分数，每段一个）+1（Output标题）+1（公式）+3（后面的三行）+1（Table 17）= 24段。
+
+ 但是，为了简化，我们也可以将Response1和Response2的分析分别作为一个大段落，但这样不利于对照。我们按照原文的换行来分。
+
+ 我们决定：在原文中，每遇到一个换行就作为一个段落？但这样可能太多。我们按照逻辑分段，即每个标题、每个列表项、每个分析点都作为一段。
+
+ 具体分段如下（按输入文本的行，但合并连续的非标题行？）：
+
+  输入文本：
+     第一行：Preprint. Under review. DeepSeek-GRM-27B Result 3
+     第二行：### Specific Criteria:
+     第三行：1. **Correctness of Tribonacci Sequence Calculation (Weight: 40%)**:
+     第四行：- The response must ... 
+     第五行：2. **Code Structure and Readability (Weight: 30%)**:
+     第六行：- The code should ...
+     第七行：3. **Edge Case Handling (Weight: 20%)**:
+     第八行：- The response should ...
+     第九行：4. **Efficiency (Weight: 10%)**:
+     第十行：- The code should ...
+     第十一行：### Analysis:
+     第十二行：- **Response 1**:
+     第十三行：- **Correctness of ...**: ... （这里换行，但内容紧接着）
+     第十四行：- **Code Structure ...**: ... 
+     第十五行：- **Edge Case ...**: ... 
+     第十六行：- **Efficiency**: ... 
+     第十七行：- **Response 2**:
+     第十八行：- **Correctness ...**: ... 
+     第十九行：- **Code Structure ...**: ... 
+     第二十行：- **Edge Case ...**: ... 
+     第二十一行：- **Efficiency**: ... 
+     第二十二行：### Scores:
+     第二十三行：- **Response 1**: 
+     第二十四行：- Instruction Adherence: 10 
+- Usefulness: 10 
+- Level of Detail: 9 
+- Relevance: 10 
+- **Overall Score**: 10 
+
+     注意：这里第二十四行包含多个换行符，但我们将其视为一个段落（因为都是Response1的分数）。
+     第二十五行：- **Response 2**:
+     第二十六行：- Instruction Adherence: 8 
+- Usefulness: 6 
+- Level of Detail: 8 
+- Relevance: 8 
+- **Overall Score**: 7
+     第二十七行：### Output:
+     第二十八行：\boxed{10, 7}
+     第二十九行：Meta RM Score 3 1.6739
+     第三十行：Voted Result Response 1: 20; Response 2: 27.
+     第三十一行：Ground Truth Response 2 is better than Response 1.
+     第三十二行：Table 17: ... 
+
+ 因此，我们按32行分32段？但这样太细，而且有些行是连续的（如标准1的第三行和第四行应该合并为一段）。所以，我们按逻辑合并：
+
+   - 每个标准：包括编号行和后面的说明行（两行合并为一段）。
+   - 每个分析点：每个点一行（因为每行已经是一个完整的点）。
+   - 分数部分：每个Response的分数部分（包括多行）作为一段。
+
+ 合并后：
+
+  段1: 第一行
+  段2: "### Specific Criteria:"
+  段3: 标准1（两行合并）
+  段4: 标准2（两行合并）
+  段5: 标准3（两行合并）
+  段6: 标准4（两行合并）
+  段7: "### Analysis:"
+  段8: Response1的第一个分析点（一行）
+  段9: Response1的第二个分析点（一行）
+  段10: Response1的第三个分析点（一行）
+  段11: Response1的第四个分析点（一行）
+  段12: Response2的第一个分析点（一行）
+  段13: Response2的第二个分析点（一行）
+  段14: Response2的第三个分析点（一行）
+  段15: Response2的第四个分析点（一行）
+  段16: "### Scores:"
+  段17: Response1的分数（多行合并为一段）
+  段18: Response2的分数（多行合并为一段）
+  段19: "### Output:"
+  段20: 公式（单独一行）
+  段21: "Meta RM Score 3 1.6739"
+  段22: "Voted Result Response 1: 20; Response 2: 27."
+  段23: "Ground Truth Response 2 is better than Response 1."
+  段24: "Table 17: ..."
+
+ 共24段。
+
+ 现在，我们开始为每段生成原文和翻译。
+
+ 注意：在翻译时，对于标准和分析点中的术语，我们要进行高亮处理（在原文中高亮英文，在翻译中高亮中文并附英文）。
+
+ 由于时间限制，我们手动翻译每段，并在翻译时标记术语。
+
+ 开始逐段处理：
+
+  段1（原文）: "Preprint. Under review. DeepSeek-GRM-27B Result 3"
+      翻译: "预印本。正在审阅中。DeepSeek-GRM-27B 结果3"
+
+  段2（原文）: "### Specific Criteria:"
+      翻译: "### 具体标准:"
+
+  段3（原文）: "1. **Correctness of Tribonacci Sequence Calculation (Weight: 40%)**:
+- The response must correctly implement the Tribonacci sequence as defined, including handling both even and odd cases accurately."
+      翻译: "1. **Tribonacci序列计算正确性（权重：40%）**：
+- 响应必须正确定义并实现Tribonacci序列，包括准确处理偶数和奇数情况。"
+
+      术语：Tribonacci Sequence -> 在原文中高亮“Tribonacci Sequence”，在翻译中高亮“Tribonacci序列”并附英文。
+
+      所以，在原文段3中，将“Tribonacci Sequence”替换为<strong class="term">Tribonacci Sequence</strong>
+      在翻译段3中，将“Tribonacci序列”替换为<strong class="term">Tribonacci序列 (Tribonacci Sequence)</strong>
+
+  段4（原文）: "2. **Code Structure and Readability (Weight: 30%)**:
+- The code should be well-structured, readable, and follow best practices in JavaScript."
+      翻译: "2. **代码结构和可读性（权重：30%）**：
+- 代码应结构良好、可读，并遵循JavaScript中的最佳实践。"
+
+      这段没有需要高亮的术语。
+
+  段5（原文）: "3. **Edge Case Handling (Weight: 20%)**:
+- The response should correctly handle edge cases such as ‘n = 0‘ and ‘n = 1‘."
+      翻译: "3. **边界情况处理（权重：20%）**：
+- 响应应正确处理边界情况，例如‘n = 0‘和‘n = 1‘。"
+
+      术语：Edge Case -> 在原文中高亮“Edge Case”，在翻译中高亮“边界情况”并附英文。
+
+  段6（原文）: "4. **Efficiency (Weight: 10%)**:
+- The code should be efficient in terms of time and space complexity, avoiding unnecessary computations."
+      翻译: "4. **效率（权重：10%）**：
+- 代码应在时间复杂度和空间复杂度上高效，避免不必要的计算。"
+
+      术语：Time Complexity, Space Complexity -> 在原文中高亮这两个术语，在翻译中高亮“时间复杂度”和“空间复杂度”并附英文。
+
+  段7（原文）: "### Analysis:"
+      翻译: "### 分析:"
+
+  段8（原文）: "- **Correctness of Tribonacci Sequence Calculation**: The response correctly implements the Tribonacci sequence for both even and odd cases. It accurately follows the given recurrence relations."
+      翻译: "- **Tribonacci序列计算正确性**：该响应正确实现了偶数和奇数情况下的Tribonacci序列。它准确地遵循了给定的递推关系。"
+
+      术语：Tribonacci Sequence -> 同上处理。
+
+  段9（原文）: "- **Code Structure and Readability**: The code is structured well and is readable. It uses a loop to generate the sequence and handles the initial conditions correctly."
+      翻译: "- **代码结构和可读性**：代码结构良好且可读。它使用循环生成序列，并正确处理了初始条件。"
+
+  段10（原文）: "- **Edge Case Handling**: The response correctly handles the edge cases ‘n = 0‘ and ‘n = 1‘."
+      翻译: "- **边界情况处理**：该响应正确处理了边界情况‘n = 0‘和‘n = 1‘。"
+
+      术语：Edge Case -> 同上。
+
+  段11（原文）: "- **Efficiency**: The code is efficient, with a time complexity of O(n) and space complexity of O(n)."
+      翻译: "- **效率**：代码是高效的，具有O(n)的时间复杂度和O(n)的空间复杂度。"
+
+      术语：Time Complexity, Space Complexity -> 同上。
+
+  段12（原文）: "- **Correctness of Tribonacci Sequence Calculation**: The response has a logical error in the calculation for odd ‘n‘. It incorrectly adds ‘1 + i + (i + 1) / 2‘ instead of ‘p[i - 2] + p[i - 1] + 1 + (i + 1) / 2‘."
+      翻译: "- **Tribonacci序列计算正确性**：该响应在计算奇数‘n‘时存在逻辑错误。它错误地添加了‘1 + i + (i + 1) / 2‘，而不是‘p[i - 2] + p[i - 1] + 1 + (i + 1) / 2‘。"
+
+      术语：Tribonacci Sequence -> 同上。
+
+  段13（原文）: "- **Code Structure and Readability**: The code structure is similar to Response 1, but the logical error makes it less readable."
+      翻译: "- **代码结构和可读性**：代码结构与响应1相似，但逻辑错误使其可读性降低。"
+
+  段14（原文）: "- **Edge Case Handling**: The response correctly handles the edge cases ‘n = 0‘ and ‘n = 1‘."
+      翻译: "- **边界情况处理**：该响应正确处理了边界情况‘n = 0‘和‘n = 1‘。"
+
+      术语：Edge Case -> 同上。
+
+  段15（原文）: "- **Efficiency**: The code is efficient in terms of time and space complexity, but the logical error impacts its correctness."
+      翻译: "- **效率**：代码在时间复杂度和空间复杂度上是高效的，但逻辑错误影响了其正确性。"
+
+      术语：Time Complexity, Space Complexity -> 同上。
+
+  段16（原文）: "### Scores:"
+      翻译: "### 分数:"
+
+  段17（原文）: "- **Response 1**:
+- Instruction Adherence: 10 
+- Usefulness: 10 
+- Level of Detail: 9 
+- Relevance: 10 
+- **Overall Score**: 10 
+"
+      翻译: "- **响应1**：
+- 指令遵循：10 
+- 有用性：10 
+- 详细程度：9 
+- 相关性：10 
+- **总分**：10"
+
+  段18（原文）: "- **Response 2**:
+- Instruction Adherence: 8 
+- Usefulness: 6 
+- Level of Detail: 8 
+- Relevance: 8 
+- **Overall Score**: 7"
+      翻译: "- **响应2**：
+- 指令遵循：8 
+- 有用性：6 
+- 详细程度：8 
+- 相关性：8 
+- **总分**：7"
+
+  段19（原文）: "### Output:"
+      翻译: "### 输出:"
+
+  段20（原文）: "\boxed{10, 7}"
+      翻译: 我们保留原样，因为这是公式。在翻译部分，我们可能不需要翻译，但为了对照，我们可以写“输出公式：”但原文没有，所以我们直接放公式。
+
+      翻译: 我们可以写：公式 \(\boxed{10,7}\)，但为了对照，我们只放公式，或者写“输出：”然后公式。但原文就是公式，所以翻译部分我们只放公式的MathJax表示，并加编号。
+
+  段21（原文）: "Meta RM Score 3 1.6739"
+      翻译: "元评分模型分数 3 1.6739"
+      术语：Meta RM Score -> 高亮
+
+  段22（原文）: "Voted Result Response 1: 20; Response 2: 27."
+      翻译: "投票结果 响应1：20；响应2：27。"
+      术语：Voted Result -> 高亮
+
+  段23（原文）: "Ground Truth Response 2 is better than Response 1."
+      翻译: "基准真相：响应2优于响应1。"
+      术语：Ground Truth -> 高亮
+
+  段24（原文）: "Table 17: A case of DeepSeek-GRM-27B in the inference-time scaling setting. The input order of responses is reversed for DeepSeek-GRM-27B when generating result 2 and result 3."
+      翻译: "表17：DeepSeek-GRM-27B在推理时间缩放设置中的一个案例。在生成结果2和结果3时，DeepSeek-GRM-27B的响应输入顺序被反转。"
+
+ 注意：在段20，原文是公式，翻译部分我们也将显示公式（用MathJax），并添加编号。
+
+ 现在，我们为每段生成原文和翻译的HTML。
+
+ 我们将为每段原文和翻译创建一个div，原文div使用class="original"，翻译div使用class="translation"。
+
+ 例如：
+     <div class="segment">
+        <div class="original">原文内容（已高亮术语）</div>
+        <div class="translation">翻译内容（已高亮术语）</div>
+     </div>
+
+ 对于公式段（段20），我们单独处理，原文部分显示公式代码，翻译部分显示渲染的公式（并编号）。
+
+ 但是，原文中的公式代码是：\boxed{10, 7}，我们也要显示，但翻译部分我们用MathJax渲染。
+
+ 因此，在原文div中，我们显示：\boxed{10, 7}
+ 在翻译div中，我们显示：
+     <div class="formula">
+        \[\boxed{10,7}\]
+        <div class="formula-number">(1)</div>
+     </div>
+
+ 然后，在MathJax配置中，我们需要在head中加入MathJax的脚本。
+
+ 由于我们使用MathJax，我们在HTML head中加入：
+     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+ 但是，由于输出要求是纯HTML字符串，且要确保前端可以渲染，我们加入这些脚本。
+
+ 最后，我们构建完整的HTML字符串。
+
+ 由于JSON中输出大段HTML字符串，注意转义：我们不需要转义，因为Python的json.dumps会自动转义，但我们在构建字符串时，注意引号。
+
+ 我们使用三引号来构建HTML字符串，然后放入JSON。
+
+ 开始编写HTML字符串：
+
+ 注意：我们使用内联CSS，放在head的style标签中。
+
+ 样式要求：
+   - 原文：浅灰色背景+灰色边框 -> background: #f0f0f0; border: 1px solid #ccc;
+   - 翻译：浅绿色背景+绿色边框 -> background: #e0f8e0; border: 1px solid #0a0;
+   - 术语：红色粗体 -> color: red; font-weight: bold;
+   - 公式：居中，并添加编号（在公式下方居中显示编号）
+   - 段落间距：适当margin
+
+ 我们为每个段落的容器（class="segment"）设置margin-bottom。
+
+ 由于术语高亮，我们在整个文档中，对class="term"的strong标签应用样式。
+
+ 具体CSS：
+
+   <style>
+      body { font-family: Arial, sans-serif; line-height: 1.6; }
+      .segment { margin-bottom: 15px; }
+      .original { background-color: #f0f0f0; border: 1px solid #ccc; padding: 10px; margin-bottom: 5px; }
+      .translation { background-color: #e0f8e0; border: 1px solid #0a0; padding: 10px; }
+      .term { color: red; font-weight: bold; }
+      .formula-container { text-align: center; margin: 20px 0; }
+      .formula-number { text-align: center; font-style: italic; margin-top: 5px; }
+      /* 对于公式，我们使用MathJax，它会自动渲染，我们只需要居中容器 */
+   </style>
+
+ 公式部分，我们这样写：
+     <div class="formula-container">
+        \[ \boxed{10,7} \]
+        <div class="formula-number">(1)</div>
+     </div>
+
+ 然后，在段20的翻译div中，我们放入这个容器。
+
+ 但是，原文div中，我们只显示文本：\boxed{10, 7}
+
+ 现在，我们构建完整的HTML字符串，然后放入JSON的"output"键中。
+
+ 由于构建的HTML字符串很长，我们这里用Python的多行字符串，并逐段添加。
+
+ 注意：在HTML中，我们还需要处理原文中的加粗（**...**）等markdown样式。原文中有些地方用**加粗**，我们将其转换为<strong>标签（但注意，这些加粗不是术语，所以不用红色）。因此，我们需要将**...**替换为<strong>...</strong>。
+
+ 我们在生成每段HTML时，先进行以下替换：
+   - 将 **文本** 替换为 <strong>文本</strong> （注意：不是术语高亮，所以用默认样式）
+   - 对于术语，我们已经用<strong class="term">，所以不会冲突。
+
+ 我们逐段处理，对每段原文和翻译进行标记替换（加粗和术语高亮）。
+
+ 由于时间关系，我们这里简化：在构建每段时，我们手动将加粗文本替换（在原文和翻译中）。
+
+ 例如，原文段3：包含 **Correctness of Tribonacci Sequence Calculation (Weight: 40%)** 
+     我们替换为：<strong>Correctness of Tribonacci Sequence Calculation (Weight: 40%)</strong>
+     然后，再对其中的术语进行高亮替换（注意：Tribonacci Sequence已经是术语，所以会被高亮，但高亮标签在加粗标签内部还是外部？）
+     我们先将加粗替换，然后再替换术语，这样术语高亮会覆盖

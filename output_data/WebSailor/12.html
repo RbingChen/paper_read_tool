@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>论文解析报告</title>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    body { font-family: 'Segoe UI', Arial, sans-serif; line-height: 1.6; }
+    .section { margin-bottom: 30px; }
+    h2 { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 5px; }
+    .original { background-color: #f0f0f0; border: 1px solid #ccc; padding: 15px; margin: 10px 0; border-radius: 5px; }
+    .translation { background-color: #e0f2e0; border: 1px solid #4CAF50; padding: 15px; margin: 10px 0 20px 0; border-radius: 5px; }
+    .term { color: red; font-weight: bold; }
+    .formula-container { text-align: center; margin: 20px 0; background-color: #fffde7; padding: 15px; border-radius: 5px; }
+    .formula-label { font-style: italic; margin-top: 5px; }
+    ul { list-style-type: none; padding-left: 0; }
+    li { margin-bottom: 15px; padding: 10px; background-color: #f8f9fa; border-left: 3px solid #3498db; }
+  </style>
+</head>
+<body>
+
+<!-- 内容理解 -->
+<div class="section">
+  <h2>内容理解</h2>
+  <p>本文探讨了现代AI基准测试的演进和自主网络代理的发展。核心观点包括：1）基准测试复杂性显著提升（如GAIA、Xbench-DeepSearch到BrowseComp），尤其Level 3任务具有高度耦合实体和故意信息混淆；2）专有系统（如Deep-Research）与开源代理（如WebDancer）存在性能鸿沟，主要源于训练方法差异；3）提出WebSailor解决方案，通过改进训练流程实现超人性能。文本揭示了当前研究的核心矛盾：开源代理在非线性推理任务中的泛化不足，以及强化学习在训练稳定性方面的挑战。</p>
+</div>
+
+<!-- 内容翻译 -->
+<div class="section">
+  <h2>内容翻译</h2>
+  
+  <div class="original">
+    solutions can often be found through a structured sequence of queries or even from a model’s parametric knowledge alone. More recent benchmarks have raised the complexity. <span class="term">GAIA (Mialon et al., 2023)</span>, while a generalist multimodal benchmark, introduces information-seeking challenges that approach complex multi-hop QA. Similarly, <span class="term">Xbench-DeepSearch (Xbench-Team, 2025)</span> specifically targets agents’ deep search and tool-use capabilities through professionally annotated, dynamic tasks. At the apex of this evolution lie benchmarks like <span class="term">BrowseComp-en/zh (Wei et al., 2025; Zhou et al., 2025)</span>, which embody the <span class="term">Level 3 complexity</span> central to our work. These tasks are characterized by intricately coupled entities and deliberate information obfuscation, creating high initial uncertainty that is exceptionally difficult to reduce. Success on BrowseComp requires the kind of sophisticated, non-linear exploration and synthesis that defines superhuman reasoning, making it the ideal proving ground for advanced web agents.
+  </div>
+  <div class="translation">
+    解决方案通常可以通过结构化查询序列或仅凭模型的参数知识获得。近期基准测试的复杂性显著提升。<span class="term">GAIA（Mialon等，2023）</span>作为通用多模态基准，引入了接近复杂多跳问答的信息搜索挑战。类似地，<span class="term">Xbench-DeepSearch（Xbench团队，2025）</span>通过专业标注的动态任务，专门评估代理的深度搜索和工具使用能力。此演进的顶点是<span class="term">BrowseComp-en/zh（Wei等，2025；Zhou等，2025）</span>等基准，它们体现了本研究核心的<span class="term">Level 3复杂性</span>。这些任务以错综耦合的实体和故意信息混淆为特征，造成极难降低的高初始不确定性。BrowseComp的成功需要定义超人推理的复杂非线性探索与综合能力，使其成为高级网络代理的理想试验场。
+  </div>
+  
+  <div class="original">
+    <span class="term">Web agents</span> The development of autonomous web agents has witnessed significant progress from both proprietary and open-source communities (Zhang et al., 2025a). Proprietary systems like <span class="term">Deep-Research (OpenAI, 2025a)</span>, Doubao with Deep Think (Doubao, 2025), and Grok-3 (x.ai, 2025) have demonstrated superhuman performance in complex web navigation and information synthesis tasks, but their internal architectures and training methodologies remain opaque, impeding collaborative research. In contrast, open-source projects such as <span class="term">WebDancer (Wu et al., 2025a)</span>, WebThinker (Li et al., 2025c), and R1-Searcher (Song et al., 2025), adopting the <span class="term">ReAct framework (Yao et al., 2023)</span>, have made strides in simpler tasks yet face a substantial performance gap in benchmarks requiring sophisticated non-linear reasoning. In terms of training methodologies, the foundational principles of training dynamics outlined by (Xu et al., 2019; 2024; 2025) offer crucial insights, informing hyperparameter tuning and algorithmic design by highlighting the decisive impact of the training approach on models’ generalization ability. However, while many studies use <span class="term">Supervised Fine-Tuning (SFT)</span> following the ReAct paradigm, pure SFT agents struggle with generalization in adaptive contexts (Zheng et al., 2025; Zhang et al., 2025b). <span class="term">Reinforcement learning</span>-based methods Song et al. (2025); Zheng et al. (2025) hold promise for advanced search strategies via learned exploration policies but encounter challenges in training stability and sample efficiency.
+  </div>
+  <div class="translation">
+    <span class="term">网络代理（Web agents）</span>：自主网络代理的发展在专有和开源社区均取得显著进展（Zhang等，2025a）。<span class="term">Deep-Research（OpenAI，2025a）</span>、搭载深度思考的Doubao（Doubao，2025）和Grok-3（x.ai，2025）等专有系统在复杂网络导航和信息合成任务中展现出超人性能，但其内部架构和训练方法不透明，阻碍了协作研究。相比之下，采用<span class="term">ReAct框架（Yao等，2023）</span>的开源项目如<span class="term">WebDancer（Wu等，2025a）</span>、WebThinker（Li等，2025c）和R1-Searcher（Song等，2025）在简单任务中进步显著，但在需要复杂非线性推理的基准测试中存在明显性能差距。训练方法方面，（Xu等，2019；2024；2025）提出的训练动力学基本原理为超参调整和算法设计提供了关键洞见，揭示了训练方法对模型泛化能力的决定性影响。然而，尽管许多研究遵循ReAct范式使用<span class="term">监督微调（SFT）</span>，纯SFT代理在自适应环境中的泛化能力不足（Zheng等，2025；Zhang等，2025b）。基于<span class="term">强化学习（Reinforcement learning）</span>的方法（Song等，2025；Zheng等，2025）通过习得的探索策略有望实现高级搜索，但面临训练稳定性和样本效率的挑战。
+  </div>
+  
+  <div class="original">
+    7 Conclusion
+    In this work, we propose <span class="term">WebSailor</span>. From the perspective of uncertainty reduction in information seeking, we analyze why previous open-source web agents have not reached the level of proprietary systems. Our contributions span from QA construction, comprehensive training data synthesis, <span class="term">RFT cold start</span>, to improved efficiency in RL algorithms, leading to a full agentic post-training pipeline. WebSailor demonstrates strong performance on both simple and complex information seeking benchmarks, exhibiting reasoning and tool-use capabilities that surpass human levels.
+    We believe that the key to agentic post-training lies in further defining more complex tasks with higher uncertainty, as well as achieving more effective and efficient RL training. In the future, we will continue to explore how to further enhance agent capabilities based on open-source models, not only in the domain of information seeking, but also in pursuing the goal of general “superhuman” performance across more dimensions.
+  </div>
+  <div class="translation">
+    7 结论
+    本文提出<span class="term">WebSailor</span>。基于信息搜索中的不确定性降低视角，我们分析了先前开源网络代理未能达到专有系统水平的原因。贡献涵盖问答构建、综合训练数据合成、<span class="term">RFT冷启动（RFT cold start）</span>到强化学习算法效率改进，形成完整代理训练后流程。WebSailor在简单和复杂信息搜索基准上均表现优异，展现出超越人类水平的推理和工具使用能力。
+    我们认为代理训练后的关键在于定义更高不确定性的复杂任务，并实现更高效强化学习训练。未来将持续探索基于开源模型增强代理能力，不仅在信息搜索领域，更追求跨维度的通用“超人”性能目标。
+  </div>
+</div>
+
+<!-- 摘要总结 -->
+<div class="section">
+  <h2>摘要总结</h2>
+  <p>本文系统分析了现代AI基准测试的演进（从GAIA到BrowseComp的Level 3复杂性）和网络代理发展现状，揭示专有系统（如Deep-Research）与开源代理（如WebDancer）在复杂任务上的性能差距。作者提出WebSailor解决方案，通过创新训练流程（含QA构建、数据合成、RFT冷启动和RL效率优化）实现超越人类水平的性能。核心结论指出：1）开源代理的主要瓶颈在于非线性推理泛化能力；2）强化学习的训练稳定性是关键挑战；3）未来需通过更高不确定性任务定义和高效RL训练实现通用超人性能。</p>
+</div>
+
+<!-- 术语识别 -->
+<div class="section">
+  <h2>关键术语解释</h2>
+  <ul>
+    <li><span class="term">Level 3复杂性（Level 3 complexity）</span>：基准测试的最高难度等级，特征包括实体强耦合、故意信息混淆和高初始不确定性，代表作为BrowseComp-en/zh</li>
+    <li><span class="term">ReAct框架（ReAct framework）</span>：开源网络代理常用架构，整合推理(Reasoning)与行动(Acting)，但在复杂非线性任务中表现受限</li>
+    <li><span class="term">监督微调（Supervised Fine-Tuning, SFT）</span>：基于标注数据的模型调优方法，在自适应场景中泛化能力不足</li>
+    <li><span class="term">RFT冷启动（RFT cold start）</span>：WebSailor的关键技术，指在缺乏历史交互数据时初始化代理的策略</li>
+    <li><span class="term">代理训练后（Agentic post-training）</span>：模型基础训练后的专门优化阶段，聚焦工具使用和决策能力提升</li>
+    <li><span class="term">信息混淆（Information obfuscation）</span>：Level 3任务的核心设计策略，通过故意隐藏/扰乱信息增加探索难度</li>
+  </ul>
+</div>
+
+</body>
+</html>

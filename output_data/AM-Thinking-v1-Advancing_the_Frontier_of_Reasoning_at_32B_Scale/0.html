@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        .original {background-color: #f0f0f0; border: 1px solid #888; padding: 15px; margin: 10px 0;}
+        .translation {background-color: #e8f5e9; border: 1px solid #4CAF50; padding: 15px; margin: 10px 0;}
+        .term {color: red; font-weight: bold;}
+        .figure {background-color: #fff9c4; padding: 10px; margin: 15px 0;}
+        formula {display: block; text-align: center; margin: 20px 0;}
+    </style>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.0/es5/tex-mml-chtml.js'></script>
+</head>
+<body>
+
+<h2>一、内容理解</h2>
+<p>本文介绍了32B密集语言模型<strong class='term'>AM-Thinking-v1（Advanced Multimodal Thinking）</strong>，通过监督微调和强化学习的组合训练流程，在数学推理和代码生成任务上达到开源模型的最先进水平。研究证明32B规模模型在性能和实际部署成本之间达到最佳平衡点。</p>
+
+<h2>二、内容翻译</h2>
+<div class='original'>
+<h3>AM-Thinking-v1: Advancing the Frontier of Reasoning at 32B Scale</h3>
+<p>We present AM-Thinking-v1, a 32B dense language model that advances the frontier of reasoning...</p>
+</div>
+<div class='translation'>
+<h3>AM-Thinking-v1：在32B规模推进推理前沿</h3>
+<p>我们提出AM-Thinking-v1，这是一个32B密集语言模型，在推理能力上推进技术前沿...</p>
+</div>
+
+<div class='original'>
+<h3>Abstract</h3>
+<p>Outperforming DeepSeek-R1 and rivaling leading Mixture-of-Experts (MoE) models...</p>
+</div>
+<div class='translation'>
+<h3>摘要</h3>
+<p>在性能上超越DeepSeek-R1，并与领先的<strong class='term'>混合专家模型（Mixture-of-Experts, MoE）</strong>如Qwen3-235B-A22B和Seed1.5-Thinking相媲美...</p>
+</div>
+
+<h2>三、摘要总结</h2>
+<p>本文核心贡献：<br>
+1. 提出32B规模的<strong class='term'>密集语言模型</strong>AM-Thinking-v1<br>
+2. 在AIME和LiveCodeBench基准测试中取得SOTA成绩（85.3/74.4/70.3）<br>
+3. 验证了纯开源模型在中等规模下的可行性<br>
+4. 完整开源模型权重和训练方法</p>
+
+<h2>四、术语解释</h2>
+<dl>
+    <dt><strong class='term'>Mixture-of-Experts (MoE)</strong></dt>
+    <dd>混合专家模型：通过动态路由机制组合多个专家子网络的架构，典型代表如Switch Transformer</dd>
+    
+    <dt><strong class='term'>Supervised Fine-Tuning</strong></dt>
+    <dd>监督微调：在预训练模型基础上使用标注数据进行有监督的精细调优</dd>
+    
+    <dt><strong class='term'>Reinforcement Learning from Human Feedback (RLHF)</strong></dt>
+    <dd>基于人类反馈的强化学习：通过奖励模型对齐模型输出与人类偏好</dd>
+</dl>
+
+<div class='figure'>
+    <strong>图示说明：</strong>
+    <p>图1：模型在推理基准测试中的性能对比（假设性数学公式）</p>
+    <formula>
+        \text{Score} = \alpha \cdot \text{Math} + \beta \cdot \text{Code}\quad (1)
+    </formula>
+</div>
+
+</body>
+</html>

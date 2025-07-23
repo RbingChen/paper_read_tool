@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Algorithm Paper Analysis</title>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    body { font-family: Arial, sans-serif; line-height: 1.6; margin: 20px; }
+    .section { margin-bottom: 30px; }
+    h1 { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 10px; }
+    h2 { color: #2980b9; margin-top: 20px; }
+    .original { background-color: #f5f5f5; border: 1px solid #cccccc; padding: 15px; margin-bottom: 10px; border-radius: 5px; }
+    .translation { background-color: #e8f5e9; border: 1px solid #4caf50; padding: 15px; margin-bottom: 20px; border-radius: 5px; }
+    .term { color: red; font-weight: bold; }
+    .formula-container { text-align: center; margin: 20px 0; padding: 10px; }
+    .formula { font-size: 1.2em; }
+    .formula-label { font-style: italic; margin-top: 5px; }
+    .summary, .terms { background-color: #ffffff; padding: 15px; border: 1px solid #ddd; border-radius: 5px; margin-bottom: 20px; }
+    .terms ul { padding-left: 20px; }
+    .terms li { margin-bottom: 10px; }
+  </style>
+</head>
+<body>
+  <h1>Paper Analysis: Expanding RL with Verifiable Rewards Across Diverse Domains</h1>
+  
+  <div class="section">
+    <h2>a. Content Understanding</h2>
+    <p>This text discusses advanced techniques in <strong class="term">Reinforcement Learning (RL)</strong> for improving reward mechanisms. Key insights include:</p>
+    <ul>
+      <li><strong>Reward Normalization (Section 3.2)</strong>: To stabilize gradients and encourage improvement across batches, the authors apply z-score normalization to rewards. This method, inspired by prior studies like GRPO and REINFORCE++, adjusts rewards based on batch statistics. If all rewards are identical (σ_r = 0), normalized rewards are set to zero, indicating samples are either too easy or too difficult for the current policy.</li>
+      <li><strong>Reward Model Training (Section 3.3)</strong>: The text explores using <strong class="term">Large Language Models (LLMs)</strong> as reward models (π_φ). However, performance gaps exist between different-sized LLMs (e.g., 72B vs. 7B models). To balance efficiency and performance, the authors train a medium-sized model (e.g., 7B) using supervised learning on binary judgments (c ∈ {0,1}) obtained from a fixed LLM. This approach enhances robustness by leveraging data from exploration stages, which includes varied responses and potential formatting noise.</li>
+      <li><strong>Experiments and Data (Section 4)</strong>: The experimental setup uses two datasets: (1) A large-scale Mathematics QA dataset with 773k Chinese question-answer pairs, translated to English and categorized by educational level. This data is free-form and unstructured, posing challenges for rule-based reward functions. (2) A Multi-Subject dataset (ExamQA) with 638k instances, converted to QA pairs and translated. The text highlights the limitations of existing benchmarks like MATH and GSM8K due to their small size and structured nature.</li>
+    </ul>
+    <p>Overall, the work focuses on making RL more scalable and verifiable across diverse domains by addressing normalization, model training inefficiencies, and data challenges.</p>
+  </div>
+  
+  <div class="section">
+    <h2>b. Content Translation</h2>
+    <div class="original">
+      <h3>Expanding RL with Verifiable Rewards Across Diverse Domains</h3>
+    </div>
+    <div class="translation">
+      <h3>在多样领域中扩展具有可验证奖励的强化学习</h3>
+    </div>
+    
+    <div class="original">
+      <h4>3.2 Reward Normalization</h4>
+      <p>To ensure stable gradients and encourage improvement across all samples in a batch that perform above average, we apply z-score normalization to rewards, inspired by prior studies such as GRPO (Shao et al., 2024) and REINFORCE++ (Hu, 2025).</p>
+      <div class="formula-container">
+        <div class="formula">\( \tilde{r}(x,a,y_i) = \frac{r(x,a,y_i) - \mu_r}{\sigma_r} \)</div>
+        <div class="formula-label">Equation (5)</div>
+      </div>
+      <p>where μ_r and σ_r denote the mean and standard deviation of the rewards within the batch containing y_i, respectively. In the special case where σ_r=0, we set all normalized rewards to zero, as these samples are either too difficult or too easy for the current policy.</p>
+    </div>
+    <div class="translation">
+      <h4>3.2 奖励归一化</h4>
+      <p>为确保梯度稳定并鼓励批次中所有高于平均表现的样本得到改进，我们应用z分数归一化处理奖励，该方法受到先前研究如GRPO（Shao等人，2024）和REINFORCE++（Hu，2025）的启发。</p>
+      <div class="formula-container">
+        <div class="formula">\( \tilde{r}(x,a,y_i) = \frac{r(x,a,y_i) - \mu_r}{\sigma_r} \)</div>
+        <div class="formula-label">公式 (5)</div>
+      </div>
+      <p>其中，μ_r和σ_r分别表示包含y_i的批次中奖励的均值和标准差。在σ_r=0的特殊情况下，我们将所有归一化奖励设为零，因为这些样本对当前策略而言要么过于困难，要么过于简单。</p>
+    </div>
+    
+    <div class="original">
+      <h4>3.3 Reward Model Training</h4>
+      <p>When considering generative verifiers, a natural choice is to use an off-the-shelf aligned LLM as the reward model π_φ, inspired by prior work that employs LLMs as judges (Zheng et al., 2023). However, we observe a noticeable performance gap on downstream tasks when using LLMs of different sizes. For example, the 72B reward model achieves 62.7% while the 7B model gets 58.8% on math data (see training details in Section 4). To address this, we explore training a moderately sized reward model (e.g., 7B) for general domains, aiming to balance performance and efficiency.</p>
+      <p>Since there are no ground-truth reward labels, for each (x,a,y) triple, we prompt a fixed LLM to obtain the binary judgments c∈ {0, 1}, indicating whether y matches the reference answer a. During the RL phase, we collect the data {(x,a,y,c)} from the exploration stages and use it to fine-tune our reward models with supervised learning on c. Unlike relying on a fixed LLM to generate y, the improving actor policy produces responses with varying performance and potential formatting noise, which may enhance the robustness of the trained reward models.</p>
+    </div>
+    <div class="translation">
+      <h4>3.3 奖励模型训练</h4>
+      <p>在考虑生成式验证器时，一个自然的选择是使用现成的对齐大型语言模型（LLM）作为奖励模型π_φ，这受到先前使用LLM作为评判者的研究（Zheng等人，2023）的启发。然而，当使用不同规模的LLM时，我们在下游任务中观察到显著的性能差距。例如，在数学数据上，72B奖励模型达到62.7%，而7B模型仅得58.8%（训练细节见第4节）。为解决此问题，我们探索训练中等规模的奖励模型（如7B）用于通用领域，以平衡性能和效率。</p>
+      <p>由于没有真实奖励标签，对于每个(x,a,y)三元组，我们提示一个固定的LLM来获取二元判断c∈{0,1}，指示y是否匹配参考答案a。在强化学习阶段，我们从探索阶段收集数据{(x,a,y,c)}，并使用监督学习在c上微调奖励模型。与依赖固定LLM生成y不同，改进的行动者策略产生具有不同性能和潜在格式噪声的响应，这可能增强训练后奖励模型的鲁棒性。</p>
+    </div>
+    
+    <div class="original">
+      <h4>4 Experiments</h4>
+      <h5>4.1 Data</h5>
+      <p><strong>Mathematics Data</strong> To ensure high-quality reference answers, we use a large-scale dataset of 773k Chinese Question Answering (QA) pairs, collected under authorized licenses from educational websites. This dataset covers three educational levels: elementary, middle, and high school. Unlike well-structured yet small-scale benchmarks such as MATH (Hendrycks et al., 2021b) and GSM8K (Cobbe et al., 2021b), our reference answers are inherently free-form, often interwoven with rationales or involving several sub-questions yet lacking clear structural patterns. As a result, rule-based reward functions that rely on clean, well-structured answers for verification struggle to process these unstructured reference answers effectively.</p>
+      <p>We use GPT-4o-mini to translate questions and their corresponding responses into English. We randomly sample 3,000 QA pairs from each level and reserve them for testing. The average length of reference answers in the test set is 33.7, 36.3, and 53.9 words for elementary, middle, and high school levels, respectively. These are much longer than those in the GSM8K (1 word) and MATH (1.3 words) test sets.</p>
+      <p><strong>Multi-Subject Data</strong> Since no large-scale, free-form dataset with objective reference answers exists for general domains, we use a multi-subject multiple-choice QA dataset ExamQA (Yu et al., 2021). Originally written in Chinese, ExamQA covers at least 48 first-level subjects. We remove the distractors and convert each instance into a free-form QA pair. This dataset consists of 638k college-level instances, with both questions and objective answers written by domain experts for examination purposes. We also use GPT-4o-mini to translate questions and options into English.</p>
+    </div>
+    <div class="translation">
+      <h4>4 实验</h4>
+      <h5>4.1 数据</h5>
+      <p><strong>数学数据</strong> 为确保高质量的参考答案，我们使用一个大规模数据集，包含773k个中文问答（QA）对，这些数据从教育网站经授权许可收集。该数据集覆盖三个教育级别：小学、初中和高中。与结构良好但规模较小的基准如MATH（Hendrycks等人，2021b）和GSM8K（Cobbe等人，2021b）不同，我们的参考答案本质上是自由形式的，常与推理交织或涉及多个子问题，但缺乏清晰的结构模式。因此，依赖干净、结构良好的答案进行验证的基于规则的奖励函数难以有效处理这些非结构化参考答案。</p>
+      <p>我们使用GPT-4o-mini将问题及其对应回答翻译为英文。从每个级别随机抽样3,000个QA对用于测试。测试集中参考答案的平均长度分别为小学33.7词、初中36.3词和高中53.9词。这远长于GSM8K（1词）和MATH（1.3词）测试集中的长度。</p>
+      <p><strong>多学科数据</strong> 由于通用领域不存在具有客观参考答案的大规模自由形式数据集，我们使用多学科选择题数据集ExamQA（Yu等人，2021）。该数据集原为中文编写，覆盖至少48个一级学科。我们移除干扰项并将每个实例转换为自由形式QA对。该数据集包含638k个大学级实例，问题和客观答案均由领域专家为考试目的编写。我们还使用GPT-4o-mini将问题和选项翻译为英文。</p>
+    </div>
+  </div>
+  
+  <div class="section">
+    <h2>c. Summary</h2>
+    <div class="summary">
+      <p>This text focuses on enhancing <strong class="term">Reinforcement Learning (RL)</strong> with verifiable rewards across diverse applications. Key contributions include:</p>
+      <ul>
+        <li><strong>Reward Normalization</strong>: Implements z-score normalization (Equation 5) to stabilize gradients and promote improvement in batches, addressing cases where rewards are uniform (σ_r = 0).</li>
+        <li><strong>Reward Model Training</strong>: Proposes using <strong class="term">Large Language Models (LLMs)</strong> as reward models but identifies performance gaps between model sizes (e.g., 72B vs. 7B). To optimize, a medium-sized model (7B) is trained via supervised learning on binary judgments from exploration data, enhancing robustness against noise.</li>
+        <li><strong>Experimental Data</strong>: Utilizes two datasets: (1) A 773k Chinese Mathematics QA dataset (translated to English) with free-form answers, categorized by educational level and noted for longer answer lengths compared to benchmarks like GSM8K. (2) A 638k multi-subject dataset (ExamQA) converted from multiple-choice to QA pairs and translated. Both datasets highlight challenges for rule-based reward functions due to their unstructured nature.</li>
+      </ul>
+      <p>The work aims to make RL more scalable and efficient by improving reward mechanisms for complex, real-world domains.</p>
+    </div>
+  </div>
+  
+  <div class="section">
+    <h2>d. Key Terms</h2>
+    <div class="terms">
+      <ul>
+        <li><strong class="term">Reinforcement Learning (RL)</strong>: 强化学习。A machine learning paradigm where an agent learns to make decisions by interacting with an environment to maximize cumulative rewards. In this text, RL is enhanced with verifiable rewards for stability across domains.</li>
+        <li><strong class="term">z-score normalization</strong>: z分数归一化。A statistical technique that standardizes data by subtracting the mean (μ_r) and dividing by the standard deviation (σ_r), resulting in a distribution with mean 0 and standard deviation 1. Used here to normalize rewards for stable gradients (Equation 5).</li>
+        <li><strong class="term">Batch</strong>: 批次。A subset of samples processed together during training. The text applies normalization within batches to encourage improvement across samples.</li>
+        <li><strong class="term">Reward model (π_φ)</strong>: 奖励模型。A function or model that predicts rewards in RL. Here, it is implemented using LLMs to provide verifiable rewards, with training focused on binary judgments.</li>
+        <li><strong class="term">Large Language Model (LLM)</strong>: 大型语言模型。A deep learning model trained on vast text data to generate human-like text. Used as a reward model, with discussions on size-performance trade-offs (e.g., 7B vs. 72B models).</li>
+        <li><strong class="term">Supervised learning</strong>: 监督学习。A training approach where models learn from labeled data. Applied here to fine-tune reward models using binary labels (c) from exploration data.</li>
+        <li><strong class="term">Question Answering (QA)</strong>: 问答。A task involving answering questions based on input. The text uses QA datasets (e.g., 773k Chinese pairs) with free-form answers for experiments.</li>
+        <li><strong class="term">Reference answer</strong>: 参考答案。A standard or correct answer used for comparison in QA tasks. In the Mathematics dataset, these are unstructured and include rationales.</li>
+        <li><strong class="term">Exploration stages</strong>: 探索阶段。Phases in RL where the agent interacts with the environment to collect data. Data from these stages is used to train reward models.</li>
+        <li><strong class="term">Rule-based reward functions</strong>: 基于规则的奖励函数。Reward mechanisms that rely on predefined rules for verification. Critiqued here for struggling with unstructured data like the Mathematics dataset.</li>
+      </ul>
+    </div>
+  </div>
+</body>
+</html>

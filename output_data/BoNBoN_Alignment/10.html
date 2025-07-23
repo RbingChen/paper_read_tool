@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>论文解析报告</title>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<style>
+  body { font-family: Arial, sans-serif; line-height: 1.6; }
+  .original { background-color: #f0f0f0; border: 1px solid #cccccc; padding: 15px; margin-bottom: 20px; }
+  .translation { background-color: #e0ffe0; border: 1px solid #00cc00; padding: 15px; margin-bottom: 30px; }
+  .term { color: red; font-weight: bold; }
+  .formula-container { text-align: center; margin: 20px 0; }
+  .formula-number { display: block; font-style: italic; margin-top: 5px; }
+  h2 { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 5px; }
+  h3 { color: #2980b9; }
+  .reference-item { margin-bottom: 10px; }
+</style>
+</head>
+<body>
+
+<h2>1. 内容理解</h2>
+<p>该文本讨论强化学习中的评估指标问题，核心观点是：在基于二元偏好（binary preferences）的奖励机制中，胜率（win-rate）是自然的选择，但存在局限性。作者指出小胜和大胜应有不同价值，而当前胜率指标无法体现这种差异。文本提出未来研究方向：证明胜率在特定条件下的最优性，或开发能利用显式奖励尺度（explicit reward scale）的更好方法。最后包含致谢和参考文献列表，引用多篇关于人类偏好学习、模型对齐和奖励优化的前沿研究。</p>
+
+<h2>2. 内容翻译</h2>
+
+<div class="original">
+<p>case win-rate is not appropriate (a small win and a large win should mean different things). Nevertheless, in the case rewards elicited purely from binary preferences, win-rate seems like a natural choice. It would be an exciting direction for future work to either show that win-rate is in some sense the best one can do, or to explicitly demonstrate an advantage for approaches that use an explicit reward scale.</p>
+</div>
+<div class="translation">
+<p>胜率（<span class="term">win-rate</span>）在这种情况下并不合适（小胜和大胜应有不同含义）。然而，在奖励纯粹来自<span class="term">二元偏好（binary preferences）</span>的情况下，胜率似乎是自然的选择。未来的一个激动人心的方向是：要么证明胜率在某种意义上是能做到的最佳选择，要么明确展示使用<span class="term">显式奖励尺度（explicit reward scale）</span>的方法的优势。</p>
+</div>
+
+<div class="original">
+<p>Thanks to Alekh Agarwal for pointing out a typo in a previous version. This work is supported by ONR grant N00014-23-1-2591 and Open Philanthropy.</p>
+</div>
+<div class="translation">
+<p>感谢 Alekh Agarwal 指出前一版本中的拼写错误。这项工作得到了 ONR 基金（编号 N00014-23-1-2591）和 Open Philanthropy 的支持。</p>
+</div>
+
+<div class="original">
+<h3>References</h3>
+<p>[Aza+24] M. G. Azar, Z. D. Guo, B. Piot, R. Munos, M. Rowland, M. Valko, and D. Calandriello. “A general theoretical paradigm to understand learning from human preferences”. In: International Conference on Artificial Intelligence and Statistics. PMLR. 2024 (cit. on pp. 1, 2, 4, 9, 10).</p>
+<p>[Bai+22] Y. Bai, A. Jones, K. Ndousse, A. Askell, A. Chen, N. DasSarma, D. Drain, S. Fort, D. Ganguli, T. Henighan, et al. “Training a helpful and harmless assistant with reinforcement learning from human feedback”. In: arXiv preprint arXiv:2204.05862 (2022) (cit. on p. 8).</p>
+<p>[Bei+24] A. Beirami, A. Agarwal, J. Berant, A. D’Amour, J. Eisenstein, C. Nagpal, and A. T. Suresh. “Theoretical guarantees on the best-of-n alignment policy”. In: arXiv preprint arXiv:2401.01879 (2024) (cit. on pp. 1, 6, 9, 16).</p>
+<p>[BTN01] A. Ben-Tal and A. Nemirovski. Lectures on modern convex optimization: analysis, algorithms, and engineering applications. 2001 (cit. on p. 5).</p>
+<p>[Bid+23] S. Biderman, H. Schoelkopf, Q. G. Anthony, H. Bradley, K. O’Brien, E. Hallahan, M. A. Khan, S. Purohit, U. S. Prashanth, E. Raff, et al. “Pythia: a suite for analyzing large language models across training and scaling”. In: International Conference on Machine Learning. PMLR. 2023 (cit. on p. 8).</p>
+<p>[BT52] R. A. Bradley and M. E. Terry. “Rank analysis of incomplete block designs: i. the method of paired comparisons”. In: Biometrika 3/4 (1952) (cit. on p. 3).</p>
+<p>[Chr+17] P. F. Christiano, J. Leike, T. Brown, M. Martic, S. Legg, and D. Amodei. “Deep reinforcement learning from human preferences”. In: Advances in Neural Information Processing Systems. 2017 (cit. on p. 1).</p>
+<p>[Don+23] H. Dong, W. Xiong, D. Goyal, Y. Zhang, W. Chow, R. Pan, S. Diao, J. Zhang, K. SHUM, and T. Zhang. “RAFT: reward ranked finetuning for generative foundation model alignment”. In: Transactions on Machine Learning Research (2023) (cit. on p. 9).</p>
+<p>[Eis+23] J. Eisenstein, C. Nagpal, A. Agarwal, A. Beirami, A. D’Amour, D. Dvijotham, A. Fisch, K. Heller, S. Pfohl, D. Ramachandran, et al. “Helping or herding? reward model ensembles mitigate but do not eliminate reward hacking”. In: arXiv preprint arXiv:2312.09244 (2023) (cit. on p. 1).</p>
+<p>[Eth+24] K. Ethayarajh, W. Xu, N. Muennighoff, D. Jurafsky, and D. Kiela. “KTO: model alignment as prospect theoretic optimization”. In: arXiv preprint arXiv:2402.01306 (2024) (cit. on pp. 2, 9).</p>
+<p>[GSH23] L. Gao, J. Schulman, and J. Hilton. “Scaling laws for reward model overoptimization”. In: International Conference on Machine Learning. PMLR. 2023 (cit. on pp. 1, 9).</p>
+<p>[Gul+23] C. Gulcehre, T. L. Paine, S. Srinivasan, K. Konyushkova, L. Weerts, A. Sharma, A. Siddhant, A. Ahern, M. Wang, C. Gu, et al. “Reinforced self-training (rest) for language modeling”. In: arXiv preprint arXiv:2308.08998 (2023) (cit. on p. 9).</p>
+<p>[HLT24] J. Hong, N. Lee, and J. Thorne. “Reference-free monolithic preference optimization with odds ratio”. In: arXiv preprint arXiv:2403.07691 (2024) (cit. on pp. 2, 9).</p>
+<p>[JH22] L. G. Jacob Hilton. Measuring Goodhart’s law. 2022 (cit. on pp. 6, 16).</p>
+<p>[Jin+24] Y. Jinnai, T. Morimura, K. Ariu, and K. Abe. “Regularized best-of-n sampling to mitigate reward hacking for language model alignment”. In: arXiv preprint arXiv:2404.01054 (2024) (cit. on p. 9).</p>
+<p>[Kau+23] T. Kaufmann, P. Weng, V. Bengs, and E. Hüllermeier. “A survey of reinforcement learning from human feedback”. In: arXiv preprint arXiv:2312.14925 (2023) (cit. on pp. 1, 2).</p>
+</div>
+<div class="translation">
+<h3>参考文献</h3>
+<div class="reference-item">[Aza+24] M. G. Azar 等人，《理解基于人类偏好的学习的通用理论范式》，人工智能与统计学国际会议，PMLR，2024年（引用页码：1,2,4,9,10）</div>
+<div class="reference-item">[Bai+22] Y. Bai 等人，《通过人类反馈强化学习训练有用且无害的助手》，arXiv:2204.05862，2022年（引用页码：8）</div>
+<div class="reference-item">[Bei+24] A. Beirami 等人，《n选一对齐策略的理论保证》，arXiv:2401.01879，2024年（引用页码：1,6,9,16）</div>
+<div class="reference-item">[BTN01] A. Ben-Tal 与 A. Nemirovski，《现代凸优化讲座：分析、算法与工程应用》，2001年（引用页码：5）</div>
+<div class="reference-item">[Bid+23] S. Biderman 等人，《Pythia：跨训练与扩展分析大语言模型的套件》，国际机器学习会议，PMLR，2023年（引用页码：8）</div>
+<div class="reference-item">[BT52] R. A. Bradley 与 M. E. Terry，《不完全区组设计的秩分析I：配对比较法》，Biometrika，1952年（引用页码：3）</div>
+<div class="reference-item">[Chr+17] P. F. Christiano 等人，《基于人类偏好的深度强化学习》，神经信息处理系统进展，2017年（引用页码：1）</div>
+<div class="reference-item">[Don+23] H. Dong 等人，《RAFT：生成基础模型对齐的奖励排序微调》，机器学习研究汇刊，2023年（引用页码：9）</div>
+<div class="reference-item">[Eis+23] J. Eisenstein 等人，《帮助还是引导？奖励模型集成减轻但不消除奖励攻击》，arXiv:2312.09244，2023年（引用页码：1）</div>
+<div class="reference-item">[Eth+24] K. Ethayarajh 等人，《KTO：基于前景理论优化的模型对齐》，arXiv:2402.01306，2024年（引用页码：2,9）</div>
+<div class="reference-item">[GSH23] L. Gao 等人，《奖励模型过度优化的缩放定律》，国际机器学习会议，PMLR，2023年（引用页码：1,9）</div>
+<div class="reference-item">[Gul+23] C. Gulcehre 等人，《语言建模的强化自训练（REST）》，arXiv:2308.08998，2023年（引用页码：9）</div>
+<div class="reference-item">[HLT24] J. Hong 等人，《基于比值比的无参考单体偏好优化》，arXiv:2403.07691，2024年（引用页码：2,9）</div>
+<div class="reference-item">[JH22] J. Hilton，《古德哈特定律的测量》，2022年（引用页码：6,16）</div>
+<div class="reference-item">[Jin+24] Y. Jinnai 等人，《正则化n选一采样减轻语言模型对齐中的奖励攻击》，arXiv:2404.01054，2024年（引用页码：9）</div>
+<div class="reference-item">[Kau+23] T. Kaufmann 等人，《人类反馈强化学习综述》，arXiv:2312.14925，2023年（引用页码：1,2）</div>
+</div>
+
+<h2>3. 摘要总结</h2>
+<p>本文核心讨论强化学习中的评估指标选择问题：</p>
+<ol>
+  <li>指出<span class="term">胜率（win-rate）</span>作为评估指标的局限性——无法区分不同量级的胜利</li>
+  <li>承认在基于<span class="term">二元偏好（binary preferences）</span>的奖励系统中，胜率仍是自然选择</li>
+  <li>提出未来研究方向：证明胜率的最优性，或开发基于<span class="term">显式奖励尺度（explicit reward scale）</span>的改进方法</li>
+  <li>致谢基金支持（ONR 和 Open Philanthropy）</li>
+  <li>引用16篇相关文献，涵盖人类偏好学习、模型对齐策略、奖励优化等前沿研究</li>
+</ol>
+
+<h2>4. 术语识别</h2>
+<dl>
+  <dt><span class="term">胜率（Win-rate）</span></dt>
+  <dd>在强化学习中，指模型在对比中获胜的比例。文本指出其核心缺陷：无法量化胜利的幅度（如小胜vs大胜），导致评估失真。</dd>
+  
+  <dt><span class="term">二元偏好（Binary preferences）</span></dt>
+  <dd>人类反馈的一种形式，要求标注者在两个选项中选择更优者（如A>B）。是<span class="term">RLHF（Reinforcement Learning from Human Feedback）</span>的基础，但仅提供相对偏好而非绝对质量评估。</dd>
+  
+  <dt><span class="term">显式奖励尺度（Explicit reward scale）</span></dt>
+  <dd>与二元偏好相对的奖励设计方法，直接定义奖励值的连续范围（如0-10分）。作者建议探索此类方法以克服胜率局限，实现更精细的优化。</dd>
+  
+  <dt><span class="term">模型对齐（Model alignment）</span></dt>
+  <dd>使AI系统行为与人类价值观保持一致的技术。文献中涉及多种对齐策略：<br>
+  • <span class="term">n选一策略（Best-of-n policy）</span>：生成多个输出后选择最优<br>
+  • <span class="term">奖励攻击（Reward hacking）</span>：模型利用奖励函数缺陷获取高分但违背初衷</dd>
+  
+  <dt><span class="term">奖励过度优化（Reward overoptimization）</span></dt>
+  <dd>当过度优化代理奖励函数时，导致实际性能下降的现象（见[GSH23]）。与<span class="term">古德哈特定律（Goodhart's law）</span>相关：指标成为目标后不再有效。</dd>
+</dl>
+
+</body>
+</html>

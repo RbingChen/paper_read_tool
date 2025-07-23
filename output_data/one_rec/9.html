@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>OneRec Technical Report Analysis</title>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    body { font-family: Arial, sans-serif; line-height: 1.6; }
+    .original { background-color: #f0f0f0; border: 1px solid #999; padding: 15px; margin-bottom: 20px; border-radius: 5px; }
+    .translation { background-color: #e0ffe0; border: 1px solid #2ecc71; padding: 15px; margin-bottom: 30px; border-radius: 5px; }
+    .formula-container { background-color: #fffde7; padding: 15px; margin: 20px 0; text-align: center; border-left: 4px solid #f1c40f; }
+    .formula-number { font-style: italic; margin-top: 5px; }
+    .term { color: red; font-weight: bold; }
+    h1, h2, h3 { color: #2c3e50; }
+    .section { margin-bottom: 40px; }
+    ul { list-style-type: square; padding-left: 20px; }
+  </style>
+</head>
+<body>
+  <h1>OneRec技术报告解析</h1>
+
+  <!-- 内容理解 -->
+  <div class="section">
+    <h2>内容理解</h2>
+    <p>该技术报告详细描述了OneRec推荐系统的核心架构：</p>
+    <ol>
+      <li><span class="term">解码器(Decoder)</span>采用多层Transformer结构，每层包含三个核心操作：<span class="term">因果自注意力(CausalSelfAttn)</span>、<span class="term">交叉注意力(CrossAttn)</span>和<span class="term">混合专家网络(MoE)</span></li>
+      <li><span class="term">混合专家网络(MoE)</span>使用top-k路由策略动态选择专家，并通过<span class="term">无损失负载均衡策略(Loss-free Load Balancing)</span>优化资源分配</li>
+      <li>模型训练使用<span class="term">交叉熵损失(Cross-entropy Loss)</span>进行<span class="term">下一令牌预测(Next-token Prediction)</span></li>
+      <li>引入<span class="term">奖励系统(Reward System)</span>解决传统推荐局限：
+        <ul>
+          <li><span class="term">用户偏好对齐(User Preference Alignment)</span>：通过<span class="term">P-Score</span>模型学习个性化目标融合</li>
+          <li>格式奖励确保输出结构合规</li>
+          <li>工业场景奖励满足特定需求</li>
+        </ul>
+      </li>
+    </ol>
+  </div>
+
+  <!-- 内容翻译 -->
+  <div class="section">
+    <h2>内容翻译</h2>
+    
+    <div class="original">
+      <p>The decoder processes this sequence through 𝐿<sub>dec</sub> transformer layers. Each layer performs sequential operations:</p>
+      <div class="formula-container">
+        \\( \\mathbf{d}^{(i+1)}_m = \\mathbf{d}^{(i)}_m + \\text{CausalSelfAttn}(\\mathbf{d}^{(i)}_m) \\)
+        <div class="formula-number">(24)</div>
+      </div>
+      <div class="formula-container">
+        \\( \\mathbf{d}^{(i+1)}_m = \\mathbf{d}^{(i+1)}_m + \\text{CrossAttn}(\\mathbf{d}^{(i+1)}_m, \\mathbf{Z}_{enc}, \\mathbf{Z}_{enc}) \\)
+        <div class="formula-number">(25)</div>
+      </div>
+      <div class="formula-container">
+        \\( \\mathbf{d}^{(i+1)}_m = \\mathbf{d}^{(i+1)}_m + \\text{MoE}(\\text{RMSNorm}(\\mathbf{d}^{(i+1)}_m)) \\)
+        <div class="formula-number">(26)</div>
+      </div>
+      <p>Each decoder layer incorporates a <span class="term">Mixture of Experts (MoE)</span> feed-forward network to enhance model capacity while maintaining computational efficiency. The MoE layer employs 𝑁<sub>experts</sub> expert networks with a <span class="term">top-𝑘 routing strategy</span>:</p>
+      <div class="formula-container">
+        \\( \\text{MoE}(\\mathbf{x}) = \\sum_{j=1}^k \\text{Gate}_j(\\mathbf{x}) \\cdot \\text{Expert}_j(\\mathbf{x}) \\)
+        <div class="formula-number">(27)</div>
+      </div>
+      <p>where <span class="term">Gate<sub>𝑗</sub>(x)</span> represents the gating weights determined by the routing mechanism, and <span class="term">Expert<sub>𝑗</sub>(x)</span> denotes the output of the 𝑗-th selected expert network. To ensure balanced expert utilization without introducing interference gradients, we implement a <span class="term">loss-free load balancing strategy</span> following (Liu et al., 2024).</p>
+    </div>
+    <div class="translation">
+      <p>解码器通过𝐿<sub>dec</sub>层<span class="term">Transformer</span>处理该序列。每层执行顺序操作：</p>
+      <div class="formula-container">
+        \\( \\mathbf{d}^{(i+1)}_m = \\mathbf{d}^{(i)}_m + \\text{CausalSelfAttn}(\\mathbf{d}^{(i)}_m) \\)
+        <div class="formula-number">(24)</div>
+      </div>
+      <div class="formula-container">
+        \\( \\mathbf{d}^{(i+1)}_m = \\mathbf{d}^{(i+1)}_m + \\text{CrossAttn}(\\mathbf{d}^{(i+1)}_m, \\mathbf{Z}_{enc}, \\mathbf{Z}_{enc}) \\)
+        <div class="formula-number">(25)</div>
+      </div>
+      <div class="formula-container">
+        \\( \\mathbf{d}^{(i+1)}_m = \\mathbf{d}^{(i+1)}_m + \\text{MoE}(\\text{RMSNorm}(\\mathbf{d}^{(i+1)}_m)) \\)
+        <div class="formula-number">(26)</div>
+      </div>
+      <p>每个解码器层包含<span class="term">混合专家网络(MoE)</span>前馈网络，在保持计算效率的同时增强模型容量。MoE层采用𝑁<sub>experts</sub>个专家网络和<span class="term">top-𝑘路由策略</span>：</p>
+      <div class="formula-container">
+        \\( \\text{MoE}(\\mathbf{x}) = \\sum_{j=1}^k \\text{Gate}_j(\\mathbf{x}) \\cdot \\text{Expert}_j(\\mathbf{x}) \\)
+        <div class="formula-number">(27)</div>
+      </div>
+      <p>其中<span class="term">Gate<sub>𝑗</sub>(x)</span>表示路由机制确定的门控权重，<span class="term">Expert<sub>𝑗</sub>(x)</span>表示第𝑗个选定专家网络的输出。为确保专家均衡利用且不引入干扰梯度，我们采用(Liu et al., 2024)提出的<span class="term">无损失负载均衡策略</span>。</p>
+    </div>
+
+    <div class="original">
+      <p>The model is trained using <span class="term">cross-entropy loss</span> for <span class="term">next-token prediction</span> on the semantic identifiers of target video 𝑚:</p>
+      <div class="formula-container">
+        \\( \\mathcal{L}_{\\text{NTP}} = -\\sum_{j=1}^{L_t-1} \\log P\\left( s_{j+1}^m | \\langle s_{\\text{[BOS]}}, s_1^m, s_2^m, \\cdots, s_j^m \\rangle \\right) \\)
+        <div class="formula-number">(28)</div>
+      </div>
+    </div>
+    <div class="translation">
+      <p>模型使用<span class="term">交叉熵损失(Cross-entropy Loss)</span>对目标视频𝑚的语义标识符进行<span class="term">下一令牌预测(Next-token Prediction)</span>：</p>
+      <div class="formula-container">
+        \\( \\mathcal{L}_{\\text{NTP}} = -\\sum_{j=1}^{L_t-1} \\log P\\left( s_{j+1}^m | \\langle s_{\\text{[BOS]}}, s_1^m, s_2^m, \\cdots, s_j^m \\rangle \\right) \\)
+        <div class="formula-number">(28)</div>
+      </div>
+    </div>
+
+    <div class="original">
+      <h3>2.4. Reward System</h3>
+      <p>The pre-trained model only fits the distribution of the exposed item space through next token prediction, and the exposed items are obtained from the past traditional recommendation system. This results in the model being unable to break through the ceiling of traditional recommendations. To address this issue, we introduce <span class="term">preference alignment</span> based on a <span class="term">reward system</span>, using <span class="term">on-policy reinforcement learning</span> to train the model in the generated item space. Through rewards, the model perceives more fine-grained preference information. We introduce the preference reward to align user preferences, the format reward to ensure the generation format is as legal as possible, and the specific industrial reward to align with some special industrial scenario needs.</p>
+    </div>
+    <div class="translation">
+      <h3>2.4. 奖励系统</h3>
+      <p>预训练模型仅通过下一令牌预测拟合曝光物品空间的分布，而曝光物品来自过去的传统推荐系统。这导致模型无法突破传统推荐的上限。为解决此问题，我们引入基于<span class="term">奖励系统(Reward System)</span>的<span class="term">偏好对齐(Preference Alignment)</span>，使用<span class="term">在线策略强化学习(On-policy Reinforcement Learning)</span>在生成物品空间中训练模型。通过奖励，模型感知更细粒度的偏好信息。我们引入偏好奖励对齐用户偏好，格式奖励确保生成格式尽可能合法，工业场景奖励满足特殊工业需求。</p>
+    </div>
+
+    <div class="original">
+      <h3>2.4.1. User Preference Alignment</h3>
+      <p>In recommendation systems, defining a "good recommendation" is much more challenging than determining the correctness of a mathematical solution. Traditional approaches (Chang et al., 2023; Wang et al., 2024) often define multiple objectives, such as clicks, likes, comments, and watch time, which are then combined into a score through a weighted fusion of the predicted values (x<sub>tr</sub>) for each objective. However, manually tuning these fusion weights is challenging, not only lacking accuracy but also lacking personalization, and often results in optimization conflicts between objectives.</p>
+      <p>To address these limitations, we propose using a neural network to learn a personalized fusion score, referred to as <span class="term">P-Score (Preference Score)</span> (Cao et al., 2025). The overall framework of this model is illustrated in Figure 5 (middle). The model’s underlying architecture is based on the <span class="term">Search-based Interest Model (SIM)</span> (Pi et al., 2020). It includes multiple towers, each dedicated to learning specific objectives. During training, these towers compute <span class="term">binary cross-entropy (BCE) loss</span> using the corresponding objective labels as auxiliary tasks. The hidden states of each tower, along with user features, are fused to produce the final P-Score.</p>
+    </div>
+    <div class="translation">
+      <h3>2.4.1. 用户偏好对齐</h3>
+      <p>在推荐系统中，定义"好的推荐"比确定数学解的正确性更具挑战性。传统方法(Chang et al., 2023; Wang et al., 2024)通常定义多个目标（如点击、点赞、评论和观看时长），然后通过各目标预测值(x<sub>tr</sub>)的加权融合合并为分数。但手动调整融合权重具有挑战性，不仅缺乏准确性且缺乏个性化，常导致目标间优化冲突。</p>
+      <p>为克服这些限制，我们提出使用神经网络学习个性化融合分数——<span class="term">P-Score(Preference Score)</span>(Cao et al., 2025)。该模型整体框架如图5（中）所示，底层架构基于<span class="term">基于搜索的兴趣模型(SIM)</span>(Pi et al., 2020)。模型包含多个塔式结构，每个塔专用于学习特定目标。训练时，这些塔使用对应目标标签作为辅助任务计算<span class="term">二元交叉熵损失(BCE Loss)</span>。各塔的隐藏状态与用户特征融合生成最终P-Score。</p>
+    </div>
+  </div>
+
+  <!-- 摘要总结 -->
+  <div class="section">
+    <h2>摘要总结</h2>
+    <p>OneRec技术报告的核心内容包括：</p>
+    <ol>
+      <li><strong>解码器架构</strong>：采用多层Transformer，每层包含<span class="term">因果自注意力(24)</span>、<span class="term">交叉注意力(25)</span>和<span class="term">混合专家网络(MoE)(26)</span>三个顺序操作</li>
+      <li><strong>MoE机制</strong>：通过<span class="term">top-k路由策略(27)</span>动态选择专家，结合<span class="term">无损失负载均衡</span>优化计算效率</li>
+      <li><strong>训练目标</strong>：使用<span class="term">交叉熵损失(28)</span>进行<span class="term">下一令牌预测</span></li>
+      <li><strong>奖励系统创新</strong>：
+        <ul>
+          <li>突破传统推荐局限的<span class="term">偏好对齐框架</span></li>
+          <li><span class="term">P-Score模型</span>解决多目标融合问题</li>
+          <li>三阶段奖励设计（用户偏好/格式/工业场景）</li>
+        </ul>
+      </li>
+      <li><strong>用户偏好对齐</strong>：基于<span class="term">SIM架构</span>的多塔模型，通过<span class="term">BCE损失</span>学习个性化目标权重</li>
+    </ol>
+  </div>
+
+  <!-- 术语识别 -->
+  <div class="section">
+    <h2>术语识别</h2>
+    <ul>
+      <li><span class="term">Transformer Layers</span>：Transformer层，由自注意力机制和前馈网络组成的深度学习模块，用于处理序列数据</li>
+      <li><span class="term">CausalSelfAttn</span>：因果自注意力，限制每个位置仅关注其左侧位置的自注意力变体，防止信息泄露</li>
+      <li><span class="term">CrossAttn</span>：交叉注意力，连接编码器和解码器的注意力机制，允许解码器访问编码器输出</li>
+      <li><span class="term">MoE (Mixture of Experts)</span>：混合专家网络，由多个专家子网络和门控路由组成的稀疏激活架构，公式(27)</li>
+      <li><span class="term">Top-k Routing Strategy</span>：Top-k路由策略，选择权重最高的k个专家处理输入的动态路由算法</li>
+      <li><span class="term">Loss-free Load Balancing</span>：无损失负载均衡，优化专家资源分配而不引入额外损失项的技术</li>
+      <li><span class="term">Cross-entropy Loss</span>：交叉熵损失，衡量预测概率分布与真实分布差异的损失函数，公式(28)</li>
+      <li><span class="term">Next-token Prediction</span>：下一令牌预测，基于历史序列预测下一个元素的训练目标</li>
+      <li><span class="term">Reward System</span>：奖励系统，通过强化学习信号指导模型优化的框架</li>
+      <li><span class="term">On-policy Reinforcement Learning</span>：在线策略强化学习，使用当前策略生成数据进行训练的方法</li>
+      <li><span class="term">P-Score (Preference Score)</span>：偏好分数，通过神经网络学习的个性化多目标融合指标</li>
+      <li><

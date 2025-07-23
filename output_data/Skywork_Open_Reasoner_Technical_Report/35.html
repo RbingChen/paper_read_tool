@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>论文解析报告</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; }
+        .original { background-color: #f0f0f0; border: 1px solid #ccc; padding: 15px; margin-bottom: 10px; }
+        .translation { background-color: #e0ffe0; border: 1px solid #0a0; padding: 15px; margin-bottom: 20px; }
+        .figure { background-color: #ffffcc; padding: 15px; margin: 20px 0; text-align: center; }
+        table { width: 100%; border-collapse: collapse; margin: 10px 0; }
+        th, td { border: 1px solid #999; padding: 8px; text-align: center; }
+        .term { color: red; font-weight: bold; }
+        h2 { border-bottom: 2px solid #333; padding-bottom: 5px; margin-top: 30px; }
+        .formula-container { margin: 20px 0; text-align: center; }
+        .formula-label { font-style: italic; margin-top: 5px; }
+    </style>
+</head>
+<body>
+
+<h1>论文解析报告</h1>
+
+<!-- 内容理解 -->
+<h2>1. 内容理解</h2>
+<div class="original">
+    <p>该文本详细描述了Skywork-OR1系列模型的训练配置和评估方法：</p>
+    <ul>
+        <li>采用<strong class="term">多阶段训练（multi-stage training）</strong>策略，不同阶段使用递增的上下文长度</li>
+        <li>通过三个表格(Table 10-12)展示了7B/32B模型的<strong class="term">训练配置（training configurations）</strong>细节</li>
+        <li>在数学(AIME)和编程(LiveCodeBench)基准测试中评估模型性能</li>
+        <li>使用<strong class="term">avg@n指标（avg@n metric）</strong>量化模型表现（含数学定义）</li>
+        <li>Skywork-OR1-32B在关键测试中刷新<strong class="term">SOTA记录（State-of-the-art records）</strong></li>
+    </ul>
+</div>
+
+<!-- 内容翻译 -->
+<h2>2. 内容翻译</h2>
+
+<div class="original">
+    <p>discussed in Section 3.2.6. Please refer to Section 3.1 for more details on the policy update procedure. All experiments use multi-stage training. We report the detailed configuration for each training stage in Table 10, Table 11, and Table 12. The released checkpoints correspond to step 2160 for Skywork-OR1-Math-7B, step 1320 for Skywork-OR1-7B, and step 1000 for Skywork-OR1-32B.</p>
+</div>
+<div class="translation">
+    <p>已在3.2.6节讨论。有关策略更新流程的更多细节请参阅3.1节。所有实验均采用<strong class="term">多阶段训练（multi-stage training）</strong>。我们在表10、表11和表12中报告了每个训练阶段的详细配置。发布的检查点对应：Skywork-OR1-Math-7B为第2160步，Skywork-OR1-7B为第1320步，Skywork-OR1-32B为第1000步。</p>
+</div>
+
+<div class="figure">
+    <table>
+        <caption>Table 10: Training configurations of Skywork-OR1-Math-7B.</caption>
+        <tr><th>Stage</th><th>Steps</th><th>Context Length</th><th>TBatch Size</th><th>Mini-batch Size</th><th>Group Size</th></tr>
+        <tr><td>1</td><td>0-740</td><td>8K</td><td>256</td><td>128</td><td>16</td></tr>
+        <tr><td>2</td><td>740-1740</td><td>16K</td><td>256</td><td>128</td><td>16</td></tr>
+        <tr><td>3</td><td>1740-2080</td><td>32K</td><td>256</td><td>128</td><td>16</td></tr>
+        <tr><td>3.5</td><td>2080-2160</td><td>32K</td><td>128</td><td>64</td><td>64</td></tr>
+    </table>
+    <p>表10：Skywork-OR1-Math-7B的训练配置</p>
+</div>
+
+<div class="figure">
+    <table>
+        <caption>Table 11: Training configurations of Skywork-OR1-7B.</caption>
+        <tr><th>Stage</th><th>Steps</th><th>Context Length</th><th>TBatch Size</th><th>Mini-batch Size</th><th>Group size</th></tr>
+        <tr><td>1</td><td>0-660</td><td>16K</td><td>256</td><td>256</td><td>16</td></tr>
+        <tr><td>2</td><td>660-1320</td><td>32K</td><td>160</td><td>160</td><td>32</td></tr>
+    </table>
+    <p>表11：Skywork-OR1-7B的训练配置</p>
+</div>
+
+<div class="figure">
+    <table>
+        <caption>Table 12: Training configurations of Skywork-OR1-32B.</caption>
+        <tr><th>Stage</th><th>Steps</th><th>Context Length</th><th>TBatch Size</th><th>Mini-batch Size</th><th>Group Size</th></tr>
+        <tr><td>1</td><td>0-760</td><td>16K</td><td>256</td><td>256</td><td>16</td></tr>
+        <tr><td>2</td><td>760-1130</td><td>24K</td><td>160</td><td>160</td><td>32</td></tr>
+    </table>
+    <p>表12：Skywork-OR1-32B的训练配置</p>
+</div>
+
+<div class="original">
+    <p>Benchmarks & Baselines We evaluate our models on challenging benchmarks. For math capabilities, we assess performance on the American Invitational Mathematics Examination (AIME) 2024 and 2025. For coding capabilities, we use LiveCodeBench[10](from 2024-08 to 2025-02). We compare against several strong baselines, including DeepSeek-R1 [3], Qwen3-32B [32], QwQ-32B [25], Light-R1-32B [29], TinyR1-32B-Preview [27], and several 7B RL models based on DeepSeek-R1-Distill-Qwen-7B, such as AceReason-Nemotron-7B [1], AReaL-boba-RL-7B [18], and Light-R1-7B-DS [29].</p>
+</div>
+<div class="translation">
+    <p><strong class="term">基准测试与基线模型（Benchmarks & Baselines）</strong> 我们在挑战性基准上评估模型：数学能力使用<strong class="term">美国数学邀请赛（AIME）</strong>2024和2025，编程能力使用<strong class="term">LiveCodeBench</strong>[10]（2024-08至2025-02）。对比基线包括DeepSeek-R1[3]、Qwen3-32B[32]、QwQ-32B[25]、Light-R1-32B[29]、TinyR1-32B-Preview[27]以及基于DeepSeek-R1-Distill-Qwen-7B的7B强化学习模型（如AceReason-Nemotron-7B[1]、AReaL-boba-RL-7B[18]、Light-R1-7B-DS[29]）。</p>
+</div>
+
+<div class="original">
+    <p>Evaluation Setup We set the maximum generation length to 32,768 tokens for all models. For AIME24/25, we report avg@32 performance; for LiveCodeBench (2024-08 to 2025-02), we report avg@4 performance. Responses are generated using a temperature of 1 and top-p of 1. The avg@n metric is defined as</p>
+    <div class="formula-container">
+        \[ \text{avg@}n = \frac{1}{n} \sum_{i=1}^{n} \mathbb{I}\{(x, y_i) \text{ is correct}\} \]
+        <div class="formula-label">公式：avg@n指标定义</div>
+    </div>
+    <p>where x is the evaluation question and y<sub>i</sub> is the i-th response.</p>
+</div>
+<div class="translation">
+    <p><strong class="term">评估设置（Evaluation Setup）</strong> 所有模型的最大生成长度设为32,768 tokens。AIME24/25报告avg@32性能，LiveCodeBench报告avg@4性能。响应生成使用temperature=1和top-p=1。<strong class="term">avg@n指标（avg@n metric）</strong>定义为：</p>
+    <div class="formula-container">
+        \[ \text{avg@}n = \frac{1}{n} \sum_{i=1}^{n} \mathbb{I}\{(x, y_i) \text{ 正确}\} \]
+        <div class="formula-label">公式：avg@n指标定义</div>
+    </div>
+    <p>其中x为评估问题，y<sub>i</sub>为第i次响应。</p>
+</div>
+
+<div class="original">
+    <p>8.2 Evaluation Results of Skywork-OR1 models</p>
+    <p>As shown in Table 13, Skywork-OR1 models achieve significant improvements over their base SFT models (e.g., the DeepSeek-R1-Distill series). Specifically, Skywork-OR1-32B achieves scores of 82.2 on AIME24, 73.3 on AIME25, and 63.0 on LiveCodeBench, outperforming strong contemporary models such as DeepSeek-R1 and Qwen3-32B on key math benchmarks, setting new SOTA records at the time of release. Skywork-OR1-7B scores 70.2 on AIME24, 54.6 on AIME25, and 47.6 on LiveCodeBench, demonstrating competitive...</p>
+</div>
+<div class="translation">
+    <p>8.2 Skywork-OR1模型评估结果</p>
+    <p>如表13所示，Skywork-OR1模型相比基础SFT模型（如DeepSeek-R1-Distill系列）有显著提升。具体而言：</p>
+    <ul>
+        <li>Skywork-OR1-32B在AIME24获82.2分，AIME25获73.3分，LiveCodeBench获63.0分</li>
+        <li>关键数学基准上超越DeepSeek-R1和Qwen3-32B等强模型</li>
+        <li>发布时创下<strong class="term">SOTA记录（State-of-the-art records）</strong></li>
+        <li>Skywork-OR1-7B在AIME24获70.2分，AIME25获54.6分，LiveCodeBench获47.6分</li>
+    </ul>
+</div>
+
+<!-- 摘要总结 -->
+<h2>3. 摘要总结</h2>
+<div class="original">
+    <p>本文核心内容：</p>
+    <ol>
+        <li>提出<strong class="term">多阶段训练框架（multi-stage training）</strong>，分阶段扩展上下文长度（8K→32K）</li>
+        <li>详述Skywork-OR1三个变体（7B/32B）的训练配置参数（表10-12）</li>
+        <li>在<strong class="term">AIME数学竞赛</strong>和<strong class="term">LiveCodeBench编程测试</strong>上评估模型</li>
+        <li>定义量化指标<strong class="term">avg@n</strong>：n次采样的平均准确率</li>
+        <li>Skywork-OR1-32B刷新数学基准SOTA记录，显著超越主流基线模型</li>
+    </ol>
+</div>
+
+<!-- 术语识别 -->
+<h2>4. 术语识别</h2>
+<div class="original">
+    <dl>
+        <dt><strong class="term">多阶段训练（Multi-stage training）</strong></dt>
+        <dd>将训练过程分为多个阶段，每阶段采用不同的超参数（如上下文长度、批次大小）。文本中分3-4个阶段，上下文长度从8K逐步提升至32K</dd>
+        
+        <dt><strong class="term">上下文长度（Context Length）</strong></dt>
+        <dd>模型单次处理的最大token数量，直接影响长文本理解能力。实验中分8K/16K/24K/32K四级</dd>
+        
+        <dt><strong class="term">TBatch Size（总批次大小）</strong></dt>
+        <dd>分布式训练中所有设备合计的批次样本量。与Mini-batch Size（单设备批次量）和Group Size（梯度累积组大小）共同决定训练效率</dd>
+        
+        <dt><strong class="term">avg@n指标（avg@n metric）</strong></dt>
+        <dd>评估生成式模型的量化指标：对每个问题采样n次响应，计算平均正确率。数学定义为：
+            <div class="formula-container">
+                \[ \text{avg@}n = \frac{1}{n} \sum_{i=1}^{n} \mathbb{I}\{\text{响应正确}\} \]
+            </div>
+        </dd>
+        
+        <dt><strong class="term">SOTA（State-of-the-art）</strong></dt>
+        <dd>当前最先进技术水平，指在特定任务上超越所有已知模型的性能。Skywork-OR1-32B在发布时创数学基准新记录</dd>
+        
+        <dt><strong class="term">AIME（American Invitational Mathematics Examination）</strong></dt>
+        <dd>美国数学邀请赛，国际权威中学数学竞赛。2024/2025版本用作LLM数学推理能力评估基准</dd>
+    </dl>
+</div>
+
+</body>
+</html>

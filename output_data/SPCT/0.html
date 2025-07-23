@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>论文解析：通用奖励建模的推理时扩展</title>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    body { font-family: Arial, sans-serif; line-height: 1.6; max-width: 900px; margin: 0 auto; padding: 20px; }
+    .original { background-color: #f8f8f8; border: 1px solid #ccc; padding: 15px; margin-bottom: 15px; }
+    .translation { background-color: #e8f5e9; border: 1px solid #4caf50; padding: 15px; margin-bottom: 30px; }
+    .figure { background-color: #fffde7; padding: 15px; margin: 20px 0; text-align: center; }
+    .term { color: #d32f2f; font-weight: bold; }
+    h1, h2, h3 { color: #2c3e50; }
+    .section { margin-bottom: 40px; }
+    dt { font-weight: bold; margin-top: 10px; }
+    dd { margin-left: 20px; margin-bottom: 15px; }
+  </style>
+</head>
+<body>
+
+<div class="section">
+  <h2>1. 内容理解</h2>
+  <p>本文提出了一种提升大语言模型（LLMs）奖励建模（RM）效果的新方法。核心创新点包括：</p>
+  <ul>
+    <li>采用<span class="term">生成式奖励建模（Generative Reward Modeling, GRM）</span>框架，支持不同输入类型</li>
+    <li>提出<span class="term">自原则批判调整（Self-Principled Critique Tuning, SPCT）</span>方法，通过在线强化学习优化奖励生成</li>
+    <li>设计<span class="term">推理时扩展（Inference-Time Scaling）</span>机制，通过并行采样和元奖励模型（meta RM）提升计算效率</li>
+  </ul>
+  <p>该方法在多个基准测试中超越现有模型（如GPT-4o、Gemma等），证明推理时扩展比训练时扩展更高效。作者开源了DeepSeek-GRM模型，并指出通用奖励系统仍需解决部分任务挑战。</p>
+</div>
+
+<div class="section">
+  <h2>2. 内容翻译</h2>
+
+  <div class="original">
+    <h3>Title & Authors</h3>
+    <p>Preprint. Under review.<br>
+    Inference-Time Scaling for Generalist Reward Modeling<br>
+    Zijun Liu1,2†∗, Peiyi Wang1∗, Runxin Xu1, Shirong Ma1, Chong Ruan1, Peng Li3, Yang Liu2,3, Yu Wu1<br>
+    1DeepSeek-AI, 2Dept. of Computer Sci. & Tech., Tsinghua University,<br>
+    3Institute for AI Industry Research (AIR), Tsinghua University<br>
+    zj-liu24@mails.tsinghua.edu.cn, wangpeiyi9979@gmail.com</p>
+  </div>
+  <div class="translation">
+    <h3>标题与作者</h3>
+    <p>预印本。正在评审中。<br>
+    通用奖励建模的推理时扩展<br>
+    刘子君<sup>1,2†∗</sup>, 王佩怡<sup>1∗</sup>, 徐润昕<sup>1</sup>, 马世荣<sup>1</sup>, 阮冲<sup>1</sup>, 李鹏<sup>3</sup>, 刘洋<sup>2,3</sup>, 吴羽<sup>1</sup><br>
+    <sup>1</sup>深度求索AI, <sup>2</sup>清华大学计算机科学与技术系,<br>
+    <sup>3</sup>清华大学人工智能产业研究院<br>
+    邮箱: zj-liu24@mails.tsinghua.edu.cn, wangpeiyi9979@gmail.com</p>
+  </div>
+
+  <div class="original">
+    <h3>Abstract</h3>
+    <p>Reinforcement learning (RL) has been widely adopted in post-training for large language models (LLMs) at scale. Recently, the incentivization of reasoning capabilities in LLMs from RL indicates that proper learning methods could enable effective inference-time scalability. A key challenge of RL is to obtain accurate reward signals for LLMs in various domains beyond verifiable questions or artificial rules. In this work, we investigate how to improve reward modeling (RM) with more inference compute for general queries, i.e. the inference-time scalability of generalist RM, and further, how to improve the effectiveness of performance-compute scaling with proper learning methods. For the RM approach, we adopt pointwise generative reward modeling (GRM) to enable flexibility for different input types and potential for inference-time scaling. For the learning method, we propose Self-Principled Critique Tuning (SPCT) to foster scalable reward generation behaviors in GRMs through online RL, to generate principles adaptively and critiques accurately, resulting in DeepSeek-GRM models. Furthermore, for effective inference-time scaling, we use parallel sampling to expand compute usage, and introduce a meta RM to guide voting process for better scaling performance. Empirically, we show that SPCT significantly improves the quality and scalability of GRMs, outperforming existing methods and models in various RM benchmarks without severe biases, and could achieve better performance compared to training-time scaling. DeepSeek-GRM still meets challenges in some tasks, which we believe can be addressed by future efforts in generalist reward systems. The models will be released and open-sourced.</p>
+  </div>
+  <div class="translation">
+    <h3>摘要</h3>
+    <p><span class="term">强化学习（Reinforcement Learning, RL）</span>已广泛应用于大规模<span class="term">大语言模型（Large Language Models, LLMs）</span>的后训练中。近期研究表明，RL能有效激发LLMs的推理能力，表明适当的学习方法可实现高效的<span class="term">推理时扩展性（inference-time scalability）</span>。RL的关键挑战在于为LLMs在可验证问题或人工规则之外的多样化领域获取准确奖励信号。本研究探索如何通过增加推理计算提升通用查询的<span class="term">奖励建模（Reward Modeling, RM）</span>效果（即通用RM的推理时扩展性），并进一步研究如何通过优化学习方法提升性能-计算扩展效率。在RM方法上，我们采用<span class="term">逐点生成式奖励建模（Generative Reward Modeling, GRM）</span>以支持不同输入类型的灵活性及推理时扩展潜力。在学习方法上，我们提出<span class="term">自原则批判调整（Self-Principled Critique Tuning, SPCT）</span>，通过在线RL促进GRM的可扩展奖励生成行为，自适应生成原则并精准输出评价，最终形成DeepSeek-GRM模型。此外，为实现高效推理时扩展，我们采用<span class="term">并行采样（parallel sampling）</span>扩展计算资源，并引入<span class="term">元奖励模型（meta RM）</span>指导投票过程以优化扩展性能。实验表明，SPCT显著提升GRM的质量和可扩展性，在多个RM基准测试中超越现有方法且无明显偏差，相比训练时扩展可获得更优性能。DeepSeek-GRM在部分任务中仍面临挑战，我们相信未来通用奖励系统的研究将解决这些问题。模型将开源发布。</p>
+  </div>
+
+  <div class="original">
+    <h3>Introduction Excerpt</h3>
+    <p>The remarkable advancements in large language models (LLMs) (DeepSeek-AI, 2024b; OpenAI, 2025b) have catalyzed significant shifts in artificial intelligence research, enabling models to perform tasks that require understanding, generation, and nuanced decision-making capabilities. Recently, reinforcement learning (RL) as a post-training method for LLMs has been widely adopted at scale, and results in remarkable improvements in human value alignment (Ouyang et al., 2022; Bai et al., 2022a), long-term reasoning (DeepSeek-AI, 2025; OpenAI, 2025c), and environment adaptation (OpenAI, 2025a) for LLMs. Reward modeling (Gao et al., 2023) serves as...</p>
+    
+    <div class="figure">
+      <p>Figure 1: Inference-time scaling performance with different RMs on all tested RM benchmarks. Results are shown with up to 8 samples for each method, and are further scaled to 32 samples for ours. Non-italic font indicates models based on Gemma-2-27B.</p>
+      <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZmZmZmZmIi8+CiAgPHRleHQgeD0iNTAiIHk9IjMwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiPkZpZ3VyZSAxOiBJbmZlcmVuY2UtdGltZSBTY2FsaW5nIFBlcmZvcm1hbmNlPC90ZXh0PgogIDx0ZXh0IHg9IjUwIiB5PSI1MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjEyIj5YLUF4aXM6IGsgKCMgb2Ygc2FtcGxlZCByZXdhcmRzLCBsb2dzY2FsZSk8L3RleHQ+CiAgPHRleHQgeD0iNTAiIHk9IjcwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTIiPlktQXhpczogUGVyZm9ybWFuY2UgU2NvcmU8L3RleHQ+CiAgPHBvbHlsaW5lIHBvaW50cz0iNTAsMTIwIDYwLDEzMCA3MCwxNDAgODAsMTUwIDkwLDE2MCAxMDAsMTcwIiBzdHlsZT0iZmlsbDpub25lO3N0cm9rZTojMDAwMDAwO3N0cm9rZS13aWR0aDoyIi8+CiAgPHRleHQgeD0iMTAwIiB5PSIxODAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxMCI+RGVlcFNlZWstR1JNLTI3QiAoTWV0YVJNQCBrKTwvdGV4dD4KPC9zdmc+" alt="Figure 1">
+    </div>
+  </div>
+  <div class="translation">
+    <h3>引言节选</h3>
+    <p><span class="term">大语言模型（Large Language Models, LLMs）</span>的重大进展（DeepSeek-AI, 2024b; OpenAI, 2025b）推动了人工智能研究的显著变革，使模型能够执行需要理解、生成和精细决策能力的任务。近年来，作为LLMs后训练方法的<span class="term">强化学习（Reinforcement Learning, RL）</span>已被大规模采用，并在人类价值对齐（Ouyang等, 2022; Bai等, 2022a）、长期推理（DeepSeek-AI, 2025; OpenAI, 2025c）和环境适应（OpenAI, 2025a）方面取得显著改进。<span class="term">奖励建模（Reward Modeling, RM）</span>（Gao等, 2023）作为...</p>
+    
+    <div class="figure">
+      <p>图1：不同奖励模型（RMs）在所有测试RM基准上的推理时扩展性能。结果展示各方法最多8个样本的测试结果，我们的方法进一步扩展到32个样本。非斜体字表示基于Gemma-2-27B的模型。</p>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h2>3. 摘要总结</h2>
+  <p>本文针对大语言模型（LLMs）奖励建模的扩展性问题，提出创新解决方案：</p>
+  <ul>
+    <li>提出<span class="term">自原则批判调整（SPCT）</span>方法，通过在线强化学习使生成式奖励模型（GRM）能自适应生成原则并精准评价</li>
+    <li>设计<span class="term">推理时扩展机制</span>，结合并行采样和元奖励模型（meta RM）指导的投票过程，显著提升计算资源利用率</li>
+    <li>开发DeepSeek-GRM模型，在多个基准测试中超越GPT-4o、Gemma等现有模型，且无严重偏差</li>
+    <li>实证表明：推理时扩展比传统训练时扩展更高效，模型性能随计算资源增加而提升（如图1所示）</li>
+  </ul>
+  <p>该方法解决了通用奖励建模在多样化领域的信号获取难题，模型已开源，但在部分复杂任务中仍有改进空间。</p>
+</div>
+
+<div class="section">
+  <h2>4. 术语识别</h2>
+  <dl>
+    <dt><span class="term">强化学习（Reinforcement Learning, RL）</span></dt>
+    <dd>机器学习范式，智能体通过与环境交互获得的奖励信号优化决策策略。在LLMs中用于对齐人类偏好和提升复杂推理能力。</dd>
+    
+    <dt><span class="term">大语言模型（Large Language Models, LLMs）</span></dt>
+    <dd>基于海量文本训练的深度学习模型（如GPT、Gemma等），具备文本生成、理解及推理能力，参数量通常超过10亿。</dd>
+    
+    <dt><span class="term">奖励建模（Reward Modeling, RM）</span></dt>
+    <dd>构建可量化评估LLMs输出质量的模型，为强化学习提供训练信号。核心挑战在于跨领域奖励泛化能力。</dd>
+    
+    <dt><span class="term">推理时扩展（Inference-Time Scaling）</span></dt>
+    <dd>通过增加推理过程计算资源（如并行采样）动态提升模型性能，区别于传统增加训练资源的扩展方式。</dd>
+    
+    <dt><span class="term">生成式奖励建模（Generative Reward Modeling, GRM）</span></dt>
+    <dd>逐点生成奖励值的RM框架，支持多样化输入格式，具有天然适合推理时扩展的特性。</dd>
+    
+    <dt><span class="term">自原则批判调整（Self-Principled Critique Tuning, SPCT）</span></dt>
+    <dd>本文提出的在线RL方法，使GRM能动态生成评估原则并据此输出精准奖励信号，解决通用RM的适配性问题。</dd>
+    
+    <dt><span class="term">并行采样（Parallel Sampling）</span></dt>
+    <dd>同时生成多个候选输出的技术，用于扩展推理计算量，为投票机制提供基础。</dd>
+    
+    <dt><span class="term">元奖励模型（meta RM）</span></dt>
+    <dd>高层奖励模型，用于指导基于并行采样的投票过程，优化多候选输出的聚合策略。</dd>
+  </dl>
+</div>
+
+</body>
+</html>

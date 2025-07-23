@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>论文解析报告</title>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<style>
+  body { font-family: Arial, sans-serif; line-height: 1.6; }
+  .original { background-color: #f8f9fa; border: 1px solid #dee2e6; padding: 15px; margin-bottom: 10px; }
+  .translation { background-color: #e6ffed; border: 1px solid #c3e6cb; padding: 15px; margin-bottom: 20px; }
+  .highlight { color: #dc3545; font-weight: bold; }
+  .formula-container { text-align: center; margin: 20px 0; }
+  .formula-label { font-style: italic; margin-top: 5px; }
+  h2 { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 5px; }
+  ul { padding-left: 20px; }
+</style>
+</head>
+<body>
+
+<h1>论文解析报告</h1>
+
+<!-- 内容理解部分 -->
+<h2>内容理解</h2>
+<p>该文本描述了在数学推理实验初期对多种基于规则的数学验证器进行的评估过程。作者首先测试了五种验证器：MATH verifier (verl版)、PRIME、Qwen2.5、DeepScaleR和Math-Verify。通过手动检查样本问题，发现Qwen2.5存在解析缺陷（如丢失指数符号），而PRIME存在执行不稳定的问题，因此排除了这两个验证器。随后使用剩余验证器评估模型生成的解决方案，并结合人工判断得出：原始MATH验证器和DeepScaleR验证器错误率较高，而Math-Verify的不同版本(0.5.2和0.6.0)表现相似但受限于非标准数学表达式的处理能力。最终在奖励函数实现中采用了多步骤验证流程。</p>
+
+<!-- 内容翻译部分 -->
+<h2>内容翻译</h2>
+
+<div class="original">
+7 Math & Code Verifiers
+7.1 Math Verifiers
+During the initial stage of all experiments on math reasoning, we conducted several preliminary analyses of
+the rule-based <span class="highlight">math verifiers</span> available at the time. These verifiers included:
+•The original MATH verifier (verl version)
+•PRIME verifier
+•Qwen2.5 verifier
+•DeepScaleR’s verifier
+•Math-Verify
+</div>
+<div class="translation">
+7 数学与代码验证器
+7.1 数学验证器
+在所有数学推理实验的初始阶段，我们对当时可用的基于规则的<span class="highlight">数学验证器（math verifiers）</span>进行了多项初步分析。这些验证器包括：
+• 原始MATH验证器（verl版本）
+• PRIME验证器
+• Qwen2.5验证器
+• DeepScaleR验证器
+• Math-Verify
+</div>
+
+<div class="original">
+We first sampled a small set of problems along with their associated solutions and answers, and manually
+examined the quality of their <span class="highlight">parsers</span> and verifiers. We found that the Qwen2.5 verifier tends to lose
+information during the parsing process (e.g., when parsing \(\boxed{a^2}\), it fails to retain ^2). We also
+observed that the PRIME verifier can occasionally stall during execution. As a result, we excluded these two
+verifiers from further analysis.
+</div>
+<div class="translation">
+我们首先抽样了一小部分问题及其相关解决方案和答案，并手动检查了它们的<span class="highlight">解析器（parsers）</span>和验证器质量。发现Qwen2.5验证器在解析过程中容易丢失信息（例如解析 \(\boxed{a^2}\) 时无法保留^2）。同时观察到PRIME验证器在执行中偶尔会停滞。因此我们排除了这两个验证器进行后续分析。
+</div>
+
+<div class="original">
+We then used <span class="highlight">rollout data</span> from the difficulty estimation procedure and applied the remaining verifiers to
+evaluate the generated solutions. We plotted the number of problems at each difficulty level (0–8) in Figure 27:
+Figure 27: Distributions of the number of correct rollouts from DeepSeek-R1-Distill-Qwen-7B, obtained using
+four different verifiers on a subset of NuminaMath-1.5 problems. The numbers 0–8 indicate difficulty levels.
+The size of each sector represents the number of problems at a specific difficulty level.
+</div>
+<div class="translation">
+随后我们使用难度估计过程中的<span class="highlight">rollout数据（rollout data）</span>，应用剩余验证器评估生成的解决方案。图27展示了各难度等级(0-8)的问题数量分布：
+图27：在NuminaMath-1.5问题子集上，使用四种不同验证器获得的DeepSeek-R1-Distill-Qwen-7B正确rollout数量分布。数字0-8表示难度等级，每个扇区大小代表特定难度等级的问题数量。
+</div>
+
+<div class="original">
+Based on a combination of verifier results and human judgments, we observed the following:
+•Both the original MATH verifier (verl version) and DeepScaleR’s verifier produced higher rates of <span class="highlight">false
+positives</span> and <span class="highlight">false negatives</span>.
+•For Math-Verify, some implementation details changed as we explored different versions. Therefore,
+we include both version 0.5.2 and the default version (0.6.0), which we extensively used in model
+development, noting only trivial differences between them.
+</div>
+<div class="translation">
+结合验证器结果和人工判断，我们观察到：
+• 原始MATH验证器（verl版本）和DeepScaleR验证器均产生较高比例的<span class="highlight">假阳性（false positives）</span>和<span class="highlight">假阴性（false negatives）</span>
+• 对于Math-Verify，不同版本的实现细节有所变化。因此我们同时包含0.5.2版本和默认版本(0.6.0)，后者在模型开发中被广泛使用，两者仅存在细微差异
+</div>
+
+<div class="original">
+Note that Math-Verify may still yield incorrect results for solutions with <span class="highlight">non-standard formatting</span> or
+mathematical expressions it does not support (e.g., problems with multiple answers).
+</div>
+<div class="translation">
+需注意，Math-Verify对于<span class="highlight">非标准格式（non-standard formatting）</span>或不支持的数学表达式（如多答案问题）仍可能产生错误结果。
+</div>
+
+<div class="original">
+In our final implementation of the reward function, we verify whether the answer in a text solution is correct
+using the following steps:
+34
+</div>
+<div class="translation">
+在奖励函数的最终实现中，我们通过以下步骤验证文本解决方案中的答案正确性：
+34
+</div>
+
+<!-- 公式展示 -->
+<div class="formula-container">
+\( \boxed{a^2} \)
+<div class="formula-label">公式1：解析过程中信息丢失的示例</div>
+</div>
+
+<!-- 摘要总结部分 -->
+<h2>摘要总结</h2>
+<p>本段系统评估了五种数学验证器在数学推理任务中的性能：</p>
+<ol>
+  <li>通过样本分析排除Qwen2.5（解析缺陷）和PRIME（执行不稳定）</li>
+  <li>剩余验证器评估显示：MATH和DeepScaleR错误率较高，Math-Verify表现最佳</li>
+  <li>Math-Verify存在版本差异(0.5.2/0.6.0)，但对非标准数学表达式处理仍有局限</li>
+  <li>最终奖励函数采用多步骤验证流程（步骤细节在后续内容）</li>
+</ol>
+
+<!-- 术语识别部分 -->
+<h2>术语识别</h2>
+<ul>
+  <li><span class="highlight">Math Verifiers（数学验证器）</span>：基于规则的自动化工具，用于验证数学问题解决方案的正确性，通过解析数学表达式和逻辑推理判断答案有效性</li>
+  <li><span class="highlight">False Positives（假阳性）</span>：验证错误类型，指错误地将不正确解决方案判定为正确，导致准确率虚高</li>
+  <li><span class="highlight">False Negatives（假阴性）</span>：验证错误类型，指错误地将正确解决方案判定为错误，导致有效方案被遗漏</li>
+  <li><span class="highlight">Rollout Data（展开数据）</span>：在强化学习框架中，指模型在特定环境下执行完整推理过程生成的解决方案序列数据</li>
+  <li><span class="highlight">Parsers（解析器）</span>：验证器的核心组件，负责将自然语言描述的数学表达式转换为结构化数据格式（如AST），其质量直接影响验证准确性</li>
+  <li><span class="highlight">Non-standard Formatting（非标准格式）</span>：指不符合常规数学表达规范的书写方式（如非常规符号使用、省略关键步骤等），导致验证器解析失败</li>
+</ul>
+
+</body>
+</html>

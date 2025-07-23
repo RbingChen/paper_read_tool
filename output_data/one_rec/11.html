@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>OneRec技术报告解析</title>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<style>
+  .original { background-color: #f0f0f0; border: 1px solid #ccc; padding: 10px; margin-bottom: 15px; }
+  .translation { background-color: #e0f7e0; border: 1px solid #4CAF50; padding: 10px; margin-bottom: 20px; }
+  .figure { background-color: #fffde7; padding: 15px; margin: 20px 0; text-align: center; }
+  .term { color: red; font-weight: bold; }
+  .formula { text-align: center; margin: 20px 0; }
+  section { margin-bottom: 30px; }
+  h2 { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 5px; }
+</style>
+</head>
+<body>
+
+<section>
+  <h2>1. 内容理解与解释</h2>
+  <p>该技术报告主要描述OneRec推荐系统中的两大核心技术：</p>
+  <ol>
+    <li><span class="term">ECPO（Early-Clipped Policy Optimization）</span>：改进的强化学习策略优化算法，通过差异化处理正负优势值（Advantage）解决训练稳定性问题。对正优势（𝐴>0）沿用GRPO方法，对负优势（𝐴<0）采用早截断（early-clipping）技术限制策略比率（\(\\pi_\\theta / \\pi_{\\theta_{old}}\)），防止梯度爆炸。</li>
+    <li><span class="term">生成格式正则化（Generation Format Regularization）</span>：解决生成式推荐中语义ID序列的合法性问题。引入<span class="term">合法性比率（Legality Ratio）</span>指标，并分析<span class="term">挤压效应（Squeezing Effect）</span>如何导致非法生成——当模型遇到负优势项时，概率分布会过度集中在当前最优输出𝑜∗上。</li>
+  </ol>
+  <p>核心创新点：ECPO通过参数𝛿（如设为0.1）控制策略比率容忍度，同时移除KL散度损失，利用监督微调（SFT）损失维持模型稳定性。</p>
+</section>
+
+<section>
+  <h2>2. 内容翻译</h2>
+  
+  <div class="original">
+    <p>OneRec Technical Report</p>
+    <p>Figure 6|Illustration of ECPO. The 𝑥-axis is𝜋𝜃/𝜋𝜃𝑜𝑙𝑑and the𝑦-axis is the clipped 𝜋𝜃/𝜋𝜃𝑜𝑙𝑑. Items with 𝐴 >0are processed in the same way as the original GRPO, while items with 𝐴 <0are constrained by early-clipping to limit the maximum ratio.</p>
+    <p>explosion. Therefore, we preemptively clip policies with large ratios to ensure training stability while still allowing corresponding negative advantages to take effect. The larger the 𝛿, the larger the tolerable policy ratio, which means the larger the tolerable gradient. This can be determined based on actual needs. In OneRec, we set 𝛿to 0.1, which indicates that the ratio of policies with negative advantages is allowed to slightly exceed 1+𝜖. We remove the KL divergence loss because the Reinforcement Learning (RL) and Supervised Fine-Tuning (SFT) are trained together in OneRec, and the SFT loss ensures the model remains stable.</p>
+  </div>
+  <div class="translation">
+    <p>OneRec技术报告</p>
+    <p>图6 | ECPO示意图。x轴表示\(\\pi_\\theta / \\pi_{\\theta_{old}}\)，y轴表示截断后的\(\\pi_\\theta / \\pi_{\\theta_{old}}\)。𝐴>0的项目按原始GRPO方式处理，而𝐴<0的项目通过早截断（early-clipping）约束以限制最大比率。</p>
+    <p>因此，我们主动截断高比率的策略以保证训练稳定性，同时仍让对应的负优势值发挥作用。𝛿越大，可容忍的策略比率越大，意味着可容忍的梯度越大。这可根据实际需求确定。在OneRec中，我们设置𝛿=0.1，这允许负优势策略的比率略微超过1+𝜖。我们移除了KL散度损失，因为在OneRec中强化学习（RL）和监督微调（SFT）联合训练，SFT损失可确保模型稳定性。</p>
+  </div>
+
+  <div class="original">
+    <p>2.4.2. Generation Format Regularization</p>
+    <p>In generative recommendation, the legality ratio refers to the proportion of generated semantic ID sequences that can be mapped to actual item IDs. This metric is crucial for assessing the stability of generation. In practice, the cardinality of semantic ID sequences 𝑁𝐿𝑡 𝑡is much larger than that of videos. This ensures that all items are covered, and a larger vocabulary introduces more parameters, leading to better performance. However, this may also result in generating semantic ID sequences without corresponding item IDs during inference, i.e., illegal generation.</p>
+  </div>
+  <div class="translation">
+    <p>2.4.2. 生成格式正则化</p>
+    <p>在生成式推荐中，<span class="term">合法性比率（legality ratio）</span>指可映射到实际物品ID的生成语义ID序列的比例。该指标对评估生成稳定性至关重要。实践中，语义ID序列的基数\(N_{L_t}^t\)远大于视频数量，这确保了所有物品的覆盖，更大的词汇表引入更多参数从而提升性能。但也可能在推理时生成无对应物品ID的语义ID序列，即非法生成。</p>
+  </div>
+
+  <div class="original">
+    <p>Figure 7|Illustration of squeezing effect. 𝜋𝜃𝑃𝑇represents the pre-trained model, while 𝜋𝜃𝑅𝐿represents the model trained with ECPO. 𝑜+refers to videos with positive advantages, while 𝑜−refers to those with negative advantages.</p>
+    <p>Introducing reinforcement learning with ECPO significantly increases the generation of illegal outputs. Recent work (Ren and Sutherland, 2024) suggests that this is due to the squeezing effect caused by negative advantages. As shown in Figure 7, the pre-trained model has learned to generate most of the legal tokens. After incorporating RL, items with 𝐴 >0only slightly adjust the distribution. When an item with 𝐴 <0is applied, the model’s probability distribution compresses most of the probability mass into what it currently considers the optimal output 𝑜∗. This results in the probabilities</p>
+  </div>
+  <div class="translation">
+    <p>图7 | 挤压效应示意图。\(\\pi_{\\theta_{PT}}\)表示预训练模型，\(\\pi_{\\theta_{RL}}\)表示经ECPO训练的模型。𝑜+指具有正优势的视频，𝑜−指具有负优势的视频。</p>
+    <p>引入基于ECPO的强化学习会显著增加非法输出生成。近期研究(Ren and Sutherland, 2024)表明这是负优势引起的<span class="term">挤压效应（squeezing effect）</span>所致。如图7所示，预训练模型已学会生成大多数合法标记。加入强化学习后，𝐴>0的项仅微调分布；而当应用𝐴<0的项时，模型的概率分布将大部分概率质量压缩到当前认为的最优输出𝑜∗上，导致概率分布失衡。</p>
+  </div>
+  
+  <div class="figure">
+    <p>图示说明（Figure 6 & 7）</p>
+    <p>Figure 6: 展示ECPO机制——正负优势值的差异化处理</p>
+    <p>Figure 7: 展示挤压效应——负优势值导致概率分布坍缩</p>
+  </div>
+</section>
+
+<section>
+  <h2>3. 摘要总结</h2>
+  <p>本报告核心内容聚焦于OneRec推荐系统的两大技术创新：</p>
+  <ul>
+    <li><span class="term">ECPO算法</span>：通过早截断机制（early-clipping）处理负优势值（𝐴<0），策略比率限制为\(1+\\epsilon+\\delta\)（𝛿=0.1），在保证训练稳定性的同时移除KL散度损失，实现RL与SFT的联合优化。</li>
+    <li><span class="term">生成合法性保障</span>：定义<span class="term">合法性比率</span>评估语义ID序列的有效性，揭示<span class="term">挤压效应</span>是非法生成的主因——负优势值使概率分布过度集中于局部最优解𝑜∗。</li>
+  </ul>
+  <p>关键技术效果：ECPO解决策略优化中的梯度爆炸问题，而生成正则化机制提升推荐结果的可用性。</p>
+</section>
+
+<section>
+  <h2>4. 关键术语解释</h2>
+  <dl>
+    <dt><span class="term">ECPO (Early-Clipped Policy Optimization)</span></dt>
+    <dd>改进的策略优化算法，对正优势值（𝐴>0）沿用标准方法，对负优势值（𝐴<0）采用早截断技术限制策略比率\(\\pi_\\theta / \\pi_{\\theta_{old}}\)，防止梯度爆炸。</dd>
+    
+    <dt><span class="term">策略比率（Policy Ratio）\(\\pi_\\theta / \\pi_{\\theta_{old}}\)</span></dt>
+    <dd>新策略与旧策略的概率比，ECPO中通过参数𝜖和𝛿控制其变化范围（如负优势时上限为\(1+\\epsilon+\\delta\)）。</dd>
+    
+    <dt><span class="term">挤压效应（Squeezing Effect）</span></dt>
+    <dd>负优势值导致的概率分布坍缩现象，使模型将大部分概率质量集中于当前最优输出𝑜∗，降低生成多样性并产生非法输出。</dd>
+    
+    <dt><span class="term">合法性比率（Legality Ratio）</span></dt>
+    <dd>生成式推荐的关键指标，衡量语义ID序列可映射到真实物品ID的比例，反映系统稳定性。</dd>
+    
+    <dt><span class="term">语义ID序列（Semantic ID Sequence）</span></dt>
+    <dd>生成式推荐中使用的结构化标识符，基数\(N_{L_t}^t\)大于实际物品数以提升表达能力，但可能产生无效ID。</dd>
+  </dl>
+</section>
+
+</body>
+</html>

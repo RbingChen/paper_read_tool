@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>论文分析报告</title>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<style>
+  body { font-family: Arial, sans-serif; line-height: 1.6; }
+  .original { background-color: #f0f0f0; border: 1px solid #cccccc; padding: 15px; margin-bottom: 20px; }
+  .translation { background-color: #e0ffe0; border: 1px solid #00cc00; padding: 15px; margin-bottom: 30px; }
+  .table-container { background-color: #ffffcc; padding: 20px; margin: 25px 0; overflow-x: auto; }
+  table { border-collapse: collapse; width: 100%; margin: 15px 0; }
+  th, td { border: 1px solid #888; padding: 8px; text-align: center; }
+  .section-title { font-size: 1.4em; margin-top: 30px; color: #2c3e50; }
+  .term { font-weight: bold; color: red; }
+  .formula-container { text-align: center; margin: 20px 0; }
+  .formula-number { display: block; font-style: italic; }
+</style>
+</head>
+<body>
+
+<h1>论文分析报告：Expanding RL with Verifiable Rewards Across Diverse Domains</h1>
+
+<!-- 内容翻译 -->
+<div class="section-title">内容翻译</div>
+
+<div class="original">
+Expanding RL with Verifiable Rewards Across Diverse Domains
+
+Table 1: Performance Comparison of Different Methods. Base model: Qwen2.5-7B. E: elementary. M: middle. H: high.
+
+4.5 Main Results
+Table 1 shows the results on mathematics and multi-subject tasks. We have the following observations:
+
+Evaluation on Base Models Both our math and multi-subject data have demonstrated notable difficulty, with even strong open-source models like Qwen2.5-72B-Instruct (Team, 2024) and DeepSeek-R1-Distill-Qwen-32B (Guo et al., 2025) performing unsatisfactorily, particularly on multi-subject tasks (21.7% for DeepSeek-R1-Distill-Qwen-32B and 22.6% for Qwen2.5-72B-Instruct). We believe that more challenging datasets will better facilitate exploration across the industry.
+
+SFT vs. RL SFT significantly underperforms RL on both math and multi-subject tasks. Notably on math, SFT merely improves the model performance from 43.4% to 45.7%, falling far short of rule-based reward RL (RLOO, 58.8%) and lagging even further behind model-based reward RL (RM-7B, 63.0%). These findings demonstrate RL's distinct advantages and potential in reasoning tasks when there is no high-quality Chain-of-Thoughts for training.
+
+Model-based Reward vs. Rule-based Reward From the table, we can conclude that model-based reward consistently outperforms rule-based reward in free-form reference-based scenarios. For instance, RM-7B (ours) and Qwen-2.5-72b-Instruct with binary reward achieves 63.0% and 61.6% respectively on average with RLOO, while rule-based reward only gets 58.5%. Notably, our distilled 7B reward model exhibits competitive performance against its much larger predecessor, Qwen2.5-72B-Instruct. In multi-subject evaluations using REINFORCE, the model trained from RM-7B achieves 31.2% accuracy compared to the 72B model's 30.3% – a significant improvement given the substantial parameter disparity. This enhanced capability likely emerges from stabilized response patterns developed during training, which better align with the generative reward model's objectives compared to the base model's more variable outputs.
+
+Binary Reward vs. Soft Reward For rule-based reward, soft reward consistently underperforms binary reward. This discrepancy may stem from redundant tokens between the model's generated answers and reference labels, which can lower the reward scores for correct answers. A potential improvement could involve adopting metrics like cosine similarity of sentence embeddings as soft rewards, as these may better capture semantic alignment. In contrast, for model-based reward, binary and soft rewards yield comparable results on math tasks. This suggests that the model likely produces judgments with extremely high confidence, as determining answer-label matches in
+</div>
+
+<div class="translation">
+跨领域可验证奖励的强化学习扩展
+
+表1：不同方法的性能比较。基础模型：Qwen2.5-7B。E：初级，M：中级，H：高级。
+
+4.5 主要结果
+表1展示了数学和多学科任务的结果。我们有以下观察：
+
+基础模型评估：我们的数学和多学科数据均表现出显著难度，即使强大的开源模型如Qwen2.5-72B-Instruct（Team, 2024）和DeepSeek-R1-Distill-Qwen-32B（Guo et al., 2025）也表现不佳，特别是在多学科任务上（DeepSeek-R1-Distill-Qwen-32B为21.7%，Qwen2.5-72B-Instruct为22.6%）。我们认为更具挑战性的数据集将更好地促进行业探索。
+
+监督微调（SFT）vs 强化学习（RL）：SFT在数学和多学科任务上均显著弱于RL。尤其在数学任务中，SFT仅将模型性能从43.4%提升至45.7%，远低于基于规则的奖励RL（RLOO, 58.8%），更落后于基于模型的奖励RL（RM-7B, 63.0%）。这些发现证明了当缺乏高质量思维链训练数据时，RL在推理任务中的独特优势和潜力。
+
+基于模型的奖励 vs 基于规则的奖励：从表中可得出结论，在自由形式的参考场景中，基于模型的奖励持续优于基于规则的奖励。例如，采用二元奖励的RM-7B（我们的）和Qwen-2.5-72b-Instruct在RLOO上平均分别达到63.0%和61.6%，而基于规则的奖励仅58.5%。值得注意的是，我们蒸馏的7B奖励模型相较于其更大的前身Qwen2.5-72B-Instruct展现出竞争力。在使用REINFORCE的多学科评估中，基于RM-7B训练的模型达到31.2%准确率，而72B模型为30.3%——考虑到显著的参数量差距，这是重大改进。这种增强能力可能源于训练中形成的稳定响应模式，相比基础模型更多变的输出，能更好地与生成式奖励模型的目标对齐。
+
+二元奖励 vs 软奖励：对于基于规则的奖励，软奖励持续表现不如二元奖励。这种差异可能源于模型生成答案与参考标签之间的冗余标记，这会降低正确答案的奖励分数。改进方向可采用句子嵌入的余弦相似度等指标作为软奖励，以更好地捕捉语义对齐。相反，对于基于模型的奖励，二元和软奖励在数学任务上产生可比结果。这表明模型可能以极高置信度进行判断，因为在确定答案-标签匹配时
+</div>
+
+<div class="table-container">
+  <h3>表1：不同方法的性能比较</h3>
+  <table>
+    <tr>
+      <th>方法 (Method)</th>
+      <th>奖励 (Reward)</th>
+      <th>分数类型 (Score Type)</th>
+      <th colspan="4">数学 (Math)</th>
+      <th colspan="6">多学科 (Multi-Subject)</th>
+    </tr>
+    <tr>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>初级 (E)</td>
+      <td>中级 (M)</td>
+      <td>高级 (H)</td>
+      <td>平均 (Avg)</td>
+      <td>STEM</td>
+      <td>社会 (Social)</td>
+      <td>人文 (Humanities)</td>
+      <td>应用 (Applied)</td>
+      <td>其他 (Others)</td>
+      <td>平均 (Avg)</td>
+    </tr>
+    <!-- 表格数据行（省略重复数据） -->
+    <tr><td>Qwen2.5-72B-Instruct</td><td>–</td><td>–</td><td>44.2</td><td>57.7</td><td>40.3</td><td>47.4</td><td>25.2</td><td>20.1</td><td>28.7</td><td>20.5</td><td>21.0</td><td>22.6</td></tr>
+    <tr><td>DeepSeek-R1-Distill-Qwen-32B</td><td>–</td><td>–</td><td>27.6</td><td>34.8</td><td>17.4</td><td>26.6</td><td>23.2</td><td>21.8</td><td>26.7</td><td>20.5</td><td>18.5</td><td>21.7</td></tr>
+    <tr><td>Base</td><td>–</td><td>–</td><td>43.1</td><td>53.9</td><td>33.2</td><td>43.4</td><td>16.3</td><td>14.9</td><td>15.2</td><td>13.3</td><td>14.8</td><td>15.0</td></tr>
+    <tr><td>SFT</td><td>–</td><td>–</td><td>53.6</td><td>50.5</td><td>32.9</td><td>45.7</td><td>24.6</td><td>22.8</td><td>25.7</td><td>20.9</td><td>22.6</td><td>23.1</td></tr>
+    <!-- 其余数据行（省略） -->
+  </table>
+  <p>注：基础模型为Qwen2.5-7B；E=初级，M=中级，H=高级</p>
+</div>
+
+<!-- 内容理解 -->
+<div class="section-title">内容理解</div>
+<div class="original">
+  <p>该文本研究了在数学和多学科任务中应用可验证奖励机制的强化学习方法。通过系统实验对比：</p>
+  <ul>
+    <li>验证了<span class="term">强化学习（Reinforcement Learning, RL）</span>相比<span class="term">监督微调（Supervised Fine-Tuning, SFT）</span>的显著优势</li>
+    <li>证明了<span class="term">基于模型的奖励（Model-based Reward）</span>优于<span class="term">基于规则的奖励（Rule-based Reward）</span></li>
+    <li>揭示了<span class="term">二元奖励（Binary Reward）</span>与<span class="term">软奖励（Soft Reward）</span>在不同场景下的性能差异</li>
+    <li>展示了小型奖励模型<span class="term">RM-7B</span>超越参数量更大的基准模型的能力</li>
+  </ul>
+  <p>核心发现表明：当缺乏高质量思维链数据时，基于模型的强化学习在复杂推理任务中具有独特优势，且模型蒸馏可有效提升小模型的性能。</p>
+</div>
+
+<!-- 摘要总结 -->
+<div class="section-title">摘要总结</div>
+<div class="original">
+  <p>本研究通过系统实验验证了可验证奖励机制在跨领域强化学习中的有效性：</p>
+  <ol>
+    <li>在数学和多学科任务上，<span class="term">强化学习（RL）</span>显著优于<span class="term">监督微调（SFT）</span>，尤其在缺乏高质量思维链数据时</li>
+    <li><span class="term">基于模型的奖励</span>（如RM-7B）持续超越<span class="term">基于规则的奖励</span>，其蒸馏模型在仅7B参数下性能媲美72B模型</li>
+    <li>对于基于规则的奖励，<span class="term">二元奖励</span>优于<span class="term">软奖励</span>；而基于模型的奖励中两者性能相当</li>
+    <li>提出的挑战性数据集有效揭示了现有模型的局限，为行业进步提供明确方向</li>
+  </ol>
+  <p>该工作为复杂推理任务的奖励机制设计提供了重要方法论指导。</p>
+</div>
+
+<!-- 术语识别 -->
+<div class="section-title">术语解释</div>
+<div class="original">
+  <dl>
+    <dt><span class="term">强化学习（Reinforcement Learning, RL）</span></dt>
+    <dd>机器学习范式，智能体通过与环境交互获得的奖励信号优化决策策略。本文中特指使用可验证奖励改进语言模型推理能力的方法。</dd>
+    
+    <dt><span class="term">监督微调（Supervised Fine-Tuning, SFT）</span></dt>
+    <dd>在预训练模型上使用标注数据进行有监督训练的方法。实验显示其在复杂任务上显著弱于强化学习。</dd>
+    
+    <dt><span class="term">基于模型的奖励（Model-based Reward）</span></dt>
+    <dd>使用神经网络（如RM-7B）自动评估响应质量的奖励机制。相比基于规则的奖励展现显著优势，尤其在自由形式应答场景。</dd>
+    
+    <dt><span class="term">基于规则的奖励（Rule-based Reward）</span></dt>
+    <dd>依赖预定义规则（如关键词匹配）计算奖励的方法。实验表明其性能受冗余标记影响较大。</dd>
+    
+    <dt><span class="term">二元奖励（Binary Reward）</span></dt>
+    <dd>0/1离散奖励机制，仅判断答案完全正确与否。在基于规则的奖励中表现优于软奖励。</dd>
+    
+    <dt><span class="term">软奖励（Soft Reward）</span></dt>
+    <dd>连续值奖励机制，量化答案与标准的相似度。实验建议可采用句子嵌入余弦相似度改进。</dd>
+    
+    <dt><span class="term">RM-7B</span></dt>
+    <dd>作者提出的70亿参数奖励模型，通过蒸馏技术实现，在多项任务中超越参数量更大的基准模型（如72B模型）。</dd>
+    
+    <dt><span class="term">REINFORCE</span></dt>
+    <dd>经典策略梯度强化学习算法，本文中作为基准方法之一进行对比。</dd>
+    
+    <dt><span class="term">RLOO</span></dt>
+    <dd>基于规则奖励的强化学习方法（Reinforcement Learning with Online Optimization），在实验中作为对比基线。</dd>
+  </dl>
+</div>
+
+</body>
+</html>

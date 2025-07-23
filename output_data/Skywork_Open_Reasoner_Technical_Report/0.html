@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>Skywork-OR1技术报告分析</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; }
+        .original { 
+            background-color: #f0f0f0; 
+            border: 1px solid #cccccc; 
+            padding: 15px; 
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+        .translation { 
+            background-color: #e0f7e0; 
+            border: 1px solid #4CAF50; 
+            padding: 15px; 
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+        .figure { 
+            background-color: #fffde7; 
+            padding: 15px; 
+            margin: 20px 0;
+            text-align: center;
+            font-style: italic;
+        }
+        .term { 
+            color: #ff0000; 
+            font-weight: bold; 
+        }
+        h2 { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 5px; }
+        .section { margin-bottom: 30px; }
+    </style>
+</head>
+<body>
+
+<div class="section">
+    <h2>内容理解</h2>
+    <p>该技术报告介绍了Skywork-OR1系列模型，重点阐述了通过强化学习（RL）显著提升大语言模型（LLM）推理能力的方法。核心创新点包括：</p>
+    <ol>
+        <li>基于DeepSeek-R1-Distill模型，开发了可扩展的RL训练框架，专门优化长链思维（CoT）推理</li>
+        <li>在三大基准测试（AIME24/25, LiveCodeBench）上实现显著性能提升：32B模型提升15%，7B模型提升13.9%</li>
+        <li>首次系统研究<strong class="term">熵崩溃（Entropy Collapse）</strong>现象，证明控制熵动态对性能的关键作用</li>
+        <li>开源全套资源（模型权重/训练代码/数据集），推动社区研究</li>
+    </ol>
+    <p>技术贡献主要体现在：RL训练管线的有效性验证、熵动态调控机制的发现、以及轻量化模型（7B）在推理任务上的竞争力证明。</p>
+</div>
+
+<div class="section">
+    <h2>内容翻译</h2>
+    
+    <div class="original">
+        arXiv:2505.22312v2 [cs.LG] 29 May 2025<br>
+        Skywork Open Reasoner 1 Technical Report<br>
+        Jujie He∗,†, Jiacai Liu∗, Chris Yuhao Liu, Rui Yan, Chaojie Wang, Peng Cheng, Xiaoyu Zhang, Fuxiang Zhang, Jiacheng Xu, Wei Shen, Siyuan Li, Liang Zeng, Tianwen Wei, Cheng Cheng, Bo An, Yang Liu, and Yahui Zhou<br>
+        Skywork AI, Kunlun Inc<br>
+        GitHub: https://github.com/SkyworkAI/Skywork-OR1<br>
+        HuggingFace: https://huggingface.co/Skywork/Skywork-OR1-32B
+    </div>
+    <div class="translation">
+        arXiv:2505.22312v2 [cs.LG] 2025年5月29日<br>
+        Skywork开放推理器1技术报告<br>
+        何炬杰∗,†、刘家才∗、Chris Yuhao Liu、严锐、王超杰、程鹏、张晓宇、张福祥、徐家成、沈伟、李思远、曾亮、魏天文、程诚、安波、刘洋、周亚辉<br>
+        Skywork AI，昆仑万维<br>
+        GitHub：https://github.com/SkyworkAI/Skywork-OR1<br>
+        HuggingFace：https://huggingface.co/Skywork/Skywork-OR1-32B
+    </div>
+    
+    <div class="original">
+        Abstract<br>
+        The success of <strong class="term">DeepSeek-R1</strong> underscores the significant role of <strong class="term">reinforcement learning (RL)</strong> in enhancing the reasoning capabilities of <strong class="term">large language models (LLMs)</strong>. In this work, we present <strong class="term">Skywork-OR1</strong>, an effective and scalable RL implementation for long <strong class="term">Chain-of-Thought (CoT)</strong> models. Building on the <strong class="term">DeepSeek-R1-Distill</strong> model series, our RL approach achieves notable performance gains, increasing average accuracy across <strong class="term">AIME24</strong>, <strong class="term">AIME25</strong>, and <strong class="term">LiveCodeBench</strong> from 57.8% to 72.8% (+15.0%) for the 32B model and from 43.6% to 57.5% (+13.9%) for the 7B model. Our Skywork-OR1-32B model surpasses both DeepSeek-R1 and Qwen3-32B on the AIME24 and AIME25 benchmarks, while achieving comparable results on LiveCodeBench. The Skywork-OR1-7B and Skywork-OR1-Math-7B models demonstrate competitive reasoning capabilities among models of similar size. We perform comprehensive ablation studies on the core components of our training pipeline to validate their effectiveness. Additionally, we thoroughly investigate the phenomenon of <strong class="term">entropy collapse</strong>, identify key factors affecting entropy dynamics, and demonstrate that mitigating premature entropy collapse is critical for improved test performance. To support community research, we fully open-source our model weights, training code, and training datasets.
+    </div>
+    <div class="translation">
+        摘要<br>
+        <strong class="term">DeepSeek-R1</strong>的成功凸显了<strong class="term">强化学习（RL）</strong>在增强<strong class="term">大型语言模型（LLM）</strong>推理能力中的重要作用。本研究提出<strong class="term">Skywork-OR1</strong>——一种针对长链<strong class="term">思维链（CoT）</strong>模型的高效可扩展RL实现。基于<strong class="term">DeepSeek-R1-Distill</strong>模型系列，我们的RL方法实现了显著性能提升：在<strong class="term">AIME24</strong>、<strong class="term">AIME25</strong>和<strong class="term">LiveCodeBench</strong>基准测试中，32B模型平均准确率从57.8%提升至72.8%（+15.0%），7B模型从43.6%提升至57.5%（+13.9%）。Skywork-OR1-32B模型在AIME24和AIME25上超越DeepSeek-R1和Qwen3-32B，在LiveCodeBench上达到相当水平。Skywork-OR1-7B和Skywork-OR1-Math-7B模型在同等规模模型中展现出竞争力。我们通过全面的消融研究验证训练管线核心组件的有效性。此外，我们深入研究了<strong class="term">熵崩溃</strong>现象，识别影响熵动态的关键因素，并证明缓解过早熵崩溃对提升测试性能至关重要。为支持社区研究，我们完整开源模型权重、训练代码和训练数据集。
+    </div>
+    
+    <div class="figure">
+        Figure 1: The performance curve of Skywork-OR1-32B during RL training for AIME 2024 and AIME 2025. The red stars indicate the selected final checkpoints.
+    </div>
+    <div class="translation">
+        图1：Skywork-OR1-32B在AIME 2024和AIME 2025的RL训练期间性能曲线。红星标记选定的最终检查点。
+    </div>
+    
+    <div class="original">
+        ∗Equal contribution.<br>
+        †Corresponding author: jujie.he@kunlun-inc.com
+    </div>
+    <div class="translation">
+        ∗同等贡献<br>
+        †通讯作者：jujie.he@kunlun-inc.com
+    </div>
+</div>
+
+<div class="section">
+    <h2>摘要总结</h2>
+    <p>本技术报告的核心内容可概括为：</p>
+    <ul>
+        <li>提出<strong class="term">Skywork-OR1</strong>系列模型，通过强化学习（RL）显著提升大语言模型的推理能力</li>
+        <li>在三大基准测试（AIME24/25, LiveCodeBench）上实现突破性提升：32B模型准确率提升15%，7B模型提升13.9%</li>
+        <li>32B版本超越DeepSeek-R1和Qwen3-32B，7B版本在同类模型中具备竞争力</li>
+        <li>首次系统揭示<strong class="term">熵崩溃（Entropy Collapse）</strong>现象及其对模型性能的关键影响</li>
+        <li>通过消融实验验证RL训练管线的有效性</li>
+        <li>完整开源模型权重、训练代码和数据集</li>
+    </ul>
+</div>
+
+<div class="section">
+    <h2>术语识别</h2>
+    <dl>
+        <dt><strong class="term">强化学习（Reinforcement Learning, RL）</strong></dt>
+        <dd>机器学习范式，智能体通过与环境交互获得的奖励信号优化决策策略。本文利用RL优化语言模型的推理路径选择。</dd>
+        
+        <dt><strong class="term">大型语言模型（Large Language Models, LLMs）</strong></dt>
+        <dd>基于海量文本训练的深度学习模型（如GPT系列），具备文本生成、推理等能力。本文研究对象为7B/32B参数规模的LLMs。</dd>
+        
+        <dt><strong class="term">思维链（Chain-of-Thought, CoT）</strong></dt>
+        <dd>引导模型分步推理的技术，通过生成中间推理步骤提升复杂问题解决能力。本文聚焦<strong>长链CoT</strong>场景的优化。</dd>
+        
+        <dt><strong class="term">熵崩溃（Entropy Collapse）</strong></dt>
+        <dd>RL训练中模型输出分布趋于尖锐化（熵值降低），导致探索不足和过拟合的现象。本文证明控制熵动态可提升15%+性能。</dd>
+        
+        <dt><strong class="term">AIME24/AIME25</strong></dt>
+        <dd>人工智能数学推理评测基准（Artificial Intelligence Mathematical Olympiad），评估模型解决复杂数学问题的能力。</dd>
+        
+        <dt><strong class="term">LiveCodeBench</strong></dt>
+        <dd>动态编程能力评测基准，测试模型理解、生成和调试代码的能力。</dd>
+        
+        <dt><strong class="term">消融研究（Ablation Study）</strong></dt>
+        <dd>通过系统移除模型组件来验证其贡献的实验方法，本文用于分析RL训练管线的有效性。</dd>
+    </dl>
+</div>
+
+</body>
+</html>

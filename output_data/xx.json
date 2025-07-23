@@ -1,0 +1,5432 @@
+[
+  {
+    "name": "supply_request",
+    "value": [
+      {
+        "name": "accessChannel",
+        "value": "wx"
+      },
+      {
+        "name": "offset",
+        "value": 1
+      },
+      {
+        "name": "mtKnowledgeSearchConfigs",
+        "value": [
+          [
+            {
+              "name": "searchConfigKey",
+              "value": "wxAppTagCloudResOutputFullNew"
+            },
+            {
+              "name": "searchConfigDetail",
+              "value": "{\"storageEngine\": \"es\", \"fields\": [{\"name\": \"mt_poi_id\", \"type\": \"string\", \"alias\": \"mt_poi_id\"}, {\"name\": \"review_body\", \"type\": \"string\", \"alias\": \"评论内容\"}, {\"name\": \"tag_content\", \"type\": \"string\", \"alias\": \"高亮文本\"}, {\"name\": \"tag_name\", \"type\": \"string\", \"alias\": \"标签名称\"}], \"filterConditions\": [{\"field\": \"dt\", \"operator\": \"closeRange\", \"additionParams\": {\"lowBound\": \"2025-07-11\", \"upBound\": \"2025-07-13\"}}, {\"field\": \"mt_poi_id\", \"operator\": \"include\", \"value\": [\"844523517\", \"1342198102\", \"582948019\", \"689664046\", \"1224230880\", \"1980384071\", \"1571972603\", \"1714262217\", \"921119910\", \"1167090307\", \"919564119\", \"1062385687\", \"1403177491\", \"921119910\", \"585437815\", \"18007869\", \"21517175\", \"16252214\", \"20565039\", \"9599162\", \"16615069\", \"20563389\", \"13495927\", \"16945719\", \"2321924\", \"12221680\", \"18986288\", \"19449990\", \"27873417\", \"20563389\", \"14710616\", \"22860497\", \"23958648\", \"11710144\"]}, {\"field\": \"emotion_label\", \"operator\": \"equal\", \"value\": \"1\"}]}"
+            }
+          ],
+          [
+            {
+              "name": "searchConfigKey",
+              "value": "dimCommonXmdPoiSs"
+            },
+            {
+              "name": "searchConfigDetail",
+              "value": "{\"storageEngine\": \"es\", \"fields\": [{\"name\": \"poi_id\", \"type\": \"long\", \"alias\": \"mt_poi_id\"}, {\"name\": \"address\", \"type\": \"string\", \"alias\": \"门店地址\"}, {\"name\": \"poi_phone\", \"type\": \"string\", \"alias\": \"门店电话\"}, {\"name\": \"mt_poi_cate1_name\", \"type\": \"string\", \"alias\": \"门店一级品类名\"}, {\"name\": \"mt_poi_cate2_name\", \"type\": \"string\", \"alias\": \"门店二级品类名\"}, {\"name\": \"mt_poi_cate3_name\", \"type\": \"string\", \"alias\": \"门店三级品类名\"}, {\"name\": \"open_info\", \"type\": \"string\", \"alias\": \"营业时间\"}, {\"name\": \"price_person\", \"type\": \"double\", \"alias\": \"人均消费\"}, {\"name\": \"parking_info\", \"type\": \"string\", \"alias\": \"停车信息\"}, {\"name\": \"has_wifi\", \"type\": \"long\", \"alias\": \"是否有wifi\"}, {\"name\": \"has_parking_area\", \"type\": \"long\", \"alias\": \"是否有停车区\"}, {\"name\": \"has_booth\", \"type\": \"string\", \"long\": \"是否有包厢\"}, {\"name\": \"has_smoking_area\", \"type\": \"long\", \"alias\": \"是否有吸烟区\"}, {\"name\": \"barea_name\", \"type\": \"string\", \"alias\": \"商圈名称\"}], \"filterConditions\": [{\"field\": \"partition_date\", \"operator\": \"equal\", \"value\": \"2025-07-13\"}, {\"field\": \"poi_id\", \"operator\": \"include\", \"value\": [\"844523517\", \"1342198102\", \"582948019\", \"689664046\", \"1224230880\", \"1980384071\", \"1571972603\", \"1714262217\", \"921119910\", \"1167090307\", \"919564119\", \"1062385687\", \"1403177491\", \"921119910\", \"585437815\", \"18007869\", \"21517175\", \"16252214\", \"20565039\", \"9599162\", \"16615069\", \"20563389\", \"13495927\", \"16945719\", \"2321924\", \"12221680\", \"18986288\", \"19449990\", \"27873417\", \"20563389\", \"14710616\", \"22860497\", \"23958648\", \"11710144\"]}, {\"field\": \"chain\", \"operator\": \"equal\", \"value\": 0}]}"
+            }
+          ],
+          [
+            {
+              "name": "searchConfigKey",
+              "value": "appPricePowerWaimaiSkuLabelD"
+            },
+            {
+              "name": "searchConfigDetail",
+              "value": "{\"storageEngine\": \"es\", \"fields\": [{\"name\": \"wm_sku_id\", \"type\": \"string\", \"alias\": \"wm_sku_id\"}, {\"name\": \"spu_id\", \"type\": \"string\", \"alias\": \"spu_id\"}, {\"name\": \"sku_name\", \"type\": \"string\", \"alias\": \"sku_name\"}, {\"name\": \"is_all_lowest_price\", \"type\": \"long\", \"alias\": \"是否全网低价\"}, {\"name\": \"is_hist_lowest_price\", \"type\": \"long\", \"alias\": \"是否历史低价\"}], \"filterConditions\": [{\"field\": \"dt\", \"operator\": \"equal\", \"value\": \"20250713\"}, {\"field\": \"spu_id\", \"operator\": \"include\", \"value\": [\"2960787813\", \"2960825722\", \"2960787778\", \"2960935964\", \"17590947602\", \"17592373872\", \"15854978266\", \"15665643801\", \"11694612883\", \"15790242058\", \"11450424170\", \"11839644775\", \"19920000658\", \"12315447316\", \"19944851371\", \"16177619230\", \"19645464790\", \"19646847978\", \"20012925446\", \"20149083957\", \"19920000656\", \"19645942977\", \"19578195568\", \"19897683664\", \"20197012626\"]}]}"
+            }
+          ],
+          [
+            {
+              "name": "searchConfigKey",
+              "value": "appPricePowerDaocanDealgroupLabelD"
+            },
+            {
+              "name": "searchConfigDetail",
+              "value": "{\"storageEngine\": \"es\", \"fields\": [{\"name\": \"mt_deal_id\", \"type\": \"string\", \"alias\": \"mt_deal_id\"}, {\"name\": \"deal_name\", \"type\": \"string\", \"alias\": \"deal_name\"}, {\"name\": \"supply_id\", \"type\": \"string\", \"alias\": \"supply_id\"}, {\"name\": \"if_lishidijia\", \"type\": \"string\", \"alias\": \"是否历史低价\"}, {\"name\": \"if_lowest_pric_30day\", \"type\": \"long\", \"alias\": \"是否近30天低价\"}, {\"name\": \"if_lowest_pric_60day\", \"type\": \"long\", \"alias\": \"是否近60天低价\"}, {\"name\": \"if_lowest_pric_90day\", \"type\": \"long\", \"alias\": \"是否近90天低价\"}, {\"name\": \"if_lowest_pric_180day\", \"type\": \"long\", \"alias\": \"是否近180天低价\"}], \"filterConditions\": [{\"field\": \"dt\", \"operator\": \"equal\", \"value\": \"20250713\"}, {\"field\": \"mt_deal_id\", \"operator\": \"include\", \"value\": [\"922551207\", \"1344147986\", \"854297769\", \"1032184464\", \"854301752\", \"1029358820\", \"1153116771\", \"1153116554\", \"1153103765\", \"1153130918\", \"1153101596\", \"968543219\", \"1320665198\", \"851558300\", \"1196357945\", \"694003171\", \"708819859\", \"1209379759\", \"1209411517\", \"1300809784\", \"1209424599\", \"1041176014\", \"915900912\", \"1243252616\", \"1243250332\", \"1057306210\", \"1357878514\", \"1357967996\", \"1363379002\", \"1280729171\", \"1352448934\", \"914307134\", \"1067432102\", \"1067437044\", \"868898709\", \"1342239125\", \"926612263\", \"1065920558\", \"921863358\", \"930330784\", \"1328837252\", \"889158054\", \"799555022\", \"1048015230\", \"1363035651\", \"1165757786\", \"821021765\", \"862234649\", \"935329418\", \"1324650995\", \"894715880\", \"1297879285\", \"1058158909\", \"1173522548\", \"1315868714\", \"1340370351\", \"1132615150\", \"1340208725\", \"1412051224\", \"1175349045\", \"1386444293\", \"1175349342\", \"1175338944\", \"1402547510\", \"1173522548\", \"1321859225\", \"1340370351\", \"1315868714\", \"1132615150\", \"889158054\", \"799555022\", \"1165757786\", \"1363035651\", \"1048015230\", \"821021765\", \"1246527603\", \"854873623\", \"792218102\", \"1139077829\", \"1376681839\", \"1287355228\", \"748611576\", \"1316834734\", \"1214488721\", \"833840325\", \"1370324348\", \"696964824\", \"1370513738\", \"1196430757\", \"853226632\", \"1370846336\", \"1315878676\", \"799528938\", \"1191576950\", \"916466601\"]}]}"
+            }
+          ]
+        ]
+      },
+      {
+        "name": "config_poi_details_fields",
+        "value": [
+          [
+            {
+              "name": "name",
+              "value": "poi_id"
+            },
+            {
+              "name": "type",
+              "value": "long"
+            },
+            {
+              "name": "alias",
+              "value": "mt_poi_id"
+            }
+          ],
+          [
+            {
+              "name": "name",
+              "value": "address"
+            },
+            {
+              "name": "type",
+              "value": "string"
+            },
+            {
+              "name": "alias",
+              "value": "门店地址"
+            }
+          ],
+          [
+            {
+              "name": "name",
+              "value": "poi_phone"
+            },
+            {
+              "name": "type",
+              "value": "string"
+            },
+            {
+              "name": "alias",
+              "value": "门店电话"
+            }
+          ],
+          [
+            {
+              "name": "name",
+              "value": "mt_poi_cate1_name"
+            },
+            {
+              "name": "type",
+              "value": "string"
+            },
+            {
+              "name": "alias",
+              "value": "门店一级品类名"
+            }
+          ],
+          [
+            {
+              "name": "name",
+              "value": "mt_poi_cate2_name"
+            },
+            {
+              "name": "type",
+              "value": "string"
+            },
+            {
+              "name": "alias",
+              "value": "门店二级品类名"
+            }
+          ],
+          [
+            {
+              "name": "name",
+              "value": "mt_poi_cate3_name"
+            },
+            {
+              "name": "type",
+              "value": "string"
+            },
+            {
+              "name": "alias",
+              "value": "门店三级品类名"
+            }
+          ],
+          [
+            {
+              "name": "name",
+              "value": "open_info"
+            },
+            {
+              "name": "type",
+              "value": "string"
+            },
+            {
+              "name": "alias",
+              "value": "营业时间"
+            }
+          ],
+          [
+            {
+              "name": "name",
+              "value": "price_person"
+            },
+            {
+              "name": "type",
+              "value": "double"
+            },
+            {
+              "name": "alias",
+              "value": "人均消费"
+            }
+          ],
+          [
+            {
+              "name": "name",
+              "value": "parking_info"
+            },
+            {
+              "name": "type",
+              "value": "string"
+            },
+            {
+              "name": "alias",
+              "value": "停车信息"
+            }
+          ],
+          [
+            {
+              "name": "name",
+              "value": "has_wifi"
+            },
+            {
+              "name": "type",
+              "value": "long"
+            },
+            {
+              "name": "alias",
+              "value": "是否有wifi"
+            }
+          ],
+          [
+            {
+              "name": "name",
+              "value": "has_parking_area"
+            },
+            {
+              "name": "type",
+              "value": "long"
+            },
+            {
+              "name": "alias",
+              "value": "是否有停车区"
+            }
+          ],
+          [
+            {
+              "name": "name",
+              "value": "has_booth"
+            },
+            {
+              "name": "type",
+              "value": "string"
+            },
+            {
+              "name": "long",
+              "value": "是否有包厢"
+            }
+          ],
+          [
+            {
+              "name": "name",
+              "value": "has_smoking_area"
+            },
+            {
+              "name": "type",
+              "value": "long"
+            },
+            {
+              "name": "alias",
+              "value": "是否有吸烟区"
+            }
+          ],
+          [
+            {
+              "name": "name",
+              "value": "barea_name"
+            },
+            {
+              "name": "type",
+              "value": "string"
+            },
+            {
+              "name": "alias",
+              "value": "商圈名称"
+            }
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "name": "dealGroupList",
+    "value": []
+  },
+  {
+    "name": "phfResultMap_list",
+    "value": [
+      [
+        {
+          "name": "id",
+          "value": "18007869"
+        },
+        {
+          "name": "name",
+          "value": "美味生菜煎饼"
+        },
+        {
+          "name": "pagePath",
+          "value": "waimai-bargain-sub1/pages/transfer/guide/index?path=%2Fwaimai-bargain-sub2%2Fpackages%2Fbargain%2Fproduct-detail%2Findex%3Fchannel_id%3D65%26spu_id%3D15854978266%26poi_id_str%3D3Pwiy_oNyNf3POBVsXQroQI%26wm_poi_id%3D18007869"
+        },
+        {
+          "name": "imageUrl",
+          "value": "http://p0.meituan.net/wmproduct/afa3d27f132b024de21d73f2765431a783393.jpg"
+        },
+        {
+          "name": "promotionPrice",
+          "value": "12.2"
+        },
+        {
+          "name": "counterPrice",
+          "value": "17.7"
+        },
+        {
+          "name": "discountTag",
+          "value": "6.9折，立减5.5元"
+        },
+        {
+          "name": "merchantName",
+          "value": "虎头军煎饼（平乐园店）"
+        },
+        {
+          "name": "spuId",
+          "value": "15854978266"
+        },
+        {
+          "name": "distance",
+          "value": "19100.0"
+        },
+        {
+          "name": "deliveryTime",
+          "value": "71"
+        },
+        {
+          "name": "tags",
+          "value": [
+            "已拼10+份",
+            "2人拼团"
+          ]
+        }
+      ],
+      [
+        {
+          "name": "id",
+          "value": "21517175"
+        },
+        {
+          "name": "name",
+          "value": "香辣鸡杂煲仔饭"
+        },
+        {
+          "name": "pagePath",
+          "value": "waimai-bargain-sub1/pages/transfer/guide/index?path=%2Fwaimai-bargain-sub2%2Fpackages%2Fbargain%2Fproduct-detail%2Findex%3Fchannel_id%3D65%26spu_id%3D15665643801%26poi_id_str%3DdrdrVLNtyxCwfWRTuTz1zgI%26wm_poi_id%3D21517175"
+        },
+        {
+          "name": "imageUrl",
+          "value": "http://p0.meituan.net/wmproduct/bd049110650058122acee127953f7d212000371.png"
+        },
+        {
+          "name": "promotionPrice",
+          "value": "19.3"
+        },
+        {
+          "name": "counterPrice",
+          "value": "24.8"
+        },
+        {
+          "name": "discountTag",
+          "value": "7.8折，立减5.5元"
+        },
+        {
+          "name": "merchantName",
+          "value": "煲仔皇煲仔饭（花乡奥莱店）"
+        },
+        {
+          "name": "spuId",
+          "value": "15665643801"
+        },
+        {
+          "name": "distance",
+          "value": "34500.0"
+        },
+        {
+          "name": "deliveryTime",
+          "value": "95"
+        },
+        {
+          "name": "tags",
+          "value": [
+            "已拼10+份",
+            "2人拼团"
+          ]
+        }
+      ],
+      [
+        {
+          "name": "id",
+          "value": "16252214"
+        },
+        {
+          "name": "name",
+          "value": "酱骨250克口味随心选+酸菜垫底+米饭+榨菜"
+        },
+        {
+          "name": "pagePath",
+          "value": "waimai-bargain-sub1/pages/transfer/guide/index?path=%2Fwaimai-bargain-sub2%2Fpackages%2Fbargain%2Fproduct-detail%2Findex%3Fchannel_id%3D65%26spu_id%3D11694612883%26poi_id_str%3DtiGhVc7Ad6HL6yGlAhcBvwI%26wm_poi_id%3D16252214"
+        },
+        {
+          "name": "imageUrl",
+          "value": "http://p1.meituan.net/wmproduct/ad5df4789844d554dcb2f84c407cce07524221.jpg"
+        },
+        {
+          "name": "promotionPrice",
+          "value": "13.2"
+        },
+        {
+          "name": "counterPrice",
+          "value": "18.7"
+        },
+        {
+          "name": "discountTag",
+          "value": "7.1折，立减5.5元"
+        },
+        {
+          "name": "merchantName",
+          "value": "吾牧酱骨·酱骨米饭（来广营店）"
+        },
+        {
+          "name": "spuId",
+          "value": "11694612883"
+        },
+        {
+          "name": "distance",
+          "value": "3200.0"
+        },
+        {
+          "name": "deliveryTime",
+          "value": "35"
+        },
+        {
+          "name": "tags",
+          "value": [
+            "已拼100+份",
+            "2人拼团"
+          ]
+        }
+      ],
+      [
+        {
+          "name": "id",
+          "value": "20565039"
+        },
+        {
+          "name": "name",
+          "value": "黄金脆鸡堡+黄金脆鸡堡"
+        },
+        {
+          "name": "pagePath",
+          "value": "waimai-bargain-sub1/pages/transfer/guide/index?path=%2Fwaimai-bargain-sub2%2Fpackages%2Fbargain%2Fproduct-detail%2Findex%3Fchannel_id%3D65%26spu_id%3D15790242058%26poi_id_str%3DS33tkABCRR5eVexPV61vsQI%26wm_poi_id%3D20565039"
+        },
+        {
+          "name": "imageUrl",
+          "value": "http://p1.meituan.net/wmproduct/27d96a6f6ea770b36f79b9ee68f4fc6d154180.jpg"
+        },
+        {
+          "name": "promotionPrice",
+          "value": "9.9"
+        },
+        {
+          "name": "counterPrice",
+          "value": "19.7"
+        },
+        {
+          "name": "discountTag",
+          "value": "5.1折，立减9.8元"
+        },
+        {
+          "name": "merchantName",
+          "value": "燃熊●中国汉堡(平乐园店)"
+        },
+        {
+          "name": "spuId",
+          "value": "15790242058"
+        },
+        {
+          "name": "distance",
+          "value": "19400.0"
+        },
+        {
+          "name": "deliveryTime",
+          "value": "76"
+        },
+        {
+          "name": "tags",
+          "value": [
+            "已拼2000+份",
+            "2人拼团"
+          ]
+        }
+      ],
+      [
+        {
+          "name": "id",
+          "value": "9599162"
+        },
+        {
+          "name": "name",
+          "value": "牛肉大葱(整张)+咸菜+粥"
+        },
+        {
+          "name": "pagePath",
+          "value": "waimai-bargain-sub1/pages/transfer/guide/index?path=%2Fwaimai-bargain-sub2%2Fpackages%2Fbargain%2Fproduct-detail%2Findex%3Fchannel_id%3D65%26spu_id%3D11450424170%26poi_id_str%3DvP1XKysz0ZQRLmnnTf3ulwI%26wm_poi_id%3D9599162"
+        },
+        {
+          "name": "imageUrl",
+          "value": "http://p0.meituan.net/wmproduct/be3b78bd57ed2f4fd34437205c614d7284619.jpg"
+        },
+        {
+          "name": "promotionPrice",
+          "value": "9.9"
+        },
+        {
+          "name": "counterPrice",
+          "value": "21.1"
+        },
+        {
+          "name": "discountTag",
+          "value": "4.7折，立减11.2元"
+        },
+        {
+          "name": "merchantName",
+          "value": "香河肉饼（农光里店）"
+        },
+        {
+          "name": "spuId",
+          "value": "11450424170"
+        },
+        {
+          "name": "distance",
+          "value": "20200.0"
+        },
+        {
+          "name": "deliveryTime",
+          "value": "70"
+        },
+        {
+          "name": "tags",
+          "value": [
+            "已拼1000+份",
+            "2人拼团"
+          ]
+        }
+      ],
+      [
+        {
+          "name": "id",
+          "value": "16615069"
+        },
+        {
+          "name": "name",
+          "value": "重庆酸辣粉+青菜"
+        },
+        {
+          "name": "pagePath",
+          "value": "waimai-bargain-sub1/pages/transfer/guide/index?path=%2Fwaimai-bargain-sub2%2Fpackages%2Fbargain%2Fproduct-detail%2Findex%3Fchannel_id%3D65%26spu_id%3D11839644775%26poi_id_str%3DXex5ClUw0roQijeOlGXw5AI%26wm_poi_id%3D16615069"
+        },
+        {
+          "name": "imageUrl",
+          "value": "http://p0.meituan.net/wmproduct/e1690b62bcd54d4ac8d2b90a9cd56a4e909400.jpg"
+        },
+        {
+          "name": "promotionPrice",
+          "value": "13.2"
+        },
+        {
+          "name": "counterPrice",
+          "value": "18.7"
+        },
+        {
+          "name": "discountTag",
+          "value": "7.1折，立减5.5元"
+        },
+        {
+          "name": "merchantName",
+          "value": "重庆阿婆牛肉面（重庆小面·米线·抄手）"
+        },
+        {
+          "name": "spuId",
+          "value": "11839644775"
+        },
+        {
+          "name": "distance",
+          "value": "22400.0"
+        },
+        {
+          "name": "deliveryTime",
+          "value": "95"
+        },
+        {
+          "name": "tags",
+          "value": [
+            "已拼40+份",
+            "2人拼团"
+          ]
+        }
+      ],
+      [
+        {
+          "name": "id",
+          "value": "20563389"
+        },
+        {
+          "name": "name",
+          "value": "棒打鲜橙"
+        },
+        {
+          "name": "pagePath",
+          "value": "waimai-bargain-sub1/pages/transfer/guide/index?path=%2Fwaimai-bargain-sub2%2Fpackages%2Fbargain%2Fproduct-detail%2Findex%3Fchannel_id%3D65%26spu_id%3D19920000658%26poi_id_str%3DwfQfmzonvUIvNaH8-Y-rXgI%26wm_poi_id%3D20563389"
+        },
+        {
+          "name": "imageUrl",
+          "value": "http://p0.meituan.net/wmproduct/d3d085510ff0f459fca78ddc8cb2ebea508963.png"
+        },
+        {
+          "name": "promotionPrice",
+          "value": "2.9"
+        },
+        {
+          "name": "counterPrice",
+          "value": "8.4"
+        },
+        {
+          "name": "discountTag",
+          "value": "3.5折，立减5.5元"
+        },
+        {
+          "name": "merchantName",
+          "value": "蜜雪冰城（管庄店）"
+        },
+        {
+          "name": "spuId",
+          "value": "19920000658"
+        },
+        {
+          "name": "distance",
+          "value": "20700.0"
+        },
+        {
+          "name": "deliveryTime",
+          "value": "91"
+        },
+        {
+          "name": "tags",
+          "value": [
+            "已拼900+份",
+            "2人拼团"
+          ]
+        }
+      ],
+      [
+        {
+          "name": "id",
+          "value": "13495927"
+        },
+        {
+          "name": "name",
+          "value": "豆腐拼土豆1份+可乐1个"
+        },
+        {
+          "name": "pagePath",
+          "value": "waimai-bargain-sub1/pages/transfer/guide/index?path=%2Fwaimai-bargain-sub2%2Fpackages%2Fbargain%2Fproduct-detail%2Findex%3Fchannel_id%3D65%26spu_id%3D12315447316%26poi_id_str%3Di7e8-NzeMHlmSB-mIeLx-wI%26wm_poi_id%3D13495927"
+        },
+        {
+          "name": "imageUrl",
+          "value": "http://p0.meituan.net/wmproduct/0bbbde19f6aa019685679cec7e4ea01a57580.jpg"
+        },
+        {
+          "name": "promotionPrice",
+          "value": "13.2"
+        },
+        {
+          "name": "counterPrice",
+          "value": "18.7"
+        },
+        {
+          "name": "discountTag",
+          "value": "7.1折，立减5.5元"
+        },
+        {
+          "name": "merchantName",
+          "value": "张仪村铁板烧臭豆腐（第13档口福宝隆美食城店）"
+        },
+        {
+          "name": "spuId",
+          "value": "12315447316"
+        },
+        {
+          "name": "distance",
+          "value": "26800.0"
+        },
+        {
+          "name": "deliveryTime",
+          "value": "95"
+        },
+        {
+          "name": "tags",
+          "value": [
+            "已拼30+份",
+            "2人拼团"
+          ]
+        }
+      ],
+      [
+        {
+          "name": "id",
+          "value": "16945719"
+        },
+        {
+          "name": "name",
+          "value": "生椰拿铁"
+        },
+        {
+          "name": "pagePath",
+          "value": "waimai-bargain-sub1/pages/transfer/guide/index?path=%2Fwaimai-bargain-sub2%2Fpackages%2Fbargain%2Fproduct-detail%2Findex%3Fchannel_id%3D65%26spu_id%3D19944851371%26poi_id_str%3Dt90LF57HGn5uIcNtHJvthQI%26wm_poi_id%3D16945719"
+        },
+        {
+          "name": "imageUrl",
+          "value": "http://p1.meituan.net/wmproduct/99559d73e3c84f4d5e5cbf9314b84bd1255797.jpg"
+        },
+        {
+          "name": "promotionPrice",
+          "value": "9.95"
+        },
+        {
+          "name": "counterPrice",
+          "value": "15.45"
+        },
+        {
+          "name": "discountTag",
+          "value": "6.5折，立减5.5元"
+        },
+        {
+          "name": "merchantName",
+          "value": "库迪咖啡(北京东方广场店)"
+        },
+        {
+          "name": "spuId",
+          "value": "19944851371"
+        },
+        {
+          "name": "distance",
+          "value": "17700.0"
+        },
+        {
+          "name": "deliveryTime",
+          "value": "70"
+        },
+        {
+          "name": "tags",
+          "value": [
+            "已拼800+份",
+            "2人拼团"
+          ]
+        }
+      ],
+      [
+        {
+          "name": "id",
+          "value": "2321924"
+        },
+        {
+          "name": "name",
+          "value": "随机六荤六素+方便面"
+        },
+        {
+          "name": "pagePath",
+          "value": "waimai-bargain-sub1/pages/transfer/guide/index?path=%2Fwaimai-bargain-sub2%2Fpackages%2Fbargain%2Fproduct-detail%2Findex%3Fchannel_id%3D65%26spu_id%3D16177619230%26poi_id_str%3DkvRhhyLgX3PYIbfRUQknEgI%26wm_poi_id%3D2321924"
+        },
+        {
+          "name": "imageUrl",
+          "value": "http://p0.meituan.net/wmproduct/71be9771c37f234d2fb4eb6544267d3682027.jpg"
+        },
+        {
+          "name": "promotionPrice",
+          "value": "6.9"
+        },
+        {
+          "name": "counterPrice",
+          "value": "13.4"
+        },
+        {
+          "name": "discountTag",
+          "value": "5.2折，立减6.5元"
+        },
+        {
+          "name": "merchantName",
+          "value": "张亮麻辣烫(朝阳区店)"
+        },
+        {
+          "name": "spuId",
+          "value": "16177619230"
+        },
+        {
+          "name": "distance",
+          "value": "8900.0"
+        },
+        {
+          "name": "deliveryTime",
+          "value": "53"
+        },
+        {
+          "name": "tags",
+          "value": [
+            "已拼800+份",
+            "2人拼团"
+          ]
+        }
+      ],
+      [
+        {
+          "name": "id",
+          "value": "12221680"
+        },
+        {
+          "name": "name",
+          "value": "冰鲜柠檬水"
+        },
+        {
+          "name": "pagePath",
+          "value": "waimai-bargain-sub1/pages/transfer/guide/index?path=%2Fwaimai-bargain-sub2%2Fpackages%2Fbargain%2Fproduct-detail%2Findex%3Fchannel_id%3D65%26spu_id%3D19645464790%26poi_id_str%3DULTXWdCDT8mflXsyzBVPWgI%26wm_poi_id%3D12221680"
+        },
+        {
+          "name": "imageUrl",
+          "value": "http://p1.meituan.net/wmproduct/ac1a84e99fbed68186683de96a1e7d50554816.png"
+        },
+        {
+          "name": "promotionPrice",
+          "value": "2.59"
+        },
+        {
+          "name": "counterPrice",
+          "value": "8.09"
+        },
+        {
+          "name": "discountTag",
+          "value": "3.3折，立减5.5元"
+        },
+        {
+          "name": "merchantName",
+          "value": "蜜雪冰城（新街口店）"
+        },
+        {
+          "name": "spuId",
+          "value": "19645464790"
+        },
+        {
+          "name": "distance",
+          "value": "17400.0"
+        },
+        {
+          "name": "deliveryTime",
+          "value": "73"
+        },
+        {
+          "name": "tags",
+          "value": [
+            "已拼3000+份",
+            "2人拼团"
+          ]
+        }
+      ],
+      [
+        {
+          "name": "id",
+          "value": "18986288"
+        },
+        {
+          "name": "name",
+          "value": "冰鲜柠檬水"
+        },
+        {
+          "name": "pagePath",
+          "value": "waimai-bargain-sub1/pages/transfer/guide/index?path=%2Fwaimai-bargain-sub2%2Fpackages%2Fbargain%2Fproduct-detail%2Findex%3Fchannel_id%3D65%26spu_id%3D19646847978%26poi_id_str%3DGJ1tPomS-nMA2tZLSrREfgI%26wm_poi_id%3D18986288"
+        },
+        {
+          "name": "imageUrl",
+          "value": "http://p1.meituan.net/wmproduct/ac1a84e99fbed68186683de96a1e7d50554816.png"
+        },
+        {
+          "name": "promotionPrice",
+          "value": "2.59"
+        },
+        {
+          "name": "counterPrice",
+          "value": "8.09"
+        },
+        {
+          "name": "discountTag",
+          "value": "3.3折，立减5.5元"
+        },
+        {
+          "name": "merchantName",
+          "value": "蜜雪冰城（双井九龙花园店）"
+        },
+        {
+          "name": "spuId",
+          "value": "19646847978"
+        },
+        {
+          "name": "distance",
+          "value": "18100.0"
+        },
+        {
+          "name": "deliveryTime",
+          "value": "72"
+        },
+        {
+          "name": "tags",
+          "value": [
+            "已拼7000+份",
+            "2人拼团"
+          ]
+        }
+      ],
+      [
+        {
+          "name": "id",
+          "value": "19449990"
+        },
+        {
+          "name": "name",
+          "value": "嘎嘎香随心选1荤1素单人餐"
+        },
+        {
+          "name": "pagePath",
+          "value": "waimai-bargain-sub1/pages/transfer/guide/index?path=%2Fwaimai-bargain-sub2%2Fpackages%2Fbargain%2Fproduct-detail%2Findex%3Fchannel_id%3D65%26spu_id%3D20012925446%26poi_id_str%3DLHED_fEBpnpYl058Efgz-wI%26wm_poi_id%3D19449990"
+        },
+        {
+          "name": "imageUrl",
+          "value": "http://p1.meituan.net/wmproduct/2324a8cff5eb64c4bb6d332cd5a123a6471753.jpg"
+        },
+        {
+          "name": "promotionPrice",
+          "value": "12.8"
+        },
+        {
+          "name": "counterPrice",
+          "value": "18.3"
+        },
+        {
+          "name": "discountTag",
+          "value": "7.0折，立减5.5元"
+        },
+        {
+          "name": "merchantName",
+          "value": "嘎嘎香东北老饭盒（第6档口龙鑫集市美食城店）"
+        },
+        {
+          "name": "spuId",
+          "value": "20012925446"
+        },
+        {
+          "name": "distance",
+          "value": "11100.0"
+        },
+        {
+          "name": "deliveryTime",
+          "value": "60"
+        },
+        {
+          "name": "tags",
+          "value": [
+            "已拼100+份",
+            "2人拼团"
+          ]
+        }
+      ],
+      [
+        {
+          "name": "id",
+          "value": "27873417"
+        },
+        {
+          "name": "name",
+          "value": "一荤两素（8荤8素自选）+米饭+小雪碧"
+        },
+        {
+          "name": "pagePath",
+          "value": "waimai-bargain-sub1/pages/transfer/guide/index?path=%2Fwaimai-bargain-sub2%2Fpackages%2Fbargain%2Fproduct-detail%2Findex%3Fchannel_id%3D65%26spu_id%3D20149083957%26poi_id_str%3D8_Jx0omRGLn5IWRd2r4DPgI%26wm_poi_id%3D27873417"
+        },
+        {
+          "name": "imageUrl",
+          "value": "http://p1.meituan.net/wmproduct/ac16cf8cf85a673f8f5c65154cf5d564160298.jpg"
+        },
+        {
+          "name": "promotionPrice",
+          "value": "16.8"
+        },
+        {
+          "name": "counterPrice",
+          "value": "22.3"
+        },
+        {
+          "name": "discountTag",
+          "value": "7.6折，立减5.5元"
+        },
+        {
+          "name": "merchantName",
+          "value": "铁盒时光老饭盒（第9档口京品汇美食城店）"
+        },
+        {
+          "name": "spuId",
+          "value": "20149083957"
+        },
+        {
+          "name": "distance",
+          "value": "13700.0"
+        },
+        {
+          "name": "deliveryTime",
+          "value": "70"
+        },
+        {
+          "name": "tags",
+          "value": [
+            "已拼100+份",
+            "2人拼团"
+          ]
+        }
+      ],
+      [
+        {
+          "name": "id",
+          "value": "20563389"
+        },
+        {
+          "name": "name",
+          "value": "茉莉奶绿"
+        },
+        {
+          "name": "pagePath",
+          "value": "waimai-bargain-sub1/pages/transfer/guide/index?path=%2Fwaimai-bargain-sub2%2Fpackages%2Fbargain%2Fproduct-detail%2Findex%3Fchannel_id%3D65%26spu_id%3D19920000656%26poi_id_str%3DwfQfmzonvUIvNaH8-Y-rXgI%26wm_poi_id%3D20563389"
+        },
+        {
+          "name": "imageUrl",
+          "value": "http://p0.meituan.net/wmproduct/6c6cc48865f08f32cc5fd40896a40ceb445529.png"
+        },
+        {
+          "name": "promotionPrice",
+          "value": "2.9"
+        },
+        {
+          "name": "counterPrice",
+          "value": "8.4"
+        },
+        {
+          "name": "discountTag",
+          "value": "3.5折，立减5.5元"
+        },
+        {
+          "name": "merchantName",
+          "value": "蜜雪冰城（管庄店）"
+        },
+        {
+          "name": "spuId",
+          "value": "19920000656"
+        },
+        {
+          "name": "distance",
+          "value": "20700.0"
+        },
+        {
+          "name": "deliveryTime",
+          "value": "91"
+        },
+        {
+          "name": "tags",
+          "value": [
+            "已拼500+份",
+            "2人拼团"
+          ]
+        }
+      ],
+      [
+        {
+          "name": "id",
+          "value": "14710616"
+        },
+        {
+          "name": "name",
+          "value": "冰鲜柠檬水"
+        },
+        {
+          "name": "pagePath",
+          "value": "waimai-bargain-sub1/pages/transfer/guide/index?path=%2Fwaimai-bargain-sub2%2Fpackages%2Fbargain%2Fproduct-detail%2Findex%3Fchannel_id%3D65%26spu_id%3D19645942977%26poi_id_str%3DJTnA7fiCT3Kw1KhiJy70BQI%26wm_poi_id%3D14710616"
+        },
+        {
+          "name": "imageUrl",
+          "value": "http://p1.meituan.net/wmproduct/ac1a84e99fbed68186683de96a1e7d50554816.png"
+        },
+        {
+          "name": "promotionPrice",
+          "value": "2.59"
+        },
+        {
+          "name": "counterPrice",
+          "value": "8.09"
+        },
+        {
+          "name": "discountTag",
+          "value": "3.3折，立减5.5元"
+        },
+        {
+          "name": "merchantName",
+          "value": "蜜雪冰城（十里河地铁口店）"
+        },
+        {
+          "name": "spuId",
+          "value": "19645942977"
+        },
+        {
+          "name": "distance",
+          "value": "22400.0"
+        },
+        {
+          "name": "deliveryTime",
+          "value": "95"
+        },
+        {
+          "name": "tags",
+          "value": [
+            "已拼6000+份",
+            "2人拼团"
+          ]
+        }
+      ],
+      [
+        {
+          "name": "id",
+          "value": "22860497"
+        },
+        {
+          "name": "name",
+          "value": "汉堡王脆鸡双堡+可乐3件套"
+        },
+        {
+          "name": "pagePath",
+          "value": "waimai-bargain-sub1/pages/transfer/guide/index?path=%2Fwaimai-bargain-sub2%2Fpackages%2Fbargain%2Fproduct-detail%2Findex%3Fchannel_id%3D65%26spu_id%3D19578195568%26poi_id_str%3DC2l9zwap9VSNE1zcS14xSAI%26wm_poi_id%3D22860497"
+        },
+        {
+          "name": "imageUrl",
+          "value": "http://p0.meituan.net/wmproduct/a39ab92a02a3bce792b73b5fabc39382183756.jpg"
+        },
+        {
+          "name": "promotionPrice",
+          "value": "6.9"
+        },
+        {
+          "name": "counterPrice",
+          "value": "18.3"
+        },
+        {
+          "name": "discountTag",
+          "value": "3.8折，立减11.4元"
+        },
+        {
+          "name": "merchantName",
+          "value": "汉堡王（阜成门中海32138店）"
+        },
+        {
+          "name": "spuId",
+          "value": "19578195568"
+        },
+        {
+          "name": "distance",
+          "value": "20700.0"
+        },
+        {
+          "name": "deliveryTime",
+          "value": "84"
+        },
+        {
+          "name": "tags",
+          "value": [
+            "已拼2000+份",
+            "2人拼团"
+          ]
+        }
+      ],
+      [
+        {
+          "name": "id",
+          "value": "23958648"
+        },
+        {
+          "name": "name",
+          "value": "香柠椰青水（无鸭鸭版）"
+        },
+        {
+          "name": "pagePath",
+          "value": "waimai-bargain-sub1/pages/transfer/guide/index?path=%2Fwaimai-bargain-sub2%2Fpackages%2Fbargain%2Fproduct-detail%2Findex%3Fchannel_id%3D65%26spu_id%3D19897683664%26poi_id_str%3D8JGuzXSEOxCyNDRftrg0_AI%26wm_poi_id%3D23958648"
+        },
+        {
+          "name": "imageUrl",
+          "value": "https://img.meituan.net/retailsp/8b1ec54a9bea128c83045ef3b85c632a211452.png"
+        },
+        {
+          "name": "promotionPrice",
+          "value": "6.9"
+        },
+        {
+          "name": "counterPrice",
+          "value": "12.4"
+        },
+        {
+          "name": "discountTag",
+          "value": "5.6折，立减5.5元"
+        },
+        {
+          "name": "merchantName",
+          "value": "LINLEE林里·手打柠檬茶（朝阳ONEPARK店）"
+        },
+        {
+          "name": "spuId",
+          "value": "19897683664"
+        },
+        {
+          "name": "distance",
+          "value": "12600.0"
+        },
+        {
+          "name": "deliveryTime",
+          "value": "73"
+        },
+        {
+          "name": "tags",
+          "value": [
+            "已拼200+份",
+            "2人拼团"
+          ]
+        }
+      ],
+      [
+        {
+          "name": "id",
+          "value": "11710144"
+        },
+        {
+          "name": "name",
+          "value": "双拼鲜肉云吞12个"
+        },
+        {
+          "name": "pagePath",
+          "value": "waimai-bargain-sub1/pages/transfer/guide/index?path=%2Fwaimai-bargain-sub2%2Fpackages%2Fbargain%2Fproduct-detail%2Findex%3Fchannel_id%3D65%26spu_id%3D20197012626%26poi_id_str%3DbIUjrYchYT04uLeKkoP14AI%26wm_poi_id%3D11710144"
+        },
+        {
+          "name": "imageUrl",
+          "value": "http://p0.meituan.net/wmproduct/7eb0b17fb4c484b08dd8a55d51e2603b215013.jpg"
+        },
+        {
+          "name": "promotionPrice",
+          "value": "13.9"
+        },
+        {
+          "name": "counterPrice",
+          "value": "19.4"
+        },
+        {
+          "name": "discountTag",
+          "value": "7.2折，立减5.5元"
+        },
+        {
+          "name": "merchantName",
+          "value": "袁记云饺(方庄店)"
+        },
+        {
+          "name": "spuId",
+          "value": "20197012626"
+        },
+        {
+          "name": "distance",
+          "value": "23900.0"
+        },
+        {
+          "name": "deliveryTime",
+          "value": "70"
+        },
+        {
+          "name": "tags",
+          "value": [
+            "已拼200+份",
+            "2人拼团"
+          ]
+        }
+      ]
+    ]
+  },
+  {
+    "name": "deal_ids",
+    "value": [
+      "922551207",
+      "1344147986",
+      "854297769",
+      "1032184464",
+      "854301752",
+      "1029358820",
+      "1153116771",
+      "1153116554",
+      "1153103765",
+      "1153130918",
+      "1153101596",
+      "968543219",
+      "1320665198",
+      "851558300",
+      "1196357945",
+      "694003171",
+      "708819859",
+      "1209379759",
+      "1209411517",
+      "1300809784",
+      "1209424599",
+      "1041176014",
+      "915900912",
+      "1243252616",
+      "1243250332",
+      "1057306210",
+      "1357878514",
+      "1357967996",
+      "1363379002",
+      "1280729171",
+      "1352448934",
+      "914307134",
+      "1067432102",
+      "1067437044",
+      "868898709",
+      "1342239125",
+      "926612263",
+      "1065920558",
+      "921863358",
+      "930330784",
+      "1328837252",
+      "889158054",
+      "799555022",
+      "1048015230",
+      "1363035651",
+      "1165757786",
+      "821021765",
+      "862234649",
+      "935329418",
+      "1324650995",
+      "894715880",
+      "1297879285",
+      "1058158909",
+      "1173522548",
+      "1315868714",
+      "1340370351",
+      "1132615150",
+      "1340208725",
+      "1412051224",
+      "1175349045",
+      "1386444293",
+      "1175349342",
+      "1175338944",
+      "1402547510",
+      "1173522548",
+      "1321859225",
+      "1340370351",
+      "1315868714",
+      "1132615150",
+      "889158054",
+      "799555022",
+      "1165757786",
+      "1363035651",
+      "1048015230",
+      "821021765",
+      "1246527603",
+      "854873623",
+      "792218102",
+      "1139077829",
+      "1376681839",
+      "1287355228",
+      "748611576",
+      "1316834734",
+      "1214488721",
+      "833840325",
+      "1370324348",
+      "696964824",
+      "1370513738",
+      "1196430757",
+      "853226632",
+      "1370846336",
+      "1315878676",
+      "799528938",
+      "1191576950",
+      "916466601"
+    ]
+  },
+  {
+    "name": "dealResultMap_list",
+    "value": [
+      [
+        {
+          "name": "id",
+          "value": "1246527603"
+        },
+        {
+          "name": "name",
+          "value": "新疆奶皮子酸奶六杯分享装"
+        },
+        {
+          "name": "pagePath",
+          "value": "/food/pages/mt/deal/deal?d=1246527603"
+        },
+        {
+          "name": "imageUrl",
+          "value": "https://img.meituan.net/content/4d035cfe6f10742234790d729a89f16f125047.jpg@232w_178h_1e"
+        },
+        {
+          "name": "promotionPrice",
+          "value": "42.0"
+        },
+        {
+          "name": "counterPrice",
+          "value": "59.4"
+        },
+        {
+          "name": "discountTag",
+          "value": "7.1折"
+        },
+        {
+          "name": "merchantName",
+          "value": "巴依老爷新疆美食"
+        }
+      ],
+      [
+        {
+          "name": "id",
+          "value": "854873623"
+        },
+        {
+          "name": "name",
+          "value": "单人招牌鸭血粉丝汤+现烤烧饼"
+        },
+        {
+          "name": "pagePath",
+          "value": "/food/pages/mt/deal/deal?d=854873623"
+        },
+        {
+          "name": "imageUrl",
+          "value": "http://p1.meituan.net/deal/c63b6249d278ffac46005d819617a995238183.jpg@232w_178h_1e"
+        },
+        {
+          "name": "promotionPrice",
+          "value": "23.3"
+        },
+        {
+          "name": "counterPrice",
+          "value": "30.0"
+        },
+        {
+          "name": "discountTag",
+          "value": "7.8折"
+        },
+        {
+          "name": "merchantName",
+          "value": "阁上阁鸭血粉丝汤"
+        }
+      ],
+      [
+        {
+          "name": "id",
+          "value": "792218102"
+        },
+        {
+          "name": "name",
+          "value": "招牌老北京臭豆腐（大份）"
+        },
+        {
+          "name": "pagePath",
+          "value": "/food/pages/mt/deal/deal?d=792218102"
+        },
+        {
+          "name": "imageUrl",
+          "value": "http://p0.meituan.net/deal/17a9cf8f4c67ef60830eec830cb93f2b313254.jpg@232w_178h_1e"
+        },
+        {
+          "name": "promotionPrice",
+          "value": "20.0"
+        },
+        {
+          "name": "counterPrice",
+          "value": "29.0"
+        },
+        {
+          "name": "discountTag",
+          "value": "6.9折"
+        },
+        {
+          "name": "merchantName",
+          "value": "夜游神臭豆腐"
+        }
+      ],
+      [
+        {
+          "name": "id",
+          "value": "1139077829"
+        },
+        {
+          "name": "name",
+          "value": "【夏季特惠】三鲜米线单人餐"
+        },
+        {
+          "name": "pagePath",
+          "value": "/food/pages/mt/deal/deal?d=1139077829"
+        },
+        {
+          "name": "imageUrl",
+          "value": "http://p0.meituan.net/deal/3c0f966ce912f2baa466d6c85cb0351166249.jpg@232w_178h_1e"
+        },
+        {
+          "name": "promotionPrice",
+          "value": "15.0"
+        },
+        {
+          "name": "counterPrice",
+          "value": "38.0"
+        },
+        {
+          "name": "discountTag",
+          "value": "4折"
+        },
+        {
+          "name": "merchantName",
+          "value": "顺哥小面"
+        }
+      ],
+      [
+        {
+          "name": "id",
+          "value": "1376681839"
+        },
+        {
+          "name": "name",
+          "value": "【陕西特色】凉皮+肉夹馍"
+        },
+        {
+          "name": "pagePath",
+          "value": "/food/pages/mt/deal/deal?d=1376681839"
+        },
+        {
+          "name": "imageUrl",
+          "value": "http://p1.meituan.net/content/610cfbc56ab09793e075f8a8ceeb3d9275300.jpg@232w_178h_1e"
+        },
+        {
+          "name": "promotionPrice",
+          "value": "17.0"
+        },
+        {
+          "name": "counterPrice",
+          "value": "30.0"
+        },
+        {
+          "name": "discountTag",
+          "value": "5.7折"
+        },
+        {
+          "name": "merchantName",
+          "value": "晋陕羊汤凉皮"
+        }
+      ],
+      [
+        {
+          "name": "id",
+          "value": "1287355228"
+        },
+        {
+          "name": "name",
+          "value": "酸黄瓜肠2根"
+        },
+        {
+          "name": "pagePath",
+          "value": "/food/pages/mt/deal/deal?d=1287355228"
+        },
+        {
+          "name": "imageUrl",
+          "value": "https://img.meituan.net/content/1ec16d2c710be91ced704a5797a7a63216303.jpg@232w_178h_1e"
+        },
+        {
+          "name": "promotionPrice",
+          "value": "10.9"
+        },
+        {
+          "name": "counterPrice",
+          "value": "19.0"
+        },
+        {
+          "name": "discountTag",
+          "value": "5.8折"
+        },
+        {
+          "name": "merchantName",
+          "value": "一手店"
+        }
+      ],
+      [
+        {
+          "name": "id",
+          "value": "748611576"
+        },
+        {
+          "name": "name",
+          "value": "单人招牌干拌抄手套餐"
+        },
+        {
+          "name": "pagePath",
+          "value": "/food/pages/mt/deal/deal?d=748611576"
+        },
+        {
+          "name": "imageUrl",
+          "value": "http://p0.meituan.net/deal/14c40fd9a5ff42cbca1593615c66ac6073015.jpg@232w_178h_1e"
+        },
+        {
+          "name": "promotionPrice",
+          "value": "30.8"
+        },
+        {
+          "name": "counterPrice",
+          "value": "44.0"
+        },
+        {
+          "name": "discountTag",
+          "value": "7折"
+        },
+        {
+          "name": "merchantName",
+          "value": "熊记抄手"
+        }
+      ],
+      [
+        {
+          "name": "id",
+          "value": "1316834734"
+        },
+        {
+          "name": "name",
+          "value": "【一畅销】猪肉面单人餐"
+        },
+        {
+          "name": "pagePath",
+          "value": "/food/pages/mt/deal/deal?d=1316834734"
+        },
+        {
+          "name": "imageUrl",
+          "value": "http://p0.meituan.net/deal/48a46e5afbc1ccd47f241c43448eac0d206155.jpg@232w_178h_1e"
+        },
+        {
+          "name": "promotionPrice",
+          "value": "22.9"
+        },
+        {
+          "name": "counterPrice",
+          "value": "32.0"
+        },
+        {
+          "name": "discountTag",
+          "value": "7.2折"
+        },
+        {
+          "name": "merchantName",
+          "value": "毛豆与面"
+        }
+      ],
+      [
+        {
+          "name": "id",
+          "value": "1214488721"
+        },
+        {
+          "name": "name",
+          "value": "【秋冬特惠】精品胡辣汤单人餐"
+        },
+        {
+          "name": "pagePath",
+          "value": "/food/pages/mt/deal/deal?d=1214488721"
+        },
+        {
+          "name": "imageUrl",
+          "value": "http://p0.meituan.net/deal/b83cb35a493085d1f85003698e2c2d04209617.jpg@232w_178h_1e"
+        },
+        {
+          "name": "promotionPrice",
+          "value": "17.5"
+        },
+        {
+          "name": "counterPrice",
+          "value": "22.0"
+        },
+        {
+          "name": "discountTag",
+          "value": "8折"
+        },
+        {
+          "name": "merchantName",
+          "value": "逍遥老杨家·胡辣汤·焖面烩面"
+        }
+      ],
+      [
+        {
+          "name": "id",
+          "value": "833840325"
+        },
+        {
+          "name": "name",
+          "value": "【夏日必团】15元冰栗子250g"
+        },
+        {
+          "name": "pagePath",
+          "value": "/food/pages/mt/deal/deal?d=833840325"
+        },
+        {
+          "name": "imageUrl",
+          "value": "https://img.meituan.net/content/32f5bf9580d5c3c4d2fbda06a1149b82219857.jpg@232w_178h_1e"
+        },
+        {
+          "name": "promotionPrice",
+          "value": "9.9"
+        },
+        {
+          "name": "counterPrice",
+          "value": "15.0"
+        },
+        {
+          "name": "discountTag",
+          "value": "6.6折"
+        },
+        {
+          "name": "merchantName",
+          "value": "莉和俊"
+        }
+      ],
+      [
+        {
+          "name": "id",
+          "value": "1370324348"
+        },
+        {
+          "name": "name",
+          "value": "【超值优惠】南昌拌粉+炸物单人餐（含甜水）"
+        },
+        {
+          "name": "pagePath",
+          "value": "/food/pages/mt/deal/deal?d=1370324348"
+        },
+        {
+          "name": "imageUrl",
+          "value": "http://p0.meituan.net/deal/2416dc237b6dd1fb8a0c95770252c43a208995.jpg@232w_178h_1e"
+        },
+        {
+          "name": "promotionPrice",
+          "value": "10.8"
+        },
+        {
+          "name": "counterPrice",
+          "value": "27.0"
+        },
+        {
+          "name": "discountTag",
+          "value": "4折"
+        },
+        {
+          "name": "merchantName",
+          "value": "地摊拌粉·地道南昌味儿"
+        }
+      ],
+      [
+        {
+          "name": "id",
+          "value": "696964824"
+        },
+        {
+          "name": "name",
+          "value": "超值一人享"
+        },
+        {
+          "name": "pagePath",
+          "value": "/food/pages/mt/deal/deal?d=696964824"
+        },
+        {
+          "name": "imageUrl",
+          "value": "http://p1.meituan.net/deal/d8132fc325ce8b7c3455adc5be756bc73586915.jpg@232w_178h_1e"
+        },
+        {
+          "name": "promotionPrice",
+          "value": "20.2"
+        },
+        {
+          "name": "counterPrice",
+          "value": "25.0"
+        },
+        {
+          "name": "discountTag",
+          "value": "8.1折"
+        },
+        {
+          "name": "merchantName",
+          "value": "鸡柳大人"
+        }
+      ],
+      [
+        {
+          "name": "id",
+          "value": "1370513738"
+        },
+        {
+          "name": "name",
+          "value": "【新店尝鲜】门钉肉饼单人餐"
+        },
+        {
+          "name": "pagePath",
+          "value": "/food/pages/mt/deal/deal?d=1370513738"
+        },
+        {
+          "name": "imageUrl",
+          "value": "http://p0.meituan.net/deal/171568302c9aff43b1b1a5e65b49c889201688.jpg@232w_178h_1e"
+        },
+        {
+          "name": "promotionPrice",
+          "value": "19.8"
+        },
+        {
+          "name": "counterPrice",
+          "value": "29.0"
+        },
+        {
+          "name": "discountTag",
+          "value": "6.9折"
+        },
+        {
+          "name": "merchantName",
+          "value": "狄记门钉肉饼"
+        }
+      ],
+      [
+        {
+          "name": "id",
+          "value": "1196430757"
+        },
+        {
+          "name": "name",
+          "value": "【省钱拼拼拼】2+2随心搭"
+        },
+        {
+          "name": "pagePath",
+          "value": "/food/pages/mt/deal/deal?d=1196430757"
+        },
+        {
+          "name": "imageUrl",
+          "value": "http://p1.meituan.net/content/a2531a0154349660a88a759d60279163719631.jpg@232w_178h_1e"
+        },
+        {
+          "name": "promotionPrice",
+          "value": "18.8"
+        },
+        {
+          "name": "counterPrice",
+          "value": "36.0"
+        },
+        {
+          "name": "discountTag",
+          "value": "5.3折"
+        },
+        {
+          "name": "merchantName",
+          "value": "燃熊中国汉堡"
+        }
+      ],
+      [
+        {
+          "name": "id",
+          "value": "853226632"
+        },
+        {
+          "name": "name",
+          "value": "单人团购牛肉凉拌面套餐"
+        },
+        {
+          "name": "pagePath",
+          "value": "/food/pages/mt/deal/deal?d=853226632"
+        },
+        {
+          "name": "imageUrl",
+          "value": "http://p0.meituan.net/deal/2634946dd84a1ee89b77f736730ecb2d340884.jpg@232w_178h_1e"
+        },
+        {
+          "name": "promotionPrice",
+          "value": "21.9"
+        },
+        {
+          "name": "counterPrice",
+          "value": "32.0"
+        },
+        {
+          "name": "discountTag",
+          "value": "6.9折"
+        },
+        {
+          "name": "merchantName",
+          "value": "东方宫·中国兰州牛肉拉面"
+        }
+      ],
+      [
+        {
+          "name": "id",
+          "value": "1370846336"
+        },
+        {
+          "name": "name",
+          "value": "【王炸宠粉】小香大块儿牛肉面单人餐"
+        },
+        {
+          "name": "pagePath",
+          "value": "/food/pages/mt/deal/deal?d=1370846336"
+        },
+        {
+          "name": "imageUrl",
+          "value": "http://p0.meituan.net/deal/a9df32b871bb04e83922fafc70203774148376.jpg@232w_178h_1e"
+        },
+        {
+          "name": "promotionPrice",
+          "value": "21.0"
+        },
+        {
+          "name": "counterPrice",
+          "value": "23.0"
+        },
+        {
+          "name": "discountTag",
+          "value": "9.2折"
+        },
+        {
+          "name": "merchantName",
+          "value": "晋小香·山西味道"
+        }
+      ],
+      [
+        {
+          "name": "id",
+          "value": "1315878676"
+        },
+        {
+          "name": "name",
+          "value": "【近日畅销】鲜肉老友粉"
+        },
+        {
+          "name": "pagePath",
+          "value": "/food/pages/mt/deal/deal?d=1315878676"
+        },
+        {
+          "name": "imageUrl",
+          "value": "http://p1.meituan.net/content/d79ac500b61a74be1802d0468f350c1b111566.jpg@232w_178h_1e"
+        },
+        {
+          "name": "promotionPrice",
+          "value": "19.9"
+        },
+        {
+          "name": "counterPrice",
+          "value": "28.0"
+        },
+        {
+          "name": "discountTag",
+          "value": "7.2折"
+        },
+        {
+          "name": "merchantName",
+          "value": "广西表哥米粉"
+        }
+      ],
+      [
+        {
+          "name": "id",
+          "value": "799528938"
+        },
+        {
+          "name": "name",
+          "value": "烤大面筋"
+        },
+        {
+          "name": "pagePath",
+          "value": "/food/pages/mt/deal/deal?d=799528938"
+        },
+        {
+          "name": "imageUrl",
+          "value": "http://p0.meituan.net/content/b82416ca325fef9cc8d891a29c9fe4ea616652.jpg@232w_178h_1e"
+        },
+        {
+          "name": "promotionPrice",
+          "value": "5.22"
+        },
+        {
+          "name": "counterPrice",
+          "value": "8.0"
+        },
+        {
+          "name": "discountTag",
+          "value": "6.6折"
+        },
+        {
+          "name": "merchantName",
+          "value": "阿芮烤鸡爪"
+        }
+      ],
+      [
+        {
+          "name": "id",
+          "value": "1191576950"
+        },
+        {
+          "name": "name",
+          "value": "【乌啦啦同款】内江牛肉面套餐"
+        },
+        {
+          "name": "pagePath",
+          "value": "/food/pages/mt/deal/deal?d=1191576950"
+        },
+        {
+          "name": "imageUrl",
+          "value": "http://p0.meituan.net/deal/6b4083cb8735d6efec8ffe3e356de080332068.jpg@232w_178h_1e"
+        },
+        {
+          "name": "promotionPrice",
+          "value": "28.9"
+        },
+        {
+          "name": "counterPrice",
+          "value": "43.0"
+        },
+        {
+          "name": "discountTag",
+          "value": "6.8折"
+        },
+        {
+          "name": "merchantName",
+          "value": "郑立强内江牛肉面"
+        }
+      ],
+      [
+        {
+          "name": "id",
+          "value": "916466601"
+        },
+        {
+          "name": "name",
+          "value": "2 人【直播专享】三元桥谭家四道菜经典湘式臭鲈鱼套餐"
+        },
+        {
+          "name": "pagePath",
+          "value": "/food/pages/mt/deal/deal?d=916466601"
+        },
+        {
+          "name": "imageUrl",
+          "value": "http://p1.meituan.net/deal/f4f10c54a05d6bb87050bb4f8fd6b3c7207689.jpg@232w_178h_1e"
+        },
+        {
+          "name": "promotionPrice",
+          "value": "68.0"
+        },
+        {
+          "name": "counterPrice",
+          "value": "160.0"
+        },
+        {
+          "name": "discountTag",
+          "value": "4.3折"
+        },
+        {
+          "name": "merchantName",
+          "value": "谭家四道菜"
+        }
+      ]
+    ]
+  },
+  {
+    "name": "needAskAddressAccurate",
+    "value": "false"
+  },
+  {
+    "name": "recommend_dealGroup_searchId",
+    "value": "1945097465146261604"
+  },
+  {
+    "name": "recommend_phf_searchId",
+    "value": "1945097465146261605"
+  },
+  {
+    "name": "searchId",
+    "value": "1945097480283693123"
+  },
+  {
+    "name": "spu_ids",
+    "value": [
+      "2960787813",
+      "2960825722",
+      "2960787778",
+      "2960935964",
+      "17590947602",
+      "17592373872",
+      "15854978266",
+      "15665643801",
+      "11694612883",
+      "15790242058",
+      "11450424170",
+      "11839644775",
+      "19920000658",
+      "12315447316",
+      "19944851371",
+      "16177619230",
+      "19645464790",
+      "19646847978",
+      "20012925446",
+      "20149083957",
+      "19920000656",
+      "19645942977",
+      "19578195568",
+      "19897683664",
+      "20197012626"
+    ]
+  },
+  {
+    "name": "poi_ids",
+    "value": [
+      "844523517",
+      "1342198102",
+      "582948019",
+      "689664046",
+      "1224230880",
+      "1980384071",
+      "1571972603",
+      "1714262217",
+      "921119910",
+      "1167090307",
+      "919564119",
+      "1062385687",
+      "1403177491",
+      "921119910",
+      "585437815",
+      "18007869",
+      "21517175",
+      "16252214",
+      "20565039",
+      "9599162",
+      "16615069",
+      "20563389",
+      "13495927",
+      "16945719",
+      "2321924",
+      "12221680",
+      "18986288",
+      "19449990",
+      "27873417",
+      "20563389",
+      "14710616",
+      "22860497",
+      "23958648",
+      "11710144"
+    ]
+  },
+  {
+    "name": "text",
+    "value": ""
+  },
+  {
+    "name": "merchantList",
+    "value": [
+      [
+        {
+          "name": "name",
+          "value": "嫩牛家潮汕牛肉火锅(望京花家地店)"
+        },
+        {
+          "name": "pagePath",
+          "value": "/index/pages/poi/poi?id=844523517&idEncrypt=qB4r1e7c7ca20cbb99e267b024955c76711afcbe64359ae9791ea0c22835b372728d8c3b41ad81aab5fb3c262b2612e57d75b01b69ced36a06ba50vxu5&searchWord=%E7%81%AB%E9%94%85&entrance=67"
+        },
+        {
+          "name": "headerImageUrl",
+          "value": "http://p1.meituan.net/biztone/2efe0d65d5a5c4c6bc2101fae86b39cd232910.jpg"
+        },
+        {
+          "name": "score",
+          "value": "4.8"
+        },
+        {
+          "name": "id",
+          "value": "844523517"
+        },
+        {
+          "name": "sales",
+          "value": ""
+        },
+        {
+          "name": "deliveryTags"
+        },
+        {
+          "name": "distance",
+          "value": "3.1km"
+        },
+        {
+          "name": "deliveryTime"
+        },
+        {
+          "name": "descriptions",
+          "value": [
+            "望京火锅好评榜第9名",
+            "人气飙升"
+          ]
+        },
+        {
+          "name": "items",
+          "value": [
+            [
+              {
+                "name": "name",
+                "value": "[鲜切牛肉]暴打柠檬茶|双人餐"
+              },
+              {
+                "name": "type",
+                "value": "deal"
+              },
+              {
+                "name": "price",
+                "value": "167"
+              },
+              {
+                "name": "tags"
+              },
+              {
+                "name": "id",
+                "value": "922551207"
+              },
+              {
+                "name": "originPrice",
+                "value": "244"
+              }
+            ],
+            [
+              {
+                "name": "name",
+                "value": "校园通行证双人餐|含大叶毛肚"
+              },
+              {
+                "name": "type",
+                "value": "deal"
+              },
+              {
+                "name": "price",
+                "value": "193"
+              },
+              {
+                "name": "tags"
+              },
+              {
+                "name": "id",
+                "value": "1344147986"
+              },
+              {
+                "name": "originPrice",
+                "value": "305"
+              }
+            ],
+            [
+              {
+                "name": "name",
+                "value": "嫩牛家·潮汕牛肉火锅双人餐"
+              },
+              {
+                "name": "type",
+                "value": "deal"
+              },
+              {
+                "name": "price",
+                "value": "217"
+              },
+              {
+                "name": "tags"
+              },
+              {
+                "name": "id",
+                "value": "854297769"
+              },
+              {
+                "name": "originPrice",
+                "value": "302"
+              }
+            ],
+            [
+              {
+                "name": "name",
+                "value": "嫩牛家·尊享甄选2-3人餐"
+              },
+              {
+                "name": "type",
+                "value": "deal"
+              },
+              {
+                "name": "price",
+                "value": "257"
+              },
+              {
+                "name": "tags"
+              },
+              {
+                "name": "id",
+                "value": "1032184464"
+              },
+              {
+                "name": "originPrice",
+                "value": "340"
+              }
+            ],
+            [
+              {
+                "name": "name",
+                "value": "嫩牛家·潮汕牛肉火锅四人餐"
+              },
+              {
+                "name": "type",
+                "value": "deal"
+              },
+              {
+                "name": "price",
+                "value": "393"
+              },
+              {
+                "name": "tags"
+              },
+              {
+                "name": "id",
+                "value": "854301752"
+              },
+              {
+                "name": "originPrice",
+                "value": "539"
+              }
+            ],
+            [
+              {
+                "name": "name",
+                "value": "[酸汤牛肉]暴打柠檬茶|3人餐"
+              },
+              {
+                "name": "type",
+                "value": "deal"
+              },
+              {
+                "name": "price",
+                "value": "283"
+              },
+              {
+                "name": "tags"
+              },
+              {
+                "name": "id",
+                "value": "1029358820"
+              },
+              {
+                "name": "originPrice",
+                "value": "381"
+              }
+            ]
+          ]
+        },
+        {
+          "name": "orderType",
+          "value": "daodian"
+        },
+        {
+          "name": "level"
+        },
+        {
+          "name": "locationInfo",
+          "value": []
+        },
+        {
+          "name": "instantInfo",
+          "value": ""
+        },
+        {
+          "name": "price",
+          "value": "人均¥85"
+        },
+        {
+          "name": "evaluate",
+          "value": ""
+        },
+        {
+          "name": "area",
+          "value": "望京"
+        },
+        {
+          "name": "typeSummary",
+          "value": "潮汕牛肉火锅"
+        },
+        {
+          "name": "scoreDesc",
+          "value": ""
+        }
+      ],
+      [
+        {
+          "name": "name",
+          "value": "黔爷贵州酸汤牛肉火锅(望京店)"
+        },
+        {
+          "name": "pagePath",
+          "value": "/index/pages/poi/poi?id=1342198102&idEncrypt=qB4r177b7ca50fb194e260a137925a72670ee8e63d7690a06106e1ce2a76ee607d88922f49ead8b8b2b7712a292610e43d2bac167cdcda7719f50f20vxu5&searchWord=%E7%81%AB%E9%94%85&entrance=67"
+        },
+        {
+          "name": "headerImageUrl",
+          "value": "https://p0.meituan.net/adunion/8182b78c530f066266b52f153452e90b350950.jpg%404000w_3000h_1e_1c"
+        },
+        {
+          "name": "score",
+          "value": "4.2"
+        },
+        {
+          "name": "id",
+          "value": "1342198102"
+        },
+        {
+          "name": "sales",
+          "value": ""
+        },
+        {
+          "name": "deliveryTags"
+        },
+        {
+          "name": "distance",
+          "value": "1.2km"
+        },
+        {
+          "name": "deliveryTime"
+        },
+        {
+          "name": "descriptions"
+        },
+        {
+          "name": "items",
+          "value": [
+            [
+              {
+                "name": "name",
+                "value": "【优享】双人酸汤火锅套餐"
+              },
+              {
+                "name": "type",
+                "value": "deal"
+              },
+              {
+                "name": "price",
+                "value": "183"
+              },
+              {
+                "name": "tags"
+              },
+              {
+                "name": "id",
+                "value": "1153116771"
+              },
+              {
+                "name": "originPrice",
+                "value": "228"
+              }
+            ],
+            [
+              {
+                "name": "name",
+                "value": "【特色】双人牛肉干锅套餐"
+              },
+              {
+                "name": "type",
+                "value": "deal"
+              },
+              {
+                "name": "price",
+                "value": "164"
+              },
+              {
+                "name": "tags"
+              },
+              {
+                "name": "id",
+                "value": "1153116554"
+              },
+              {
+                "name": "originPrice",
+                "value": "194"
+              }
+            ],
+            [
+              {
+                "name": "name",
+                "value": "【钜惠】牛肉粉/面双人餐"
+              },
+              {
+                "name": "type",
+                "value": "deal"
+              },
+              {
+                "name": "price",
+                "value": "71.8"
+              },
+              {
+                "name": "tags"
+              },
+              {
+                "name": "id",
+                "value": "1153103765"
+              },
+              {
+                "name": "originPrice",
+                "value": "86"
+              }
+            ],
+            [
+              {
+                "name": "name",
+                "value": "【巨划算】聚会四人餐"
+              },
+              {
+                "name": "type",
+                "value": "deal"
+              },
+              {
+                "name": "price",
+                "value": "313"
+              },
+              {
+                "name": "tags"
+              },
+              {
+                "name": "id",
+                "value": "1153130918"
+              },
+              {
+                "name": "originPrice",
+                "value": "358"
+              }
+            ],
+            [
+              {
+                "name": "name",
+                "value": "【人气】牛肉粉单人餐"
+              },
+              {
+                "name": "type",
+                "value": "deal"
+              },
+              {
+                "name": "price",
+                "value": "20.8"
+              },
+              {
+                "name": "tags"
+              },
+              {
+                "name": "id",
+                "value": "1153101596"
+              },
+              {
+                "name": "originPrice",
+                "value": "33"
+              }
+            ]
+          ]
+        },
+        {
+          "name": "orderType",
+          "value": "daodian"
+        },
+        {
+          "name": "level"
+        },
+        {
+          "name": "locationInfo",
+          "value": []
+        },
+        {
+          "name": "instantInfo",
+          "value": ""
+        },
+        {
+          "name": "price",
+          "value": "人均¥84"
+        },
+        {
+          "name": "evaluate",
+          "value": ""
+        },
+        {
+          "name": "area",
+          "value": "望京"
+        },
+        {
+          "name": "typeSummary",
+          "value": "牛羊肉火锅"
+        },
+        {
+          "name": "scoreDesc",
+          "value": ""
+        }
+      ],
+      [
+        {
+          "name": "name",
+          "value": "京门老爆三·铜锅涮肉 爆肚(望京广顺南大街店)"
+        },
+        {
+          "name": "pagePath",
+          "value": "/index/pages/poi/poi?id=582948019&idEncrypt=qB4r13707aae0ab09ce269b024955c76711afcbe64359ae9791ea0c22835b372728d8c3b41ad81aab5fb3c262b2612e57d75b01b69ced36a06ba50vxu5&searchWord=%E7%81%AB%E9%94%85&entrance=67"
+        },
+        {
+          "name": "headerImageUrl",
+          "value": "https://p0.meituan.net/adunion/68b0e01239a46bea58f950f0e4f7507f568918.jpg%404000w_3000h_1e_1c"
+        },
+        {
+          "name": "score",
+          "value": "4.9"
+        },
+        {
+          "name": "id",
+          "value": "582948019"
+        },
+        {
+          "name": "sales",
+          "value": ""
+        },
+        {
+          "name": "deliveryTags"
+        },
+        {
+          "name": "distance",
+          "value": "2.4km"
+        },
+        {
+          "name": "deliveryTime"
+        },
+        {
+          "name": "descriptions",
+          "value": [
+            "人气飙升"
+          ]
+        },
+        {
+          "name": "items"
+        },
+        {
+          "name": "orderType",
+          "value": "daodian"
+        },
+        {
+          "name": "level"
+        },
+        {
+          "name": "locationInfo",
+          "value": []
+        },
+        {
+          "name": "instantInfo",
+          "value": ""
+        },
+        {
+          "name": "price",
+          "value": "人均¥88"
+        },
+        {
+          "name": "evaluate",
+          "value": ""
+        },
+        {
+          "name": "area",
+          "value": "望京"
+        },
+        {
+          "name": "typeSummary",
+          "value": "老北京火锅"
+        },
+        {
+          "name": "scoreDesc",
+          "value": ""
+        }
+      ],
+      [
+        {
+          "name": "name",
+          "value": "阳坊涮肉(来广营保利广场店)"
+        },
+        {
+          "name": "pagePath",
+          "value": "/index/pages/poi/poi?id=689664046&idEncrypt=qB4r107071a108bc9ce766b024955c76711afcbe64359ae9791ea0c22835b372728d8c3b41ad81aab5fb3c262b2612e57d75b01b69ced36a06ba50vxu5&searchWord=%E7%81%AB%E9%94%85&entrance=67"
+        },
+        {
+          "name": "headerImageUrl",
+          "value": "https://img.meituan.net/content/4a7321eb88039ea8ee51b4fdebf81a15127557.jpg"
+        },
+        {
+          "name": "score",
+          "value": "4.9"
+        },
+        {
+          "name": "id",
+          "value": "689664046"
+        },
+        {
+          "name": "sales",
+          "value": ""
+        },
+        {
+          "name": "deliveryTags"
+        },
+        {
+          "name": "distance",
+          "value": "2.3km"
+        },
+        {
+          "name": "deliveryTime"
+        },
+        {
+          "name": "descriptions",
+          "value": [
+            "望京火锅好评榜第5名",
+            "人气飙升"
+          ]
+        },
+        {
+          "name": "items",
+          "value": [
+            [
+              {
+                "name": "name",
+                "value": "牛羊双拼双人套餐|含胜利大板"
+              },
+              {
+                "name": "type",
+                "value": "deal"
+              },
+              {
+                "name": "price",
+                "value": "223"
+              },
+              {
+                "name": "tags"
+              },
+              {
+                "name": "id",
+                "value": "968543219"
+              },
+              {
+                "name": "originPrice",
+                "value": "342"
+              }
+            ],
+            [
+              {
+                "name": "name",
+                "value": "【近一周热度指数第一】双人套餐（限时售卖）"
+              },
+              {
+                "name": "type",
+                "value": "deal"
+              },
+              {
+                "name": "price",
+                "value": "279.4"
+              },
+              {
+                "name": "tags"
+              },
+              {
+                "name": "id",
+                "value": "1320665198"
+              },
+              {
+                "name": "originPrice",
+                "value": "474"
+              }
+            ],
+            [
+              {
+                "name": "name",
+                "value": "前程似锦｜双人套餐【赠999金贴卡一张】"
+              },
+              {
+                "name": "type",
+                "value": "deal"
+              },
+              {
+                "name": "price",
+                "value": "273"
+              },
+              {
+                "name": "tags"
+              },
+              {
+                "name": "id",
+                "value": "851558300"
+              },
+              {
+                "name": "originPrice",
+                "value": "314"
+              }
+            ],
+            [
+              {
+                "name": "name",
+                "value": "【繁花】生日&纪念日套餐【含显眼包】"
+              },
+              {
+                "name": "type",
+                "value": "deal"
+              },
+              {
+                "name": "price",
+                "value": "394"
+              },
+              {
+                "name": "tags"
+              },
+              {
+                "name": "id",
+                "value": "1196357945"
+              },
+              {
+                "name": "originPrice",
+                "value": "693"
+              }
+            ],
+            [
+              {
+                "name": "name",
+                "value": "【七月品牌庆】五好羊肉新品｜四人套餐"
+              },
+              {
+                "name": "type",
+                "value": "deal"
+              },
+              {
+                "name": "price",
+                "value": "515"
+              },
+              {
+                "name": "tags"
+              },
+              {
+                "name": "id",
+                "value": "694003171"
+              },
+              {
+                "name": "originPrice",
+                "value": "684"
+              }
+            ],
+            [
+              {
+                "name": "name",
+                "value": "【七月品牌庆】新品涮鲜双人套餐【尝鲜价仅限一周】"
+              },
+              {
+                "name": "type",
+                "value": "deal"
+              },
+              {
+                "name": "price",
+                "value": "223"
+              },
+              {
+                "name": "tags"
+              },
+              {
+                "name": "id",
+                "value": "708819859"
+              },
+              {
+                "name": "originPrice",
+                "value": "336"
+              }
+            ]
+          ]
+        },
+        {
+          "name": "orderType",
+          "value": "daodian"
+        },
+        {
+          "name": "level"
+        },
+        {
+          "name": "locationInfo",
+          "value": []
+        },
+        {
+          "name": "instantInfo",
+          "value": ""
+        },
+        {
+          "name": "price",
+          "value": "人均¥117"
+        },
+        {
+          "name": "evaluate",
+          "value": ""
+        },
+        {
+          "name": "area",
+          "value": "望京"
+        },
+        {
+          "name": "typeSummary",
+          "value": "老北京火锅"
+        },
+        {
+          "name": "scoreDesc",
+          "value": ""
+        }
+      ],
+      [
+        {
+          "name": "name",
+          "value": "京门老爆三·铜锅涮肉 爆肚(望京西园店)"
+        },
+        {
+          "name": "pagePath",
+          "value": "/index/pages/poi/poi?id=1224230880&idEncrypt=qB4r177a7aa30cbb9ceb68a337925a72670ee8e63d7690a06106e1ce2a76ee607d88922f49ead8b8b2b7712a292610e43d2bac167cdcda7719f50f20vxu5&searchWord=%E7%81%AB%E9%94%85&entrance=67"
+        },
+        {
+          "name": "headerImageUrl",
+          "value": "https://img.meituan.net/content/369fe4f39d554e4669e2684300561ac4114496.jpg"
+        },
+        {
+          "name": "score",
+          "value": "4.9"
+        },
+        {
+          "name": "id",
+          "value": "1224230880"
+        },
+        {
+          "name": "sales",
+          "value": ""
+        },
+        {
+          "name": "deliveryTags"
+        },
+        {
+          "name": "distance",
+          "value": "953m"
+        },
+        {
+          "name": "deliveryTime"
+        },
+        {
+          "name": "descriptions",
+          "value": [
+            "人气飙升"
+          ]
+        },
+        {
+          "name": "items",
+          "value": [
+            [
+              {
+                "name": "name",
+                "value": "【省100+】火锅2人餐｜鲜羊腿肉+羔羊肉（含小吃/主食）"
+              },
+              {
+                "name": "type",
+                "value": "deal"
+              },
+              {
+                "name": "price",
+                "value": "154"
+              },
+              {
+                "name": "tags"
+              },
+              {
+                "name": "id",
+                "value": "1209379759"
+              },
+              {
+                "name": "originPrice",
+                "value": "285"
+              }
+            ],
+            [
+              {
+                "name": "name",
+                "value": "【省200+】火锅3人餐｜鲜切羊上脑+精品雪花牛板腱"
+              },
+              {
+                "name": "type",
+                "value": "deal"
+              },
+              {
+                "name": "price",
+                "value": "197.83"
+              },
+              {
+                "name": "tags",
+                "value": [
+                  "补11元"
+                ]
+              },
+              {
+                "name": "id",
+                "value": "1209411517"
+              },
+              {
+                "name": "originPrice",
+                "value": "438.6"
+              }
+            ],
+            [
+              {
+                "name": "name",
+                "value": "【伏羊节限定】老北京铜锅涮肉双人餐（含鲜肉/主食）"
+              },
+              {
+                "name": "type",
+                "value": "deal"
+              },
+              {
+                "name": "price",
+                "value": "147.7"
+              },
+              {
+                "name": "tags",
+                "value": [
+                  "限时加补"
+                ]
+              },
+              {
+                "name": "id",
+                "value": "1300809784"
+              },
+              {
+                "name": "originPrice",
+                "value": "308"
+              }
+            ],
+            [
+              {
+                "name": "name",
+                "value": "【省200+】火锅4人餐｜含精品羊肋肉+特级谷饲肥牛"
+              },
+              {
+                "name": "type",
+                "value": "deal"
+              },
+              {
+                "name": "price",
+                "value": "334"
+              },
+              {
+                "name": "tags"
+              },
+              {
+                "name": "id",
+                "value": "1209424599"
+              },
+              {
+                "name": "originPrice",
+                "value": "548.6"
+              }
+            ],
+            [
+              {
+                "name": "name",
+                "value": "【高品质甄选】❤吃好喝好 ❤ 老北京铜锅涮肉双人餐"
+              },
+              {
+                "name": "type",
+                "value": "deal"
+              },
+              {
+                "name": "price",
+                "value": "259"
+              },
+              {
+                "name": "tags"
+              },
+              {
+                "name": "id",
+                "value": "1041176014"
+              },
+              {
+                "name": "originPrice",
+                "value": "343"
+              }
+            ],
+            [
+              {
+                "name": "name",
+                "value": "[非遗大师传承]铜锅涮肉六人餐"
+              },
+              {
+                "name": "type",
+                "value": "deal"
+              },
+              {
+                "name": "price",
+                "value": "544"
+              },
+              {
+                "name": "tags"
+              },
+              {
+                "name": "id",
+                "value": "915900912"
+              },
+              {
+                "name": "originPrice",
+                "value": "564"
+              }
+            ]
+          ]
+        },
+        {
+          "name": "orderType",
+          "value": "daodian"
+        },
+        {
+          "name": "level"
+        },
+        {
+          "name": "locationInfo",
+          "value": []
+        },
+        {
+          "name": "instantInfo",
+          "value": ""
+        },
+        {
+          "name": "price",
+          "value": "人均¥86"
+        },
+        {
+          "name": "evaluate",
+          "value": ""
+        },
+        {
+          "name": "area",
+          "value": "望京"
+        },
+        {
+          "name": "typeSummary",
+          "value": "老北京火锅"
+        },
+        {
+          "name": "scoreDesc",
+          "value": ""
+        }
+      ],
+      [
+        {
+          "name": "name",
+          "value": "麦当劳(屏翠东路店)"
+        },
+        {
+          "name": "pagePath",
+          "value": "/index/pages/poi/poi?id=1980384071&idEncrypt=qB4r177170a70db098e367a237925a72670ee8e63d7690a06106e1ce2a76ee607d88922f49ead8b8b2b7712a292610e43d2bac167cdcda7719f50f20vxu5&searchWord=%E5%86%B0%E6%B7%87%E6%B7%8B&entrance=67"
+        },
+        {
+          "name": "headerImageUrl",
+          "value": "https://img.meituan.net/content/8b8388f68d599b62c3097e13da582321164262.jpg"
+        },
+        {
+          "name": "score",
+          "value": "4.3"
+        },
+        {
+          "name": "id",
+          "value": "1980384071"
+        },
+        {
+          "name": "sales",
+          "value": ""
+        },
+        {
+          "name": "deliveryTags"
+        },
+        {
+          "name": "distance",
+          "value": "85m"
+        },
+        {
+          "name": "deliveryTime"
+        },
+        {
+          "name": "descriptions",
+          "value": [
+            "23人推荐圆筒冰淇淋",
+            "多次消费",
+            "“汉堡咬一口下去味道没得说”"
+          ]
+        },
+        {
+          "name": "items",
+          "value": [
+            [
+              {
+                "name": "name",
+                "value": "[热卖]麦旋风买一送一"
+              },
+              {
+                "name": "type",
+                "value": "deal"
+              },
+              {
+                "name": "price",
+                "value": "14"
+              },
+              {
+                "name": "tags"
+              },
+              {
+                "name": "id",
+                "value": "1243252616"
+              },
+              {
+                "name": "originPrice",
+                "value": "28"
+              }
+            ],
+            [
+              {
+                "name": "name",
+                "value": "冰淇淋玉米杯"
+              },
+              {
+                "name": "type",
+                "value": "deal"
+              },
+              {
+                "name": "price",
+                "value": "10.9"
+              },
+              {
+                "name": "tags"
+              },
+              {
+                "name": "id",
+                "value": "1243250332"
+              },
+              {
+                "name": "originPrice",
+                "value": "20.5"
+              }
+            ],
+            [
+              {
+                "name": "name",
+                "value": "【第二个半价】两个麦旋风"
+              },
+              {
+                "name": "type",
+                "value": "deal"
+              },
+              {
+                "name": "price",
+                "value": "19.9"
+              },
+              {
+                "name": "tags",
+                "value": [
+                  "加补1元"
+                ]
+              },
+              {
+                "name": "id",
+                "value": "1057306210"
+              },
+              {
+                "name": "originPrice",
+                "value": "28"
+              }
+            ],
+            [
+              {
+                "name": "name",
+                "value": "【仅限新客】一起吃薯条冰淇淋"
+              },
+              {
+                "name": "type",
+                "value": "deal"
+              },
+              {
+                "name": "price",
+                "value": "15.5"
+              },
+              {
+                "name": "tags"
+              },
+              {
+                "name": "id",
+                "value": "1357878514"
+              },
+              {
+                "name": "originPrice",
+                "value": "25.5"
+              }
+            ],
+            [
+              {
+                "name": "name",
+                "value": "双薯双圆筒"
+              },
+              {
+                "name": "type",
+                "value": "deal"
+              },
+              {
+                "name": "price",
+                "value": "16.9"
+              },
+              {
+                "name": "tags",
+                "value": [
+                  "加补3元"
+                ]
+              },
+              {
+                "name": "id",
+                "value": "1357967996"
+              },
+              {
+                "name": "originPrice",
+                "value": "37"
+              }
+            ],
+            [
+              {
+                "name": "name",
+                "value": "芝芝双吉蛋堡组合"
+              },
+              {
+                "name": "type",
+                "value": "deal"
+              },
+              {
+                "name": "price",
+                "value": "9.9"
+              },
+              {
+                "name": "tags"
+              },
+              {
+                "name": "id",
+                "value": "1363379002"
+              },
+              {
+                "name": "originPrice",
+                "value": "21.5"
+              }
+            ]
+          ]
+        },
+        {
+          "name": "orderType",
+          "value": "daodian"
+        },
+        {
+          "name": "level"
+        },
+        {
+          "name": "locationInfo",
+          "value": []
+        },
+        {
+          "name": "instantInfo",
+          "value": ""
+        },
+        {
+          "name": "price",
+          "value": "人均¥27"
+        },
+        {
+          "name": "evaluate",
+          "value": ""
+        },
+        {
+          "name": "area",
+          "value": "望京"
+        },
+        {
+          "name": "typeSummary",
+          "value": "西式快餐/汉堡"
+        },
+        {
+          "name": "scoreDesc",
+          "value": ""
+        }
+      ],
+      [
+        {
+          "name": "name",
+          "value": "三与叁山生日蛋糕·甜品·下午茶(北京望京店)"
+        },
+        {
+          "name": "pagePath",
+          "value": "/index/pages/poi/poi?id=1571972603&idEncrypt=qB4r177d7fa607bf9ee560a037925a72670ee8e63d7690a06106e1ce2a76ee607d88922f49ead8b8b2b7712a292610e43d2bac167cdcda7719f50f20vxu5&searchWord=%E5%86%B0%E6%B7%87%E6%B7%8B&entrance=67"
+        },
+        {
+          "name": "headerImageUrl",
+          "value": "https://p0.meituan.net/adunion/00c0f353e1d285432ff370c88d03554d197987.jpg%404000w_3000h_1e_1c"
+        },
+        {
+          "name": "score",
+          "value": "4.3"
+        },
+        {
+          "name": "id",
+          "value": "1571972603"
+        },
+        {
+          "name": "sales",
+          "value": ""
+        },
+        {
+          "name": "deliveryTags"
+        },
+        {
+          "name": "distance",
+          "value": "1.8km"
+        },
+        {
+          "name": "deliveryTime"
+        },
+        {
+          "name": "descriptions"
+        },
+        {
+          "name": "items",
+          "value": [
+            [
+              {
+                "name": "name",
+                "value": "【女王 ｜ 奢华款】7英寸冰淇淋蛋糕"
+              },
+              {
+                "name": "type",
+                "value": "deal"
+              },
+              {
+                "name": "price",
+                "value": "363"
+              },
+              {
+                "name": "tags"
+              },
+              {
+                "name": "id",
+                "value": "1280729171"
+              },
+              {
+                "name": "originPrice",
+                "value": "588"
+              }
+            ],
+            [
+              {
+                "name": "name",
+                "value": "【爱的立方 ｜ 常规款】6英寸冰淇淋蛋糕"
+              },
+              {
+                "name": "type",
+                "value": "deal"
+              },
+              {
+                "name": "price",
+                "value": "192"
+              },
+              {
+                "name": "tags"
+              },
+              {
+                "name": "id",
+                "value": "1352448934"
+              },
+              {
+                "name": "originPrice",
+                "value": "398"
+              }
+            ],
+            [
+              {
+                "name": "name",
+                "value": "【玫瑰之心 ｜ 常规款】5.5英寸慕斯蛋糕"
+              },
+              {
+                "name": "type",
+                "value": "deal"
+              },
+              {
+                "name": "price",
+                "value": "171.2"
+              },
+              {
+                "name": "tags"
+              },
+              {
+                "name": "id",
+                "value": "914307134"
+              },
+              {
+                "name": "originPrice",
+                "value": "398"
+              }
+            ],
+            [
+              {
+                "name": "name",
+                "value": "【DIY许愿蝶 ｜ 常规款】7英寸慕斯蛋糕"
+              },
+              {
+                "name": "type",
+                "value": "deal"
+              },
+              {
+                "name": "price",
+                "value": "213.8"
+              },
+              {
+                "name": "tags"
+              },
+              {
+                "name": "id",
+                "value": "1067432102"
+              },
+              {
+                "name": "originPrice",
+                "value": "478"
+              }
+            ],
+            [
+              {
+                "name": "name",
+                "value": "【DIY许愿蝶 ｜ 奢华款】7英寸慕斯蛋糕"
+              },
+              {
+                "name": "type",
+                "value": "deal"
+              },
+              {
+                "name": "price",
+                "value": "267.2"
+              },
+              {
+                "name": "tags"
+              },
+              {
+                "name": "id",
+                "value": "1067437044"
+              },
+              {
+                "name": "originPrice",
+                "value": "598"
+              }
+            ],
+            [
+              {
+                "name": "name",
+                "value": "【玫瑰之心 ｜ 奢华款】5.5英寸慕斯蛋糕"
+              },
+              {
+                "name": "type",
+                "value": "deal"
+              },
+              {
+                "name": "price",
+                "value": "232.2"
+              },
+              {
+                "name": "tags"
+              },
+              {
+                "name": "id",
+                "value": "868898709"
+              },
+              {
+                "name": "originPrice",
+                "value": "498"
+              }
+            ]
+          ]
+        },
+        {
+          "name": "orderType",
+          "value": "daodian"
+        },
+        {
+          "name": "level"
+        },
+        {
+          "name": "locationInfo",
+          "value": []
+        },
+        {
+          "name": "instantInfo",
+          "value": ""
+        },
+        {
+          "name": "price",
+          "value": "人均¥212"
+        },
+        {
+          "name": "evaluate",
+          "value": ""
+        },
+        {
+          "name": "area",
+          "value": "望京"
+        },
+        {
+          "name": "typeSummary",
+          "value": "西式甜品"
+        },
+        {
+          "name": "scoreDesc",
+          "value": ""
+        }
+      ],
+      [
+        {
+          "name": "name",
+          "value": "Wake & Bite(利星行中心店)"
+        },
+        {
+          "name": "pagePath",
+          "value": "/index/pages/poi/poi?id=1714262217&idEncrypt=qB4r177f79a30cbe9ee161a437925a72670ee8e63d7690a06106e1ce2a76ee607d88922f49ead8b8b2b7712a292610e43d2bac167cdcda7719f50f20vxu5&searchWord=%E5%86%B0%E6%B7%87%E6%B7%8B&entrance=67"
+        },
+        {
+          "name": "headerImageUrl",
+          "value": "https://p0.meituan.net/adunion/3d524bc3ebb749b75ae54850583a7d91284964.jpg%404000w_3000h_1e_1c"
+        },
+        {
+          "name": "score",
+          "value": "4.5"
+        },
+        {
+          "name": "id",
+          "value": "1714262217"
+        },
+        {
+          "name": "sales",
+          "value": ""
+        },
+        {
+          "name": "deliveryTags"
+        },
+        {
+          "name": "distance",
+          "value": "2.3km"
+        },
+        {
+          "name": "deliveryTime"
+        },
+        {
+          "name": "descriptions",
+          "value": [
+            "望京西餐人气榜第9名",
+            "12人推荐自制北海道牛乳冰淇淋mini"
+          ]
+        },
+        {
+          "name": "items",
+          "value": [
+            [
+              {
+                "name": "name",
+                "value": "[人气爆款]乐纯0糖0脂希腊酸奶版全自制Maritozzo"
+              },
+              {
+                "name": "type",
+                "value": "deal"
+              },
+              {
+                "name": "price",
+                "value": "14.9"
+              },
+              {
+                "name": "tags"
+              },
+              {
+                "name": "id",
+                "value": "1342239125"
+              },
+              {
+                "name": "originPrice",
+                "value": "28"
+              }
+            ],
+            [
+              {
+                "name": "name",
+                "value": "[爆款]Bean2Cup店内鲜烘SOE大杯咖啡品鉴套餐，建议2人使用"
+              },
+              {
+                "name": "type",
+                "value": "deal"
+              },
+              {
+                "name": "price",
+                "value": "34.9"
+              },
+              {
+                "name": "tags"
+              },
+              {
+                "name": "id",
+                "value": "926612263"
+              },
+              {
+                "name": "originPrice",
+                "value": "63"
+              }
+            ],
+            [
+              {
+                "name": "name",
+                "value": "[超人气]有机全日早餐 All Day Breakfast"
+              },
+              {
+                "name": "type",
+                "value": "deal"
+              },
+              {
+                "name": "price",
+                "value": "54.9"
+              },
+              {
+                "name": "tags"
+              },
+              {
+                "name": "id",
+                "value": "1065920558"
+              },
+              {
+                "name": "originPrice",
+                "value": "156"
+              }
+            ],
+            [
+              {
+                "name": "name",
+                "value": "[极致质价比]19道菜法式精致Bistro3-4人聚会套餐"
+              },
+              {
+                "name": "type",
+                "value": "deal"
+              },
+              {
+                "name": "price",
+                "value": "983"
+              },
+              {
+                "name": "tags"
+              },
+              {
+                "name": "id",
+                "value": "921863358"
+              },
+              {
+                "name": "originPrice",
+                "value": "2140"
+              }
+            ],
+            [
+              {
+                "name": "name",
+                "value": "[极致质价比] 法式精致Fine Bistro双人餐"
+              },
+              {
+                "name": "type",
+                "value": "deal"
+              },
+              {
+                "name": "price",
+                "value": "683"
+              },
+              {
+                "name": "tags"
+              },
+              {
+                "name": "id",
+                "value": "930330784"
+              },
+              {
+                "name": "originPrice",
+                "value": "1238"
+              }
+            ],
+            [
+              {
+                "name": "name",
+                "value": "[打卡小李同款] 射和英式炒蛋牛碱水包+佛罗伦萨牛肚包双人餐"
+              },
+              {
+                "name": "type",
+                "value": "deal"
+              },
+              {
+                "name": "price",
+                "value": "183"
+              },
+              {
+                "name": "tags"
+              },
+              {
+                "name": "id",
+                "value": "1328837252"
+              },
+              {
+                "name": "originPrice",
+                "value": "267"
+              }
+            ]
+          ]
+        },
+        {
+          "name": "orderType",
+          "value": "daodian"
+        },
+        {
+          "name": "level"
+        },
+        {
+          "name": "locationInfo",
+          "value": []
+        },
+        {
+          "name": "instantInfo",
+          "value": ""
+        },
+        {
+          "name": "price",
+          "value": "人均¥198"
+        },
+        {
+          "name": "evaluate",
+          "value": ""
+        },
+        {
+          "name": "area",
+          "value": "望京"
+        },
+        {
+          "name": "typeSummary",
+          "value": "意大利菜"
+        },
+        {
+          "name": "scoreDesc",
+          "value": ""
+        }
+      ],
+      [
+        {
+          "name": "name",
+          "value": "和颜悦色小西餐"
+        },
+        {
+          "name": "pagePath",
+          "value": "/index/pages/poi/poi?id=921119910&idEncrypt=qB4r1f7a79a60fb195e260b024955c76711afcbe64359ae9791ea0c22835b372728d8c3b41ad81aab5fb3c262b2612e57d75b01b69ced36a06ba50vxu5&searchWord=%E5%86%B0%E6%B7%87%E6%B7%8B&entrance=67"
+        },
+        {
+          "name": "headerImageUrl",
+          "value": "https://p1.meituan.net/adunion/d2697a78415c6b45035235216ba07aa7286184.jpg%404000w_3000h_1e_1c"
+        },
+        {
+          "name": "score",
+          "value": "4.5"
+        },
+        {
+          "name": "id",
+          "value": "921119910"
+        },
+        {
+          "name": "sales",
+          "value": ""
+        },
+        {
+          "name": "deliveryTags"
+        },
+        {
+          "name": "distance",
+          "value": "1.6km"
+        },
+        {
+          "name": "deliveryTime"
+        },
+        {
+          "name": "descriptions",
+          "value": [
+            "网友推荐芒果蛋糕配冰淇淋",
+            "“餐厅环境不错”"
+          ]
+        },
+        {
+          "name": "items",
+          "value": [
+            [
+              {
+                "name": "name",
+                "value": "食夏交响曲·午市超值套餐"
+              },
+              {
+                "name": "type",
+                "value": "deal"
+              },
+              {
+                "name": "price",
+                "value": "38"
+              },
+              {
+                "name": "tags"
+              },
+              {
+                "name": "id",
+                "value": "889158054"
+              },
+              {
+                "name": "originPrice",
+                "value": "88"
+              }
+            ],
+            [
+              {
+                "name": "name",
+                "value": "打工人的大满足·单人餐"
+              },
+              {
+                "name": "type",
+                "value": "deal"
+              },
+              {
+                "name": "price",
+                "value": "79"
+              },
+              {
+                "name": "tags"
+              },
+              {
+                "name": "id",
+                "value": "799555022"
+              },
+              {
+                "name": "originPrice",
+                "value": "171"
+              }
+            ],
+            [
+              {
+                "name": "name",
+                "value": "奶酪火锅·双人餐"
+              },
+              {
+                "name": "type",
+                "value": "deal"
+              },
+              {
+                "name": "price",
+                "value": "335"
+              },
+              {
+                "name": "tags"
+              },
+              {
+                "name": "id",
+                "value": "1048015230"
+              },
+              {
+                "name": "originPrice",
+                "value": "526"
+              }
+            ],
+            [
+              {
+                "name": "name",
+                "value": "假日欢乐餐·自制纯手工披萨"
+              },
+              {
+                "name": "type",
+                "value": "deal"
+              },
+              {
+                "name": "price",
+                "value": "88"
+              },
+              {
+                "name": "tags"
+              },
+              {
+                "name": "id",
+                "value": "1363035651"
+              },
+              {
+                "name": "originPrice",
+                "value": "175"
+              }
+            ],
+            [
+              {
+                "name": "name",
+                "value": "生日/订婚/团建/包场定制1份"
+              },
+              {
+                "name": "type",
+                "value": "deal"
+              },
+              {
+                "name": "price",
+                "value": "1"
+              },
+              {
+                "name": "tags"
+              },
+              {
+                "name": "id",
+                "value": "1165757786"
+              },
+              {
+                "name": "originPrice",
+                "value": "2"
+              }
+            ],
+            [
+              {
+                "name": "name",
+                "value": "精致商务·双人餐"
+              },
+              {
+                "name": "type",
+                "value": "deal"
+              },
+              {
+                "name": "price",
+                "value": "468"
+              },
+              {
+                "name": "tags"
+              },
+              {
+                "name": "id",
+                "value": "821021765"
+              },
+              {
+                "name": "originPrice",
+                "value": "643"
+              }
+            ]
+          ]
+        },
+        {
+          "name": "orderType",
+          "value": "daodian"
+        },
+        {
+          "name": "level"
+        },
+        {
+          "name": "locationInfo",
+          "value": []
+        },
+        {
+          "name": "instantInfo",
+          "value": ""
+        },
+        {
+          "name": "price",
+          "value": "人均¥101"
+        },
+        {
+          "name": "evaluate",
+          "value": ""
+        },
+        {
+          "name": "area",
+          "value": "望京"
+        },
+        {
+          "name": "typeSummary",
+          "value": "西餐"
+        },
+        {
+          "name": "scoreDesc",
+          "value": ""
+        }
+      ],
+      [
+        {
+          "name": "name",
+          "value": "啫火啫啫煲·顺德干蒸(望京凯德MALL店)"
+        },
+        {
+          "name": "pagePath",
+          "value": "/index/pages/poi/poi?id=1167090307&idEncrypt=qB4r17797ea00eb19ce060a437925a72670ee8e63d7690a06106e1ce2a76ee607d88922f49ead8b8b2b7712a292610e43d2bac167cdcda7719f50f20vxu5&searchWord=%E5%86%B0%E6%B7%87%E6%B7%8B&entrance=67"
+        },
+        {
+          "name": "headerImageUrl",
+          "value": "https://p0.meituan.net/adunion/bfc16b9af9c6341c023276bc619ee8d5302905.jpg%404000w_3000h_1e_1c"
+        },
+        {
+          "name": "score",
+          "value": "4.3"
+        },
+        {
+          "name": "id",
+          "value": "1167090307"
+        },
+        {
+          "name": "sales",
+          "value": ""
+        },
+        {
+          "name": "deliveryTags"
+        },
+        {
+          "name": "distance",
+          "value": "2.4km"
+        },
+        {
+          "name": "deliveryTime"
+        },
+        {
+          "name": "descriptions",
+          "value": [
+            "望京粤菜好评榜第7名",
+            "网友推荐镇店姜撞冰淇淋"
+          ]
+        },
+        {
+          "name": "items",
+          "value": [
+            [
+              {
+                "name": "name",
+                "value": "{啫粉真爱}镇店姜撞冰淇淋"
+              },
+              {
+                "name": "type",
+                "value": "deal"
+              },
+              {
+                "name": "price",
+                "value": "8.8"
+              },
+              {
+                "name": "tags"
+              },
+              {
+                "name": "id",
+                "value": "862234649"
+              },
+              {
+                "name": "originPrice",
+                "value": "18"
+              }
+            ],
+            [
+              {
+                "name": "name",
+                "value": "顺德非遗干蒸双人套餐"
+              },
+              {
+                "name": "type",
+                "value": "deal"
+              },
+              {
+                "name": "price",
+                "value": "99"
+              },
+              {
+                "name": "tags"
+              },
+              {
+                "name": "id",
+                "value": "935329418"
+              },
+              {
+                "name": "originPrice",
+                "value": "133"
+              }
+            ],
+            [
+              {
+                "name": "name",
+                "value": "可达鸭布丁"
+              },
+              {
+                "name": "type",
+                "value": "deal"
+              },
+              {
+                "name": "price",
+                "value": "6.6"
+              },
+              {
+                "name": "tags"
+              },
+              {
+                "name": "id",
+                "value": "1324650995"
+              },
+              {
+                "name": "originPrice",
+                "value": "18"
+              }
+            ],
+            [
+              {
+                "name": "name",
+                "value": "招牌解火茅根竹蔗水"
+              },
+              {
+                "name": "type",
+                "value": "deal"
+              },
+              {
+                "name": "price",
+                "value": "10.2"
+              },
+              {
+                "name": "tags"
+              },
+              {
+                "name": "id",
+                "value": "894715880"
+              },
+              {
+                "name": "originPrice",
+                "value": "18"
+              }
+            ],
+            [
+              {
+                "name": "name",
+                "value": "牛杂煲暴击柠檬茶套餐"
+              },
+              {
+                "name": "type",
+                "value": "deal"
+              },
+              {
+                "name": "price",
+                "value": "168"
+              },
+              {
+                "name": "tags"
+              },
+              {
+                "name": "id",
+                "value": "1297879285"
+              },
+              {
+                "name": "originPrice",
+                "value": "345"
+              }
+            ],
+            [
+              {
+                "name": "name",
+                "value": "啫蒸双绝工作日双人餐"
+              },
+              {
+                "name": "type",
+                "value": "deal"
+              },
+              {
+                "name": "price",
+                "value": "168"
+              },
+              {
+                "name": "tags"
+              },
+              {
+                "name": "id",
+                "value": "1058158909"
+              },
+              {
+                "name": "originPrice",
+                "value": "259"
+              }
+            ]
+          ]
+        },
+        {
+          "name": "orderType",
+          "value": "daodian"
+        },
+        {
+          "name": "level"
+        },
+        {
+          "name": "locationInfo",
+          "value": []
+        },
+        {
+          "name": "instantInfo",
+          "value": ""
+        },
+        {
+          "name": "price",
+          "value": "人均¥95"
+        },
+        {
+          "name": "evaluate",
+          "value": ""
+        },
+        {
+          "name": "area",
+          "value": "望京"
+        },
+        {
+          "name": "typeSummary",
+          "value": "广州菜"
+        },
+        {
+          "name": "scoreDesc",
+          "value": ""
+        }
+      ],
+      [
+        {
+          "name": "name",
+          "value": "瑞幸咖啡(恒基伟业大厦店)"
+        },
+        {
+          "name": "pagePath",
+          "value": "/index/pages/poi/poi?id=919564119&idEncrypt=qB4r1f7971a208bc9de269b024955c76711afcbe64359ae9791ea0c22835b372728d8c3b41ad81aab5fb3c262b2612e57d75b01b69ced36a06ba50vxu5&searchWord=%E5%92%96%E5%95%A1&entrance=67"
+        },
+        {
+          "name": "headerImageUrl",
+          "value": "https://img.meituan.net/content/19b01782ff213e777e28b847fc4647eb28602.png"
+        },
+        {
+          "name": "score",
+          "value": "4.3"
+        },
+        {
+          "name": "id",
+          "value": "919564119"
+        },
+        {
+          "name": "sales",
+          "value": ""
+        },
+        {
+          "name": "deliveryTags"
+        },
+        {
+          "name": "distance",
+          "value": "67m"
+        },
+        {
+          "name": "deliveryTime"
+        },
+        {
+          "name": "descriptions",
+          "value": [
+            "望京饮品人气榜第1名",
+            "多次消费"
+          ]
+        },
+        {
+          "name": "items",
+          "value": [
+            [
+              {
+                "name": "name",
+                "value": "[王炸系列]15选1|含褚橙拿铁"
+              },
+              {
+                "name": "type",
+                "value": "deal"
+              },
+              {
+                "name": "price",
+                "value": "9.9"
+              },
+              {
+                "name": "tags"
+              },
+              {
+                "name": "id",
+                "value": "1173522548"
+              },
+              {
+                "name": "originPrice",
+                "value": "35"
+              }
+            ],
+            [
+              {
+                "name": "name",
+                "value": "【低卡】冷萃Cold Brew"
+              },
+              {
+                "name": "type",
+                "value": "deal"
+              },
+              {
+                "name": "price",
+                "value": "11.9"
+              },
+              {
+                "name": "tags"
+              },
+              {
+                "name": "id",
+                "value": "1315868714"
+              },
+              {
+                "name": "originPrice",
+                "value": "29"
+              }
+            ],
+            [
+              {
+                "name": "name",
+                "value": "蜂蜜云朵蛋糕"
+              },
+              {
+                "name": "type",
+                "value": "deal"
+              },
+              {
+                "name": "price",
+                "value": "2.9"
+              },
+              {
+                "name": "tags"
+              },
+              {
+                "name": "id",
+                "value": "1340370351"
+              },
+              {
+                "name": "originPrice",
+                "value": "6"
+              }
+            ],
+            [
+              {
+                "name": "name",
+                "value": "标准美式"
+              },
+              {
+                "name": "type",
+                "value": "deal"
+              },
+              {
+                "name": "price",
+                "value": "11.5"
+              },
+              {
+                "name": "tags"
+              },
+              {
+                "name": "id",
+                "value": "1132615150"
+              },
+              {
+                "name": "originPrice",
+                "value": "26"
+              }
+            ],
+            [
+              {
+                "name": "name",
+                "value": "[0脂百大卡]椰青冰萃美式咖啡"
+              },
+              {
+                "name": "type",
+                "value": "deal"
+              },
+              {
+                "name": "price",
+                "value": "11.9"
+              },
+              {
+                "name": "tags"
+              },
+              {
+                "name": "id",
+                "value": "1340208725"
+              },
+              {
+                "name": "originPrice",
+                "value": "32"
+              }
+            ],
+            [
+              {
+                "name": "name",
+                "value": "半熟芝士蛋糕"
+              },
+              {
+                "name": "type",
+                "value": "deal"
+              },
+              {
+                "name": "price",
+                "value": "4.9"
+              },
+              {
+                "name": "tags"
+              },
+              {
+                "name": "id",
+                "value": "1412051224"
+              },
+              {
+                "name": "originPrice",
+                "value": "9"
+              }
+            ]
+          ]
+        },
+        {
+          "name": "orderType",
+          "value": "daodian"
+        },
+        {
+          "name": "level"
+        },
+        {
+          "name": "locationInfo",
+          "value": []
+        },
+        {
+          "name": "instantInfo",
+          "value": ""
+        },
+        {
+          "name": "price",
+          "value": "人均¥10"
+        },
+        {
+          "name": "evaluate",
+          "value": ""
+        },
+        {
+          "name": "area",
+          "value": "望京"
+        },
+        {
+          "name": "typeSummary",
+          "value": "咖啡"
+        },
+        {
+          "name": "scoreDesc",
+          "value": ""
+        }
+      ],
+      [
+        {
+          "name": "name",
+          "value": "D STAR 帝星咖啡·西餐(望京店)"
+        },
+        {
+          "name": "pagePath",
+          "value": "/index/pages/poi/poi?id=1062385687&idEncrypt=qB4r17787ea50db099e568a437925a72670ee8e63d7690a06106e1ce2a76ee607d88922f49ead8b8b2b7712a292610e43d2bac167cdcda7719f50f20vxu5&searchWord=%E5%92%96%E5%95%A1&entrance=67"
+        },
+        {
+          "name": "headerImageUrl",
+          "value": "https://p0.meituan.net/adunion/c8a4e5d9c46fd739c009009f13b585ac310046.jpg%404000w_3000h_1e_1c"
+        },
+        {
+          "name": "score",
+          "value": "4.6"
+        },
+        {
+          "name": "id",
+          "value": "1062385687"
+        },
+        {
+          "name": "sales",
+          "value": ""
+        },
+        {
+          "name": "deliveryTags"
+        },
+        {
+          "name": "distance",
+          "value": "2.7km"
+        },
+        {
+          "name": "deliveryTime"
+        },
+        {
+          "name": "descriptions"
+        },
+        {
+          "name": "items",
+          "value": [
+            [
+              {
+                "name": "name",
+                "value": "【清醒热爱】轻享单人餐"
+              },
+              {
+                "name": "type",
+                "value": "deal"
+              },
+              {
+                "name": "price",
+                "value": "53"
+              },
+              {
+                "name": "tags"
+              },
+              {
+                "name": "id",
+                "value": "1175349045"
+              },
+              {
+                "name": "originPrice",
+                "value": "83"
+              }
+            ],
+            [
+              {
+                "name": "name",
+                "value": "【清爽一夏】气泡水单人餐"
+              },
+              {
+                "name": "type",
+                "value": "deal"
+              },
+              {
+                "name": "price",
+                "value": "20.8"
+              },
+              {
+                "name": "tags"
+              },
+              {
+                "name": "id",
+                "value": "1386444293"
+              },
+              {
+                "name": "originPrice",
+                "value": "42"
+              }
+            ],
+            [
+              {
+                "name": "name",
+                "value": "【下午茶】原味华夫饼单人餐"
+              },
+              {
+                "name": "type",
+                "value": "deal"
+              },
+              {
+                "name": "price",
+                "value": "54.9"
+              },
+              {
+                "name": "tags"
+              },
+              {
+                "name": "id",
+                "value": "1175349342"
+              },
+              {
+                "name": "originPrice",
+                "value": "90"
+              }
+            ],
+            [
+              {
+                "name": "name",
+                "value": "【全时自在】分享双人餐"
+              },
+              {
+                "name": "type",
+                "value": "deal"
+              },
+              {
+                "name": "price",
+                "value": "153"
+              },
+              {
+                "name": "tags"
+              },
+              {
+                "name": "id",
+                "value": "1175338944"
+              },
+              {
+                "name": "originPrice",
+                "value": "234"
+              }
+            ]
+          ]
+        },
+        {
+          "name": "orderType",
+          "value": "daodian"
+        },
+        {
+          "name": "level"
+        },
+        {
+          "name": "locationInfo",
+          "value": []
+        },
+        {
+          "name": "instantInfo",
+          "value": ""
+        },
+        {
+          "name": "price",
+          "value": "人均¥64"
+        },
+        {
+          "name": "evaluate",
+          "value": ""
+        },
+        {
+          "name": "area",
+          "value": "望京"
+        },
+        {
+          "name": "typeSummary",
+          "value": "咖啡"
+        },
+        {
+          "name": "scoreDesc",
+          "value": ""
+        }
+      ],
+      [
+        {
+          "name": "name",
+          "value": "瑞幸咖啡(北京望京万象汇店)"
+        },
+        {
+          "name": "pagePath",
+          "value": "/index/pages/poi/poi?id=1403177491&idEncrypt=qB4r177c78a40fbf9be769a237925a72670ee8e63d7690a06106e1ce2a76ee607d88922f49ead8b8b2b7712a292610e43d2bac167cdcda7719f50f20vxu5&searchWord=%E5%92%96%E5%95%A1&entrance=67"
+        },
+        {
+          "name": "headerImageUrl",
+          "value": "https://img.meituan.net/content/19b01782ff213e777e28b847fc4647eb28602.png"
+        },
+        {
+          "name": "score",
+          "value": "4.2"
+        },
+        {
+          "name": "id",
+          "value": "1403177491"
+        },
+        {
+          "name": "sales",
+          "value": ""
+        },
+        {
+          "name": "deliveryTags"
+        },
+        {
+          "name": "distance",
+          "value": "1.6km"
+        },
+        {
+          "name": "deliveryTime"
+        },
+        {
+          "name": "descriptions",
+          "value": [
+            "品牌名：luckin coffee瑞幸咖啡"
+          ]
+        },
+        {
+          "name": "items",
+          "value": [
+            [
+              {
+                "name": "name",
+                "value": "【消暑必备】绿沙沙拿铁"
+              },
+              {
+                "name": "type",
+                "value": "deal"
+              },
+              {
+                "name": "price",
+                "value": "12.9"
+              },
+              {
+                "name": "tags"
+              },
+              {
+                "name": "id",
+                "value": "1402547510"
+              },
+              {
+                "name": "originPrice",
+                "value": "35"
+              }
+            ],
+            [
+              {
+                "name": "name",
+                "value": "[王炸系列]15选1|含褚橙拿铁"
+              },
+              {
+                "name": "type",
+                "value": "deal"
+              },
+              {
+                "name": "price",
+                "value": "9.9"
+              },
+              {
+                "name": "tags"
+              },
+              {
+                "name": "id",
+                "value": "1173522548"
+              },
+              {
+                "name": "originPrice",
+                "value": "35"
+              }
+            ],
+            [
+              {
+                "name": "name",
+                "value": "【冰爽顶流】冰吸生椰拿铁"
+              },
+              {
+                "name": "type",
+                "value": "deal"
+              },
+              {
+                "name": "price",
+                "value": "11.9"
+              },
+              {
+                "name": "tags"
+              },
+              {
+                "name": "id",
+                "value": "1321859225"
+              },
+              {
+                "name": "originPrice",
+                "value": "32"
+              }
+            ],
+            [
+              {
+                "name": "name",
+                "value": "蜂蜜云朵蛋糕"
+              },
+              {
+                "name": "type",
+                "value": "deal"
+              },
+              {
+                "name": "price",
+                "value": "2.9"
+              },
+              {
+                "name": "tags"
+              },
+              {
+                "name": "id",
+                "value": "1340370351"
+              },
+              {
+                "name": "originPrice",
+                "value": "6"
+              }
+            ],
+            [
+              {
+                "name": "name",
+                "value": "【低卡】冷萃Cold Brew"
+              },
+              {
+                "name": "type",
+                "value": "deal"
+              },
+              {
+                "name": "price",
+                "value": "11.9"
+              },
+              {
+                "name": "tags"
+              },
+              {
+                "name": "id",
+                "value": "1315868714"
+              },
+              {
+                "name": "originPrice",
+                "value": "29"
+              }
+            ],
+            [
+              {
+                "name": "name",
+                "value": "标准美式"
+              },
+              {
+                "name": "type",
+                "value": "deal"
+              },
+              {
+                "name": "price",
+                "value": "11.5"
+              },
+              {
+                "name": "tags"
+              },
+              {
+                "name": "id",
+                "value": "1132615150"
+              },
+              {
+                "name": "originPrice",
+                "value": "26"
+              }
+            ]
+          ]
+        },
+        {
+          "name": "orderType",
+          "value": "daodian"
+        },
+        {
+          "name": "level"
+        },
+        {
+          "name": "locationInfo",
+          "value": []
+        },
+        {
+          "name": "instantInfo",
+          "value": ""
+        },
+        {
+          "name": "price",
+          "value": "人均¥12"
+        },
+        {
+          "name": "evaluate",
+          "value": ""
+        },
+        {
+          "name": "area",
+          "value": "望京"
+        },
+        {
+          "name": "typeSummary",
+          "value": "咖啡"
+        },
+        {
+          "name": "scoreDesc",
+          "value": ""
+        }
+      ],
+      [
+        {
+          "name": "name",
+          "value": "和颜悦色小西餐"
+        },
+        {
+          "name": "pagePath",
+          "value": "/index/pages/poi/poi?id=921119910&idEncrypt=qB4r1f7a79a60fb195e260b024955c76711afcbe64359ae9791ea0c22835b372728d8c3b41ad81aab5fb3c262b2612e57d75b01b69ced36a06ba50vxu5&searchWord=%E5%92%96%E5%95%A1&entrance=67"
+        },
+        {
+          "name": "headerImageUrl",
+          "value": "https://p0.meituan.net/adunion/aa307d7acdc3b272303893b69897aa5f392303.jpg%404000w_3000h_1e_1c"
+        },
+        {
+          "name": "score",
+          "value": "4.5"
+        },
+        {
+          "name": "id",
+          "value": "921119910"
+        },
+        {
+          "name": "sales",
+          "value": ""
+        },
+        {
+          "name": "deliveryTags"
+        },
+        {
+          "name": "distance",
+          "value": "1.6km"
+        },
+        {
+          "name": "deliveryTime"
+        },
+        {
+          "name": "descriptions",
+          "value": [
+            "“餐厅环境不错”"
+          ]
+        },
+        {
+          "name": "items",
+          "value": [
+            [
+              {
+                "name": "name",
+                "value": "食夏交响曲·午市超值套餐"
+              },
+              {
+                "name": "type",
+                "value": "deal"
+              },
+              {
+                "name": "price",
+                "value": "38"
+              },
+              {
+                "name": "tags"
+              },
+              {
+                "name": "id",
+                "value": "889158054"
+              },
+              {
+                "name": "originPrice",
+                "value": "88"
+              }
+            ],
+            [
+              {
+                "name": "name",
+                "value": "打工人的大满足·单人餐"
+              },
+              {
+                "name": "type",
+                "value": "deal"
+              },
+              {
+                "name": "price",
+                "value": "79"
+              },
+              {
+                "name": "tags"
+              },
+              {
+                "name": "id",
+                "value": "799555022"
+              },
+              {
+                "name": "originPrice",
+                "value": "171"
+              }
+            ],
+            [
+              {
+                "name": "name",
+                "value": "生日/订婚/团建/包场定制1份"
+              },
+              {
+                "name": "type",
+                "value": "deal"
+              },
+              {
+                "name": "price",
+                "value": "1"
+              },
+              {
+                "name": "tags"
+              },
+              {
+                "name": "id",
+                "value": "1165757786"
+              },
+              {
+                "name": "originPrice",
+                "value": "2"
+              }
+            ],
+            [
+              {
+                "name": "name",
+                "value": "假日欢乐餐·自制纯手工披萨"
+              },
+              {
+                "name": "type",
+                "value": "deal"
+              },
+              {
+                "name": "price",
+                "value": "88"
+              },
+              {
+                "name": "tags"
+              },
+              {
+                "name": "id",
+                "value": "1363035651"
+              },
+              {
+                "name": "originPrice",
+                "value": "175"
+              }
+            ],
+            [
+              {
+                "name": "name",
+                "value": "奶酪火锅·双人餐"
+              },
+              {
+                "name": "type",
+                "value": "deal"
+              },
+              {
+                "name": "price",
+                "value": "335"
+              },
+              {
+                "name": "tags"
+              },
+              {
+                "name": "id",
+                "value": "1048015230"
+              },
+              {
+                "name": "originPrice",
+                "value": "526"
+              }
+            ],
+            [
+              {
+                "name": "name",
+                "value": "精致商务·双人餐"
+              },
+              {
+                "name": "type",
+                "value": "deal"
+              },
+              {
+                "name": "price",
+                "value": "468"
+              },
+              {
+                "name": "tags"
+              },
+              {
+                "name": "id",
+                "value": "821021765"
+              },
+              {
+                "name": "originPrice",
+                "value": "643"
+              }
+            ]
+          ]
+        },
+        {
+          "name": "orderType",
+          "value": "daodian"
+        },
+        {
+          "name": "level"
+        },
+        {
+          "name": "locationInfo",
+          "value": []
+        },
+        {
+          "name": "instantInfo",
+          "value": ""
+        },
+        {
+          "name": "price",
+          "value": "人均¥101"
+        },
+        {
+          "name": "evaluate",
+          "value": ""
+        },
+        {
+          "name": "area",
+          "value": "望京"
+        },
+        {
+          "name": "typeSummary",
+          "value": "西餐"
+        },
+        {
+          "name": "scoreDesc",
+          "value": ""
+        }
+      ],
+      [
+        {
+          "name": "name",
+          "value": "cococean椰子水（望京店）"
+        },
+        {
+          "name": "pagePath",
+          "value": "/waimai/pages/restaurant/restaurant?poi_id=-100&mt_selected_latitude=40.008921&mt_selected_longitude=116.487649&src_meituan_search_poi=1&g_source=12&poi_id_str=dvmScroBX53wxk84fxtEiwI&code=80&search_log_id=&recall_type=3&g_source=12&search_word=%E5%92%96%E5%95%A1"
+        },
+        {
+          "name": "headerImageUrl",
+          "value": "http://p1.meituan.net/waimaipoi/8fe06c93a531fd02c2daf945126d7a421995328.png"
+        },
+        {
+          "name": "score",
+          "value": "4.9"
+        },
+        {
+          "name": "id",
+          "value": "585437815"
+        },
+        {
+          "name": "sales",
+          "value": "月售1000+"
+        },
+        {
+          "name": "deliveryTags",
+          "value": [
+            "起送¥25",
+            "配送约¥1",
+            "¥5"
+          ]
+        },
+        {
+          "name": "distance",
+          "value": "1.5km"
+        },
+        {
+          "name": "deliveryTime"
+        },
+        {
+          "name": "descriptions",
+          "value": [
+            "2025年上榜餐厅",
+            "大众点评高分店铺",
+            "最近3小时9人下单",
+            "点评收录5年",
+            "门店上新"
+          ]
+        },
+        {
+          "name": "items",
+          "value": [
+            [
+              {
+                "name": "name",
+                "value": "冰椰美式"
+              },
+              {
+                "name": "type",
+                "value": "spu"
+              },
+              {
+                "name": "price",
+                "value": "30.0"
+              },
+              {
+                "name": "tags",
+                "value": [
+                  "点评推荐"
+                ]
+              },
+              {
+                "name": "id",
+                "value": "2960787813"
+              },
+              {
+                "name": "originPrice"
+              }
+            ],
+            [
+              {
+                "name": "name",
+                "value": "生椰拿铁"
+              },
+              {
+                "name": "type",
+                "value": "spu"
+              },
+              {
+                "name": "price",
+                "value": "28.0"
+              },
+              {
+                "name": "tags",
+                "value": [
+                  "点评推荐"
+                ]
+              },
+              {
+                "name": "id",
+                "value": "2960825722"
+              },
+              {
+                "name": "originPrice"
+              }
+            ],
+            [
+              {
+                "name": "name",
+                "value": "椰子三兄弟"
+              },
+              {
+                "name": "type",
+                "value": "spu"
+              },
+              {
+                "name": "price",
+                "value": "32.0"
+              },
+              {
+                "name": "tags",
+                "value": [
+                  "点评推荐"
+                ]
+              },
+              {
+                "name": "id",
+                "value": "2960787778"
+              },
+              {
+                "name": "originPrice"
+              }
+            ],
+            [
+              {
+                "name": "name",
+                "value": "新鲜椰子水"
+              },
+              {
+                "name": "type",
+                "value": "spu"
+              },
+              {
+                "name": "price",
+                "value": "32.0"
+              },
+              {
+                "name": "tags",
+                "value": [
+                  "点评推荐"
+                ]
+              },
+              {
+                "name": "id",
+                "value": "2960935964"
+              },
+              {
+                "name": "originPrice"
+              }
+            ],
+            [
+              {
+                "name": "name",
+                "value": "招牌手作清补凉"
+              },
+              {
+                "name": "type",
+                "value": "spu"
+              },
+              {
+                "name": "price",
+                "value": "28.0"
+              },
+              {
+                "name": "tags"
+              },
+              {
+                "name": "id",
+                "value": "17590947602"
+              },
+              {
+                "name": "originPrice"
+              }
+            ],
+            [
+              {
+                "name": "name",
+                "value": "马蹄竹蔗鲜椰水"
+              },
+              {
+                "name": "type",
+                "value": "spu"
+              },
+              {
+                "name": "price",
+                "value": "26.0"
+              },
+              {
+                "name": "tags"
+              },
+              {
+                "name": "id",
+                "value": "17592373872"
+              },
+              {
+                "name": "originPrice"
+              }
+            ]
+          ]
+        },
+        {
+          "name": "orderType",
+          "value": "waimai"
+        },
+        {
+          "name": "level"
+        },
+        {
+          "name": "locationInfo",
+          "value": []
+        },
+        {
+          "name": "instantInfo",
+          "value": ""
+        },
+        {
+          "name": "price"
+        },
+        {
+          "name": "evaluate",
+          "value": ""
+        },
+        {
+          "name": "area"
+        },
+        {
+          "name": "typeSummary"
+        },
+        {
+          "name": "scoreDesc",
+          "value": ""
+        }
+      ]
+    ]
+  }
+]

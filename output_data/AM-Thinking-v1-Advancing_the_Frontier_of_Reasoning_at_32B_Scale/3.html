@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Algorithm Expert Analysis</title>
+  <style>
+    body { font-family: Arial, sans-serif; line-height: 1.6; margin: 20px; }
+    .section { margin-bottom: 30px; padding: 15px; border-radius: 5px; background-color: #f9f9f9; border: 1px solid #ddd; }
+    .section-title { font-size: 1.5em; font-weight: bold; color: #333; margin-bottom: 15px; padding-bottom: 5px; border-bottom: 2px solid #0078d7; }
+    .subsection { margin-bottom: 20px; }
+    .subsection-title { font-size: 1.2em; font-weight: bold; color: #0056b3; margin-bottom: 10px; }
+    .original { background-color: #f0f0f0; border: 1px solid #cccccc; padding: 15px; margin-bottom: 10px; border-radius: 5px; }
+    .translation { background-color: #e0ffe0; border: 1px solid #00cc00; padding: 15px; margin-bottom: 20px; border-radius: 5px; }
+    .highlight { color: red; font-weight: bold; }
+    .formula { text-align: center; margin: 20px 0; padding: 10px; background-color: #ffffcc; border: 1px solid #ffcc00; border-radius: 5px; }
+    .formula-number { display: block; text-align: center; font-style: italic; margin-top: 5px; }
+    .term-list { list-style-type: none; padding-left: 0; }
+    .term-item { margin-bottom: 15px; padding: 10px; background-color: #fff; border: 1px solid #eee; border-radius: 5px; }
+    .term-name { font-weight: bold; color: #d32f2f; }
+    .term-def { margin-top: 5px; }
+    ul { padding-left: 20px; }
+    li { margin-bottom: 8px; }
+  </style>
+</head>
+<body>
+  <h1>Algorithm Expert Analysis: Synthetic Response Filtering and Reward Mechanism</h1>
+
+  <!-- Content Understanding Section -->
+  <div class="section">
+    <div class="section-title">Content Understanding</div>
+    <p>本文档描述了在大型语言模型（LLM）训练中，用于提升合成数据质量的核心方法。核心内容包括两个部分：合成响应过滤和奖励机制验证。在合成响应过滤阶段，查询过滤后应用三种方法移除低质量响应：基于困惑度（Perplexity, PPL）的过滤评估模型响应的不确定性；基于N-gram的过滤检测并移除连续重复短语；基于结构的过滤确保多轮对话的完整性（如最后一轮必须是助手响应，且包含完整的“思考”和“回答”组件）。随后，通过计算验证分数（Verify Score）评估响应质量或查询难度：对于有真实答案（Ground Truth）的查询，使用通过率（Pass Rate）；对于无真实答案的查询，则采用基于LLM的奖励模型（Reward Model）的平均分作为验证信号。</p>
+    <p>在奖励机制部分，重点针对可验证查询（Verifiable Queries），如数学、代码和指令遵循（IF）查询，详细说明验证过程。数学查询通过提取框定答案并使用math_verify5工具进行规范化比较；代码查询则在安全沙箱（Code Sandbox）中执行，支持多语言（如Python、C++），并通过分隔符（Delimiters）提取代码块。测试用例（Test Cases）分为两类：方法调用测试用例（自动转换为断言）和标准输入/输出测试用例（通过stdin/stdout处理）。整体流程强调自动化、安全性和可扩展性，以提升模型训练数据的可靠性和效率。</p>
+  </div>
+
+  <!-- Content Translation Section -->
+  <div class="section">
+    <div class="section-title">Content Translation</div>
+    
+    <!-- Subsection 2.3 Synthetic response filtering -->
+    <div class="subsection">
+      <div class="subsection-title">2.3 Synthetic response filtering</div>
+      <div class="original">After query filtering, we apply three methods to filter out low-quality synthetic response:
+        <ul>
+          <li><span class="highlight">Perplexity-based Filtering</span>. We use our previously trained 32B model[48] to compute the <span class="highlight">perplexity (PPL)</span> of each model-generated response. Responses with PPL scores exceeding a predefined threshold are discarded.</li>
+          <li><span class="highlight">N-gram-based Filtering</span>. We discard model responses containing repeated phrases of a certain minimum length that appear consecutively.</li>
+          <li><span class="highlight">Structure-based Filtering</span>. For multi-turn dialogues, we ensure that the final turn is an assistant response. Additionally, we require that each model-generated reply contains both a complete think and answer component.</li>
+        </ul>
+        For each query, multiple responses are generated. We then compute a <span class="highlight">verify score</span> for every query to assess response quality or query difficulty. For queries with <span class="highlight">ground truth</span> answers, we calculate the pass rate across the multiple generated responses. For queries without <span class="highlight">ground truth</span>, we employ a <span class="highlight">large language model (LLM)-based reward model</span> to score each response, and use the average score as the final verification signal. The scoring procedure is detailed in Section 3.
+      </div>
+      <div class="translation">在查询过滤之后，我们应用三种方法来过滤掉低质量的合成响应：
+        <ul>
+          <li><span class="highlight">基于困惑度的过滤（Perplexity-based Filtering）</span>。我们使用之前训练的32B模型[48]来计算每个模型生成响应的<span class="highlight">困惑度（PPL）</span>。PPL分数超过预定义阈值的响应被丢弃。</li>
+          <li><span class="highlight">基于N-gram的过滤（N-gram-based Filtering）</span>。我们丢弃包含连续出现的最小长度重复短语的模型响应。</li>
+          <li><span class="highlight">基于结构的过滤（Structure-based Filtering）</span>。对于多轮对话，我们确保最后一轮是助手响应。此外，我们要求每个模型生成的回复包含完整的思考和回答组件。</li>
+        </ul>
+        对于每个查询，生成多个响应。然后，我们为每个查询计算一个<span class="highlight">验证分数（Verify Score）</span>，以评估响应质量或查询难度。对于有<span class="highlight">真实答案（Ground Truth）</span>的查询，我们计算多个生成响应的通过率。对于没有<span class="highlight">真实答案（Ground Truth）</span>的查询，我们使用<span class="highlight">基于大型语言模型（LLM）的奖励模型（Reward Model）</span>来为每个响应打分，并使用平均分数作为最终验证信号。评分过程在第3节详细说明。
+      </div>
+    </div>
+
+    <!-- Subsection 3 Reward -->
+    <div class="subsection">
+      <div class="subsection-title">3 Reward</div>
+      
+      <!-- Subsubsection 3.1 Verifiable Queries -->
+      <div class="subsection">
+        <div class="subsection-title">3.1 Verifiable Queries</div>
+        <div class="original">In the case of math, code, and <span class="highlight">instruction-following (IF)</span> queries with available <span class="highlight">ground truth</span> or <span class="highlight">test cases</span>, we employ rule-based verification or code execution to assess the correctness of model responses.</div>
+        <div class="translation">对于数学、代码和<span class="highlight">指令遵循（IF）</span>查询，如果有可用的<span class="highlight">真实答案（Ground Truth）</span>或<span class="highlight">测试用例（Test Cases）</span>，我们使用基于规则的验证或代码执行来评估模型响应的正确性。</div>
+      </div>
+
+      <!-- Subsubsection 3.1.1 Math -->
+      <div class="subsection">
+        <div class="subsection-title">3.1.1 Math</div>
+        <div class="original">For mathematical queries, the reward is determined by verifying the model’s final answer. The process begins by extracting the answer from the last boxed ( {}) content of the model’s answer content. This extracted answer is then validated against the reference using <span class="highlight">math_verify5</span>. This tool normalizes answers to handle different representations for comparison, outputting true on match or false otherwise. Reward score is 1 for a correct answer and 0 for an incorrect answer.</div>
+        <div class="translation">对于数学查询，奖励通过验证模型的最终答案来确定。该过程从提取模型答案内容中最后一个框定（{}）内容中的答案开始。然后，使用<span class="highlight">math_verify5</span>将这个提取的答案与参考答案进行验证。该工具规范化答案以处理不同的表示形式进行比较，匹配时输出true，否则输出false。正确答案的奖励分数为1，错误答案为0。</div>
+      </div>
+
+      <!-- Subsubsection 3.1.2 Code -->
+      <div class="subsection">
+        <div class="subsection-title">3.1.2 Code</div>
+        <div class="original">For code queries equipped with predefined <span class="highlight">test cases</span>, the verification process is executed within a secure <span class="highlight">code sandbox</span> environment. This sandbox currently supports evaluation for multiple programming languages, including Python and C++.</div>
+        <div class="translation">对于配备预定义<span class="highlight">测试用例（Test Cases）</span>的代码查询，验证过程在安全的<span class="highlight">代码沙箱（Code Sandbox）</span>环境中执行。该沙箱目前支持多种编程语言的评估，包括Python和C++。</div>
+      </div>
+
+      <!-- Subsubsection Code Segmentation Extraction -->
+      <div class="subsection">
+        <div class="subsection-title">Code Segmentation Extraction</div>
+        <div class="original">Extraction of <span class="highlight">code segmentation</span> is facilitated by specific <span class="highlight">delimiters</span>. For example, Python code blocks are identified by enclosing them within ```python and```, while C++ code blocks utilize ```cppand```. This delimitation approach is similar to that commonly used in Markdown.</div>
+        <div class="translation"><span class="highlight">代码分割（Code Segmentation）</span>的提取通过特定的<span class="highlight">分隔符（Delimiters）</span>来促进。例如，Python代码块通过将它们括在```python和```之间来识别，而C++代码块使用```cpp和```。这种定界方法类似于Markdown中常用的方法。</div>
+      </div>
+
+      <!-- Subsubsection Test Case -->
+      <div class="subsection">
+        <div class="subsection-title">Test Case</div>
+        <div class="original">The execution of code in our dataset primarily takes two forms: <span class="highlight">method call</span> and <span class="highlight">standard input/output</span>. For these two forms, two distinct <span class="highlight">test case</span> types are employed. The details of each type are provided below:
+          <ul>
+            <li><span class="highlight">Method Call Test Cases</span>: These queries require the implementation of a specific method or function. <span class="highlight">Test cases</span> for this type are defined by a particular function name, along with input values and their corresponding expected outputs. To facilitate efficient execution within the sandbox environment, these test cases are automatically converted into assertion statements.</li>
+            <li><span class="highlight">Standard Input/Output Test Cases</span>: These queries that typically do not specify a distinct entry function are common in scenarios such as competitive programming or scripting tasks, where code reads from standard input and writes to standard output. For these queries, <span class="highlight">test cases</span> are handled via standard input ( stdin ) and standard output ( stdout ).</li>
+          </ul>
+        </div>
+        <div class="translation">在我们的数据集中，代码执行主要采取两种形式：<span class="highlight">方法调用（Method Call）</span>和<span class="highlight">标准输入/输出（Standard Input/Output）</span>。对于这两种形式，采用两种不同的<span class="highlight">测试用例（Test Cases）</span>类型。每种类型的详细信息如下：
+          <ul>
+            <li><span class="highlight">方法调用测试用例（Method Call Test Cases）</span>：这些查询需要实现特定的方法或函数。这种类型的<span class="highlight">测试用例（Test Cases）</span>由特定的函数名、输入值及其对应的预期输出定义。为了在沙箱环境中高效执行，这些测试用例被自动转换为断言语句。</li>
+            <li><span class="highlight">标准输入/输出测试用例（Standard Input/Output Test Cases）</span>：这些查询通常不指定特定的入口函数，常见于竞争性编程或脚本任务等场景，其中代码从标准输入读取并写入标准输出。对于这些查询，<span class="highlight">测试用例（Test Cases）</span>通过标准输入（stdin）和标准输出（stdout）处理。</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Summary Section -->
+  <div class="section">
+    <div class="section-title">

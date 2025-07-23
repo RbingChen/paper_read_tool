@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>论文解析 - RLHF策略过滤</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; line-height: 1.6; }
+        .original { background-color: #f0f0f0; border: 1px solid #ccc; padding: 15px; margin-bottom: 10px; }
+        .translation { background-color: #e0ffe0; border: 1px solid #a0d0a0; padding: 15px; margin-bottom: 20px; }
+        .term { color: red; font-weight: bold; }
+        .figure { background-color: #ffffcc; padding: 10px; margin: 15px 0; text-align: center; }
+        .section-title { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 5px; }
+        .formula-container { text-align: center; margin: 20px 0; }
+        .formula-number { display: block; font-style: italic; }
+    </style>
+</head>
+<body>
+
+<h1>论文解析：Policy Filtration for RLHF to Mitigate Noise in Reward Models</h1>
+
+<!-- 内容理解 -->
+<h2 class="section-title">内容理解</h2>
+<p>该文本揭示了强化学习人类反馈（<span class="term">RLHF (Reinforcement Learning from Human Feedback)</span>）中奖励模型的关键特性：当奖励值为中等水平时，模型的可靠性显著降低。作者通过多领域基准测试（代码生成与数学推理）验证了这一现象的普遍性，并给出直觉解释：人类难以评估的样本同样会挑战奖励模型的准确性。核心观点是奖励模型在模糊边界场景中存在固有噪声，需通过策略过滤机制解决。</p>
+
+<!-- 内容翻译 -->
+<h2 class="section-title">内容翻译</h2>
+
+<div class="original">
+    <h3>Policy Filtration for RLHF to Mitigate Noise in Reward Models</h3>
+    <p><strong>A. Reward Model</strong></p>
+    <p>The design of our algorithm is motivated by the observation that the <span class="term">reward model</span> is less reliable when it yields moderate rewards. To provide more evidence that this property is universal across a broader range of <span class="term">benchmarks</span>, we also analyze the reward function on different benchmarks of <span class="term">code generation</span> (MBPP and LeetCode) and <span class="term">math reasoning</span> (Ape210K (Zhao et al., 2020) and CMATH (Wei et al., 2023a)). We repeat the process in Figure 1 on these benchmarks and plot the figures in Figure 3 and Figure 4. Note that we train different reward functions based on the datasets from these two benchmarks. We observe that the property holds on these four additional benchmarks across different tasks, indicating this property may extend to broader fields.</p>
+    <div class="figure">图示引用: Figure 1, Figure 3, Figure 4</div>
+    <p>Intuitively, this property should be universal to a broader range of tasks, e.g., on <span class="term">Helpfulness and Harmlessness tasks</span> (Bai et al., 2022). For code generation tasks, it is quite common that some samples (e.g., the response matches the known correct answer or the response contains an obvious error) are easier to evaluate than others (e.g., the response tries to solve the problem by a novel approach). Therefore, those samples that are hard to evaluate by human should also be hard instances for the reward model.</p>
+</div>
+
+<div class="translation">
+    <h3>用于RLHF的策略过滤以减轻奖励模型中的噪声</h3>
+    <p><strong>A. 奖励模型</strong></p>
+    <p>我们算法的设计动机源于观察到：当<span class="term">奖励模型（reward model）</span>产生中等奖励值时，其可靠性较低。为证明该特性在更广泛<span class="term">基准测试（benchmarks）</span>中的普适性，我们还在不同基准上分析了奖励函数，包括<span class="term">代码生成（code generation）</span>（MBPP和LeetCode）和<span class="term">数学推理（math reasoning）</span>（Ape210K（Zhao等人，2020）和CMATH（Wei等人，2023a））。我们在这些基准上重复图1的过程，并将结果绘制于图3和图4。需注意，我们基于这两个基准的数据集训练了不同的奖励函数。观察到该特性在四个新增基准的不同任务中均成立，表明其可能适用于更广泛领域。</p>
+    <div class="figure">图示引用: Figure 1, Figure 3, Figure 4</div>
+    <p>直观而言，该特性应普适于更多任务（例如<span class="term">有益性与无害性任务（Helpfulness and Harmlessness tasks）</span>（Bai等人，2022））。在代码生成任务中，某些样本（如响应匹配已知正确答案或包含明显错误）比其他样本（如响应尝试用新方法解决问题）更易评估。因此，人类难以评估的样本同样会成为奖励模型的困难案例。</p>
+</div>
+
+<!-- 摘要总结 -->
+<h2 class="section-title">摘要总结</h2>
+<p>本文提出通过策略过滤解决<span class="term">RLHF</span>中奖励模型噪声问题。核心发现是：奖励模型在输出中等奖励值时可靠性显著下降，该现象在代码生成（MBPP、LeetCode）和数学推理（Ape210K、CMATH）等跨领域基准测试中均成立。作者从人类评估难度角度解释此现象——模糊边界样本对奖励模型构成挑战，需针对性设计过滤机制提升模型鲁棒性。</p>
+
+<!-- 术语识别 -->
+<h2 class="section-title">术语识别</h2>
+<ul>
+    <li><span class="term">RLHF (Reinforcement Learning from Human Feedback)</span>：基于人类反馈的强化学习，通过人类偏好数据训练奖励模型以指导策略优化。</li>
+    <li><span class="term">Reward Model（奖励模型）</span>：用于预测人类偏好的代理函数，将状态-动作对映射为标量奖励值，替代人工标注。</li>
+    <li><span class="term">Policy Filtration（策略过滤）</span>：筛选或修正策略输出的机制，文中特指针对奖励模型噪声设计的鲁棒性优化方法。</li>
+    <li><span class="term">Benchmarks（基准测试）</span>：标准化评估数据集，文中包括MBPP（基础Python编程题）、LeetCode（算法题库）、Ape210K（数学应用题）、CMATH（数学推理数据集）。</li>
+    <li><span class="term">Helpfulness and Harmlessness tasks（有益性与无害性任务）</span>：评估AI系统提供有效帮助且避免有害行为的能力，常用于对话系统安全对齐。</li>
+    <li><span class="term">Moderate Rewards（中等奖励）</span>：介于明确正确/错误之间的模糊评分区间，对应奖励模型不确定性最高的决策边界。</li>
+</ul>
+
+</body>
+</html>

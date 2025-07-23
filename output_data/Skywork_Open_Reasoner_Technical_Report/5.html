@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>论文解析：强化学习策略优化方法</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; line-height: 1.6; color: #333; }
+        h2 { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 5px; }
+        h3 { color: #2980b9; margin-top: 25px; }
+        .original { 
+            background-color: #f8f9fa; 
+            border: 1px solid #ced4da; 
+            padding: 15px; 
+            margin: 10px 0; 
+            border-radius: 5px;
+        }
+        .translation { 
+            background-color: #e8f5e9; 
+            border: 1px solid #4caf50; 
+            padding: 15px; 
+            margin: 10px 0; 
+            border-radius: 5px;
+        }
+        .formula-container { 
+            text-align: center; 
+            margin: 20px 0; 
+            padding: 15px;
+        }
+        .formula-number { 
+            display: block; 
+            font-style: italic; 
+            margin-top: 5px;
+        }
+        .term { 
+            color: #e53935; 
+            font-weight: bold; 
+        }
+        .section { margin-bottom: 30px; }
+        ul { padding-left: 20px; }
+        li { margin-bottom: 8px; }
+    </style>
+</head>
+<body>
+    <h1>论文解析：强化学习策略优化方法</h1>
+    
+    <!-- 内容理解 -->
+    <div class="section">
+        <h2>1. 内容理解</h2>
+        <p>本节系统性地介绍了三种强化学习策略优化方法：基础策略梯度（Vanilla PG）、近端策略优化（PPO）和组相对策略优化（GRPO）。核心是通过数学建模说明如何优化语言模型的策略函数π来最大化奖励期望值。关键创新点在于：</p>
+        <ul>
+            <li>提出批次级代理目标函数（公式2.2）解决计算可操作性</li>
+            <li>Vanilla PG使用<span class="term">优势函数(Advantage function)</span>构建损失函数（公式2.3）</li>
+            <li>PPO引入<span class="term">裁剪技巧(clip trick)</span>控制策略更新幅度（无公式编号）</li>
+            <li>GRPO创新性地采用<span class="term">组归一化奖励(group-normalized rewards)</span>估计优势函数</li>
+        </ul>
+        <p>所有方法均基于<span class="term">策略梯度定理(Policy Gradient theorem)</span>，通过梯度上升优化策略参数θ，但各自在方差控制和稳定性上有不同改进。</p>
+    </div>
+    
+    <!-- 内容翻译 -->
+    <div class="section">
+        <h2>2. 内容翻译</h2>
+        
+        <div class="original">
+            <h3>2 Preliminaries</h3>
+            <p>The success of Deepseek-R1 demonstrates that Policy Gradient (PG) methods [22], especially Group Relative Policy Optimization(GRPO) [21], can effectively enhance the reasoning abilities of LLMs. Generally speaking, the RL objective is to find a policy π that maximizes the reward, i.e.:</p>
+            <div class="formula-container">
+                \\[ \\max_{\\pi} J(\\pi) := \\mathbb{E}_{x\\sim D} \\mathbb{E}_{y\\sim \\pi(\\cdot|x)} [r(x, y)] \\]
+                <span class="formula-number">(2.1)</span>
+            </div>
+            <p>where x is the training prompt, D is the sampling distribution of x, y is the response sampled by the policy π for input prompt x, and r denotes the reward function.</p>
+        </div>
+        <div class="translation">
+            <h3>2 预备知识</h3>
+            <p>Deepseek-R1的成功证明了<span class="term">策略梯度(Policy Gradient, PG)</span>方法[22]，特别是<span class="term">组相对策略优化(Group Relative Policy Optimization, GRPO)</span>[21]，能有效增强大语言模型(LLMs)的推理能力。一般而言，强化学习的目标是找到最大化奖励的策略π，即：</p>
+            <div class="formula-container">
+                \\[ \\max_{\\pi} J(\\pi) := \\mathbb{E}_{x\\sim D} \\mathbb{E}_{y\\sim \\pi(\\cdot|x)} [r(x, y)] \\]
+                <span class="formula-number">(2.1)</span>
+            </div>
+            <p>其中x是训练提示(prompt)，D是x的采样分布，y是策略π针对输入提示x生成的响应，r表示奖励函数。</p>
+        </div>
+        
+        <div class="original">
+            <p>In practice, we estimate a surrogate objective for J(π) at the batch level for tractable optimization. At each training step k, we sample a batch of N prompts x1, . . . , xN from the data distribution D, denoted as Tk, and generate the corresponding responses y1, . . . , yN using the current policy π with a context length T and temperature τ. The batch-level surrogate objective at step k can be formulated as:</p>
+            <div class="formula-container">
+                \\[ \\max_{\\pi} J_k(\\pi) := \\mathbb{E}_{x_i \\sim T_k} \\mathbb{E}_{y_i \\sim \\pi(\\cdot|x_i)} [r(x_i, y_i)] \\]
+                <span class="formula-number">(2.2)</span>
+            </div>
+            <p>where πk is shorthand for the policy πθk parameterized by θk.</p>
+        </div>
+        <div class="translation">
+            <p>在实践中，我们在批次级别估计J(π)的<span class="term">代理目标(surrogate objective)</span>以实现可操作的优化。在每个训练步骤k，从数据分布D中采样包含N个提示的批次x1, ..., xN（记为Tk），并使用当前策略π（含上下文长度T和温度τ）生成对应响应y1, ..., yN。步骤k的批次级代理目标可表述为：</p>
+            <div class="formula-container">
+                \\[ \\max_{\\pi} J_k(\\pi) := \\mathbb{E}_{x_i \\sim T_k} \\mathbb{E}_{y_i \\sim \\pi(\\cdot|x_i)} [r(x_i, y_i)] \\]
+                <span class="formula-number">(2.2)</span>
+            </div>
+            <p>其中πk是参数θk参数化的策略πθk的简写。</p>
+        </div>
+        
+        <div class="original">
+            <h3>Vanilla Policy Gradient</h3>
+            <p>For a parameterized policy πθ, vanilla PG [23] uses gradient ascent to obtain the optimal parameter θ∗, i.e. θ ← θ + ∇θJ(πθ). A valid first-order surrogate policy loss for vanilla PG at each iteration k is given by:</p>
+            <div class="formula-container">
+                \\[ L^{PG}_k(\\theta) = -\\mathbb{E}_{x_i \\sim T_k} \\mathbb{E}_{y_i \\sim \\pi_k(\\cdot|x_i)} \\left[ \\sum_{t=0}^{|y_i|-1} \\frac{\\pi_\\theta(a_t^i | s_t^i)}{\\pi_k(a_t^i | s_t^i)} \\cdot A^{\\pi_k}(s_t^i, a_t^i) \\right] \\]
+                <span class="formula-number">(2.3)</span>
+            </div>
+            <p>where the response yi = (a⁰ᵢ, ..., a|y|⁻¹ᵢ) consists of |y| tokens, aᵗᵢ is the t-th token in the sequence yi, sᵗᵢ := (xᵢ, a⁰ᵢ, ..., aᵗ⁻¹ᵢ) is the prefix context when generating aᵗᵢ, and Aπk is the advantage function defined as:</p>
+            <div class="formula-container">
+                \\[ A^{\\pi_k}(s_t, a_t) := \\mathbb{E}_{y\\sim\\pi_k(\\cdot|x)} [r(x, y)|s_t, a_t] - \\mathbb{E}_{y\\sim\\pi_k(\\cdot|x)} [r(x, y)|s_t] \\]
+            </div>
+            <p>One can easily show that ∇θLPGk(θk) = -∇θJk(πk).</p>
+        </div>
+        <div class="translation">
+            <h3>原始策略梯度</h3>
+            <p>对于参数化策略πθ，原始PG[23]使用<span class="term">梯度上升(gradient ascent)</span>获得最优参数θ∗，即θ ← θ + ∇θJ(πθ)。每次迭代k中原始PG的有效一阶代理策略损失为：</p>
+            <div class="formula-container">
+                \\[ L^{PG}_k(\\theta) = -\\mathbb{E}_{x_i \\sim T_k} \\mathbb{E}_{y_i \\sim \\pi_k(\\cdot|x_i)} \\left[ \\sum_{t=0}^{|y_i|-1} \\frac{\\pi_\\theta(a_t^i | s_t^i)}{\\pi_k(a_t^i | s_t^i)} \\cdot A^{\\pi_k}(s_t^i, a_t^i) \\right] \\]
+                <span class="formula-number">(2.3)</span>
+            </div>
+            <p>其中响应yi = (a⁰ᵢ, ..., a|y|⁻¹ᵢ)由|y|个标记(token)组成，aᵗᵢ是序列yi中的第t个标记，sᵗᵢ := (xᵢ, a⁰ᵢ, ..., aᵗ⁻¹ᵢ)是生成aᵗᵢ时的前缀上下文，Aπk是<span class="term">优势函数(Advantage function)</span>，定义为：</p>
+            <div class="formula-container">
+                \\[ A^{\\pi_k}(s_t, a_t) := \\mathbb{E}_{y\\sim\\pi_k(\\cdot|x)} [r(x, y)|s_t, a_t] - \\mathbb{E}_{y\\sim\\pi_k(\\cdot|x)} [r(x, y)|s_t] \\]
+            </div>
+            <p>可证明∇θLPGk(θk) = -∇θJk(πk)。</p>
+        </div>
+        
+        <div class="original">
+            <h3>Proximal Policy Optimization (PPO)</h3>
+            <p>At each training step k, PPO [20] performs multiple gradient descent steps on the policy loss Lk with a clip trick to keep the new policy restricted within the trust region of πk. The policy loss employed in PPO is formulated as:</p>
+            <div class="formula-container">
+                \\[ L^{PPO}_k(\\theta) = -\\mathbb{E}_{x_i \\sim T_k} \\mathbb{E}_{y_i \\sim \\pi_k(\\cdot|x_i)} \\left[ \\sum_{t=0}^{|y_i|-1} \\min\\left( \\rho_t^i(\\theta) A^{\\pi_k}(s_t^i, a_t^i), \\text{clip}(\\rho_t^i(\\theta), 1-\\epsilon, 1+\\epsilon) \\cdot A^{\\pi_k}(s_t^i, a_t^i) \\right) \\right] \\]
+            </div>
+            <p>where ρᵗᵢ(θ) := πθ(aᵗᵢ|sᵗᵢ)/πk(aᵗᵢ|sᵗᵢ), and ε is the clip hyperparameter. In practice, PPO generally uses GAE [19] to estimate the token-level advantage Aπk(sᵗᵢ, aᵗᵢ).</p>
+        </div>
+        <div class="translation">
+            <h3>近端策略优化</h3>
+            <p>在每个训练步骤k，PPO[20]在策略损失Lk上执行多次梯度下降，并通过<span class="term">裁剪技巧(clip trick)</span>使新策略限制在πk的<span class="term">信任区域(trust region)</span>内。PPO的策略损失公式为：</p>
+            <div class="formula-container">
+                \\[ L^{PPO}_k(\\theta) = -\\mathbb{E}_{x_i \\sim T_k} \\mathbb{E}_{y_i \\sim \\pi_k(\\cdot|x_i)} \\left[ \\sum_{t=0}^{|y_i|-1} \\min\\left( \\rho_t^i(\\theta) A^{\\pi_k}(s_t^i, a_t^i), \\text{clip}(\\rho_t^i(\\theta), 1-\\epsilon, 1+\\epsilon) \\cdot A^{\\pi_k}(s_t^i, a_t^i) \\right) \\right] \\]
+            </div>
+            <p>其中ρᵗᵢ(θ) := πθ(aᵗᵢ|sᵗᵢ)/πk(aᵗᵢ|sᵗᵢ)，ε是裁剪超参数。实践中PPO通常使用<span class="term">GAE(Generalized Advantage Estimation)</span>[19]估计标记级优势Aπk(sᵗᵢ, aᵗᵢ)。</p>
+        </div>
+        
+        <div class="original">
+            <h3>Group Relative Policy Optimization (GRPO)</h3>
+            <p>Suppose M i.i.d. responses yi1, .., yiM are sampled for each prompt xi. GRPO [21] estimates the token-level advantage using the group-normalized rewards and</p>
+        </div>
+        <div class="translation">
+            <h3>组相对策略优化</h3>
+            <p>假设每个提示xi采样M个独立同分布响应yi1, ..., yiM。GRPO[21]使用<span class="term">组归一化奖励(group-normalized rewards)</span>估计标记级优势，并...</p>
+        </div>
+    </div>
+    
+    <!-- 摘要总结 -->
+    <div class="section">
+        <h2>3. 摘要总结</h2>
+        <p>本节系统阐述三种强化学习策略优化方法的核心机制：</p>
+        <ul>
+            <li><strong>基础框架</strong>：通过最大化奖励期望（公式2.1）优化策略π，使用批次级代理目标（公式2.2）实现可扩展计算</li>
+            <li><strong>原始策略梯度</strong>：通过优势函数（公式2.3）构建损失函数，直接应用梯度上升</li>
+            <li><strong>PPO创新</strong>：引入裁剪机制限制策略更新幅度，保障训练稳定性</li>
+            <li><strong>GRPO突破</strong>：利用组归一化奖励估计优势函数，减少方差并提升收敛效率</li>
+        </ul>
+        <p>所有方法均致力于解决语言模型强化学习中的核心挑战：<span class="term">高方差(high variance)</span>和<span class="term">策略崩溃(policy collapse)</span>问题，其中GRPO在Deepseek-R1中验证了对复杂推理能力的显著提升。</p>
+    </div>
+    
+    <!-- 术语识别 -->
+    <div class="section">
+        <h2>4. 术语识别</h2>
+        <ul>
+            <li><span class="term">策略梯度(Policy Gradient, PG)</span>：通过直接优化策略函数参数来最大化累积奖励的强化学习方法</li>
+            <li><span class="term">代理目标(Surrogate Objective)</span>：原始优化目标的近似函数，设计用于实现高效梯度计算（公式2.2）</li>
+            <li><span class="term">优势函数(Advantage Function)</span>：评估特定动作相对于平均动作的收益优势，定义为A(s,a) = Q(s,a) - V(s)（公式2.3）</li>
+            <li><span class="term">信任区域(Trust Region)</span>：策略优化中允许参数更新的安全范围，PPO通过裁剪机制强制约束</

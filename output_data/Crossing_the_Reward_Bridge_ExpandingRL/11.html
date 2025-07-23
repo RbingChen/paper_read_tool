@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>论文解析报告</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; line-height: 1.6; color: #333; max-width: 900px; margin: 0 auto; padding: 20px; }
+        h1 { color: #2c3e50; text-align: center; border-bottom: 2px solid #3498db; padding-bottom: 10px; }
+        h2 { color: #2980b9; border-left: 4px solid #3498db; padding-left: 10px; margin-top: 30px; }
+        .original { background-color: #f0f0f0; border: 1px solid #cccccc; padding: 15px; border-radius: 5px; margin-bottom: 10px; }
+        .translation { background-color: #e6ffe6; border: 1px solid #99cc99; padding: 15px; border-radius: 5px; margin-bottom: 25px; }
+        .term { color: red; font-weight: bold; }
+        .formula-container { background-color: #fffde7; padding: 15px; text-align: center; margin: 20px 0; border-radius: 5px; }
+        .formula-label { display: block; font-size: 0.9em; color: #7f8c8d; margin-top: 5px; }
+        ul { padding-left: 20px; }
+        li { margin-bottom: 10px; }
+    </style>
+</head>
+<body>
+    <h1>论文解析报告</h1>
+    
+    <section id="understanding">
+        <h2>内容理解</h2>
+        <p>本文献列表聚焦于<strong class="term">强化学习（Reinforcement Learning, RL）</strong>与<strong class="term">大型语言模型（Large Language Models, LLMs）</strong>的前沿研究，核心主题包括：1) 数学推理能力的提升（DeepseekMath），2) 人类反馈优化（Learning to summarize），3) 自我改进机制（Self-improvement via imagination），4) 思维链技术（Chain-of-thought prompting），5) 规则强化学习（Rule-based RL）。这些研究通过创新算法设计（如REINFORCE、自奖励校正）和系统架构（如DAPO、SimplerRL-Zoo），推动RL在复杂领域（数学推理、开放域问答）的应用边界扩展。</p>
+    </section>
+    
+    <section id="translation">
+        <h2>内容翻译</h2>
+        
+        <div class="translation-item">
+            <div class="original">Expanding RL with Verifiable Rewards Across Diverse Domains</div>
+            <div class="translation">在多样化领域中扩展可验证奖励的<strong class="term">强化学习（Reinforcement Learning, RL）</strong></div>
+        </div>
+        
+        <div class="translation-item">
+            <div class="original">Zhihong Shao, Peiyi Wang, Qihao Zhu, Runxin Xu, Junxiao Song, Xiao Bi, Haowei Zhang, Mingchuan Zhang, YK Li, Y Wu, et al. Deepseekmath: Pushing the limits of mathematical reasoning in open language models. arXiv preprint arXiv:2402.03300, 2024.</div>
+            <div class="translation">邵志宏、王培一、朱启浩、徐润新、宋俊骁、毕啸、张浩伟、张明川、李YK、吴Y等。Deepseekmath：在开放<strong class="term">语言模型（Language Models）</strong>中突破<strong class="term">数学推理（Mathematical Reasoning）</strong>的极限。arXiv预印本 arXiv:2402.03300，2024年。</div>
+        </div>
+        
+        <div class="translation-item">
+            <div class="original">Nisan Stiennon, Long Ouyang, Jeffrey Wu, Daniel Ziegler, Ryan Lowe, Chelsea Voss, Alec Radford, Dario Amodei, and Paul F Christiano. Learning to summarize with human feedback. Advances in Neural Information Processing Systems, 33:3008–3021, 2020.</div>
+            <div class="translation">Nisan Stiennon、欧阳龙、Jeffrey Wu、Daniel Ziegler、Ryan Lowe、Chelsea Voss、Alec Radford、Dario Amodei、Paul F Christiano。通过<strong class="term">人类反馈（Human Feedback）</strong>学习摘要生成。<strong class="term">神经信息处理系统进展（Advances in Neural Information Processing Systems）</strong>，33:3008–3021，2020年。</div>
+        </div>
+        
+        <div class="translation-item">
+            <div class="original">Kimi Team, Angang Du, Bofei Gao, Bowei Xing, Changjiu Jiang, Cheng Chen, Cheng Li, Chenjun Xiao, Chenzhuang Du, Chonghua Liao, et al. Kimi k1.5: Scaling reinforcement learning with llms. arXiv preprint arXiv:2501.12599, 2025.</div>
+            <div class="translation">Kimi团队、杜昂昂、高博飞、邢博伟、蒋长久、陈程、李程、肖晨俊、杜晨壮、廖崇华等。Kimi k1.5：利用<strong class="term">大型语言模型（Large Language Models, LLMs）</strong>扩展<strong class="term">强化学习（Reinforcement Learning）</strong>。arXiv预印本 arXiv:2501.12599，2025年。</div>
+        </div>
+        
+        <div class="translation-item">
+            <div class="original">Qwen Team. Qwen2.5: A party of foundation models, September 2024. URL https://qwenlm.github.io/blog/qwen2.5/.</div>
+            <div class="translation">Qwen团队。Qwen2.5：基础模型的集合，2024年9月。网址 https://qwenlm.github.io/blog/qwen2.5/。</div>
+        </div>
+        
+        <div class="translation-item">
+            <div class="original">Ye Tian, Baolin Peng, Linfeng Song, Lifeng Jin, Dian Yu, Lei Han, Haitao Mi, and Dong Yu. Toward self-improvement of llms via imagination, searching, and criticizing. In A. Globerson, L. Mackey, D. Belgrave, A. Fan, U. Paquet, J. Tomczak, and C. Zhang (eds.), Advances in Neural Information Processing Systems, volume 37, pp. 52723–52748. Curran Associates, Inc., 2024.</div>
+            <div class="translation">田野、彭宝林、宋林峰、金立峰、余典、韩磊、米海涛、俞栋。通过想象、搜索与批判实现<strong class="term">大型语言模型（LLMs）</strong>的<strong class="term">自我改进（Self-improvement）</strong>。收录于A. Globerson等人编，《<strong class="term">神经信息处理系统进展（Advances in Neural Information Processing Systems）</strong>》，卷37，第52723–52748页。Curran Associates出版社，2024年。</div>
+        </div>
+        
+        <div class="translation-item">
+            <div class="original">Jason Wei, Xuezhi Wang, Dale Schuurmans, Maarten Bosma, Fei Xia, Ed Chi, Quoc V Le, Denny Zhou, et al. Chain-of-thought prompting elicits reasoning in large language models. Advances in neural information processing systems, 35:24824–24837, 2022.</div>
+            <div class="translation">Jason Wei、王学志、Dale Schuurmans、Maarten Bosma、夏飞、Ed Chi、Quoc V Le、周丹尼等。<strong class="term">思维链提示（Chain-of-Thought Prompting）</strong>激发<strong class="term">大型语言模型（Large Language Models）</strong>的推理能力。<strong class="term">神经信息处理系统进展（Advances in Neural Information Processing Systems）</strong>，35:24824–24837，2022年。</div>
+        </div>
+        
+        <div class="translation-item">
+            <div class="original">Ronald J Williams. Simple statistical gradient-following algorithms for connectionist reinforcement learning. Machine learning, 8:229–256, 1992.</div>
+            <div class="translation">Ronald J Williams。面向连接主义<strong class="term">强化学习（Reinforcement Learning）</strong>的简易统计梯度追踪算法。<strong class="term">机器学习（Machine Learning）</strong>，8:229–256，1992年。</div>
+        </div>
+        
+        <div class="translation-item">
+            <div class="original">Tian Xie, Zitian Gao, Qingnan Ren, Haoming Luo, Yuqian Hong, Bryan Dai, Joey Zhou, Kai Qiu, Zhirong Wu, and Chong Luo. Logic-rl: Unleashing llm reasoning with rule-based reinforcement learning. arXiv preprint arXiv:2502.14768, 2025.</div>
+            <div class="translation">谢天、高子天、任庆楠、罗浩明、洪宇倩、戴博涵、周乔伊、邱凯、吴志荣、罗冲。Logic-RL：通过<strong class="term">基于规则的强化学习（Rule-based Reinforcement Learning）</strong>释放<strong class="term">大型语言模型（LLMs）</strong>的推理能力。arXiv预印本 arXiv:2502.14768，2025年。</div>
+        </div>
+        
+        <div class="translation-item\

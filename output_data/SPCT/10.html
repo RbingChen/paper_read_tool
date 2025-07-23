@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>论文解析报告</title>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<style>
+  body { font-family: Arial, sans-serif; line-height: 1.6; }
+  .original {
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    padding: 15px;
+    margin-bottom: 5px;
+    border-radius: 5px;
+  }
+  .translation {
+    background-color: #e0ffe0;
+    border: 1px solid #4CAF50;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+  }
+  .figure {
+    background-color: #fffde7;
+    padding: 15px;
+    margin: 15px 0;
+    text-align: center;
+    border-radius: 5px;
+  }
+  .term { color: red; font-weight: bold; }
+  h2 { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 5px; }
+  .formula-container { text-align: center; margin: 20px 0; }
+  .formula-label { font-style: italic; margin-top: 5px; }
+</style>
+</head>
+<body>
+
+<h1>论文解析报告</h1>
+
+<!-- 内容理解 -->
+<h2>内容理解</h2>
+<p>该文本是一个计算机科学领域的学术文献引用列表，主要聚焦于<strong class="term">大语言模型（Large Language Models, LLMs）</strong>的前沿研究。涵盖以下核心方向：</p>
+<ol>
+  <li><strong class="term">对齐技术（Alignment）</strong>：研究如何使AI行为符合人类价值观，包括<strong class="term">人类反馈强化学习（RLHF）</strong>和<strong class="term">宪法AI（Constitutional AI）</strong></li>
+  <li><strong class="term">奖励模型（Reward Models）</strong>：开发新型评估机制如"Critique-out-loud"方法</li>
+  <li><strong class="term">任务效用评估（Task Utility Assessment）</strong>：量化LLM在实际应用中的有效性</li>
+  <li><strong class="term">推理监控（Reasoning Monitoring）</strong>：检测模型推理过程中的错误行为</li>
+  <li><strong class="term">计算扩展（Compute Scaling）</strong>：通过"重复采样"提升推理能力</li>
+</ol>
+<p>文献主要来自顶级会议（EMNLP）和预印本平台（arXiv），体现了2021-2025年间AI安全与能力研究的演进脉络。</p>
+
+<!-- 内容翻译 -->
+<h2>内容翻译</h2>
+
+<div class="original">
+Preprint. Under review.<br>
+Zachary Ankner, Mansheej Paul, Brandon Cui, Jonathan D. Chang, and Prithviraj Ammanabrolu. Critique-out-loud reward models. Computing Research Repository, arXiv:2408.11791, 2024. URL https://arxiv.org/abs/2408.11791.
+</div>
+<div class="translation">
+预印本。评审中。<br>
+Zachary Ankner, Mansheej Paul, Brandon Cui, Jonathan D. Chang 和 Prithviraj Ammanabrolu。大声批判的奖励模型。《计算研究仓库》，arXiv:2408.11791，2024年。URL https://arxiv.org/abs/2408.11791。
+</div>
+
+<div class="original">
+Negar Arabzadeh, Siqing Huo, Nikhil Mehta, Qingyun Wu, Chi Wang, Ahmed Hassan Awadallah, Charles L. A. Clarke, and Julia Kiseleva. Assessing and verifying task utility in LLM-powered applications. In Yaser Al-Onaizan, Mohit Bansal, and Yun-Nung Chen (eds.), Proceedings of the 2024 Conference on Empirical Methods in Natural Language Processing, pp. 21868–21888, Miami, Florida, USA, November 2024. Association for Computational Linguistics. doi: 10.18653/v1/2024.emnlp-main.1219. URL https://aclanthology.org/2024.emnlp-main.1219/.
+</div>
+<div class="translation">
+Negar Arabzadeh, Siqing Huo, Nikhil Mehta, Qingyun Wu, Chi Wang, Ahmed Hassan Awadallah, Charles L. A. Clarke 和 Julia Kiseleva。评估和验证LLM驱动应用中的任务效用。收录于 Yaser Al-Onaizan, Mohit Bansal 和 Yun-Nung Chen（编），《2024年自然语言处理经验方法会议论文集》，第21868–21888页，美国佛罗里达州迈阿密，2024年11月。计算语言学协会。doi: 10.18653/v1/2024.emnlp-main.1219。URL https://aclanthology.org/2024.emnlp-main.1219/。
+</div>
+
+<div class="original">
+Amanda Askell, Yuntao Bai, Anna Chen, Dawn Drain, Deep Ganguli, Tom Henighan, Andy Jones, Nicholas Joseph, Ben Mann, Nova DasSarma, Nelson Elhage, Zac Hatfield-Dodds, Danny Hernandez, Jackson Kernion, Kamal Ndousse, Catherine Olsson, Dario Amodei, Tom Brown, Jack Clark, Sam McCandlish, Chris Olah, and Jared Kaplan. A general language assistant as a laboratory for alignment. Computing Research Repository, arXiv:2112.00861, 2021. URL https://arxiv.org/abs/2112.00861.
+</div>
+<div class="translation">
+Amanda Askell, Yuntao Bai, Anna Chen, Dawn Drain, Deep Ganguli, Tom Henighan, Andy Jones, Nicholas Joseph, Ben Mann, Nova DasSarma, Nelson Elhage, Zac Hatfield-Dodds, Danny Hernandez, Jackson Kernion, Kamal Ndousse, Catherine Olsson, Dario Amodei, Tom Brown, Jack Clark, Sam McCandlish, Chris Olah 和 Jared Kaplan。作为对齐研究实验室的通用语言助手。《计算研究仓库》，arXiv:2112.00861，2021年。URL https://arxiv.org/abs/2112.00861。
+</div>
+
+<div class="original">
+Yuntao Bai, Andy Jones, Kamal Ndousse, Amanda Askell, Anna Chen, Nova DasSarma, Dawn Drain, Stanislav Fort, Deep Ganguli, Tom Henighan, Nicholas Joseph, Saurav Kadavath, Jackson Kernion, Tom Conerly, Sheer El-Showk, Nelson Elhage, Zac Hatfield-Dodds, Danny Hernandez, Tristan Hume, Scott Johnston, Shauna Kravec, Liane Lovitt, Neel Nanda, Catherine Olsson, Dario Amodei, Tom Brown, Jack Clark, Sam McCandlish, Chris Olah, Ben Mann, and Jared Kaplan. Training a helpful and harmless assistant with reinforcement learning from human feedback. Computing Research Repository, arXiv:2204.05862, 2022a. URL https://arxiv.org/abs/2204.05862.
+</div>
+<div class="translation">
+Yuntao Bai, Andy Jones, Kamal Ndousse, Amanda Askell, Anna Chen, Nova DasSarma, Dawn Drain, Stanislav Fort, Deep Ganguli, Tom Henighan, Nicholas Joseph, Saurav Kadavath, Jackson Kernion, Tom Conerly, Sheer El-Showk, Nelson Elhage, Zac Hatfield-Dodds, Danny Hernandez, Tristan Hume, Scott Johnston, Shauna Kravec, Liane Lovitt, Neel Nanda, Catherine Olsson, Dario Amodei, Tom Brown, Jack Clark, Sam McCandlish, Chris Olah, Ben Mann 和 Jared Kaplan。通过人类反馈强化学习训练有益无害的助手。《计算研究仓库》，arXiv:2204.05862，2022a。URL https://arxiv.org/abs/2204.05862。
+</div>
+
+<div class="original">
+Yuntao Bai, Saurav Kadavath, Sandipan Kundu, Amanda Askell, Jackson Kernion, Andy Jones, Anna Chen, Anna Goldie, Azalia Mirhoseini, Cameron McKinnon, Carol Chen, Catherine Olsson, Christopher Olah, Danny Hernandez, Dawn Drain, Deep Ganguli, Dustin Li, Eli Tran-Johnson, Ethan Perez, Jamie Kerr, Jared Mueller, Jeffrey Ladish, Joshua Landau, Kamal Ndousse, Kamile Lukosuite, Liane Lovitt, Michael Sellitto, Nelson Elhage, Nicholas Schiefer, Noemi Mercado, Nova DasSarma, Robert Lasenby, Robin Larson, Sam Ringer, Scott Johnston, Shauna Kravec, Sheer El Showk, Stanislav Fort, Tamera Lanham, Timothy Telleen-Lawton, Tom Conerly, Tom Henighan, Tristan Hume, Samuel R. Bowman, Zac Hatfield-Dodds, Ben Mann, Dario Amodei, Nicholas Joseph, Sam McCandlish, Tom Brown, and Jared Kaplan. Constitutional ai: Harmlessness from ai feedback. Computing Research Repository, arXiv:2212.08073, 2022b. URL https://arxiv.org/abs/2212.08073.
+</div>
+<div class="translation">
+Yuntao Bai, Saurav Kadavath, Sandipan Kundu, Amanda Askell, Jackson Kernion, Andy Jones, Anna Chen, Anna Goldie, Azalia Mirhoseini, Cameron McKinnon, Carol Chen, Catherine Olsson, Christopher Olah, Danny Hernandez, Dawn Drain, Deep Ganguli, Dustin Li, Eli Tran-Johnson, Ethan Perez, Jamie Kerr, Jared Mueller, Jeffrey Ladish, Joshua Landau, Kamal Ndousse, Kamile Lukosuite, Liane Lovitt, Michael Sellitto, Nelson Elhage, Nicholas Schiefer, Noemi Mercado, Nova DasSarma, Robert Lasenby, Robin Larson, Sam Ringer, Scott Johnston, Shauna Kravec, Sheer El Showk, Stanislav Fort, Tamera Lanham, Timothy Telleen-Lawton, Tom Conerly, Tom Henighan, Tristan Hume, Samuel R. Bowman, Zac Hatfield-Dodds, Ben Mann, Dario Amodei, Nicholas Joseph, Sam McCandlish, Tom Brown 和 Jared Kaplan。宪法式人工智能：基于AI反馈的无害性。《计算研究仓库》，arXiv:2212.08073，2022b。URL https://arxiv.org/abs/2212.08073。
+</div>
+
+<div class="original">
+Bowen Baker, Joost Huizinga, Leo Gao, Zehao Dou, Melody Y. Guan, Aleksander Madry, Wojciech Zaremba, Jakub Pachocki, and David Farhi. Monitoring reasoning models for misbehavior and the risks of promoting obfuscation. OpenAI Publication, 2025. URL https://cdn.openai.com/pdf/34f2ada6-870f-4c26-9790-fd8def56387f/CoT_Monitoring.pdf.
+</div>
+<div class="translation">
+Bowen Baker, Joost Huizinga, Leo Gao, Zehao Dou, Melody Y. Guan, Aleksander Madry, Wojciech Zaremba, Jakub Pachocki 和 David Farhi。监控推理模型的不良行为及促进混淆的风险。《OpenAI出版物》，2025年。URL https://cdn.openai.com/pdf/34f2ada6-870f-4c26-9790-fd8def56387f/CoT_Monitoring.pdf。
+</div>
+
+<div class="original">
+Bradley Brown, Jordan Juravsky, Ryan Ehrlich, Ronald Clark, Quoc V. Le, Christopher Ré, and Azalia Mirhoseini. Large language monkeys: Scaling inference compute with repeated sampling. Computing Research Repository, arXiv:2407.21787, 2024. URL https://arxiv.org/abs/2407.21787.
+</div>
+<div class="translation">
+Bradley Brown, Jordan Juravsky, Ryan Ehrlich, Ronald Clark, Quoc V. Le, Christopher Ré 和 Azalia Mirhoseini。大语言猴群：通过重复采样扩展推理计算。《计算研究仓库》，arXiv:2407.21787，2024年。URL https://arxiv.org/abs/2407.21787。
+</div>
+
+<!-- 摘要总结 -->
+<h2>摘要总结</h2>
+<p>该文献集系统性地展示了<strong class="term">大语言模型（LLMs）</strong>研究的三大前沿方向：</p>
+<ol>
+  <li><strong class="term">安全对齐技术</strong>：多篇论文探索<strong class="term">人类反馈强化学习（RLHF）</strong>（Ankner等, 2024; Bai等, 2022a）和<strong class="term">宪法AI（Constitutional AI）</strong>（Bai等, 2022b），通过设计原则约束模型行为</li>
+  <li><strong class="term">评估方法论</strong>：包括新型<strong class="term">奖励模型（Reward Models）</strong>（Ankner等, 2024）、<strong class="term">任务效用验证（Task Utility Verification）</strong>（Arabzadeh等, 2024）及<strong class="term">推理监控（Reasoning Monitoring）</strong>（Baker等, 2025）</li>
+  <li><strong class="term">计算效率优化</strong>：提出<strong class="term">重复采样（Repeated Sampling）</strong>技术扩展推理能力（Brown等, 2024）</li>
+</ol>
+<p>核心研究脉络显示：从基础模型构建（Askell等, 2021）→ 安全对齐（Bai等, 2022a,b）→ 评估监控（Baker等, 2025）→ 计算扩展（Brown等, 2024），形成完整的技术演进闭环。</p>
+
+<!-- 术语识别 -->
+<h2>术语识别</h2>
+<dl>
+  <dt><strong class="term">人类反馈强化学习（Reinforcement Learning from Human Feedback, RLHF）</strong></dt>
+  <dd>通过人类对模型输出的偏好标注训练奖励模型，再利用强化学习优化LLM的核心技术（Bai等, 2022a）</dd>
+  
+  <dt><strong class="term">宪法AI（Constitutional AI）</strong></dt>
+  <dd>让AI模型遵循预设原则（宪法）的框架，通过AI自我反馈替代人类反馈实现对齐（Bai等, 2022b）</dd>
+  
+  <dt><strong class="term">奖励模型（Reward Models）</strong></dt>
+  <dd>量化评估AI行为质量的神经网络，为强化学习提供优化目标（Ankner等, 2024）</dd>
+  
+  <dt><strong class="term">任务效用（Task Utility）</strong></dt>
+  <dd>衡量LLM在具体应用场景中有效性的指标，涉及准确性、效率等维度（Arabzadeh等, 2024）</dd>
+  
+  <dt><strong class="term">推理监控（Reasoning Monitoring）</strong></dt>
+  <dd>检测模型推理过程中欺骗、混淆等风险行为的技术（Baker等, 2025）</dd>
+  
+  <dt><strong class="term">重复采样（Repeated Sampling）</strong></dt>
+  <dd>通过多次生成采样提升推理质量的计算扩展方法（Brown等, 2024）</dd>
+  
+  <dt><strong class="term">对齐（Alignment）</strong></dt>
+  <dd>使AI系统的目标与人类价值观保持一致的研究领域（Askell等, 2021）</dd>
+</dl>
+
+</body>
+</html>

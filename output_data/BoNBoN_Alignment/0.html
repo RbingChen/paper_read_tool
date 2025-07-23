@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    body { font-family: Arial, sans-serif; line-height: 1.6; }
+    .original { background-color: #f0f0f0; border: 1px solid #cccccc; padding: 15px; margin-bottom: 10px; }
+    .translation { background-color: #e0f8e0; border: 1px solid #00cc00; padding: 15px; margin-bottom: 30px; }
+    .figure { background-color: #ffffcc; padding: 10px; margin: 15px 0; text-align: center; font-style: italic; }
+    .section { margin-bottom: 30px; }
+    h1, h2, h3 { color: #2c3e50; }
+    strong.term { color: red; font-weight: bold; }
+    .formula-container { text-align: center; margin: 20px 0; }
+    .formula-number { display: block; font-size: 0.9em; margin-top: 5px; }
+  </style>
+</head>
+<body>
+
+<!-- 内容理解 -->
+<div class="section">
+  <h2>内容理解</h2>
+  <p>本文提出了一种名为<strong class="term">BoNBoN Alignment（BoNBoN对齐）</strong>的新方法，用于解决大语言模型（LLM）与人类偏好对齐的问题。核心创新点包括：</p>
+  <ol>
+    <li>理论证明<strong class="term">best-of-n sampling（最佳n采样，BoN）</strong>在<strong class="term">胜率（win rate）</strong>与<strong class="term">KL散度（KL divergence）</strong>的权衡中具有本质最优性</li>
+    <li>提出<strong class="term">BoNBoN Alignment</strong>方法，通过微调LLM直接模仿BoN分布，避免多次采样的高推理成本</li>
+    <li>实验验证该方法在提升目标属性（如帮助性）的同时，最小化对非目标属性（如推理能力）的影响</li>
+  </ol>
+  <p>研究揭示了BoN采样与其他对齐方法（如<strong class="term">RLHF</strong>和<strong class="term">DPO</strong>）的理论联系，并通过倾斜分布框架统一分析其数学本质。</p>
+</div>
+
+<!-- 内容翻译 -->
+<div class="section">
+  <h2>内容翻译</h2>
+  
+  <div class="original">
+    <h3>BoNBoN Alignment for Large Language Models and the Sweetness of Best-of-n Sampling</h3>
+    <p>Lin Gui<sup>1</sup>, Cristina Gârbacea<sup>2</sup>, and Victor Veitch<sup>1,2</sup><br>
+    <sup>1</sup>Department of Statistics, University of Chicago<br>
+    <sup>2</sup>Data Science Institute, University of Chicago</p>
+  </div>
+  <div class="translation">
+    <h3>大语言模型的BoNBoN对齐与最佳n采样的优势</h3>
+    <p>顾林<sup>1</sup>，Cristina Gârbacea<sup>2</sup>，Victor Veitch<sup>1,2</sup><br>
+    <sup>1</sup>芝加哥大学统计系<br>
+    <sup>2</sup>芝加哥大学数据科学研究所</p>
+  </div>
+  
+  <div class="original">
+    <h3>Abstract</h3>
+    <p>This paper concerns the problem of aligning samples from large language models to human preferences using best-of-n sampling, where we draw n samples, rank them, and return the best one. We consider two fundamental problems. First: what is the relationship between best-of-n and approaches to alignment that train LLMs to output samples with a high expected reward (e.g., RLHF or DPO)? To answer this, we embed both the best-of-n distribution and the sampling distributions learned by alignment procedures in a common class of tiltings of the base LLM distribution. We then show that, within this class, best-of-n is essentially optimal in terms of the trade-off between win-rate against the base model vs KL distance from the base model. That is, best-of-n is the best choice of alignment distribution if the goal is to maximize win rate. However, best-of-n requires drawing n samples for each inference, a substantial cost. To avoid this, the second problem we consider is how to fine-tune a LLM to mimic the best-of-n sampling distribution. We derive BoNBoN Alignment to achieve this by exploiting the special structure of the best-of-n distribution. Experiments show that BoNBoN alignment yields substantial improvements in producing a model that is preferred to the base policy while minimally affecting off-target aspects. Code is available at https://github.com/gl-ybnbxb/BoNBoN .</p>
+  </div>
+  <div class="translation">
+    <h3>摘要</h3>
+    <p>本文研究使用<strong class="term">最佳n采样（best-of-n sampling）</strong>将大语言模型生成的样本与人类偏好对齐的问题。该方法通过采样n个样本、排序并返回最佳样本实现对齐。我们探讨两个核心问题：1) <strong class="term">最佳n采样（BoN）</strong>与通过训练LLM输出高期望奖励样本的对齐方法（如<strong class="term">RLHF</strong>或<strong class="term">DPO</strong>）有何关系？为此，我们将BoN分布和对齐过程学习到的采样分布嵌入基础LLM分布的<strong class="term">倾斜分布（tiltings）</strong>统一框架。研究表明在此框架内，BoN在<strong class="term">基础模型胜率（win-rate）</strong>与<strong class="term">KL散度（KL distance）</strong>的权衡中具有本质最优性——若目标为最大化胜率，BoN是最优对齐分布。然而，BoN每次推理需采样n次，成本高昂。为此，第二个问题探索如何微调LLM以模拟BoN采样分布。我们提出<strong class="term">BoNBoN Alignment（BoNBoN对齐）</strong>方法，利用BoN分布的特殊结构实现这一目标。实验表明，BoNBoN对齐能显著提升模型在目标属性上的表现，同时最小化对非目标属性的影响。代码详见https://github.com/gl-ybnbxb/BoNBoN。</p>
+  </div>
+  
+  <div class="original">
+    <h3>1 Introduction</h3>
+    <p>This paper concerns the problem of aligning large language models (LLMs) to bias their outputs toward human preferences. There are now a wealth of approaches to this problem [e.g., Ouy +22; Chr+17; Kau +23; Li +24; Raf +23; Aza +24]. Here, we interested in the best-of-n (BoN) sampling strategy. In BoN sampling, we draw n samples from the LLM, rank them on the attribute of interest, and return the best one. This simple procedure is surprisingly effective in practice [Bei+24; Wan +24; GSH23; Eis +23]. We consider two fundamental questions about BoN: 1. What is the relationship between BoN and other approaches to alignment? 2. How can we effectively train a LLM to mimic the BoN sampling distribution? In brief: we find that the BoN distribution is (essentially) the optimal policy for maximizing win rate while minimally affecting off-target aspects of generation, and we develop an effective method for aligning LLMs to mimic this distribution. Together, these results yield a highly effective alignment method; see Figure 1 for an illustration.</p>
+    <div class="figure">Figure 1: Conceptual illustration of BoNBoN alignment framework</div>
+    <p>LLM Alignment The goal of alignment is to bias the outputs of an LLM to be good on some target attribute (e.g., helpfulness), while minimally changing the behavior of the model on off-target attributes (e.g., reasoning ability). Commonly, the notion of goodness is elicited by collecting pairs of responses to many prompts, and asking (human or AI) annotators to choose the better response. Then, these pairs are used to define a training procedure for updating the base LLM to a new, aligned, LLM that outputs responses that are better in the target attribute.</p>
+  </div>
+  <div class="translation">
+    <h3>1 引言</h3>
+    <p>本文研究<strong class="term">大语言模型（Large Language Models, LLMs）</strong>的输出与人类偏好对齐的问题。现有多种方法解决此问题[如Ouy+22; Chr+17等]。我们聚焦<strong class="term">最佳n采样（best-of-n, BoN）</strong>策略：从LLM采样n个响应，按目标属性排序后返回最佳样本。这种简单方法在实践中异常有效[Bei+24; Wan+24等]。我们探讨两个核心问题：1) BoN与其他对齐方法的关系？2) 如何有效训练LLM模拟BoN采样分布？简言之：我们发现BoN分布是最大化<strong class="term">胜率（win rate）</strong>同时最小化生成过程对非目标属性影响的最优策略，并开发了让LLM模拟此分布的有效方法。这些成果共同构成高效对齐方法（图1示）。</p>
+    <div class="figure">图1：BoNBoN对齐框架概念示意图</div>
+    <p><strong class="term">LLM对齐（LLM Alignment）</strong>的目标是使LLM输出偏向目标属性（如帮助性），同时最小化对非目标属性（如推理能力）的影响。通常，通过收集多组提示的响应对，由人类或AI标注选择更佳响应，进而定义训练过程，将基础LLM更新为对齐后的新LLM。</p>
+  </div>
+</div>
+
+<!-- 摘要总结 -->
+<div class="section">
+  <h2>摘要总结</h2>
+  <p>本文提出<b>BoNBoN Alignment</b>方法解决LLM对齐问题，核心贡献包括：</p>
+  <ol>
+    <li>理论证明<strong class="term">最佳n采样（BoN）</strong>在<strong class="term">胜率-KL散度权衡（win-rate vs KL trade-off）</strong>中的最优性，其性能优于<strong class="term">RLHF</strong>和<strong class="term">DPO</strong>等传统方法</li>
+    <li>提出<strong class="term">BoNBoN Alignment</strong>框架，通过微调LLM直接模拟BoN分布，避免原始BoN每次推理需n次采样的高成本</li>
+    <li>实验验证该方法显著提升目标属性表现（如人类偏好胜率），同时最小化对非目标属性（如推理能力）的影响</li>
+    <li>建立统一数学框架，将BoN分布和对齐学习分布表示为<strong class="term">基础模型分布的倾斜（tiltings of base distribution）</strong></li>
+  </ol>
+  <p>研究通过理论分析和实验证实BoNBoN对齐的高效性，代码已开源。</p>
+</div>
+
+<!-- 术语识别 -->
+<div class="section">
+  <h2>术语解释</h2>
+  <dl>
+    <dt><strong class="term">Best-of-n Sampling (BoN) 最佳n采样</strong></dt>
+    <dd>从基础模型采样n个响应，根据目标属性（如帮助性）排序后返回最优样本的对齐策略。优势是简单高效，缺点是每次推理需多次采样。</dd>
+    
+    <dt><strong class="term">KL Divergence (KL散度)</strong></dt>
+    <dd>衡量对齐分布与基础模型分布差异的指标，数学定义为 \(D_{KL}(P_{align} \| P_{base})\)。较小的KL值表示对齐模型保留更多原始特性。</dd>
+    
+    <dt><strong class="term">Win Rate (胜率)</strong></dt>
+    <dd>对齐模型响应被人类标注者偏好（而非基础模型响应）的概率，数学表示为 \(\mathbb{P}(\text{aligned response} \succ \text{base response})\)。核心优化目标之一。</dd>
+    
+    <dt><strong class="term">BoNBoN Alignment (BoNBoN对齐)</strong></dt>
+    <dd>本文提出的方法，通过微调LLM参数使其直接输出符合BoN分布的样本，避免原始BoN的多次采样开销。核心创新是利用BoN分布的结构特性设计损失函数。</dd>
+    
+    <dt><strong class="term">Tilting Distribution (倾斜分布)</strong></dt>
+    <dd>数学形式为 \(P_\theta(x) \propto P_0(x)e^{\theta R(x)}\) 的概率分布，其中 \(P_0\) 是基础分布，\(R(x)\) 是奖励函数。研究证明BoN分布属于此类倾斜分布。</dd>
+    
+    <dt><strong class="term">RLHF (Reinforcement Learning from Human Feedback) 基于人类反馈的强化学习</strong></dt>
+    <dd>通过强化学习框架，利用人类偏好数据优化LLM的经典对齐方法。包含奖励模型训练和政策优化两阶段。</dd>
+    
+    <dt><strong class="term">DPO (Direct Preference Optimization) 直接偏好优化</strong></dt>
+    <dd>直接利用偏好数据优化策略的LLM对齐方法，避免RLHF中的奖励建模步骤。数学上可视为RLHF的解析近似。</dd>
+    
+    <dt><strong class="term">Off-target Attributes (非目标属性)</strong></dt>
+    <dd>对齐过程中需保持不变的模型能力（如数学推理、事实准确性）。理想对齐应仅在目标属性（如帮助性）上改进模型。</dd>
+  </dl>
+</div>
+
+</body>
+</html>

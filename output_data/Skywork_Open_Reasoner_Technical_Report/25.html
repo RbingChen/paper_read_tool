@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>论文解析报告</title>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    body { font-family: Arial, sans-serif; line-height: 1.6; }
+    .original { background-color: #f0f0f0; border: 1px solid #cccccc; padding: 15px; margin-bottom: 10px; }
+    .translation { background-color: #e0ffe0; border: 1px solid #a0ccaa; padding: 15px; margin-bottom: 20px; }
+    .figure { background-color: #ffffe0; padding: 15px; margin: 20px 0; border-radius: 5px; }
+    .term { color: red; font-weight: bold; }
+    .formula-container { text-align: center; margin: 20px 0; }
+    .formula-number { display: block; font-style: italic; margin-top: 5px; }
+    section { margin-bottom: 30px; }
+    h2 { border-bottom: 2px solid #ddd; padding-bottom: 5px; }
+    h3 { color: #2c3e50; }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  
+  <!-- 内容理解 -->
+  <section id="content-understanding">
+    <h2>内容理解</h2>
+    <p>文本探讨了强化学习（<span class="term">RL training</span>）训练中两个关键实验：</p>
+    <ol>
+      <li><strong>训练数据对熵的影响</strong>（Figure 20）：相同超参数下（含公式 <span class="term">α<sub>k</sub>=1e-3</span>），不同数学领域数据集导致熵演变模式显著差异</li>
+      <li><strong>自适应熵控制的有效性</strong>（Figure 21）：当<span class="term">NSGD</span>值较小时（1或2），自适应熵控制可稳定熵动态并提升模型性能；但当<span class="term">NSGD</span>较大时可能导致不稳定</li>
+    </ol>
+    <p>最后引入<span class="term">clip-higher trick</span>技巧（引用[34]），用于<span class="term">PPO-style policy loss</span>中防止<span class="term">entropy collapse</span>，并通过消融实验验证效果。</p>
+  </section>
+  
+  <!-- 内容翻译 -->
+  <section id="translation">
+    <h2>内容翻译</h2>
+    
+    <div class="figure">
+      <h3>Figure 20</h3>
+      <div class="original">
+        Preliminary experiments investigating how training data affects the entropy during RL training.
+        Both experiments used the same hyperparameter configurations with \(\alpha_k = 1e^{-3}\) but differed in the training data. 
+        Both datasets are in math domain. Simply switching the dataset resulted in dramatically different entropy evolution patterns.
+      </div>
+      <div class="translation">
+        探究训练数据如何影响<span class="term">强化学习（RL training）</span>过程中<span class="term">熵（Entropy）</span>的初步实验。
+        两个实验使用相同的超参数配置（其中 \(\alpha_k = 1e^{-3}\)），但训练数据不同。
+        两个数据集均属于数学领域。仅切换数据集就导致熵演变模式产生显著差异。
+      </div>
+    </div>
+    
+    <div class="original">
+      Not recommend using adaptive entropy control in scenarios where NSGD is large. 
+      Nonetheless, we find that when NSGD = 1 or 2, entropy dynamics remain acceptably stable under adaptive entropy control. 
+      Based on these findings, we adopt adaptive entropy control in the training of our Skywork-OR1 models.
+    </div>
+    <div class="translation">
+      不建议在<span class="term">自生成数据量（NSGD）</span>较大的场景中使用<span class="term">自适应熵控制（adaptive entropy control）</span>。
+      然而我们发现，当NSGD=1或2时，在自适应熵控制下熵动态仍能保持可接受的稳定性。
+      基于这些发现，我们在Skywork-OR1模型训练中采用了自适应熵控制。
+    </div>
+    
+    <div class="figure">
+      <h3>Figure 21</h3>
+      <div class="original">
+        The results of Ablation Experiments 9. Applying adaptive entropy control prevents the entropy collapse, 
+        leading to a better test performance. 
+        Left: Entropy of generated responses during RL training. 
+        Right: Test performance during RL training.
+      </div>
+      <div class="translation">
+        消融实验9的结果。应用自适应熵控制可防止<span class="term">熵崩溃（entropy collapse）</span>，
+        从而获得更好的测试性能。
+        左图：强化学习训练期间生成响应的熵值变化。
+        右图：强化学习训练期间的测试性能。
+      </div>
+    </div>
+    
+    <div class="original">
+      The Impact of the Clip-Higher Trick. We tested a popular trick called clip-higher [34] used in PPO-style 
+      policy loss to prevent the entropy collapse when NSGD>1. We conduct the following ablation experiments.
+    </div>
+    <div class="translation">
+      <span class="term">Clip-Higher技巧</span>的影响。我们测试了一种流行技巧clip-higher[34]，
+      该技巧用于<span class="term">PPO风格策略损失（PPO-style policy loss）</span>中，
+      以防止当NSGD>1时发生熵崩溃。我们进行了以下消融实验。
+    </div>
+    
+    <div class="formula-container">
+      \(\alpha_k = 1e^{-3}\)
+      <span class="formula-number">公式：自适应熵控制中的超参数配置</span>
+    </div>
+  </section>
+  
+  <!-- 摘要总结 -->
+  <section id="summary">
+    <h2>摘要总结</h2>
+    <p>本文核心内容聚焦于强化学习训练中<span class="term">熵动态（entropy dynamics）</span>的控制机制：</p>
+    <ul>
+      <li>通过Figure 20揭示<strong>训练数据</strong>对熵演变模式的显著影响（相同超参数下数学领域数据集切换导致差异）</li>
+      <li>Figure 21证明<strong>自适应熵控制</strong>在NSGD较小时（≤2）能有效防止<span class="term">熵崩溃</span>并提升测试性能</li>
+      <li>提出采用<span class="term">clip-higher技巧</span>解决NSGD>1场景的熵崩溃问题，并通过消融实验验证</li>
+      <li>最终将自适应熵控制应用于Skywork-OR1模型训练</li>
+    </ul>
+  </section>
+  
+  <!-- 术语识别 -->
+  <section id="terms">
+    <h2>术语解释</h2>
+    <dl>
+      <dt><span class="term">熵（Entropy）</span></dt>
+      <dd>在强化学习中衡量策略随机性的指标，高熵值表示策略探索性强，低熵值表示策略确定性高。熵崩溃会导致探索能力丧失。</dd>
+      
+      <dt><span class="term">自适应熵控制（Adaptive entropy control）</span></dt>
+      <dd>动态调整熵正则化系数的技术，用于平衡探索与利用。实验表明其在NSGD≤2时能稳定熵动态。</dd>
+      
+      <dt><span class="term">NSGD（Number of Self-Generated Data）</span></dt>
+      <dd>自生成数据量，关键阈值参数。当NSGD>1时需配合clip-higher技巧防止熵崩溃。</dd>
+      
+      <dt><span class="term">熵崩溃（Entropy collapse）</span></dt>
+      <dd>强化学习中策略过早收敛至局部最优，导致熵值急剧下降的现象，会严重损害模型探索能力（参见Figure 21左图）。</dd>
+      
+      <dt><span class="term">PPO-style policy loss（近端策略优化策略损失）</span></dt>
+      <dd>PPO算法的核心组件，clip-higher技巧通过截断优势函数上限来约束策略更新幅度。</dd>
+      
+      <dt><span class="term">Clip-higher trick</span></dt>
+      <dd>针对多NSGD场景设计的技巧，通过限制策略更新的最大幅度防止熵崩溃（引用文献[34]）。</dd>
+      
+      <dt><span class="term">α<sub>k</sub> = 1e<sup>-3</sup></span></dt>
+      <dd>熵正则化系数（公式），控制熵对策略更新的影响强度，值越小表示熵正则化效应越弱。</dd>
+    </dl>
+  </section>
+
+</div>
+
+</body>
+</html>

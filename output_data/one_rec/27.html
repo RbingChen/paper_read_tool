@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>OneRec Technical Report Analysis</title>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    body { font-family: Arial, sans-serif; line-height: 1.6; }
+    h1 { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 10px; }
+    h2 { color: #2980b9; margin-top: 25px; }
+    .original { background-color: #f8f9fa; border: 1px solid #ced4da; padding: 15px; border-radius: 5px; margin-bottom: 10px; }
+    .translation { background-color: #e8f5e9; border: 1px solid #a5d6a7; padding: 15px; border-radius: 5px; margin-bottom: 25px; }
+    .term { color: #e53935; font-weight: bold; }
+    .formula-container { background-color: #fffde7; padding: 15px; text-align: center; margin: 20px 0; border-radius: 5px; }
+    .formula-label { font-style: italic; margin-top: 5px; }
+    ul { padding-left: 20px; }
+    li { margin-bottom: 10px; }
+  </style>
+</head>
+<body>
+  <h1>OneRec 技术报告分析</h1>
+  
+  <!-- 内容理解 -->
+  <h2>内容理解</h2>
+  <p>本文档是<span class="term">OneRec</span>技术报告中的参考文献列表，包含6篇计算机科学领域的研究论文，主要聚焦于：</p>
+  <ul>
+    <li>推荐系统核心算法（<span class="term">CTR预测</span>、<span class="term">多任务学习</span>）</li>
+    <li>大规模工业级应用（电商推荐、短视频平台）</li>
+    <li>前沿技术融合（<span class="term">大语言模型</span>与推荐系统的结合）</li>
+    <li>基础模型优化（<span class="term">VQGAN</span>扩展、人类偏好微调）</li>
+  </ul>
+  <p>所有论文均发表于顶级会议（<span class="term">KDD</span>、<span class="term">ICDE</span>）或预印本平台（<span class="term">arXiv</span>），时间跨度为2018-2024年，反映了推荐系统领域的最新进展。</p>
+  
+  <!-- 内容翻译 -->
+  <h2>内容翻译</h2>
+  <div class="original">
+    <p>OneRec Technical Report</p>
+  </div>
+  <div class="translation">
+    <p>OneRec 技术报告</p>
+  </div>
+  
+  <div class="original">
+    <p>X. Wang, J. Cao, Z. Fu, K. Gai, and G. Zhou. Home: Hierarchy of multi-gate experts for multi-task learning at kuaishou. arXiv preprint arXiv:2408.05430 , 2024.</p>
+  </div>
+  <div class="translation">
+    <p>王X, 曹J, 付Z, 盖K, 周G. HOME：快手多任务学习的<span class="term">多层次多门专家</span>架构。arXiv预印本 arXiv:2408.05430，2024年。</p>
+  </div>
+  
+  <div class="original">
+    <p>X. Yang, Y. Zhu, Y. Zhang, X. Wang, and Q. Yuan. Large scale product graph construction for recommendation in e-commerce. CoRR, abs/2010.05525, 2020.</p>
+  </div>
+  <div class="translation">
+    <p>杨X, 朱Y, 张Y, 王X, 袁Q. 面向电商推荐的大规模<span class="term">产品图谱构建</span>。CoRR, abs/2010.05525, 2020年。</p>
+  </div>
+  
+  <div class="original">
+    <p>B. Zheng, Y. Hou, H. Lu, Y. Chen, W. X. Zhao, M. Chen, and J.-R. Wen. Adapting large language models by integrating collaborative semantics for recommendation. In 2024 IEEE 40th International Conference on Data Engineering (ICDE) , pages 1435–1448. IEEE, 2024.</p>
+  </div>
+  <div class="translation">
+    <p>郑B, 侯Y, 卢H, 陈Y, 赵WX, 陈M, 文JR. 通过整合<span class="term">协同语义</span>适配<span class="term">大语言模型</span>用于推荐系统。载于：2024年IEEE第40届国际数据工程会议（ICDE），第1435–1448页。IEEE，2024年。</p>
+  </div>
+  
+  <div class="original">
+    <p>G. Zhou, X. Zhu, C. Song, Y. Fan, H. Zhu, X. Ma, Y. Yan, J. Jin, H. Li, and K. Gai. Deep interest network for click-through rate prediction. In Proceedings of the 24th ACM SIGKDD international conference on knowledge discovery & data mining , pages 1059–1068, 2018.</p>
+  </div>
+  <div class="translation">
+    <p>周G, 朱X, 宋C, 范Y, 朱H, 马X, 颜Y, 金J, 李H, 盖K. 用于<span class="term">点击率预测</span>的深度兴趣网络。载于：第24届ACM SIGKDD知识发现与数据挖掘国际会议论文集，第1059–1068页，2018年。</p>
+  </div>
+  
+  <div class="original">
+    <p>L. Zhu, F. Wei, Y. Lu, and D. Chen. Scaling the codebook size of vqgan to 100,000 with a utilization rate of 99%. arXiv preprint arXiv:2406.11837 , 2024.</p>
+  </div>
+  <div class="translation">
+    <p>朱L, 魏F, 卢Y, 陈D. 将<span class="term">VQGAN</span>码本规模扩展至100,000并实现99%利用率。arXiv预印本 arXiv:2406.11837，2024年。</p>
+  </div>
+  
+  <div class="original">
+    <p>D. M. Ziegler, N. Stiennon, J. Wu, T. B. Brown, A. Radford, D. Amodei, P. Christiano, and G. Irving. Fine-tuning language models from human preferences. arXiv preprint arXiv:1909.08593 , 2019.</p>
+  </div>
+  <div class="translation">
+    <p>齐格勒DM, 斯蒂农N, 吴J, 布朗TB, 拉德福德A, 阿莫代D, 克里斯蒂亚诺P, 欧文G. 基于人类偏好的语言模型<span class="term">微调</span>。arXiv预印本 arXiv:1909.08593，2019年。</p>
+  </div>
+  
+  <!-- 摘要总结 -->
+  <h2>摘要总结</h2>
+  <p>本技术报告引用的核心研究成果包括：</p>
+  <ul>
+    <li>提出<span class="term">HOME架构</span>解决短视频平台（快手）的<span class="term">多任务学习</span>问题</li>
+    <li>电商场景下的大规模<span class="term">产品图谱构建</span>方法</li>
+    <li>融合<span class="term">协同语义</span>的<span class="term">大语言模型</span>推荐适配技术（ICDE 2024）</li>
+    <li>业界广泛应用的<span class="term">深度兴趣网络</span>（DIN）点击率预测模型（KDD 2018）</li>
+    <li><span class="term">VQGAN</span>模型的码本扩展技术（利用率99%）</li>
+    <li>基于人类反馈的语言模型<span class="term">微调</span>基础方法</li>
+  </ul>
+  <p>这些研究覆盖了推荐系统的核心组件：用户兴趣建模、图神经网络应用、<span class="term">LLM</span>融合、生成模型优化，以及工业级系统实现。</p>
+  
+  <!-- 术语识别 -->
+  <h2>术语识别</h2>
+  <ul>
+    <li><span class="term">多任务学习（Multi-task Learning, MTL）</span>：同时优化多个相关任务的机器学习范式，通过共享表示提升泛化能力。</li>
+    <li><span class="term">产品图谱（Product Graph）</span>：表示电商产品及其关系的图结构，用于捕捉商品间的语义和交互关联。</li>
+    <li><span class="term">协同语义（Collaborative Semantics）</span>：融合用户行为协同信号与内容语义信息的混合表征方法。</li>
+    <li><span class="term">大语言模型（Large Language Model, LLM）</span>：基于海量文本预训练的Transformer架构模型（如GPT系列）。</li>
+    <li><span class="term">点击率预测（Click-Through Rate Prediction）</span>：预估用户点击特定内容的概率，推荐系统的核心任务。</li>
+    <li><span class="term">深度兴趣网络（Deep Interest Network, DIN）</span>：通过注意力机制动态捕捉用户兴趣的CTR预测模型。</li>
+    <li><span class="term">VQGAN（Vector Quantized Generative Adversarial Network）</span>：结合向量量化和GAN的图像生成模型，公式表示为：
+      <div class="formula-container">
+        \( \mathbf{z}_q = \mathbf{e}_k \quad \text{where} \quad k = \arg\min_j \|\mathbf{z}_e - \mathbf{e}_j\|_2 \)
+        <div class="formula-label">公式1：VQGAN的向量量化过程</div>
+      </div>
+    </li>
+    <li><span class="term">微调（Fine-tuning）</span>：在预训练模型基础上使用领域数据继续训练的技术。</li>
+  </ul>
+</body>
+</html>

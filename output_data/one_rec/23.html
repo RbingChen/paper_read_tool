@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>OneRec 技术报告分析</title>
+  <style>
+    body { font-family: Arial, sans-serif; line-height: 1.6; margin: 20px; }
+    h1 { color: #333; text-align: center; }
+    h2 { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 5px; }
+    .section { margin-bottom: 30px; }
+    .original { background-color: #f0f0f0; border: 1px solid #cccccc; padding: 15px; margin: 10px 0; border-radius: 5px; }
+    .translated { background-color: #e0f7e0; border: 1px solid #4caf50; padding: 15px; margin: 10px 0; border-radius: 5px; }
+    .term { color: red; font-weight: bold; }
+    table { width: 100%; border-collapse: collapse; margin: 10px 0; }
+    th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+    th { background-color: #f2f2f2; }
+    .formula { text-align: center; margin: 15px 0; font-style: italic; }
+    .formula-number { display: block; text-align: center; font-size: 0.9em; color: #666; }
+    ul { list-style-type: none; padding: 0; }
+    li { margin: 10px 0; padding: 5px; background-color: #f9f9f9; border-left: 3px solid #3498db; }
+  </style>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <h1>OneRec 技术报告分析</h1>
+  
+  <section class="section">
+    <h2>内容理解</h2>
+    <p>该文本是 OneRec 技术报告的核心部分，主要涵盖三个方面的内容：首先，通过在线 A/B 测试数据（表 12）展示了 OneRec 推荐系统在快手平台（KuaishouApp 和 Kuaishou LiteApp）上的性能改进，比较了基础 OneRec 和带 RM 选择的 OneRec 在多个用户指标（如停留时间、观看时间等）上的绝对提升百分比。结果显示，带 RM 选择的版本在大多数指标上显著优于当前多阶段系统。其次，文本简要描述了技术优化，包括使用交叉注意力（cross-attention）、专家混合（MoE）等技术，结合批处理（batching）和 MPS 技术，实现了 5 倍吞吐量提升和 28.8% 的 MFU（模型浮点运算利用率）。最后，结论部分详细介绍了 OneRec 的架构：它是一个端到端的生成推荐系统，基于编码器-解码器（encoder-decoder）模型，利用编码器压缩用户终身行为序列以提取兴趣，并通过 MoE 扩展解码器参数；后训练阶段采用定制强化学习（RL）框架优化推荐；工程优化大幅提升了训练和推理效率（MFU 达 23.7% 和 28.6%），同时降低了运营成本（OPEX 仅为传统系统的 10.6%）。文本还指出局限性，如推理阶段扩展问题，并强调 OneRec 在效果和效率上的优势。</p>
+  </section>
+  
+  <section class="section">
+    <h2>内容翻译</h2>
+    <p>以下是文本的英文原文与中文翻译对照。翻译按段落组织，原文使用浅灰色背景和灰色边框，翻译使用浅绿色背景和绿色边框。关键技术术语（如 <strong class="term">MoE</strong>）以红色粗体高亮显示，并包含英文原文。表格数据已结构化翻译。</p>
+    
+    <div class="original">
+      <p>OneRec Technical Report</p>
+    </div>
+    <div class="translated">
+      <p>OneRec 技术报告</p>
+    </div>
+    
+    <div class="original">
+      <p>Table 12|The absolute improvement of <strong class="term">OneRec</strong> compared to the current multi-stage system in the online A/B testing setting.</p>
+      <table>
+        <tr><th>Scenarios</th><th>Online Metrics</th><th><strong class="term">OneRec</strong></th><th><strong class="term">OneRec</strong> with <strong class="term">RM Selection</strong></th></tr>
+        <tr><td>KuaishouApp</td><td>Stay Time</td><td>+0.01%</td><td>+0.54%</td></tr>
+        <tr><td></td><td>Watch Time</td><td>+0.07%</td><td>+1.98%</td></tr>
+        <tr><td></td><td>Video View</td><td>+1.98%</td><td>+2.52%</td></tr>
+        <tr><td></td><td>Like</td><td>-2.00%</td><td>+2.43%</td></tr>
+        <tr><td></td><td>Follow</td><td>-2.88%</td><td>+3.24%</td></tr>
+        <tr><td></td><td>Comment</td><td>-1.56%</td><td>+5.27%</td></tr>
+        <tr><td></td><td>Collect</td><td>-0.61%</td><td>+2.93%</td></tr>
+        <tr><td></td><td>Foward</td><td>+0.27%</td><td>+5.90%</td></tr>
+        <tr><td>Kuaishou LiteApp</td><td>Stay Time</td><td>+0.06%</td><td>+1.24%</td></tr>
+        <tr><td></td><td>Watch Time</td><td>+0.05%</td><td>+3.28%</td></tr>
+        <tr><td></td><td>Video View</td><td>+2.40%</td><td>+3.39%</td></tr>
+        <tr><td></td><td>Like</td><td>-2.64%</td><td>+1.49%</td></tr>
+        <tr><td></td><td>Follow</td><td>-2.75%</td><td>+2.28%</td></tr>
+        <tr><td></td><td>Comment</td><td>-2.23%</td><td>+3.20%</td></tr>
+        <tr><td></td><td>Collect</td><td>-1.76%</td><td>+1.91%</td></tr>
+        <tr><td></td><td>Foward</td><td>-1.86%</td><td>+3.48%</td></tr>
+      </table>
+    </div>
+    <div class="translated">
+      <p>表 12 | 在在线 A/B 测试设置中，<strong class="term">OneRec</strong> 与当前多阶段系统相比的绝对改进。</p>
+      <table>
+        <tr><th>场景</th><th>在线指标</th><th><strong class="term">OneRec</strong></th><th>带 <strong class="term">RM 选择</strong> 的 <strong class="term">OneRec</strong></th></tr>
+        <tr><td>快手App</td><td>停留时间</td><td>+0.01%</td><td>+0.54%</td></tr>
+        <tr><td></td><td>观看时间</td><td>+0.07%</td><td>+1.98%</td></tr>
+        <tr><td></td><td>视频观看量</td><td>+1.98%</td><td>+2.52%</td></tr>
+        <tr><td></td><td>点赞</td><td>-2.00%</td><td>+2.43%</td></tr>
+        <tr><td></td><td>关注</td><td>-2.88%</td><td>+3.24%</td></tr>
+        <tr><td></td><td>评论</td><td>-1.56%</td><td>+5.27%</td></tr>
+        <tr><td></td><td>收藏</td><td>-0.61%</td><td>+2.93%</td></tr>
+        <tr><td></td><td>转发</td><td>+0.27%</td><td>+5.90%</td></tr>
+        <tr><td>快手轻量版App</td><td>停留时间</td><td>+0.06%</td><td>+1.24%</td></tr>
+        <tr><td></td><td>观看时间</td><td>+0.05%</td><td>+3.28%</td></tr>
+        <tr><td></td><td>视频观看量</td><td>+2.40%</td><td>+3.39%</td></tr>
+        <tr><td></td><td>点赞</td><td>-2.64%</td><td>+1.49%</td></tr>
+        <tr><td></td><td>关注</td><td>-2.75%</td><td>+2.28%</td></tr>
+        <tr><td></td><td>评论</td><td>-2.23%</td><td>+3.20%</td></tr>
+        <tr><td></td><td>收藏</td><td>-1.76%</td><td>+1.91%</td></tr>
+        <tr><td></td><td>转发</td><td>-1.86%</td><td>+3.48%</td></tr>
+      </table>
+      <p>注意：表格中 "Foward" 应为 "Forward"（转发），但保留原文拼写。</p>
+    </div>
+    
+    <div class="original">
+      <p>of <strong class="term">cross-attention</strong>, <strong class="term">MoE</strong>, and other operations. Combined with <strong class="term">batching</strong> and <strong class="term">MPS</strong> techniques, we achieve a 5×throughput improvement, reaching an <strong class="term">MFU</strong> of 28.8%.</p>
+    </div>
+    <div class="translated">
+      <p>通过 <strong class="term">交叉注意力（cross-attention）</strong>、<strong class="term">专家混合（MoE）</strong> 和其他操作。结合 <strong class="term">批处理（batching）</strong> 和 <strong class="term">MPS</strong> 技术，我们实现了 5 倍吞吐量提升，达到 28.8% 的 <strong class="term">MFU</strong>。</p>
+    </div>
+    
+    <div class="original">
+      <p>5. Conclusion, Limitations, and Future Directions In this paper, we introduce <strong class="term">OneRec</strong>, a novel end-to-end generative recommendation architecture. Built as an <strong class="term">encoder-decoder</strong> model, it compresses users’ lifelong behavior sequences via its encoder to derive user interests, while leveraging <strong class="term">Mixture-of-Experts (MoE)</strong> to massively scale decoder parameters for precise short-video recommendation decoding. During post-training, we develop a customized <strong class="term">reinforcement learning (RL)</strong> framework to refine recommendations by aligning model outputs with the reward function. Thanks to meticulous engineering optimizations, <strong class="term">OneRec</strong> achieves 23.7% and 28.6% <strong class="term">Model FLOPs Utilization (MFU)</strong> in training and inference — a dramatic improvement from single-digit baselines—closing the gap with the mainstream AI community. Notably, this compute-intensive design operates at 10.6% the <strong class="term">OPEX</strong> of conventional recommender systems. Comprehensive evaluations demonstrate that <strong class="term">OneRec</strong> has surpassed existing recommendation systems in both effectiveness and efficiency. While acknowledging its powerful performance and high cost-effectiveness, we also recognize some limitations of <strong class="term">OneRec</strong> and plan to strategically invest in the following areas: •Inference Stage Scaling: The step scaling during the inference phase is not yet apparent, indicating 24</p>
+    </div>
+    <div class="translated">
+      <p>5. 结论、局限性与未来方向 在本文中，我们介绍了 <strong class="term">OneRec</strong>，一种新颖的端到端生成推荐架构。它构建为 <strong class="term">编码器-解码器（encoder-decoder）</strong> 模型，通过其编码器压缩用户的终身行为序列以推导用户兴趣，同时利用 <strong class="term">专家混合（Mixture-of-Experts, MoE）</strong> 大规模扩展解码器参数，以实现精确的短视频推荐解码。在后训练期间，我们开发了一个定制的 <strong class="term">强化学习（reinforcement learning, RL）</strong> 框架，通过将模型输出与奖励函数对齐来优化推荐。得益于细致的工程优化，<strong class="term">OneRec</strong> 在训练和推理中实现了 23.7% 和 28.6% 的 <strong class="term">模型浮点运算利用率（Model FLOPs Utilization, MFU）</strong>——从个位数基线的显著提升——缩小了与主流 AI 社区的差距。值得注意的是，这种计算密集型设计的运营支出仅为传统推荐系统的 10.6%（<strong class="term">OPEX</strong>）。全面评估表明，<strong class="term">OneRec</strong> 在效果和效率上都超越了现有推荐系统。在承认其强大性能和高成本效益的同时，我们也认识到 <strong class="term">OneRec</strong> 的一些局限性，并计划在以下领域进行战略投资：•推理阶段扩展：推理阶段的步进扩展尚不明显，表明 24</p>
+    </div>
+  </section>
+  
+  <section class="section">
+    <h2>摘要总结</h2>
+    <p>文本摘要：该文本是 OneRec 技术报告的核心内容，概括了三个关键方面。(1) <strong class="term">在线 A/B 测试结果</strong>：通过表 12 展示了 OneRec 在快手平台（KuaishouApp 和 Kuaishou LiteApp）上的性能，比较了基础 OneRec 和带 RM 选择的 OneRec 在多个用户指标（如停留时间、观看时间等）的绝对改进。带 RM 选择的版本在大多数指标上表现显著更优（例如，快手 App 的转发指标提升达 +5.90%）。(2) <strong class="term">技术优化</strong>：使用交叉注意力、MoE 等技术，结合批处理和 MPS 技术，实现了 5 倍吞吐量提升和 28.8% 的 MFU。(3) <strong class="term">系统架构与结论</strong>：OneRec 是一个端到端的生成推荐系统，基于编码器-解码器模型和 MoE，后训练采用定制 RL 框架；工程

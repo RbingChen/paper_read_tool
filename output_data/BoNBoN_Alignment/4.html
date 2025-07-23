@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Algorithm Expert Analysis</title>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    body { font-family: Arial, sans-serif; line-height: 1.6; margin: 20px; }
+    h1 { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 10px; }
+    h2 { color: #2980b9; margin-top: 20px; }
+    .original { background-color: #f0f0f0; border: 1px solid #cccccc; padding: 15px; margin-bottom: 15px; border-radius: 5px; }
+    .translation { background-color: #e0f7e0; border: 1px solid #4caf50; padding: 15px; margin-bottom: 15px; border-radius: 5px; }
+    .figure { background-color: #fffde7; padding: 15px; margin-bottom: 15px; border-radius: 5px; border: 1px dashed #ffd700; }
+    .formula { text-align: center; margin: 20px 0; padding: 10px; }
+    .formula-number { display: block; text-align: center; font-style: italic; margin-top: 5px; }
+    .term { color: red; font-weight: bold; }
+    ul { list-style-type: none; padding: 0; }
+    li { margin-bottom: 10px; padding: 10px; background-color: #f9f9f9; border-left: 4px solid #3498db; }
+  </style>
+</head>
+<body>
+
+<h1>内容理解</h1>
+<div>
+  <p>本文主要探讨了在语言模型对齐任务中，<span class="term">Best-of-n Sampling (Best-of-n采样)</span>与<span class="term">Optimal Policy (最优策略)</span>在性能上的关系。核心认知包括：</p>
+  <ul>
+    <li>图2通过可视化数据表明，<span class="term">Best-of-n Sampling (Best-of-n采样)</span>在<span class="term">Win Rate (胜率)</span>和<span class="term">KL Divergence (KL散度)</span>的权衡上与最优策略几乎一致，尤其在低KL散度区域。右图进一步展示了不同n值下，最优策略相对于BoN的胜率增益，揭示了BoN作为启发式方法的有效性。</li>
+    <li>数学部分定义了最优策略的优化问题：在固定<span class="term">KL Divergence (KL散度)</span>约束下最大化期望胜率（公式3.3）。通过引入奖励函数<span class="term">r(x,y)</span>的累积分布<span class="term">Q_x</span>，问题被转化为与<span class="term">RLHF (Reinforcement Learning from Human Feedback, 人类反馈强化学习)</span>目标相似的形式（公式3.4）。利用<span class="term">Duality Theory (对偶理论)</span>，推导出解析解：最优策略正比于参考策略乘以指数化的奖励累积分布（公式3.5）。</li>
+    <li>定理1在连续奖励假设下，给出了最优策略的闭式表达式（公式3.6），并建立了KL散度约束参数c与d的关系（公式3.7）。同时，提供了<span class="term">Context-conditional Win Rate (上下文条件胜率)</span>和<span class="term">Context-conditional KL Divergence (上下文条件KL散度)</span>的精确公式，证明它们在所有提示x下为常数，从而全局有效。</li>
+  </ul>
+  <p>整体上，文本强调了BoN采样的近似最优性，并为策略优化提供了理论框架，假设连续奖励简化了推导，但附录B讨论了离散响应的扩展。</p>
+</div>
+
+<h1>内容翻译</h1>
+<div class="figure">
+  <div class="original">
+    <p>0.50.60.70.80.91.0</p>
+    <p>0 1 2 3 4</p>
+    <p><span class="term">KL Divergence (KL散度)</span> <span class="term">Win Rate (胜率)</span> <span class="term">KL Divergence versus Win Rate (KL散度 vs. 胜率)</span></p>
+    <p>0.00000.00250.00500.00750.0100</p>
+    <p>2 4 6 8 10</p>
+    <p>n <span class="term">Win Rate Gain (胜率增益)</span> <span class="term">Win Rate Gain from Optimal Policy over Best-of-n Sampling (胜率增益：最优策略相对于Best-of-n采样)</span></p>
+  </div>
+  <div class="translation">
+    <p>0.50.60.70.80.91.0</p>
+    <p>0 1 2 3 4</p>
+    <p><span class="term">KL散度 (KL Divergence)</span> <span class="term">胜率 (Win Rate)</span> <span class="term">KL散度 vs. 胜率 (KL Divergence versus Win Rate)</span></p>
+    <p>0.00000.00250.00500.00750.0100</p>
+    <p>2 4 6 8 10</p>
+    <p>n <span class="term">胜率增益 (Win Rate Gain)</span> <span class="term">胜率增益：最优策略相对于Best-of-n采样 (Win Rate Gain from Optimal Policy over Best-of-n Sampling)</span></p>
+  </div>
+</div>
+
+<div class="original">
+  <p><span class="term">Figure 2 (图2)</span>: The <span class="term">BoN (Best-of-n Sampling, Best-of-n采样)</span> is essentially the same as the <span class="term">optimal policy (最优策略)</span> in terms of <span class="term">win rate (胜率)</span> versus <span class="term">KL divergence (KL散度)</span>.</p>
+  <p>Left: The <span class="term">win rate (胜率)</span> versus <span class="term">KL divergence (KL散度)</span> curves of <span class="term">BoN (Best-of-n Sampling, Best-of-n采样)</span> and <span class="term">optimal policy (最优策略)</span>. Right: The <span class="term">win rate (胜率)</span> difference between <span class="term">optimal policy (最优策略)</span> and <span class="term">BoN policy (Best-of-n采样策略)</span> for different n.</p>
+</div>
+<div class="translation">
+  <p><span class="term">图2 (Figure 2)</span>: 在<span class="term">胜率 (Win Rate)</span>与<span class="term">KL散度 (KL Divergence)</span>的关系上，<span class="term">BoN (Best-of-n Sampling, Best-of-n采样)</span>与<span class="term">最优策略 (Optimal Policy)</span>基本相同。</p>
+  <p>左图: <span class="term">BoN (Best-of-n Sampling, Best-of-n采样)</span>和<span class="term">最优策略 (Optimal Policy)</span>的<span class="term">胜率 (Win Rate)</span>与<span class="term">KL散度 (KL Divergence)</span>曲线。右图: 对于不同n值，<span class="term">最优策略 (Optimal Policy)</span>与<span class="term">BoN策略 (Best-of-n Sampling Policy)</span>的<span class="term">胜率 (Win Rate)</span>差异。</p>
+</div>
+
+<div class="original">
+  <p><span class="term">Optimal Policy (最优策略)</span> Our aim is to find the policy with the highest possible <span class="term">win rate (胜率)</span> at each <span class="term">KL divergence (KL散度)</span> level:</p>
+  <div class="formula">
+    \\[ \\max_{\\pi} \\mathbb{E}_{x \\sim D} \\left[ \\mathbb{P}_{Y \\sim \\pi(y|x), Y_0 \\sim \\pi_0(y|x)} (r(x,Y) \\geq r(x,Y_0)) \\right] \\text{ subject to } D_{KL}(\\pi \\parallel \\pi_0) = d. \\quad (3.3) \\]
+    <span class="formula-number">公式 (3.3)</span>
+  </div>
+  <p>Now, this equation only depends on Y through the <span class="term">reward function (奖励函数)</span> r(x,y). Defining <span class="term">Q_x(r(x,Y))</span> as the distribution of r(x,Y) under π₀(Y|x), we can rewrite the objective as:</p>
+  <div class="formula">
+    \\[ \\max_{\\pi} \\mathbb{E}_{x \\sim D, y \\sim \\pi(y|x)} [Q_x(r(x,y))] \\text{ subject to } D_{KL}(\\pi \\parallel \\pi_0) = d, \\]
+  </div>
+  <p>By <span class="term">duality theory (对偶理论)</span> [BTN01], there is some constant β > 0 such that this problem is equivalent to:</p>
+  <div class="formula">
+    \\[ \\max_{\\pi} \\mathbb{E}_{x \\sim D, y \\sim \\pi(y|x)} [Q_x(r(x,y))] - \\beta (D_{KL}(\\pi \\parallel \\pi_0) - d). \\quad (3.4) \\]
+    <span class="formula-number">公式 (3.4)</span>
+  </div>
+  <p>Now, we can immediately recognize this objective as the same as the <span class="term">RLHF (Reinforcement Learning from Human Feedback, 人类反馈强化学习)</span> objective in (2.1) with the transformed <span class="term">reward function (奖励函数)</span> \\tilde{r}(x,y) = Q_x(r(x,y)). Then, the analytic solution to this problem is</p>
+  <div class="formula">
+    \\[ \\pi_{\\text{optimal}} \\propto \\pi_0(y|x) e^{c Q_x(r(x,y))}, \\quad (3.5) \\]
+    <span class="formula-number">公式 (3.5)</span>
+  </div>
+  <p>where c is a constant determined by the <span class="term">KL divergence (KL散度)</span> penalty.</p>
+</div>
+<div class="translation">
+  <p><span class="term">最优策略 (Optimal Policy)</span> 我们的目标是在每个<span class="term">KL散度 (KL Divergence)</span>水平上找到具有最高可能<span class="term">胜率 (Win Rate)</span>的策略：</p>
+  <div class="formula">
+    \\[ \\max_{\\pi} \\mathbb{E}_{x \\sim D} \\left[ \\mathbb{P}_{Y \\sim \\pi(y|x), Y_0 \\sim \\pi_0(y|x)} (r(x,Y) \\geq r(x,Y_0)) \\right] \\text{ subject to } D_{KL}(\\pi \\parallel \\pi_0) = d. \\quad (3.3) \\]
+    <span class="formula-number">公式 (3.3)</span>
+  </div>
+  <p>现在，此方程仅通过<span class="term">奖励函数 (Reward Function)</span> r(x,y) 依赖于 Y。定义 <span class="term">Q_x(r(x,Y))</span> 为在 π₀(Y|x) 下 r(x,Y) 的分布，我们可以将目标重写为：</p>
+  <div class="formula">
+    \\[ \\max_{\\pi} \\mathbb{E}_{x \\sim D, y \\sim \\pi(y|x)} [Q_x(r(x,y))] \\text{ subject to } D_{KL}(\\pi \\parallel \\pi_0) = d, \\]
+  </div>
+  <p>通过<span class="term">对偶理论 (Duality Theory)</span> [BTN01]，存在某个常数 β > 0，使得该问题等价于：</p>
+  <div class="formula">
+    \\[ \\max_{\\pi} \\mathbb{E}_{x \\sim D, y \\sim \\pi(y|x)} [Q_x(r(x,y))] - \\beta (D_{KL}(\\pi \\parallel \\pi_0) - d). \\quad (3.4) \\]
+    <span class="formula-number">公式 (3.4)</span>
+  </div>
+  <p>现在，我们可以立即识别此目标与 (2.1) 中的<span class="term">RLHF (Reinforcement Learning from Human Feedback, 人类反馈强化学习)</span>目标相同，其中转换后的<span class="term">奖励函数 (Reward Function)</span>为 \\tilde{r}(x,y) = Q_x(r(x,y))。那么，此问题的解析解为</p>
+  <div class="formula">
+    \\[ \\pi_{\\text{optimal}} \\propto \\pi_0(y|x) e^{c Q_x(r(x,y))}, \\quad (3.5) \\]
+    <span class="formula-number">公式 (3.5)</span>
+  </div>
+  <p>其中 c 是由<span class="term">KL散度 (KL Divergence)</span>惩罚确定的常数。</p>
+</div>
+
+<div class="original">
+  <p>The following theorem makes the preceding argument precise. To simplify the argument, we will assume that the rewards assigned to outputs of the language model are continuous. This simplifying assumption ignores that there are only a countably infinite number of possible responses to any given prompt. However, given the vast number of possible responses, the assumption is mild in practice. Refer to appendix B for a more detailed discussion.</p>
+  <p><span class="term">Theorem 1 (定理1)</span>. Let π_{\\text{optimal}}^{r,c}

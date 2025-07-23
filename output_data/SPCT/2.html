@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>论文解析：奖励模型方法与SPCT框架</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; }
+        .original { 
+            background-color: #f0f0f0; 
+            border: 1px solid #ccc; 
+            padding: 15px; 
+            margin-bottom: 5px; 
+            border-radius: 5px;
+        }
+        .translation { 
+            background-color: #e0f7e0; 
+            border: 1px solid #4CAF50; 
+            padding: 15px; 
+            margin-bottom: 20px; 
+            border-radius: 5px;
+        }
+        .figure { 
+            background-color: #fffde7; 
+            padding: 15px; 
+            margin: 20px 0; 
+            border-left: 4px solid #FFD700;
+        }
+        .term { 
+            color: #d32f2f; 
+            font-weight: bold;
+        }
+        h2 { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 5px; }
+        .section { margin-bottom: 30px; }
+        .formula-container { 
+            text-align: center; 
+            margin: 20px 0;
+        }
+        .formula-number { 
+            display: block; 
+            text-align: right; 
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+
+<div class="section">
+    <h2>内容理解</h2>
+    <p>本文介绍了一种新型奖励模型框架SPCT（Self-Principled Critique Tuning），聚焦于提升大型语言模型（LLM）奖励系统的推理时扩展性。核心贡献包括：</p>
+    <ol>
+        <li>提出<strong class="term">SPCT</strong>训练方法，通过自我原则批判调整增强<strong class="term">推理时扩展性（Inference-time Scalability）</strong></li>
+        <li>开发<strong class="term">DeepSeek-GRM</strong>模型系列，在多个基准测试中超越现有方法</li>
+        <li>系统分类奖励模型的三大范式：<strong class="term">标量（Scalar）</strong>、<strong class="term">半标量（Semi-Scalar）</strong>、<strong class="term">生成式（Generative）</strong></li>
+        <li>分析两种评分模式：<strong class="term">点对（Pointwise）</strong>与<strong class="term">成对（Pairwise）</strong>方法</li>
+    </ol>
+    <p>关键创新在于证明<strong class="term">推理时扩展性</strong>（通过多次采样聚合奖励）可超越单纯增加模型参数量的效果，为LLM训练提供新范式。</p>
+</div>
+
+<div class="section">
+    <h2>内容翻译</h2>
+    
+    <div class="original">
+        Preprint. Under review.
+    </div>
+    <div class="translation">
+        预印本。正在评审中。
+    </div>
+    
+    <div class="figure">
+        <div class="original">
+            Figure 2: Different paradigms for reward generation, including (a) scalar, (b) semi-scalar, and (c) generative approaches, and different scoring patterns, including (i) pointwise and (ii) pairwise approaches. We list the representative methods for each approach, and corresponding inference-time scalability (whether better rewards could be obtained from multiple sampling) and input flexibility (whether supports rating single and multiple responses).
+        </div>
+        <div class="translation">
+            图2：奖励生成的不同范式，包括(a)标量、(b)半标量和(c)生成式方法，以及不同的评分模式，包括(i)点对和(ii)成对方法。我们列出了每种方法的代表性技术，以及对应的推理时扩展性（是否可通过多次采样获得更好的奖励）和输入灵活性（是否支持评估单个或多个响应）。
+        </div>
+    </div>
+    
+    <div class="original">
+        outperforming existing methods and models in multiple comprehensive RM benchmarks without severe domain biases. We also compared the inference-time scaling performance of DeepSeek-GRM-27B with larger models up to 67lB parameters, and found it could achieve better performance compared to training-time scaling on model sizes. Though the current method meets challenges in efficiency and specific tasks, with efforts beyond SPCT, we believe GRMs with enhanced scalability and efficiency could serve as a versatile interface for generalist reward systems, advancing the frontiers of LLM post-training and inference.
+    </div>
+    <div class="translation">
+        在多个综合奖励模型（RM）基准测试中超越现有方法和模型，且无严重领域偏差。我们还将DeepSeek-GRM-27B的推理时扩展性能与高达670亿参数的大型模型进行比较，发现其性能优于单纯增加模型尺寸的训练时扩展。尽管当前方法在效率和特定任务上面临挑战，但我们相信通过超越SPCT的努力，具有增强扩展性和效率的通用奖励模型（GRM）可作为通用奖励系统的多功能接口，推进LLM训练后优化和推理的前沿。
+    </div>
+    
+    <div class="original">
+        In general, our main contribution is as follows.
+        <br>1. We propose a novel approach, Self-Principled Critique Tuning (SPCT), to foster effective inference-time scalability for generalist reward modeling, resulting in DeepSeek-GRM models. And we further introduce a meta RM to effectively improve the inference-time scaling performance of DeepSeek-GRM beyond voting.
+        <br>2. We empirically show SPCT significantly improves the quality and inference-time scalability of GRMs over existing methods and several strong public models.
+        <br>3. We also applied the SPCT training schedule on LLMs with larger sizes and found that inference-time scaling could outperform model size scaling in training time.
+    </div>
+    <div class="translation">
+        总体而言，我们的主要贡献如下：
+        <br>1. 提出新方法<strong class="term">自我原则批判调整（SPCT）</strong>，促进通用奖励模型的有效推理时扩展性，由此开发出DeepSeek-GRM模型系列。并进一步引入元奖励模型（meta RM），有效提升DeepSeek-GRM超越投票机制的推理时扩展性能。
+        <br>2. 通过实验证明SPCT显著提升通用奖励模型（GRM）的质量和推理时扩展性，优于现有方法和多个强大的公共模型。
+        <br>3. 在更大规模的LLM上应用SPCT训练方案，发现推理时扩展性可超越模型尺寸扩展的训练时效果。
+    </div>
+    
+    <div class="original">
+        <h3>2 Preliminaries</h3>
+        <h4>2.1 Comparisons of Different RM approaches</h4>
+        As shown in Figure 2, RM approaches are mainly determined by reward generation paradigms and scoring patterns, which inherently affect the inference-time scalability and the input flexibility of the RM. For reward generation paradigms, we distinguish three main approaches: scalar, semi-scalar, and generative. The scalar approach assigns scalar values to the given query and responses, while the semi-scalar approach generates textual judgement, termed “critique”, and the scalar reward value as well. The generative approach only generates critiques as the textual reward, from which the reward value could be extracted. For scoring patterns, we distinguish two main approaches: pointwise and pairwise. The pointwise approach assigns an individual score to each response, while the pairwise approach selects a single best response from all candidates.
+    </div>
+    <div class="translation">
+        <h3>2 预备知识</h3>
+        <h4>2.1 不同奖励模型方法的比较</h4>
+        如图2所示，奖励模型（RM）方法主要由<strong class="term">奖励生成范式（reward generation paradigms）</strong>和<strong class="term">评分模式（scoring patterns）</strong>决定，这直接影响RM的推理时扩展性和输入灵活性。奖励生成范式分为三类：<strong class="term">标量（scalar）</strong>、<strong class="term">半标量（semi-scalar）</strong>和<strong class="term">生成式（generative）</strong>。标量方法为给定查询和响应分配标量值；半标量方法生成文本判断（称为"批判"）及标量奖励值；生成式方法仅生成文本批判作为奖励，从中可提取奖励值。评分模式分为两类：<strong class="term">点对（pointwise）</strong>和<strong class="term">成对（pairwise）</strong>。点对方法为每个响应分配独立分数，成对方法从候选响应中选择最佳响应。
+    </div>
+</div>
+
+<div class="section">
+    <h2>摘要总结</h2>
+    <p>本文提出<strong class="term">自我原则批判调整（SPCT）</strong>框架，显著提升通用奖励模型（GRM）的推理时扩展性。核心创新点包括：</p>
+    <ul>
+        <li>系统分类奖励模型的三大范式（标量/半标量/生成式）和两种评分模式（点对/成对）</li>
+        <li>开发DeepSeek-GRM模型，在多个基准测试中超越现有方法</li>
+        <li>实证证明<strong class="term">推理时扩展性</strong>（通过多次采样聚合奖励）可优于单纯增加模型参数量的训练时扩展</li>
+        <li>引入元奖励模型（meta RM）进一步提升扩展性能</li>
+    </ul>
+    <p>该方法为大型语言模型的奖励系统设计提供新范式，推动训练后优化和推理效率的边界。</p>
+</div>
+
+<div class="section">
+    <h2>术语识别</h2>
+    <dl>
+        <dt><strong class="term">SPCT (Self-Principled Critique Tuning)</strong></dt>
+        <dd>自我原则批判调整：新型训练框架，通过自我监督的批判生成提升奖励模型的扩展性和泛化能力</dd>
+        
+        <dt><strong class="term">推理时扩展性 (Inference-time Scalability)</strong></dt>
+        <dd>模型通过多次采样生成多个奖励值并进行聚合的能力，与单纯增加模型参数量的训练时扩展形成对比</dd>
+        
+        <dt><strong class="term">标量范式 (Scalar Paradigm)</strong></dt>
+        <dd>直接为查询-响应对输出数值奖励的奖励生成方法（图2a）</dd>
+        
+        <dt><strong class="term">半标量范式 (Semi-Scalar Paradigm)</strong></dt>
+        <dd>同时生成文本批判（critique）和标量奖励值的混合方法（图2b）</dd>
+        
+        <dt><strong class="term">生成式范式 (Generative Paradigm)</strong></dt>
+        <dd>仅生成文本批判，需从中提取奖励值的奖励生成方法（图2c）</dd>
+        
+        <dt><strong class="term">点对评分 (Pointwise Scoring)</strong></dt>
+        <dd>为每个响应独立分配绝对分数的评估模式（图2i）</dd>
+        
+        <dt><strong class="term">成对评分 (Pairwise Scoring)</strong></dt>
+        <dd>对响应进行相对比较并选择最优项的评估模式（图2ii）</dd>
+        
+        <dt><strong class="term">DeepSeek-GRM</strong></dt>
+        <dd>基于SPCT框架开发的通用奖励模型系列，27B版本在扩展性上超越670B参数模型</dd>
+        
+        <dt><strong class="term">输入灵活性 (Input Flexibility)</strong></dt>
+        <dd>奖励模型同时支持单个响应评分和多个响应比较的能力</dd>
+    </dl>
+</div>
+
+</body>
+</html>

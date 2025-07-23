@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>算法论文解析</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        .original {
+            background-color: #f0f0f0;
+            border: 1px solid gray;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+        .translation {
+            background-color: #e0ffe0;
+            border: 1px solid green;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+        .term {
+            color: red;
+            font-weight: bold;
+        }
+        .formula-container {
+            text-align: center;
+            margin: 20px 0;
+        }
+        .formula-label {
+            display: block;
+            font-style: italic;
+            margin-top: 5px;
+        }
+        h2 {
+            border-bottom: 2px solid #333;
+            padding-bottom: 5px;
+        }
+        .section {
+            margin-bottom: 30px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- 翻译部分 -->
+<h2>翻译</h2>
+
+<div class="original">
+    <p>2. The win rate without considering ties is</p>
+    <div class="formula-container">
+        \\[
+        P_{x \\sim D, Y \\sim \\pi_{r,\\text{discrete}}^f(y|x), Y_0 \\sim \\pi_0(y|x)} (r(x,Y) > r(x,Y_0)) 
+        = \\mathbb{E}_{x \\sim D} \\left[ \\sum_{r(x,y)>r(x,y_0)} \\pi_{r,\\text{discrete}}^f(y|x) \\pi_0(y_0|x) \\right]
+        \\]
+        <span class="formula-label">(1)</span>
+    </div>
+    <div class="formula-container">
+        \\[
+        = \\mathbb{E}_{x \\sim D} \\left[ \\sum_{i=1}^L \\sum_{j=1}^L \\pi_{r,\\text{discrete}}^f(y_j|x) \\pi_0(y_i|x) \\mathbf{1}_{\\{r_j>r_i\\}} \\right]
+        \\]
+        <span class="formula-label">(2)</span>
+    </div>
+    <div class="formula-container">
+        \\[
+        = \\mathbb{E}_{x \\sim D} \\left[ \\sum_{i=1}^L \\sum_{j>i} \\frac{F(p_{1:j}) - F(p_{1:(j-1)})}{F(1)-F(0)} p_i \\right]
+        \\]
+        <span class="formula-label">(3)</span>
+    </div>
+    <div class="formula-container">
+        \\[
+        = \\mathbb{E}_{x \\sim D} \\left[ \\sum_{i=1}^L p_{1:(i-1)} \\frac{F(p_{1:i}) - F(p_{1:(i-1)})}{F(1)-F(0)} \\right].
+        \\]
+        <span class="formula-label">(4)</span>
+    </div>
+</div>
+
+<div class="translation">
+    <p>2. 不考虑平局的<span class="term">胜率 (win rate)</span>为</p>
+    <div class="formula-container">
+        \\[
+        P_{x \\sim D, Y \\sim \\pi_{r,\\text{discrete}}^f(y|x), Y_0 \\sim \\pi_0(y|x)} (r(x,Y) > r(x,Y_0)) 
+        = \\mathbb{E}_{x \\sim D} \\left[ \\sum_{r(x,y)>r(x,y_0)} \\pi_{r,\\text{discrete}}^f(y|x) \\pi_0(y_0|x) \\right]
+        \\]
+        <span class="formula-label">(1)</span>
+    </div>
+    <div class="formula-container">
+        \\[
+        = \\mathbb{E}_{x \\sim D} \\left[ \\sum_{i=1}^L \\sum_{j=1}^L \\pi_{r,\\text{discrete}}^f(y_j|x) \\pi_0(y_i|x) \\mathbf{1}_{\\{r_j>r_i\\}} \\right]
+        \\]
+        <span class="formula-label">(2)</span>
+    </div>
+    <div class="formula-container">
+        \\[
+        = \\mathbb{E}_{x \\sim D} \\left[ \\sum_{i=1}^L \\sum_{j>i} \\frac{F(p_{1:j}) - F(p_{1:(j-1)})}{F(1)-F(0)} p_i \\right]
+        \\]
+        <span class="formula-label">(3)</span>
+    </div>
+    <div class="formula-container">
+        \\[
+        = \\mathbb{E}_{x \\sim D} \\left[ \\sum_{i=1}^L p_{1:(i-1)} \\frac{F(p_{1:i}) - F(p_{1:(i-1)})}{F(1)-F(0)} \\right].
+        \\]
+        <span class="formula-label">(4)</span>
+    </div>
+</div>
+
+<div class="original">
+    <p>Then, we show the inequality: It holds that</p>
+    <div class="formula-container">
+        \\[
+        p_{1:(i-1)} (F(p_{1:i}) - F(p_{1:(i-1)})) \\leq \\int_{p_{1:(i-1)}}^{p_{1:i}} u f(u)  du \\leq p_{1:i} (F(p_{1:i}) - F(p_{1:(i-1)})),
+        \\]
+        <span class="formula-label">(5)</span>
+    </div>
+    <p>which finishes the proof.</p>
+</div>
+
+<div class="translation">
+    <p>随后证明不等式：成立以下关系</p>
+    <div class="formula-container">
+        \\[
+        p_{1:(i-1)} (F(p_{1:i}) - F(p_{1:(i-1)})) \\leq \\int_{p_{1:(i-1)}}^{p_{1:i}} u f(u)  du \\leq p_{1:i} (F(p_{1:i}) - F(p_{1:(i-1)})),
+        \\]
+        <span class="formula-label">(5)</span>
+    </div>
+    <p>由此完成证明。</p>
+</div>
+
+<div class="original">
+    <p>According to the condition for the equality of the <span class="term">Jensen’s inequality</span> and (B.7), both <span class="term">KL divergence</span> and <span class="term">win rate</span> difference between the discrete and continuous case would diminish when \( \\max_{1 \\leq i \\leq L} p_i \\to 0 \) (as \( L \\to \\infty \)). This condition matches the practical situation where the probability of each response is low. More precisely, both differences can be quantified by the difference between <span class="term">U(0,1)</span> and \( \\tilde{U} \) defined in (B.1). Instead of considering the difference between continuous and discrete language model in a very high dimensional space, this difference only depends on two one-dimensional distributions <span class="term">U(0,1)</span> and \( \\tilde{U} \). In practice, since the number of all responses for any prompt is large and the probability of each response is low, actual values (in discrete case) of both <span class="term">KL divergence</span> and <span class="term">win rate</span> are almost the same as their counterparts in continuous case.</p>
+</div>
+
+<div class="translation">
+    <p>根据<span class="term">Jensen不等式 (Jensen’s inequality)</span>等号成立的条件及公式(B.7)，当\( \\max_{1 \\leq i \\leq L} p_i \\to 0 \)（即\( L \\to \\infty \)）时，离散与连续情形下的<span class="term">KL散度 (KL divergence)</span>和<span class="term">胜率 (win rate)</span>差异将消失。此条件符合实际场景中各响应概率较低的情况。更精确地说，两类差异均可通过(B.1)定义的<span class="term">U(0,1)</span>与\( \\tilde{U} \)间的差异量化。该差异仅取决于两个一维分布<span class="term">U(0,1)</span>和\( \\tilde{U} \)，无需考虑高维空间中连续/离散语言模型的差异。实践中，由于所有响应的数量极大且各响应概率极低，离散情形下的<span class="term">KL散度</span>与<span class="term">胜率</span>实际值几乎等同于连续情形。</p>
+</div>
+
+<div class="original">
+    <p>Theoretically, we prove the <span class="term">KL divergence</span> and <span class="term">win rate</span> difference can be quantified by the area difference between the <span class="term">CDF</span> of <span class="term">U(0, 1)</span> and the <span class="term">CDF</span> of \( \\tilde{U} \) defined in (B.1).</p>
+    <p><strong>Theorem 9.</strong> With the same setting as Theorem 8, we have following conclusions:</p>
+    <p>1. Further suppose \( f \) is differentiable and not equal to 0. Then, the <span class="term">KL divergence</span> difference between the discrete and continuous case is upper bounded by \( \\frac{2 \\max_{x\\in[0,1]} f'(x)}{F(1)-F(0)} \\cdot \\text{Area}_{\\text{diff}} \).</p>
+    <p>2. The <span class="term">win rate</span> difference between the discrete and continuous case is upper bounded by \( \\frac{2 f(1)}{F(1)-F(0)} \\cdot \\text{Area}_{\\text{diff}} \),</p>
+    <p>where \( \\text{Area}_{\\text{diff}} \) defined in (B.2) is the area between the <span class="term">CDF</span> of <span class="term">U(0,1)</span> and \( \\tilde{U} \) defined in (B.1).</p>
+</div>
+
+<div class="translation">
+    <p>理论上，我们证明<span class="term">KL散度 (KL divergence)</span>与<span class="term">胜率 (win rate)</span>差异可通过(B.1)定义的<span class="term">U(0,1)</span>与\( \\tilde{U} \)的<span class="term">累积分布函数 (CDF)</span>间面积差量化。</p>
+    <p><strong>定理9.</strong> 在定理8相同设定下，可得以下结论：</p>
+    <p>1. 进一步假设\( f \)可微且非零，则离散与连续情形的<span class="term">KL散度</span>差异上界为\( \\frac{2 \\max_{x\\in[0,1]} f'(x)}{F(1)-F(0)} \\cdot \\text{Area}_{\\text{diff}} \)。</p>
+    <p>2. 离散与连续情形的<span class="term">胜率</span>差异上界为\( \\frac{2 f(1)}{F(1)-F(0)} \\cdot \\text{Area}_{\\text{diff}} \)。</p>
+    <p>其中(B.2)定义的\( \\text{Area}_{\\text{diff}} \)是<span class="term">U(0,1)</span>与(B.1)定义的\( \\tilde{U} \)的<span class="term">CDF</span>间面积。</p>
+</div>
+
+<!-- 内容理解部分 -->
+<h2>内容理解</h2>
+<div class="section">
+    <p>文本核心内容围绕<strong>离散与连续语言模型差异的量化分析</strong>展开：</p>
+    <ol>
+        <li><strong>胜率建模</strong>：通过公式(1)-(4)严格推导不考虑平局的胜率数学表达式，涉及期望计算、指示函数和累积概率分布。</li>
+        <li><strong>不等式证明</strong>：公式(5)建立关键不等式，将概率质量与积分关联，为后续理论证明奠定基础。</li>
+        <li><strong>差异收敛条件</strong>：当响应数量\( L \\to \\infty \)且最大概率\( \\max p_i \\to 0 \)时，离散与连续模型的KL散度与胜率差异趋近于零。</li>
+        <li><strong>降维量化</strong>：高维差异可简化为两个一维分布（U(0,1)和\( \\tilde{U} \)）的累积分布函数（CDF）面积差，大幅降低分析复杂度。</li>
+        <li><strong>上界定理</strong>：定理9给出KL散度差异和胜率差异的显式上界，均与CDF面积差\( \\text{Area}_{\\text{diff}} \)成正比，比例系数依赖概率密度函数\( f \)的性质。</li>
+    </ol>
+</div>
+

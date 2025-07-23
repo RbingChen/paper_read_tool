@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>论文解析 - Policy Filtration for RLHF</title>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    body { font-family: Arial, sans-serif; line-height: 1.6; }
+    .section { margin-bottom: 30px; }
+    h2 { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 5px; }
+    .original { background-color: #f0f0f0; border: 1px solid #ccc; padding: 15px; margin-bottom: 10px; }
+    .translation { background-color: #e6ffe6; border: 1px solid #4CAF50; padding: 15px; }
+    .figure { background-color: #ffffcc; padding: 15px; margin: 15px 0; font-style: italic; }
+    .term { color: red; font-weight: bold; }
+    .formula-container { text-align: center; margin: 20px 0; }
+    .formula { display: inline-block; }
+    .formula-number { font-style: italic; margin-top: 5px; }
+  </style>
+</head>
+<body>
+
+<div class="section">
+  <h2>📖 内容理解</h2>
+  <p>本文提出了一种名为<strong class="term">策略过滤（Policy Filtration）</strong>的新方法，用于解决<strong class="term">基于人类反馈的强化学习（RLHF）</strong>中的关键问题：奖励模型的不准确性。研究发现，奖励模型在不同得分区域的可靠性存在显著差异——高奖励区域（如奖励值>0.8）的预测更可靠。基于此，作者开发了<strong class="term">PF-PPO</strong>算法，通过在策略优化过程中<strong>选择性过滤低可靠性奖励样本</strong>来提升信号质量。该方法在代码生成（HumanEval/MBPP/LeetCode）和数学推理（Ape210K/CMATH）任务中显著超越基线模型，最高提升达10%。核心创新点在于使用<strong class="term">决定系数（R²）</strong>作为过滤策略的评估指标，确保保留的奖励信号能有效反映真实性能。</p>
+</div>
+
+<div class="section">
+  <h2>🌐 内容翻译</h2>
+  
+  <div class="original">
+    <strong>arXiv:2409.06957v5 [cs.LG] 7 Jun 2025</strong><br>
+    Policy Filtration for RLHF to Mitigate Noise in Reward Models<br>
+    Chuheng Zhang* 1Wei Shen* 2Li Zhao1Xuyun Zhang3Xiaolong Xu4Wanchun Dou5Jiang Bian1
+  </div>
+  <div class="translation">
+    <strong>arXiv:2409.06957v5 [cs.LG] 2025年6月7日</strong><br>
+    用于缓解奖励模型噪声的RLHF策略过滤<br>
+    张楚恒* 1 沈伟* 2 赵莉1 张旭昀3 徐小龙4 窦万春5 边江1
+  </div>
+  
+  <div class="original">
+    <strong>Abstract</strong><br>
+    While direct policy optimization methods exist, pioneering LLMs are fine-tuned with reinforcement learning from human feedback (RLHF) to generate better responses under the supervision of a reward model learned from preference data. One major challenge of RLHF is the inaccuracy of the intermediate reward model, especially in the tasks that requires complex reasoning for the reward model to score a response. We find that the reliability of the reward model varies across responses assigned with different rewards. This motivates us to filter the samples whose rewards may be unreliable to improve the signal-to-noise ratio during policy learning, resulting in Policy Filtration for Proximal Policy Optimization (PF-PPO). To choose a proper policy filtering strategy, we use the coefficient of determination (R²) between the rewards and actual scores on filtered samples as the metrics to help us find promising strategies since it measures how well the rewards filtered by PF-PPO indicate real performance. We provide extensive experiments to validate the effectiveness of PF-PPO in code generation and math reasoning tasks. In code generation, PF-PPO achieves the state-of-the-art performance of 7-billion-parameter models on HumanEval (+7.9%), MBPP (+0.7%), and LeetCode Contest (+10.0%) which is a more challenging benchmark created by us. In math reasoning, PF-PPO yields performance increase using different reward models and benchmarks (Ape210K and CMATH). Code is available on https://github.com/DtYXs/verl/tree/pf-ppo.
+  </div>
+  <div class="translation">
+    <strong>摘要</strong><br>
+    尽管存在直接策略优化方法，但前沿大语言模型（LLMs）通过<strong class="term">基于人类反馈的强化学习（RLHF）</strong>进行微调，在从偏好数据学习的奖励模型监督下生成更优响应。RLHF的一个主要挑战是中间奖励模型的不准确性，尤其在需要奖励模型对响应进行复杂推理评分的任务中。我们发现奖励模型的可靠性随不同奖励分配的响应而变化。这促使我们过滤奖励可能不可靠的样本，以提升策略学习过程中的信噪比，从而提出<strong class="term">近端策略优化的策略过滤（PF-PPO）</strong>。为选择合适的策略过滤方法，我们使用过滤样本的奖励与实际分数间的<strong class="term">决定系数（R²）</strong>作为指标来寻找有效策略，因其衡量了PF-PPO过滤后的奖励指示真实性能的程度。我们通过大量实验验证PF-PPO在代码生成和数学推理任务中的有效性。在代码生成中，PF-PPO在HumanEval（+7.9%）、MBPP（+0.7%）和我们创建的更具挑战性的基准LeetCode Contest（+10.0%）上实现了70亿参数模型的最先进性能。在数学推理中，PF-PPO使用不同奖励模型和基准（Ape210K和CMATH）均带来性能提升。代码发布于https://github.com/DtYXs/verl/tree/pf-ppo。
+  </div>
+  
+  <div class="figure">
+    <strong>Figure 1.</strong> The reward model can be inaccurate, i.e., the actual score of the response does not align well with the reward given by the reward model. However, the reward model in specific regions (e.g., when it gives rewards higher than 0.8) is more reliable, i.e., the responses with similar rewards result in consistent performance. We use a fine-tuned policy to generate 10 responses for each of the 164 prompts in the HumanEval dataset and use a reward model trained with the common recipe to generate their rewards. We group the responses with similar rewards and calculate the average of their actual scores (i.e., the average correctness), indicating each group by one point. To evaluate the reliability of the reward model, we repeat the process ten times corresponding to the ten lines.
+  </div>
+  <div class="figure">
+    <strong>图1.</strong> 奖励模型可能不准确，即响应的实际分数与奖励模型给出的奖励不一致。但在特定区域（如奖励值高于0.8时）奖励模型更可靠，即具有相似奖励的响应表现出一致性能。我们使用微调策略为HumanEval数据集的164个提示各生成10个响应，并用常规方法训练的奖励模型生成奖励。我们将奖励相似的响应分组并计算其实际分数的平均值（即平均正确率），每组的平均值用点表示。为评估奖励模型可靠性，该过程重复十次（对应十条线）。
+  </div>
+  
+  <div class="original">
+    <strong>1. Introduction</strong><br>
+    Reinforcement Learning from Human Feedback (RLHF) is a key technique to align large language models (LLMs) with human values and preferences (Christiano et al., 2017; Ziegler et al., 2019; Ouyang et al., 2022). RLHF has been proven to be an essential process for LLMs to produce more helpful, harmless, and honest responses (Bai et al., 2022). Despite various non-RL algorithms such as DPO (Rafailov et al., 2024) are proposed, state-of-the-art applications such as ChatGPT/GPT-4 (OpenAI, 2023), Claude (Anthropic, 2023), and Gemini (Team et al., 2023) adopt the RL algorithm (e.g., PPO) for policy optimization. The key challenge of RLHF is the inaccuracy of the intermediate reward model. While there are researchers investigate how to learn reliable reward models (see e.g., Wang et al., 2024), we focus on how to learn better policy under the guidance of such inaccurate reward models. We observe that, though the reward model gives inaccurate...
+  </div>
+  <div class="translation">
+    <strong>1. 引言</strong><br>
+    <strong class="term">基于人类反馈的强化学习（RLHF）</strong>是将大语言模型（LLMs）与人类价值观和偏好对齐的关键技术（Christiano等, 2017; Ziegler等, 2019; Ouyang等, 2022）。RLHF已被证明是LLMs生成更有益、无害且诚实响应的必要过程（Bai等, 2022）。尽管已提出多种非RL算法（如<strong class="term">DPO</strong>（Rafailov等, 2024）），但最先进的应用如ChatGPT/GPT-4（OpenAI, 2023）、Claude（Anthropic, 2023）和Gemini（Team等, 2023）仍采用RL算法（如<strong class="term">PPO</strong>）进行策略优化。RLHF的关键挑战在于中间奖励模型的不准确性。虽有研究者探索如何学习可靠奖励模型（如Wang等, 2024），我们专注于如何在此类不准确奖励模型指导下学习更优策略。我们观察到，尽管奖励模型给出不准确的...
+  </div>
+</div>
+
+<div class="section">
+  <h2>📝 摘要总结</h2>
+  <p>本文提出<strong class="term">PF-PPO</strong>方法，通过<strong>选择性过滤奖励模型中的不可靠信号</strong>来改进RLHF训练。核心发现是奖励模型在高奖励区域的预测更可靠（如图1所示）。PF-PPO使用<strong class="term">决定系数（R²）</strong>评估过滤策略的有效性，在代码生成（HumanEval/MBPP/LeetCode）和数学推理（Ape210K/CMATH）任务中显著提升模型性能：</p>
+  <ul>
+    <li>HumanEval准确率提升7.9%</li>
+    <li>LeetCode Contest（新基准）提升10.0%</li>
+    <li>在不同奖励模型和数学数据集上均表现鲁棒</li>
+  </ul>
+  <p>该方法为缓解RLHF奖励噪声提供了新思路，代码已开源。</p>
+</div>
+
+<div class="section">
+  <h2>🔑 术语识别</h2>
+  <ul>
+    <li><strong class="term">RLHF (Reinforcement Learning from Human Feedback)</strong>: 基于人类反馈的强化学习。通过人类偏好数据训练奖励模型，再用强化学习优化LLM生成策略的核心对齐技术。</li>
+    <li><strong class="term">PF-PPO (Policy Filtration for Proximal Policy Optimization)</strong>: 近端策略优化的策略过滤。本文提出的新算法，在PPO更新前过滤低可靠性奖励样本以提升训练信号质量。</li>
+    <li><strong class="term">Coefficient of Determination (R²)</strong>: 决定系数。用于评估过滤策略的关键指标，计算公式为：
+      <div class="formula-container">
+        <div class="formula">
+          \[ R^2 = 1 - \frac{\sum_{i}(y_i - \hat{y_i})^2}{\sum_{i}(y_i - \bar{y})^2} \]
+        </div>
+        <div class="formula-number">(1) 其中 \(y_i\)=实际分数, \(\hat{y_i}\)=预测分数, \(\bar{y}\)=均值</div>
+      </div>
+      衡量过滤后奖励预测实际性能的能力（值越接近1表示越可靠）。
+    </li>
+    <li><strong class="term">PPO (Proximal Policy Optimization)</strong>: 近端策略优化。RLHF中广泛使用的策略梯度算法，通过限制策略更新幅度确保训练稳定性。</li>
+    <li><strong class="term">DPO (Direct Preference Optimization)</strong>: 直接偏好优化。一种无需显式奖励模型的RLHF替代方案，通过偏好数据直接优化策略。</li>
+    <li><strong class="term">HumanEval/MBPP</strong>: 代码生成基准数据集。HumanEval包含164个手写编程问题，MBPP包含974个众包Python问题。</li>
+    <li><strong class="term">LeetCode Contest</strong>: 本文创建的新代码基准。基于LeetCode竞赛题目，比HumanEval更具挑战性。</li>
+  </ul>
+</div>
+
+</body>
+</html>

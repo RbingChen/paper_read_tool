@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>论文解析：跨领域可验证奖励的强化学习扩展</title>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    body { font-family: Arial, sans-serif; line-height: 1.6; margin: 20px; }
+    h1, h2 { color: #2c3e50; }
+    .section { margin-bottom: 30px; }
+    .original { background-color: lightgrey; border: 1px solid grey; padding: 15px; margin: 10px 0; border-radius: 5px; }
+    .translation { background-color: lightgreen; border: 1px solid green; padding: 15px; margin: 10px 0; border-radius: 5px; }
+    .figure { background-color: yellow; padding: 15px; margin: 10px 0; border-radius: 5px; font-style: italic; }
+    .term { color: red; font-weight: bold; }
+    .terminology-list dt { font-weight: bold; margin-top: 10px; }
+    .terminology-list dd { margin-left: 20px; margin-bottom: 10px; }
+  </style>
+</head>
+<body>
+  <h1>论文解析：跨领域可验证奖励的强化学习扩展</h1>
+
+  <!-- 内容理解部分 -->
+  <div class="section">
+    <h2>内容理解</h2>
+    <p>这篇论文探讨了<span class="term">可验证奖励的强化学习（Reinforcement Learning with Verifiable Rewards, RLVR）</span>在更广泛领域的扩展。RLVR 原本在数学推理和编码任务中表现出色，但作者将其应用到医学、化学、心理学、经济学和教育等非结构化领域。核心发现是：在专家提供参考答案的情况下，不同<span class="term">大型语言模型（Large Language Models, LLMs）</span>对任务的<span class="term">二元验证（binary verification）</span>判断高度一致。基于此，论文提出使用<span class="term">生成式评分技术（generative scoring technique）</span>生成软奖励信号，以克服二元验证在自由形式答案中的局限。作者训练了跨域生成奖励模型（使用较小的 7B LLMs），无需大量领域标注，并在实验中显著超越了开源模型（如 Qwen2.5-72B）。这提升了 RLVR 的鲁棒性、灵活性和可扩展性，为复杂噪声标签场景的强化学习应用提供了新方向。</p>
+  </div>
+
+  <!-- 内容翻译部分 -->
+  <div class="section">
+    <h2>内容翻译</h2>
+    
+    <!-- 标题和副标题 -->
+    <div class="translation-section">
+      <div class="original">Expanding RL with Verifiable Rewards Across Diverse Domains
+Crossing the Reward Bridge:
+Expanding RL with Verifiable Rewards Across Diverse Domains</div>
+      <div class="translation">跨领域可验证奖励的强化学习扩展
+跨越奖励桥：
+跨领域可验证奖励的强化学习扩展</div>
+    </div>
+    
+    <!-- 作者和机构 -->
+    <div class="translation-section">
+      <div class="original">Yi Su∗,1,2, Dian Yu1, Linfeng Song1, Juntao Li2, Haitao Mi1,
+Zhaopeng Tu1, Min Zhang2, and Dong Yu1
+1Tencent AI Lab
+2Soochow University</div>
+      <div class="translation">苏毅∗,1,2, 余典1, 宋林峰1, 李俊涛2, 米海涛1,
+涂兆鹏1, 张民2, 俞栋1
+1腾讯AI实验室
+2苏州大学</div>
+    </div>
+    
+    <!-- 图1描述 -->
+    <div class="translation-section">
+      <div class="original figure">base model SFT reward model
+base model RLVR final policyreasoning data II 
+(x, a)exploration data
+((x, a, y), c)
+reward model
+STEP  3STEP  2STEP  1 base model RLVRreasoning data I 
+(x, a)teacher grader
+Figure 1: Overview paradigm of RLVR with our cross-domain verifier.</div>
+      <div class="translation figure">基础模型 SFT 奖励模型
+基础模型 RLVR 最终策略 推理数据 II
+(x, a) 探索数据
+((x, a, y), c)
+奖励模型
+步骤3 步骤2 步骤1 基础模型 RLVR 推理数据 I
+(x, a) 教师评分器
+图1：使用我们跨域验证器的 RLVR 概览范式。</div>
+    </div>
+    
+    <!-- 摘要标题 -->
+    <div class="translation-section">
+      <div class="original">Abstract</div>
+      <div class="translation">摘要</div>
+    </div>
+    
+    <!-- 摘要内容 -->
+    <div class="translation-section">
+      <div class="original">Reinforcement learning with verifiable rewards (RLVR) has demonstrated significant
+success in enhancing mathematical reasoning and coding performance of large language
+models (LLMs), especially when structured reference answers are accessible for verifica-
+tion. However, its extension to broader, less structured domains remains unexplored. In
+this work, we investigate the effectiveness and scalability of RLVR across diverse real-
+world domains including medicine, chemistry, psychology, economics, and education,
+where structured reference answers are typically unavailable. We reveal that binary
+verification judgments on broad-domain tasks exhibit high consistency across various
+LLMs provided expert-written reference answers exist. Motivated by this finding, we
+utilize a generative scoring technique that yields soft, model-based reward signals to
+overcome limitations posed by binary verifications, especially in free-form, unstructured
+answer scenarios. We further demonstrate the feasibility of training cross-domain gener-
+ative reward models using relatively small (7B) LLMs without the need for extensive
+domain-specific annotation. Through comprehensive experiments, our RLVR frame-
+work establishes clear performance gains, significantly outperforming state-of-the-art
+open-source aligned models such as Qwen2.5-72B and DeepSeek-R1-Distill-Qwen-32B
+across domains in free-form settings. Our approach notably enhances the robustness,
+flexibility, and scalability of RLVR, representing a substantial step towards practical
+reinforcement learning applications in complex, noisy-label scenarios.</div>
+      <div class="translation"><span class="term">可验证奖励的强化学习（Reinforcement Learning with Verifiable Rewards, RLVR）</span>在提升<span class="term">大型语言模型（Large Language Models, LLMs）</span>的数学推理和编码性能方面已取得显著成功，尤其是在结构化参考答案可用于验证时。然而，其在更广泛、非结构化领域的扩展仍未被探索。在这项工作中，我们研究了 RLVR 在多样化现实领域（包括医学、化学、心理学、经济学和教育）的有效性和可扩展性，这些领域通常缺乏结构化参考答案。我们发现，在存在专家撰写的参考答案的情况下，不同 LLMs 对跨领域任务的<span class="term">二元验证（binary verification）</span>判断表现出高度一致性。受此启发，我们利用一种<span class="term">生成式评分技术（generative scoring technique）</span>生成基于模型的软奖励信号，以克服二元验证的局限性，特别是在自由形式、非结构化答案场景中。我们进一步证明了使用相对较小（7B）的 LLMs 训练<span class="term">跨域生成奖励模型（cross-domain generative reward models）</span>的可行性，无需大量领域特定标注。通过全面实验，我们的 RLVR 框架在自由形式设置下取得了明确的性能提升，显著优于最先进的开源对齐模型，如 Qwen2.5-72B 和 DeepSeek-R1-Distill-Qwen-32B。我们的方法显著增强了 RLVR 的鲁棒性、灵活性和可扩展性，代表着在复杂噪声标签场景中实现实用强化学习应用的重要一步。</div>
+    </div>
+    
+    <!-- 脚注 -->
+    <div class="translation-section">
+      <div class="original">∗The work was done during Yi’s internship at Tencent AI Lab.
+1arXiv:2503.23829v2  [cs.CL]  1 Apr 2025</div>
+      <div class="translation">∗该工作在苏毅于腾讯AI实验室实习期间完成。
+1arXiv:2503.23829v2  [cs.CL]  2025年4月1日</div>
+    </div>
+  </div>
+
+  <!-- 摘要总结部分 -->
+  <div class="section">
+    <h2>摘要总结</h2>
+    <p>本文提出了一种扩展<span class="term">可验证奖励的强化学习（RLVR）</span>到非结构化领域（如医学、化学和教育）的方法。核心创新在于利用<span class="term">生成式评分技术（generative scoring technique）</span>生成软奖励信号，替代传统的<span class="term">二元验证（binary verification）</span>，以处理自由形式答案。作者训练了基于小型<span class="term">大型语言模型（LLMs）</span>的跨域生成奖励模型，无需大量标注数据。实验表明，该方法在多个领域显著优于现有开源模型，提升了 RLVR 的鲁棒性和可扩展性，为噪声标签场景的强化学习应用提供了新途径。</p>
+  </div>
+
+  <!-- 术语识别部分 -->
+  <div class="section">
+    <h2>术语识别</h2>
+    <dl class="terminology-list">
+      <dt><span class="term">可验证奖励的强化学习（Reinforcement Learning with Verifiable Rewards, RLVR）</span></dt>
+      <dd>一种强化学习方法，使用可验证的奖励信号来训练模型。在本文中，RLVR 通过参考答案验证模型输出，生成奖励以优化策略。它最初用于数学和编码任务，本文扩展到非结构化领域。</dd>
+      
+      <dt><span class="term">大型语言模型（Large Language Models, LLMs）</span></dt>
+      <dd>基于大规模文本数据训练的深度学习模型，能生成和理解自然语言。本文使用 LLMs 作为基础模型，并通过 RLVR 提升其在跨领域任务中的性能。</dd>
+      
+      <dt><span class="term">二元验证（binary verification）</span></dt>
+      <dd>一种简单的验证方法，仅判断模型输出是否正确（二元结果，如对/错）。本文指出其在非结构化任务中受限，因此引入生成式评分技术以生成更细粒度的奖励信号。</dd>
+      
+      <dt><span class="term">生成式评分技术（generative scoring technique）</span></dt>
+      <dd>一种方法，通过生成模型输出软奖励信号（连续值），而非硬性二元判断。本文利用此技术克服二元验证的不足，提供更丰富的反馈，尤其在自由形式答案中。</dd>
+      
+      <dt><span class="term">跨域生成奖励模型（cross-domain generative reward models）</span></dt>
+      <dd>一种可泛化到多个领域的奖励模型，使用生成式方法训练。本文展示了用小型 LLMs（如 7B 参数）训练此类模型的可行性，减少了对领域特定标注的依赖。</dd>
+      
+      <dt><span class="term">噪声标签场景（noisy-label scenarios）</span></dt>
+      <dd>指数据标签不准确或有噪声的环境。本文的 RLVR 框架增强了在此类复杂场景中的鲁棒性，适用于现实世界应用。</dd>
+    </dl>
+  </div>
+</body>
+</html>

@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Paper Analysis: SPCT Framework</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; max-width: 900px; margin: 0 auto; padding: 20px; }
+        h1 { color: #2c3e50; text-align: center; }
+        h2 { color: #3498db; border-bottom: 2px solid #3498db; padding-bottom: 5px; }
+        .original { background-color: #f0f0f0; border: 1px solid #ccc; padding: 15px; margin: 15px 0; border-radius: 5px; }
+        .translation { background-color: #e0ffe0; border: 1px solid #00cc00; padding: 15px; margin: 15px 0; border-radius: 5px; }
+        .figure { background-color: #ffffcc; padding: 15px; margin: 20px 0; text-align: center; border-radius: 5px; }
+        .term { color: red; font-weight: bold; }
+        .formula { text-align: center; margin: 20px 0; padding: 10px; }
+        .formula-number { display: block; font-style: italic; margin-top: 5px; }
+        ul { padding-left: 20px; }
+        li { margin: 8px 0; }
+    </style>
+</head>
+<body>
+    <h1>论文分析：SPCT 框架与规则强化学习</h1>
+    
+    <!-- Section 1: Content Understanding -->
+    <section id="understanding">
+        <h2>内容理解</h2>
+        <p>文本描述了一个机器学习框架 <strong class="term">SPCT</strong>（Scalable Principle-Critique Tuning），专注于优化通用奖励模型（<strong class="term">GRM</strong>）中的原则生成和批判生成过程。核心思想是通过结合 <strong class="term">Rejective Fine-Tuning (RFT)</strong>（作为冷启动）和 <strong class="term">Rule-Based Reinforcement Learning (RL)</strong>（规则强化学习），自适应地生成原则（principles）以指导更细粒度的奖励输出。文本强调 <strong class="term">Inference-time Scaling</strong>（推理时扩展），通过投票机制（如 naive voting 或 meta RM guided voting）实现，扩展奖励值空间。关键元素包括：原则权重分配（如 Principle 1: Instruction Adherence, Weight: 4）、响应评分示例（如 Final Scores: [[2, 4]]）、数学建模（如公式 3），以及数据采样策略（如拒绝不正确的轨迹）。整体上，SPCT 旨在提升奖励模型的灵活性、适应性和粒度，适用于多响应场景。</p>
+    </section>
+    
+    <!-- Section 2: Content Translation -->
+    <section id="translation">
+        <h2>内容翻译</h2>
+        
+        <!-- Segment 1: Preprint and Abbreviations -->
+        <div class="original">
+            <p>Preprint. Under review.<br>
+            <strong class="term">RFT</strong> <strong class="term">RL</strong><br>
+            <strong class="term">Inference</strong><br>
+            <strong class="term">GRM</strong><br>
+            <strong class="term">GRM</strong><br>
+            <strong class="term">GRM</strong><br>
+            <strong class="term">Q & R</strong><br>
+            <strong class="term">Q & R</strong></p>
+        </div>
+        <div class="translation">
+            <p>预印本。正在评审中。<br>
+            <strong class="term">RFT</strong>（拒绝式微调） <strong class="term">RL</strong>（强化学习）<br>
+            <strong class="term">推理</strong><br>
+            <strong class="term">GRM</strong>（通用奖励模型）<br>
+            <strong class="term">GRM</strong>（通用奖励模型）<br>
+            <strong class="term">GRM</strong>（通用奖励模型）<br>
+            <strong class="term">Q & R</strong>（查询与响应）<br>
+            <strong class="term">Q & R</strong>（查询与响应）</p>
+        </div>
+        
+        <!-- Segment 2: Principles Definitions -->
+        <div class="original">
+            <p>Principle 1: Instruction Adherence (Weight: 4);<br>
+            Principle 2: Level of Detail (Weight: 3); Principle 3: ...<br>
+            Principle 1: Safety (4); Principle 2: Clarity (2);<br>
+            Principle 3: Accuracy (2); Principle 4: Relevance (2).<br>
+            Principle 1: Logic Chain Correctness (35%): The response should induce each step with evidence …;<br>
+            Principle 2: Completeness & Compatibility (20%) ……<br>
+            Principle 1: Technical Accuracy (Weight: 30%): The response should accurately describe the technical steps …; For example, ……;<br>
+            Principle 2: Practical Implementation (Weight: 25%) …;<br>
+            ……<br>
+            Principle 1: Clarity and Organization (Weight: 40%): The response should be well-organized …;<br>
+            Principle 2: Compliance with Human Value (35%) …;<br>
+            Principle 3: Inductive Reasoning Correctness (25%) …;<br>
+            ……<br>
+            Principle 1: Practicality (Weight: 30%): The response provide steps can easily implement…;<br>
+            Principle 2: Logical Coherence (Weight: 30%) …;<br>
+            Principle 3: Risk Awareness (Weight: 20%) …;<br>
+            ……<br>
+            Principle 1: Technical Accuracy (Weight: 30%): …;<br>
+            Principle 2: Language Proficiency (Weight: 25%): The response should be in the specific language, …;<br>
+            Principle 3: Engagement and Appeal (Weight: 25%): Making responses interesting and memorable …; ……</p>
+        </div>
+        <div class="translation">
+            <p>原则 1：指令遵循性（权重：4）；<br>
+            原则 2：细节水平（权重：3）；原则 3：...<br>
+            原则 1：安全性（4）；原则 2：清晰度（2）；<br>
+            原则 3：准确性（2）；原则 4：相关性（2）。<br>
+            原则 1：逻辑链正确性（35%）：响应应基于证据逐步推导；<br>
+            原则 2：完整性与兼容性（20%）……<br>
+            原则 1：技术准确性（权重：30%）：响应应准确描述技术步骤；例如，……；<br>
+            原则 2：实际实现（权重：25%）……；<br>
+            ……<br>
+            原则 1：清晰性与组织性（权重：40%）：响应应组织良好；<br>
+            原则 2：符合人类价值观（35%）……；<br>
+            原则 3：归纳推理正确性（25%）……；<br>
+            ……<br>
+            原则 1：实用性（权重：30%）：响应提供的步骤应易于实现；<br>
+            原则 2：逻辑连贯性（权重：30%）……；<br>
+            原则 3：风险意识（权重：20%）……；<br>
+            ……<br>
+            原则 1：技术准确性（权重：30%）：……；<br>
+            原则 2：语言熟练度（权重：25%）：响应应使用特定语言；<br>
+            原则 3：吸引力与参与度（权重：25%）：使响应有趣且令人难忘；……</p>
+        </div>
+        
+        <!-- Segment 3: Scoring Examples -->
+        <div class="original">
+            <p>argmax({ <strong class="term">rl</strong>})<br>
+            Optional Ground Truth<br>
+            1/10, 5/10<br>
+            5/10, 6/10<br>
+            4/10, 8/10<br>
+            7/10, 6/10<br>
+            17/40, 25/40<br>
+            Rewards<br>
+            Response 1 is better than Response 2. Final Scores: [[2, 4]]<br>
+            Response 1 is not as well as Response 2. Final Scores: [[6, 1]]<br>
+            For Response 1, …; For Response 2, …; Overall, Response 1 is better…… Final Scores: [[2, 7]]<br>
+            Analysis: …… Overall, Response 2 is better than Response 1 according to principles and the weights. Final Scores: [[1, 5]]<br>
+            Analysis: …… Scores: (4, 5, 8) and (7, 5, 5) However, Principle 1 outweighs Principle 3, resulting in … Final Scores: [[5, 6]]<br>
+            Analysis: …… Scores w/o weights: Response 1 (4, 6, 2, 2); Response 2 (9, 5, 5, 6). Final Scores: [[4, 8]]<br>
+            Analysis: …… For Response 1, score: (8, 7, 7, 4) For Response 2, score: (6, 5, 6, 4) Considering the overall weights, Final Scores: [[7, 6]]</p>
+        </div>
+        <div class="translation">
+            <p>argmax({ <strong class="term">RL</strong>（强化学习）})<br>
+            可选真实值<br>
+            1/10, 5/10<br>
+            5/10, 6/10<br>
+            4/10, 8/10<br>
+            7/10, 6/10<br>
+            17/40, 25/40<br>
+            奖励<br>
+            响应 1 优于响应 2。最终分数：[[2, 4]]<br>
+            响应 1 不如响应 2。最终分数：[[6, 1]]<br>
+            对于响应 1，……；对于响应 2，……；总体而言，响应 1 更优……最终分数：[[2, 7]]<br>
+            分析：……根据原则和权重，响应 2 优于响应 1。最终分数：[[1, 5]]<br>
+            分析：……分数：(4, 5, 8) 和 (7, 5, 5)，但原则 1 权重大于原则 3，导致……最终分数：[[5, 6]]<br>
+            分析：……未加权分数：响应 1 (4, 6, 2, 2)；响应 2 (9, 5, 5, 6)。最终分数：[[4, 8]]<br>
+            分析：……响应 1 分数：(8, 7, 7, 4)；响应 2 分数：(6, 5, 6, 4)；考虑整体权重后，最终分数：[[7, 6]]</p>
+        </div>
+        
+        <!-- Segment 4: Rules and Data Sampling -->
+        <div class="original">
+            <p>Rules<br>
+            argmax({ <strong class="term">rl</strong>})<br>
+            ······ ······<br>
+            2/10, 7/10<br>
+            2/10, 4/10<br>
+            6/10, 1/10<br>
+            <strong class="term">Online Update</strong><br>
+            <strong class="term">Voting</strong><br>
+            <strong class="term">Meta RM</strong><br>
+            <strong class="term">RFT</strong><br>
+            <strong class="term">Dataset</strong><br>
+            <strong class="term">Principles</strong><br>
+            <strong class="term">Critiques</strong><br>
+            Rolling Out<br>
+            Offline Training<br>
+            1<br>
+            2<br>
+            3<br>
+            4<br>
+            1234<br>
+            5/20, 13/20<br>
+            Parallel<br>
+            <strong class="term">Sampling</strong><br>
+            Too Easy / Incorrect<br>
+            Reward<br>
+            Extract<br>
+            Extract<br>
+            Extract<br>
+            <strong class="term">Sampling</strong></p>
+        </div>
+        <div class="translation">
+            <p>规则<br>
+            argmax({ <strong class="term">RL</strong>（强化学习）})<br>
+            ······ ······<br>
+            2/10, 7/10<br>
+            2/10, 4/10<br>
+            6/10, 1/10<br>
+            <strong class="term">在线更新</strong><br>
+            <strong class="term">投票</strong><br>
+            <strong class="term">元奖励模型（Meta RM）</strong><br>
+            <strong class="term">RFT</strong>（拒绝式微调）<br>
+            <strong class="term">数据集</strong><br>
+            <strong class="term">原则</strong><br>
+            <strong class="term">批判</strong><br>
+            推出<br>
+            离线训练<br>
+            1<br>
+            2<br>
+            3<br>
+            4<br>
+            1234<br>
+            5/20, 13/20<br>
+            并行<br>
+            <strong class="term">采样</strong><br>
+            过于简单 / 不正确<br>
+            奖励<br>
+            提取<br>
+            提取<br>
+            提取<br>
+            <strong class="term">采样</strong></p>
+        </div>
+        
+        <!-- Segment 5: Figure 3 Description -->
+        <div class="figure">
+            <p><strong>Figure 3: Illustration of SPCT, including rejective fine-tuning, rule-based RL, and corresponding scalable behaviors during inference. The inference-time scaling is achieved via naive voting or meta RM guided voting with principles generated at scale, resulting in finer-grained outcome rewards within a expanded value space.</strong></p>
+        </div>
+        <div class="translation">
+            <p><strong>图 3：SPCT 示意图，包括拒绝式微调、基于规则的强化学习，以及推理时的可扩展行为。推理时扩展通过朴素投票或基于大规模生成原则的元奖励模型（Meta RM）引导投票实现，从而在扩展值空间内产生更细粒度的结果奖励。</strong></p>
+        </div>
+        
+        <!-- Segment 6: Formula and Explanation -->
+        <div class="original">
+            <p>Formally, principles guide the generation of rewards following Equation 2, when principles are pre-defined. <strong class="term">GRM</strong>s could generate principles themselves, and then generate critiques based on the principles, formalized as</p>
+            <div class="formula">
+                \\[ \\{p_i\\}_{i=1}^m \\sim p_\\theta(x, \\{y_i\\}_{i=1}^n), \\quad R = C \\sim r_\\theta(x, \\{y_i\\}_{i=1}^n, \\{p_i\\}_{i=1}^m) \\]
+                <span class="formula-number">公式 3</span>
+            </div>
+            <p>where \( p_\\theta \) is the principle generation function parameterized by \( \\theta \), that shares the same model with reward generation \( r_\\theta \). This shift enables to principles to be generated based on the input query and responses, adaptively aligning reward generation process, and the quality and granularity of the principles and corresponding critiques could be further improved with post-training on the <strong class="term">GRM</strong>. With the principles generated at scale, the <strong class="term">GRM</strong> could potentially output rewards within more reasonable criteria and with finer granularity, which is crucial for inference-time scaling as well.</p>
+        </div>
+        <div class="translation">
+            <p>形式上，当原则预定义时，原则指导奖励生成（遵循公式 2）。<strong class="term">GRM</strong>（通用奖励模型）可自行生成原则，并基于原则生成批判，形式化表示为：</p>
+            <div class="formula">
+                \\[ \\{p_i\\}_{i=1}^m \\sim p_\\theta(x, \\{y_i\\}_{i=1}^n), \\quad R = C \\sim r_\\theta(x, \\{y_i\\}_{i=1}^n, \\{p_i\\}_{i=1}^m) \\]
+                <span class="formula-number">公式 3</span>
+            </div>
+            <p>其中 \( p_\\theta \) 是由 \( \\theta \) 参数化的原则生成函数，与奖励生成函数 \( r_\\theta \) 共享同一模型。这一转变使原则能基于输入查询和响应自适应生成，对齐奖励生成过程，且原则和批判的质量与粒度可通过 <strong class="term">GRM</strong> 的后训练进一步提升。通过大规模生成原则，<strong class="term">GRM</strong> 可在更合理的标准和更细粒度下输出奖励，这对推理时扩展至关重要。</p>
+        </div>
+        
+        <!-- Segment 7: Section 3.2 Description -->
+        <div class="original">
+            <h3>3.2 Rule-Based Reinforcement Learning</h3>
+            <p>To optimize principle and critique generation in <strong class="term">GRM</strong>s simultaneously, we propose <strong class="term">SPCT</strong>, which integrates rejective fine-tuning and rule-based <strong class="term">RL</strong>. The former serves as a cold start.</p>
+            <p><strong>Rejective Fine-Tuning (Cold Start)</strong> The core idea of the rejective fine-tuning stage is to accommodate the <strong class="term">GRM</strong> to generate principles and critiques with correct format and for various input types. Unlike previous works (Vu et al., 2024; Cao et al., 2024; Alexandru et al., 2025) that mix <strong class="term">RM</strong> data for single, paired, and multiple responses in different formats, we adopt pointwise <strong class="term">GRM</strong>, introduced in Section 2.1, to flexibly generate rewards for any amount of responses in the same format. For data construction, besides general instruction data, we sample trajectories with pretrained <strong class="term">GRM</strong>s given the query and responses to the query from <strong class="term">RM</strong> data with various response counts. For each query and corresponding responses, the sampling is performed \( N_{\\text{RFT}} \) times. The rejection strategy is also unified, which is to reject trajectories with predicted rewards that are not aligned with the ground truth (incorrect), and the query and responses with all \( N_{\\text{RFT}} \) trajectories correct (too easy). Formally, let \( r_i \) denotes the ground truth reward for the i-th response \( y_i \) to the query \( x \), the</p>
+        </div>
+        <div class="translation">
+            <h3>3.2 基于规则的强化学习</h3>
+            <p>为同时优化 <strong class="term">GRM</strong>（通用奖励模型）中的原则和批判生成，我们提出 <strong class="term">SPCT</strong>（可扩展原则-批判调整），它整合了拒绝式微调和基于规则的 <strong class="term">RL</strong>（强化学习）。前者作为冷启动。</p>
+            <p><strong>拒绝式微调（冷启动）</strong> 拒绝式微调阶段的核心思想是使 <strong class="term">GRM</strong> 适应生成格式正确且适用于多种输入类型的原则和批判。不同于先前工作（Vu 等，2024；Cao 等，2024；Alexandru 等，2025）混合不同格式的单响应、配对响应和多响应 <strong class="term">RM</strong>（奖励模型）数据，我们采用第 2.1 节介绍的点式 <strong class="term">GRM</strong>，灵活地为任意数量响应生成统一格式的奖励。数据构建方面，除通用指令数据外，我们使用预训练 <strong class="term">GRM</strong> 对来自 <strong class="term">RM</strong> 数据的查询和响应进行轨迹采样（响应计数多样）。对每个查询和响应，采样执行 \( N_{\\text{RFT}} \) 次。拒绝策略统一为：拒绝预测奖励与真实值不符的轨迹（不正确），以及所有 \( N_{\\text{RFT}} \) 轨迹均正确的查询和响应（过于简单）。形式上，令 \( r_i \) 表示查询 \( x \) 的第 i 个响应 \( y_i \) 的真实奖励，则</p>
+        </div>
+    </section>
+    
+    <!-- Section 3: Summary -->
+    <section id="summary">
+        <h2>摘要总结</h2>
+        <p>本文提出 <strong class="term">SPCT</strong>（可扩展原则-批判调整）框架，用于优化通用奖励模型（<strong class="term">GRM</strong>）的原则和批判生成。核心方法整合了：1) <strong class="term">Rejective Fine-Tuning (RFT)</strong> 作为冷启动，通过采样和拒绝策略（如过滤“不正确”或“过于简单”的轨迹）确保数据质量；2) <strong class="term">Rule-Based Reinforcement Learning (RL)</strong>，自适应生成原则以指导细粒度奖励输出。SPCT 支持 <strong class="term">Inference-time Scaling</strong>（推理时扩展），使用投票机制（如朴素投票或元奖励模型引导投票）扩展奖励值空间。关键创新包括：点式 GRM 处理多响应、大规模原则生成（公式 3），以及权重分配原则（如技术准确性权重 30%）用于响应评分。实验通过示例分数（如 Final Scores: [[2, 4]]）验证了框架在提升奖励粒度、适应性和扩展性上的有效性。</p>
+    </section>
+    
+    <!-- Section 4: Terminology Identification -->
+    <section id="terminology">
+        <h2>术语识别</h2>
+        <ul>
+            <li><strong class="term">RFT (Rejective Fine-Tuning)</strong>: 拒绝式微调。一种微调方法，通过采样轨迹并拒绝不符合标准的样本（如预测奖励与真实值不匹配或所有轨迹均正确）来优化模型，用作 SPCT 框架的冷启动阶段。</li>
+            <li><strong class="term">RL (Reinforcement Learning)</strong>: 强化学习。一种机器学习范式，智能体通过与环境交互学习最优策略；本文特指基于规则的强化学习（Rule-Based RL），用于自适应生成原则。</li>
+            <li><strong class="term">Inference</strong>: 推理。模型应用阶段，SPCT 通过投票机制实现推理时扩展（Inference-time Scaling），提升响应评估的灵活性。</li>
+            <li><strong class="term">GRM (General Reward Model)</strong>: 通用奖励模型。可处理任意数量响应的奖励模型，使用点式（pointwise）格式统一生成奖励，支持原则和批判的自适应生成。</li>
+            <li><strong class="term">SPCT (Scalable Principle-Critique Tuning)</strong>: 可扩展原则-批判调整。本文提出的框架，整合 RFT 和规则 RL，优化 GRM 的原则生成与批判生成，实现细粒度奖励输出和值空间扩展。</li>
+            <li><strong class="term">Q & R (Query and Response)</strong>: 查询与响应。输入到 GRM 的基本单元，其中查询（Query）是用户请求，响应（Response）是模型生成的答案。</li>
+            <li><strong class="term">Meta RM (Meta Reward Model)</strong>: 元奖励模型

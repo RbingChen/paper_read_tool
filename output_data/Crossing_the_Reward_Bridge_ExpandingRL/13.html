@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>论文附录分析</title>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    h1, h2, h3 { color: #333; }
+    .section { margin-bottom: 30px; }
+    .original { background-color: #f0f0f0; border: 1px solid #ccc; padding: 15px; margin-bottom: 10px; }
+    .translation { background-color: #e0ffe0; border: 1px solid #4CAF50; padding: 15px; margin-bottom: 20px; }
+    .math-container { text-align: center; margin: 20px 0; padding: 15px; background-color: #ffffcc; border: 1px solid #ffcc00; }
+    .term { color: red; font-weight: bold; }
+    .term-list dt { font-weight: bold; margin-top: 10px; }
+    .term-list dd { margin-left: 20px; margin-bottom: 10px; }
+  </style>
+</head>
+<body>
+
+<h1>论文附录分析</h1>
+
+<!-- 内容理解部分 -->
+<div class="section">
+  <h2>内容理解</h2>
+  <p>本文是论文附录部分，主题为“在多样领域中扩展具有可验证奖励的强化学习”。附录提供了补充材料，用于支持主论文的核心内容。整体结构分为四个子部分：A.1模板、A.2协议、A.3 REINFORCE算法和A.4超参数。在A.1模板中，详细描述了一个评分任务的模板，涉及比较解决方案的最终输出与参考答案是否匹配，输出严格为“YES”或“NO”，强调语言无关性和决策的简洁性。A.2协议部分讨论了使用GPT-4o模型进行决策的可靠性，指出尽管单个决策可能与奖励模型的采样结果一致，但多数投票能提供更稳定的结果。A.3 REINFORCE展示了强化学习中的REINFORCE算法的数学推导公式，用于优化策略梯度。A.4超参数简要提及实验中的超参数设置表格。文本核心是提供方法论细节，包括评估框架、算法基础和实验配置，以增强论文的可复现性和严谨性。</p>
+</div>
+
+<!-- 内容翻译部分 -->
+<div class="section">
+  <h2>内容翻译</h2>
+  
+  <!-- 标题翻译 -->
+  <div class="original">
+    <h3>Expanding RL with Verifiable Rewards Across Diverse Domains</h3>
+    <h3>A Appendix</h3>
+  </div>
+  <div class="translation">
+    <h3>在多样领域中扩展具有可验证奖励的强化学习</h3>
+    <h3>A 附录</h3>
+  </div>
+  
+  <!-- A.1 Template 段落 -->
+  <div class="original">
+    <h3>A.1 Template</h3>
+    <p>Table 4 shows the template for the <strong class="term">grading task</strong>. Table 5 shows the template for the <strong class="term">classification task</strong>. Table 6 shows the classification of subjects into <strong class="term">STEM</strong> (Science, Technology, Engineering, and Mathematics), <strong class="term">Social Sciences</strong>, <strong class="term">Humanities</strong>, and <strong class="term">Applied Sciences</strong>.</p>
+    <p>Given a problem , determine whether the final answer in the provided (incomplete ) solution process matches the <strong class="term">reference answer</strong>.</p>
+    <p>The <strong class="term">reference answer</strong> may be one single option character (e.g., A, B, C, D), a numerical value , an expression , or a list of answers if multiple questions are involved .</p>
+    <p>** The <strong class="term">reference answer</strong> may be in Chinese or another language , but your evaluation should be language - agnostic .**</p>
+    <p>Your task :</p>
+    <ul>
+      <li>Compare the final output of the <strong class="term">solution process</strong> with the <strong class="term">reference answer</strong>.</li>
+      <li>If they ** match exactly **, output ** YES **.</li>
+      <li>If they ** do not match **, output ** NO **.</li>
+      <li>If the <strong class="term">solution process</strong> is unclear , incomplete , or ambiguous , assume it is incorrect and output ** NO **.</li>
+    </ul>
+    <p>Your output must be strictly **’YES ’** or **’NO ’** , with no additional words , punctuation , or explanation .</p>
+    <p>---</p>
+    <p>** Question :**</p>
+    <p>{ question }</p>
+    <p>** Solution Process ( Final Step Only ) :**</p>
+    <p>{ response }</p>
+    <p>** Reference Answer :**</p>
+    <p>{ reference }</p>
+    <p>** Output :**</p>
+    <p>Table 4: Template for the <strong class="term">grading task</strong>.</p>
+  </div>
+  <div class="translation">
+    <h3>A.1 模板</h3>
+    <p>表4展示了<strong class="term">评分任务（grading task）</strong>的模板。表5展示了<strong class="term">分类任务（classification task）</strong>的模板。表6展示了将主题分类为<strong class="term">STEM（科学、技术、工程和数学）</strong>、<strong class="term">社会科学（Social Sciences）</strong>、<strong class="term">人文学科（Humanities）</strong>和<strong class="term">应用科学（Applied Sciences）</strong>的分类结果。</p>
+    <p>给定一个问题，确定提供的（不完整的）解决方案过程中的最终答案是否与<strong class="term">参考答案（reference answer）</strong>匹配。</p>
+    <p><strong class="term">参考答案（reference answer）</strong>可能是一个单一选项字符（例如A、B、C、D）、一个数值、一个表达式，或者如果涉及多个问题，则是一个答案列表。</p>
+    <p>** <strong class="term">参考答案（reference answer）</strong>可能为中文或其他语言，但您的评估应语言无关。**</p>
+    <p>您的任务：</p>
+    <ul>
+      <li>比较解决方案过程的最终输出与<strong class="term">参考答案（reference answer）</strong>。</li>
+      <li>如果它们**完全匹配**，则输出**YES**。</li>
+      <li>如果它们**不匹配**，则输出**NO**。</li>
+      <li>如果<strong class="term">解决方案过程（solution process）</strong>不清晰、不完整或模糊，则假定其不正确并输出**NO**。</li>
+    </ul>
+    <p>您的输出必须严格为**'YES'**或**'NO'**，不能包含额外单词、标点或解释。</p>
+    <p>---</p>
+    <p>**问题：**</p>
+    <p>{问题}</p>
+    <p>**解决方案过程（仅最终步骤）：**</p>
+    <p>{响应}</p>
+    <p>**参考答案：**</p>
+    <p>{参考}</p>
+    <p>**输出：**</p>
+    <p>表4：<strong class="term">评分任务（grading task）</strong>的模板。</p>
+  </div>
+  
+  <!-- A.2 Agreement 段落 -->
+  <div class="original">
+    <h3>A.2 Agreement</h3>
+    <p>Note that for each instance, we have only a single decision from <strong class="term">GPT-4o</strong>. While it may align more closely with an individual sampled decision from the <strong class="term">reward model</strong> than with the majority vote (when m>1), the latter provides a more stable and deterministic outcome by reducing randomness during grading.</p>
+  </div>
+  <div class="translation">
+    <h3>A.2 协议</h3>
+    <p>请注意，对于每个实例，我们仅有一个来自<strong class="term">GPT-4o</strong>的决策。尽管它可能比多数投票（当m>1时）更接近<strong class="term">奖励模型（reward model）</strong>的单个采样决策，但后者通过减少评分过程中的随机性，提供了更稳定和确定性的结果。</p>
+  </div>
+  
+  <!-- A.3 REINFORCE 段落，包含数学公式 -->
+  <div class="original">
+    <h3>A.3 REINFORCE</h3>
+    <div class="math-container">
+      \[ \nabla_{\theta} \mathbb{E}_{y_i \sim \pi_{\theta}(\cdot|x)} \left[ r(x, a, y_i) \right] = \sum_{y_i} \nabla_{\theta} \left[ \pi_{\theta}(y|x) \right] r(x, a, y_i) \]
+      \[ = \sum_{y_i} \left[ \pi_{\theta}(y|x) \nabla_{\theta} \log \pi_{\theta}(y|x) \right] r(x, a, y_i) \]
+      \[ = \mathbb{E}_{y_i \sim \pi_{\theta}(\cdot|x)} \left[ \nabla_{\theta} \log \pi_{\theta}(y_i|x) r(x, a, y_i) \right] . \quad (7) \]
+    </div>
+  </div>
+  <div class="translation">
+    <h3>A.3 REINFORCE</h3>
+    <div class="math-container">
+      \[ \nabla_{\theta} \mathbb{E}_{y_i \sim \pi_{\theta}(\cdot|x)} \left[ r(x, a, y_i) \right] = \sum_{y_i} \nabla_{\theta} \left[ \pi_{\theta}(y|x) \right] r(x, a, y_i) \]
+      \[ = \sum_{y_i} \left[ \pi_{\theta}(y|x) \nabla_{\theta} \log \pi_{\theta}(y|x) \right] r(x, a, y_i) \]
+      \[ = \mathbb{E}_{y_i \sim \pi_{\theta}(\cdot|x)} \left[ \nabla_{\theta} \log \pi_{\theta}(y_i|x) r(x, a, y_i) \right] . \quad (7) \]
+      <p>（公式7：REINFORCE算法的策略梯度推导，展示了期望奖励的梯度计算。）</p>
+    </div>
+  </div>
+  
+  <!-- A.4 Hyper parameters 段落 -->
+  <div class="original">
+    <h3>A.4 Hyper parameters</h3>
+    <p>Table 9 shows the <strong class="term">hyper parameters</strong> of our experiments.</p>
+    <p>14</p>
+  </div>
+  <div class="translation">
+    <h3>A.4 超参数</h3>
+    <p>表9展示了我们实验的<strong class="term">超参数（hyper parameters）</strong>。</p>
+    <p>14</p>
+  </div>
+</div>
+
+<!-- 摘要总结部分 -->
+<div class="section">
+  <h2>摘要总结</h2>
+  <p>本附录的核心内容概括如下：它详细描述了评分任务的模板（A.1），其中涉及比较解决方案的最终输出与参考答案，输出严格为“YES”或“NO”，强调语言无关性和决策简洁性；讨论了使用GPT-4o模型进行决策的协议（A.2），指出多数投票比单个决策更稳定；展示了REINFORCE算法的数学公式（A.3），用于强化学习中的策略梯度优化；并简要提及实验超参数表格（A.4）。整体上，附录提供了方法论细节，支持论文在多样领域中扩展可验证奖励强化学习的研究，增强可复现性和严谨性。</p>
+</div>
+
+<!-- 术语识别部分 -->
+<div class="section">
+  <h2>术语识别</h2>
+  <dl class="term-list">
+    <dt><strong class="term">Grading Task (评分任务)</strong></dt>
+    <dd>指评估解决方案正确性的过程。在上下文中，它涉及比较用户提供的解决方案最终输出与参考答案，输出严格为“YES”（匹配）或“NO”（不匹配）。该任务强调语言无关性和决策的简洁性，用于自动化评分系统。</dd>
+    
+    <dt><strong class="term">Classification Task (分类任务)</strong></dt>
+    <dd>指将输入数据分类到预定义类别的过程。在文本中，它用于将主题分类为STEM、社会科学等类别，是评估框架的一部分。</dd>
+    
+    <dt><strong class="term">STEM (科学、技术、工程和数学)</strong></dt>
+    <dd>是Science, Technology, Engineering, and Mathematics的缩写，代表科学、技术、工程和数学领域。在分类任务中，用于主题划分，强调技术相关学科。</dd>
+    
+    <dt><strong class="term">Social Sciences (社会科学)</strong></dt>
+    <dd>研究人类社会行为和社会结构的学科领域，如经济学、心理学等。在分类任务中，作为主题类别之一。</dd>
+    
+    <dt><strong class="term">Humanities (人文学科)</strong></dt>
+    <dd>关注人类文化、历史和艺术的学科领域，如文学、哲学等。在分类任务中，作为主题类别之一。</dd>
+    
+    <dt><strong class="term">Applied Sciences (应用科学)</strong></dt>
+    <dd>将科学知识应用于实际问题的领域，如工程学、医学等。在分类任务中，作为主题类别之一。</dd>
+    
+    <dt><strong class="term">Reference Answer (参考答案)</strong></dt>
+    <dd>在评分任务中用作基准的正确答案。它可以是选项字符、数值、表达式或列表，评估时需语言无关。</dd>
+    
+    <dt><strong class="term">Solution Process (解决方案过程)</strong></dt>
+    <dd>用户提供的解决问题步骤，在评分任务中仅评估其最终输出。如果不完整或模糊，则视为错误。</dd>
+    
+    <dt><strong class="term">GPT-4o</strong></dt>
+    <dd>一种AI模型，用于生成决策。在协议部分，它提供单个决策实例，与奖励模型的多数投票相比，可能更接近采样结果但稳定性较低。</dd>
+    
+    <dt><strong class="term">Reward Model (奖励模型)</strong></dt>
+    <dd>在强化学习中，用于评估行动奖励的模型。在协议中，其多数投票决策被强调为更可靠。</dd>
+    
+    <dt><strong class="term">REINFORCE</strong></dt>
+    <dd>一种强化学习算法，属于策略梯度方法。公式(7)展示了其数学推导，通过优化策略参数θ来最大化期望奖励。</dd>
+    
+    <dt><strong class="term">Hyper Parameters (超参数)</strong></dt>
+    <dd>机器学习模型训练前设置的参数，如学习率、批量大小等。在实验中，这些参数通过表格展示，影响模型性能。</dd>
+  </dl>
+</div>
+
+</body>
+</html>

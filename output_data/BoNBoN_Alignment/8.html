@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>论文解析报告</title>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    body { font-family: Arial, sans-serif; line-height: 1.6; }
+    .section { margin-bottom: 30px; }
+    h2 { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 5px; }
+    .original { background-color: #f0f0f0; border: 1px solid #cccccc; padding: 15px; border-radius: 5px; margin: 10px 0; }
+    .translation { background-color: #e0ffe0; border: 1px solid #00cc00; padding: 15px; border-radius: 5px; margin: 10px 0; }
+    .figure { background-color: #ffffcc; padding: 15px; border-radius: 5px; margin: 20px 0; text-align: center; }
+    .term { color: red; font-weight: bold; }
+    .formula-container { text-align: center; margin: 20px 0; }
+    .formula-label { font-style: italic; margin-top: 5px; }
+  </style>
+</head>
+<body>
+
+<!-- 内容理解 -->
+<div class="section">
+  <h2>1. 内容理解</h2>
+  <p>本文核心内容聚焦于评估<b class="term">BoNBoN（Best-of-n-Best-of-n）</b>对齐方法在大型语言模型（LLM）中的应用效果。通过图3展示的实验结果：</p>
+  <ul>
+    <li>在<b class="term">摘要（Summarization）</b>和<b class="term">单轮对话（single-dialogue）</b>任务中，BoNBoN在保持高胜率（Win Rate）的同时，显著降低了对非目标生成特征（如KL散度和响应长度）的影响。</li>
+    <li>关键评估指标包括：<b class="term">KL散度（KL Divergence）</b>（衡量模型输出分布与基线的偏差）和<b class="term">平均响应长度（Average Length of Responses）</b>。</li>
+    <li>理论部分指出：默认参数β<sup>*</sup><sub>n</sub>在IPO框架下实现了最佳的<b class="term">胜率-非目标权衡（win-rate vs off-target trade-off）</b>，无需超参调优。</li>
+    <li>相关工作综述了<b class="term">Best-of-n采样（BoN sampling）</b>的理论基础及其在LLM对齐中的应用，强调BoNBoN通过分摊采样成本提升效率。</li>
+  </ul>
+</div>
+
+<!-- 内容翻译 -->
+<div class="section">
+  <h2>2. 内容翻译</h2>
+  
+  <div class="figure">
+    <strong>图示说明</strong>
+    <div class="original">
+      KL Divergence vs. Win Rate<br>
+      Average Length (Response) vs. Win Rate<br>
+      Summarization<br>
+      Helpful and Harmless
+    </div>
+    <div class="translation">
+      KL散度与胜率的关系<br>
+      平均响应长度与胜率的关系<br>
+      摘要任务<br>
+      有益且无害（任务）
+    </div>
+  </div>
+  
+  <div class="original">
+    Figure 3: BoNBoN achieves high win-rates while minimally affecting off-target aspects of generation. Each point is a model aligned with the indicated method. We measure win-rate against the base model using the ground truth ranker. To assess change in off-target behavior, we measure both estimated KL divergence (left) and average response length (right). Above: Comparison of BoNBoN with baselines for the summarization task. Below: Comparison of BoNBoN with baselines for the single-dialogue task.
+  </div>
+  <div class="translation">
+    图3：BoNBoN在实现高胜率的同时，最小化对生成结果非目标方面的影响。每个点代表采用指定方法对齐的模型。我们使用真实排名器（ground truth ranker）测量相对于基础模型的胜率。为评估非目标行为的变化，我们同时测量了估计KL散度（左图）和平均响应长度（右图）。上图：BoNBoN与基线方法在摘要任务中的对比。下图：BoNBoN与基线方法在单轮对话任务中的对比。
+  </div>
+  
+  <div class="original">
+    for several other choices for β in the IPO term. We observe that, generally, the default β<sup>*</sup><sub>n</sub> has an excellent win-rate vs off-target trade-off. Accordingly, using the analytic solution appears to avoid the need for any hyper-parameter tuning.
+  </div>
+  <div class="translation">
+    针对IPO项中β的其他取值进行实验。我们观察到，默认参数β<sup>*</sup><sub>n</sub>通常具有优异的胜率与非目标权衡特性。因此，采用解析解可避免任何超参数调优的需要。
+  </div>
+  
+  <div class="original">
+    Discussion and Related work: Best-of-n BoN sampling is widely used for LLMs [e.g., Sti+20; Nak+21; Liu+23; Gul+23; Tou+23; GSH23]. Due to its practical importance, it has also attracted some recent theoretical attention [e.g., Mud+23; Bei+24; Yan+24; Jin+24]. Beirami et al. [Bei+24] show a closed form probability mass function of the BoN policy in discrete case and provide a new KL estimator for it. Yang et al. [Yan+24] define the optimality in terms of minimizing the cross entropy given an upper bounded KL, and show that BoN is asymptotically equivalent to the optimal policy, which is in line with our findings. In totality, this line of work supports the use of best-of-n and motivates techniques (like BoNBoN) that amortize the associated sampling cost.
+  </div>
+  <div class="translation">
+    讨论与相关工作：<b class="term">最佳n采样（Best-of-n sampling, BoN）</b>被广泛应用于大型语言模型（LLM）[如Sti+20; Nak+21等]。鉴于其实际重要性，近期理论研究也对其展开探讨[如Mud+23; Bei+24等]。Beirami等人[Bei+24]提出了离散情况下BoN策略的闭式概率质量函数，并为其设计了新的KL估计器。Yang等人[Yan+24]基于KL上界约束下的交叉熵最小化定义最优性，证明BoN渐近等价于最优策略，这与我们的发现一致。总体而言，这些研究支持最佳n采样的应用，并推动了分摊采样成本的技术（如BoNBoN）的发展。
+  </div>
+  
+  <div class="original">
+    Fine-tuning using best-of-n data has also been tried in many existing works to align LLMs with human reference. Dong et al. [Don+23] and Xiong et al. [Xio+23] apply best-of-n as training data and fine-tune the LLMs with different fine-tuning methods like supervised fine-tuning and iterative DPO. Touvron et al. [Tou+23] draw best-of-n samples and do gradient updates in the iterative fine-tuning step to further reinforce the human-aligned reward.
+  </div>
+  <div class="translation">
+    许多现有工作尝试使用<b class="term">最佳n数据（best-of-n data）</b>微调LLM以对齐人类偏好。Dong等人[Don+23]和Xiong等人[Xio+23]将最佳n采样结果作为训练数据，采用监督微调（supervised fine-tuning）和迭代DPO（iterative DPO）等方法微调LLM。Touvron等人[Tou+23]在迭代微调阶段抽取最佳n样本并进行梯度更新，以增强与人类对齐的奖励信号。
+  </div>
+  
+  <div class="original">
+    LLM alignment There is extensive literature on aligning LLMs [e.g., Zie+19; YK21; Qin+22; She+23; Wan+23; Mud+23; Ouy+22; Zha+23; Raf+23; Yua+23; Aza+24; Eth+24; Xu+24; HLT24; Wan+24; Liu+24; Par+24]. Broadly, this work uses preference-labelled data to (implic-
+  </div>
+  <div class="translation">
+    <b class="term">LLM对齐（LLM alignment）</b>：现有大量文献研究LLM对齐技术[如Zie+19; YK21等]。这类工作主要利用偏好标注数据（preference-labelled data）[...]（文本截断）
+  </div>
+</div>
+
+<!-- 摘要总结 -->
+<div class="section">
+  <h2>3. 摘要总结</h2>
+  <p>本文核心结论可概括为：</p>
+  <ol>
+    <li><b class="term">BoNBoN方法</b>在摘要和单轮对话任务中显著优于基线模型，在保持高<b class="term">胜率（Win Rate）</b>（评估生成质量）的同时，最小化对<b class="term">KL散度（KL Divergence）</b>和<b class="term">响应长度（Response Length）</b>等非目标指标的影响。</li>
+    <li>理论分析表明，默认参数β<sup>*</sup><sub>n</sub>在<b class="term">IPO（Identity Preference Optimization）</b>框架下实现了最优的<b class="term">胜率-非目标权衡</b>，无需额外超参调优。</li>
+    <li>相关工作系统梳理了：
+      <ul>
+        <li><b class="term">最佳n采样（Best-of-n Sampling）</b>的理论基础（如渐近最优性证明）</li>
+        <li>基于最佳n数据的微调技术（如监督微调、迭代DPO）</li>
+        <li>LLM对齐领域的广泛研究进展</li>
+      </ul>
+    </li>
+    <li>研究强调BoNBoN通过<b class="term">分摊采样成本（amortize sampling cost）</b>提升了最佳n采样的实用性。</li>
+  </ol>
+</div>
+
+<!-- 术语识别 -->
+<div class="section">
+  <h2>4. 术语解释</h2>
+  <dl>
+    <dt><b class="term">BoNBoN（Best-of-n-Best-of-n）</b></dt>
+    <dd>一种改进的LLM对齐方法，通过分层采样策略优化标准Best-of-n技术，在保持高生成质量的同时降低计算开销。</dd>
+    
+    <dt><b class="term">KL散度（KL Divergence）</b></dt>
+    <dd>衡量两个概率分布差异的指标，此处用于量化对齐模型与基础模型输出分布的偏差，值越低表示对非目标特性影响越小。</dd>
+    
+    <dt><b class="term">胜率（Win Rate）</b></dt>
+    <dd>基于真实排名器（ground truth ranker）计算，反映对齐模型相比基础模型在人类偏好评估中获胜的比例，核心质量评估指标。</dd>
+    
+    <dt><b class="term">最佳n采样（Best-of-n Sampling, BoN）</b></dt>
+    <dd>从语言模型生成n个响应，并选择奖励分数最高的样本。理论基础包括：渐近最优性、闭式概率质量函数（Beirami et al.）和KL约束下的交叉熵最小化（Yang et al.）。</dd>
+    
+    <dt><b class="term">IPO（Identity Preference Optimization）</b></dt>
+    <dd>一种对齐框架，其中β是控制偏好强度的超参数。研究表明其解析解β<sup>*</sup><sub>n</sub>可自动优化胜率与非目标行为的平衡。</dd>
+    
+    <dt><b class="term">LLM对齐（LLM Alignment）</b></dt>
+    <dd>使大型语言模型行为符合人类价值观的技术统称，常利用偏好标注数据（preference-labelled data）进行优化。</dd>
+  </dl>
+</div>
+
+</body>
+</html>

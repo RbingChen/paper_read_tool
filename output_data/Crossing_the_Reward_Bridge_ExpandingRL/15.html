@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>论文文本分析</title>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    h1 { color: #333; }
+    h2 { color: #444; border-bottom: 1px solid #ddd; padding-bottom: 5px; }
+    .original { background-color: #f0f0f0; border: 1px solid #cccccc; padding: 15px; margin-bottom: 10px; border-radius: 5px; }
+    .translation { background-color: #e0ffe0; border: 1px solid #00cc00; padding: 15px; margin-bottom: 20px; border-radius: 5px; }
+    .figure { background-color: #ffffcc; padding: 15px; margin: 15px 0; border-radius: 5px; text-align: center; }
+    .term { color: red; font-weight: bold; }
+    table { width: 100%; border-collapse: collapse; margin: 10px 0; }
+    th, td { border: 1px solid #999; padding: 8px; text-align: center; }
+    th { background-color: #f5f5f5; }
+    .math-formula { text-align: center; margin: 15px 0; }
+    .formula-number { font-style: italic; margin-top: 5px; }
+  </style>
+</head>
+<body>
+  <h1>论文文本分析报告</h1>
+  
+  <section>
+    <h2>内容理解</h2>
+    <p>文本的核心内容分为两部分：主题分类和评估指标结果。首先，标题“Expanding RL with Verifiable Rewards Across Diverse Domains”表明论文聚焦于在不同领域扩展强化学习（<span class="term">RL (Reinforcement Learning)</span>），特别是通过可验证奖励机制。随后，文本详细列出了主题ID的分类，分为四大类：<span class="term">STEM (Science, Technology, Engineering, and Mathematics)</span>、<span class="term">Social Sciences (社会科学)</span>、<span class="term">Humanities (人文学科)</span>和<span class="term">Applied Sciences (应用科学)</span>，每个类别下包含多个具体学科（如数学、计算机科学等），并在Table 6中进行了总结。这可能是用于定义研究领域或实验范围的分类系统。</p>
+    <p>第二部分涉及Table 7，展示了Cohen's Kappa一致性系数（κ）的评估结果。该指标用于量化GPT-4o模型与多数投票方法之间的一致性，其中参数m表示投票次数（m=1或m=10），评估器为Qwen2.5-72B-Instruct模型。结果针对不同教育水平的数学问题（小学、初中、高中和平均），κ值均在0.838到0.885之间，表明较高的一致性。数字“16”可能表示页码或章节号，暗示这是论文中的一部分。整体上，文本提供了领域分类框架和模型评估数据，可能用于支持强化学习在跨领域应用中的实验设置或结果分析。</p>
+  </section>
+  
+  <section>
+    <h2>内容翻译</h2>
+    <div class="original">
+      <p>Expanding RL with Verifiable Rewards Across Diverse Domains</p>
+      <p>Category Subject IDs</p>
+      <p>STEM</p>
+      <p>110 ( Mathematics ), 120 ( Information Science and System Science ), 130 ( Mechanics ), 140 ( Physics ), 150 ( Chemistry ), 170 ( Earth Science ), 180 ( Biology ), 430 ( Materials Science ), 460 ( Mechanical Engineering ), 470 ( Power and Electrical Engineering ), 510 ( Electronics and Communications Technology ), 520 ( Computer Science and Technology ), 530 ( Chemical Engineering ), 560 ( Civil Engineering ), 570 ( Water Conservancy Engineering ), 580 ( Transportation Engineering ), 610 ( Environmental / Resource Science and Technology ), 620 ( Safety Science and Technology ), 910 ( Statistics )</p>
+      <p>Social Sciences</p>
+      <p>190 ( Psychology ), 790 ( Economics ), 810 ( Political Science ), 820 (Law ), 840 ( Sociology ), 850 ( Ethnology and Cultural Studies ), 860 ( Journalism and Communication ), 870 ( Library , Information , and Documentation ), 880 ( Education ), 890 ( Sports Science ), 630 ( Management )</p>
+      <p>Humanities</p>
+      <p>710 ( Marxism ), 720 ( Philosophy ), 730 ( Religious Studies ), 740 ( Linguistics ), 750 ( Literature ), 760 ( Art ), 770 ( History )</p>
+      <p>Applied Sciences</p>
+      <p>210 ( Agronomy ), 230 ( Animal Husbandry and Veterinary Science ), 310 ( Basic Medicine ), 320 ( Clinical Medicine ), 330 ( Preventive Medicine and Public Health ), 350 ( Pharmacy ), 360 ( Chinese Medicine and Chinese Materia Medica ), 413 ( Information and System Science Related Engineering and Technology ), 416 ( Natural Science Related Engineering and Technology ), 420 ( Surveying and Mapping Science and Technology ), 550 ( Food Science and Technology )</p>
+      <p>Table 6: Classification of subjects into STEM (Science, Technology, Engineering, and Mathematics), Social Sciences, Humanities, and Applied Sciences.</p>
+      <div class="figure">
+        <p>Level Agreement ( κ↑)</p>
+        <p>m=1m=10</p>
+        <p>elementary 0.844 0.838</p>
+        <p>middle 0.885 0.883</p>
+        <p>high 0.849 0.846</p>
+        <p>average 0.864 0.861</p>
+        <p>Table 7: Cohen’s Kappa agreement ( κ) between GPT-4o and majority voting ( m: the number of votes) using Qwen2.5-72B-Instruct as evaluator across different education levels of math problems.</p>
+      </div>
+      <p>16</p>
+    </div>
+    <div class="translation">
+      <p>在不同领域中扩展具有可验证奖励的强化学习</p>
+      <p>类别 主题ID</p>
+      <p>STEM</p>
+      <p>110（数学）、120（信息科学与系统科学）、130（力学）、140（物理学）、150（化学）、170（地球科学）、180（生物学）、430（材料科学）、460（机械工程）、470（电力与电气工程）、510（电子与通信技术）、520（计算机科学与技术）、530（化学工程）、560（土木工程）、570（水利工程）、580（交通运输工程）、610（环境/资源科学与技术）、620（安全科学与技术）、910（统计学）</p>
+      <p>社会科学</p>
+      <p>190（心理学）、790（经济学）、810（政治学）、820（法学）、840（社会学）、850（民族学与文化研究）、860（新闻与传播学）、870（图书馆、信息与文献学）、880（教育学）、890（体育科学）、630（管理学）</p>
+      <p>人文学科</p>
+      <p>710（马克思主义）、720（哲学）、730（宗教学）、740（语言学）、750（文学）、760（艺术）、770（历史学）</p>
+      <p>应用科学</p>
+      <p>210（农学）、230（畜牧兽医学）、310（基础医学）、320（临床医学）、330（预防医学与公共卫生）、350（药学）、360（中医学与中药学）、413（信息与系统科学相关工程与技术）、416（自然科学相关工程与技术）、420（测绘科学与技术）、550（食品科学与技术）</p>
+      <p>表6：主题分类为STEM（科学、技术、工程和数学）、社会科学、人文学科和应用科学。</p>
+      <div class="figure">
+        <p>水平一致性（κ↑）</p>
+        <p>m=1 m=10</p>
+        <p>小学 0.844 0.838</p>
+        <p>初中 0.885 0.883</p>
+        <p>高中 0.849 0.846</p>
+        <p>平均 0.864 0.861</p>
+        <p>表7：使用Qwen2.5-72B-Instruct作为评估器，在不同教育水平的数学问题上，GPT-4o与多数投票（m：投票次数）之间的科恩卡帕一致性（κ）。</p>
+      </div>
+      <p>16</p>
+    </div>
+  </section>
+  
+  <section>
+    <h2>摘要总结</h2>
+    <p>文本的核心内容可概括为两个主要部分：首先，它提供了一个详细的主题分类系统，将学科分为四大类（STEM、社会科学、人文学科和应用科学），每个类别下列举了具体的主题ID（如数学、计算机科学等），并在Table 6中进行了总结。其次，Table 7展示了Cohen's Kappa一致性评估结果，用于比较GPT-4o模型与多数投票方法在数学问题上的表现，参数包括投票次数（m=1或m=10）和教育水平（小学、初中、高中），结果显示较高的一致性（κ值在0.838-0.885之间）。整体上，文本旨在定义研究领域框架并提供模型评估指标，支持强化学习在跨领域应用中的分析。</p>
+  </section>
+  
+  <section>
+    <h2>术语识别</h2>
+    <ul>
+      <li><span class="term">RL (Reinforcement Learning)</span>：强化学习，一种机器学习方法，智能体通过与环境交互学习最优行为策略，以最大化累积奖励。文本中用于标题，指代论文的核心主题。</li>
+      <li><span class="term">STEM (Science, Technology, Engineering, and Mathematics)</span>：科学、技术、工程和数学，指代一类跨学科领域。文本中作为分类类别，包含数学、计算机科学等学科。</li>
+      <li><span class="term">Social Sciences (社会科学)</span>：研究人类社会行为和社会组织的学科，如心理学、经济学。文本中作为分类类别。</li>
+      <li><span class="term">Humanities (人文学科)</span>：关注人类文化、历史和艺术的学科，如哲学、文学。文本中作为分类类别。</li>
+      <li><span class="term">Applied Sciences (应用科学)</span>：将科学知识应用于实际问题的学科，如医学、农学。文本中作为分类类别。</li>
+      <li><span class="term">Cohen's Kappa (科恩卡帕系数)</span>：统计学指标，用于评估两个评估者之间的一致性，公式为 \(\kappa = \frac{p_o - p_e}{1 - p_e}\)，其中 \(p_o\) 是观察一致率， \(p_e\) 是期望一致率。值范围从-1到1，值越高表示一致性越强。文本中用于Table 7，量化模型与投票方法的一致性。</li>
+      <li><span class="term">Majority Voting (多数投票)</span>：一种决策方法，基于多个投票者的多数意见确定结果。文本中作为比较基准，参数m表示投票次数。</li>
+      <li><span class="term">Evaluator (评估器)</span>：指用于评估模型性能的工具或模型。文本中指定为Qwen2.5-72B-Instruct，一个大型语言模型。</li>
+      <li><span class="term">Qwen2.5-72B-Instruct</span>：一个基于Transformer架构的大型语言模型，用于文本生成和评估。文本中作为评估GPT-4o一致性的工具。</li>
+      <li><span class="term">GPT-4o</span>：OpenAI开发的高级语言模型，文本中作为被评估的对象，与多数投票比较一致性。</li>
+      <li><span class="term">κ (Kappa)</span>：Cohen's Kappa系数的数学符号，表示一致性强度。文本中在Table 7以 \(\kappa\) 形式出现，并用↑表示值越高越好。</li>
+    </ul>
+  </section>
+</body>
+</html>

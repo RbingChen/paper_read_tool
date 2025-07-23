@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>OneRec技术报告解析</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; }
+        .section { margin-bottom: 30px; }
+        h2 { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 5px; }
+        .original {
+            background-color: #f0f0f0;
+            border: 1px solid #cccccc;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+        .translation {
+            background-color: #e0f2e0;
+            border: 1px solid #a0c0a0;
+            padding: 15px;
+            border-radius: 5px;
+        }
+        .term { color: red; font-weight: bold; }
+        .formula-container {
+            text-align: center;
+            margin: 20px 0;
+            padding: 10px;
+        }
+        .formula-label { font-style: italic; margin-top: 5px; }
+        .figure-ref { background-color: #ffffcc; padding: 2px 5px; }
+    </style>
+</head>
+<body>
+
+<!-- 内容理解 -->
+<div class="section">
+    <h2>内容理解</h2>
+    <p>该文本详细描述了OneRec推荐系统的特征聚合方法和模型架构：</p>
+    <ul>
+        <li><span class="term">特征聚合</span>：针对视频聚类，对离散特征（如vid, aid）和连续特征（如播放时长）采用不同处理策略</li>
+        <li><span class="term">长期历史序列压缩</span>：使用QFormer架构通过可学习查询向量压缩用户行为序列</li>
+        <li><span class="term">编码器架构</span>：整合多尺度行为表征的Transformer框架，包含位置嵌入和层级处理</li>
+        <li><span class="term">解码器设计</span>：采用逐点生成范式，组合序列起始符与视频语义标识符</li>
+    </ul>
+    <p>核心创新点在于通过多尺度特征融合和序列压缩技术，实现高效的用户行为建模。</p>
+</div>
+
+<!-- 内容翻译 -->
+<div class="section">
+    <h2>内容翻译</h2>
+    
+    <div class="original">
+        <h3>Feature Aggregation</h3>
+        <p>For each cluster, we construct representative features by handling discrete and continuous attributes differently. For sparse categorical features such as vid,aid, and label, we directly inherit the features from the representative video (i.e., the video closest to the cluster center). For continuous features such as tag,ts,playtime , and duration , we compute the average values across all videos within the cluster to capture collective behavioral patterns.</p>
+        <p>For the user’s long-term historical sequence ( \(L_l=2000\) ), each video is replaced by the features of its corresponding cluster representative:</p>
+        <div class="formula-container">
+            \\[ f_l = [e_l^{vid}; e_l^{aid}; e_l^{tag}; e_l^{ts}; e_l^{playtime}; e_l^{dur}; e_l^{label}] \\tag{15} \\]
+            <div class="formula-label">公式(15)</div>
+        </div>
+        <div class="formula-container">
+            \\[ v_l = \\text{Dense}(\\text{LeakyReLU}(\\text{Dense}(f_l))) \\tag{16} \\]
+            <div class="formula-label">公式(16)</div>
+        </div>
+        <p>The final representation \(v_l \in \mathbb{R}^{L_l \times d_{\\text{model}}}\). The lifelong pathway compresses historical sequences through QFormer, where learnable query vectors \(h_l^{(0)} \in \mathbb{R}^{N_q \times d_{\\text{model}}} (N_q=128)\) attend to the processed historical features:</p>
+        <div class="formula-container">
+            \\[ h_l^{(i+1)} = \\text{CrossAttn}(h_l^{(i)}, v_l, v_l) \\tag{17} \\]
+            <div class="formula-label">公式(17)</div>
+        </div>
+        <div class="formula-container">
+            \\[ h_l^{(i+1)} = \\text{FFN}(\\text{RMSNorm}(h_l^{(i+1)})) \\tag{18} \\]
+            <div class="formula-label">公式(18)</div>
+        </div>
+        <p>Followed by \(N_l=2\) blocks, we obtain the compressed lifelong feature representation \(h_l = h_l^{(N_l)} \in \mathbb{R}^{N_q \times d_{\\text{model}}}\).</p>
+    </div>
+    <div class="translation">
+        <h3>特征聚合</h3>
+        <p>对于每个聚类簇，我们通过差异化处理离散和连续属性来构建代表性特征。对于稀疏类别特征（如vid、aid和label），直接从代表视频（即最接近聚类中心的视频）继承特征。对于连续特征（如tag、ts、playtime和duration），计算簇内所有视频的平均值以捕捉集体行为模式。</p>
+        <p>针对用户的长期历史序列（\(L_l=2000\)），每个视频被替换为其对应聚类簇代表的特征：</p>
+        <p>最终表征 \(v_l \in \mathbb{R}^{L_l \times d_{\\text{model}}}\)。终身路径通过QFormer压缩历史序列，其中可学习查询向量 \(h_l^{(0)} \in \mathbb{R}^{N_q \times d_{\\text{model}}} (N_q=128)\) 参与处理后的历史特征：</p>
+        <p>经过 \(N_l=2\) 个模块后，获得压缩的终身特征表示 \(h_l = h_l^{(N_l)} \in \mathbb{R}^{N_q \times d_{\\text{model}}}\)。</p>
+    </div>
+
+    <div class="original">
+        <h3>2.2.2. Encoder Architecture</h3>
+        <p>As illustrated in <span class="figure-ref">Figure 4</span>, the encoder architecture of OneRec integrates multi-scale user behavior representations through a unified transformer-based framework. The encoder concatenates the outputs from the four multi-scale pathways to form a comprehensive input sequence:</p>
+        <div class="formula-container">
+            \\[ z^{(1)} = [h_u; h_s; h_p; h_l] + e_{\\text{pos}} \\tag{19} \\]
+            <div class="formula-label">公式(19)</div>
+        </div>
+        <p>where \(e_{\\text{pos}} \in \mathbb{R}^{(1 + L_s + L_p + N_q) \times d_{\\text{model}}}\) represents learnable positional embeddings. The integrated representation is processed through \(L_{\\text{enc}}\) transformer encoder layers, each consisting of fully visible self-attention mechanisms followed by feed-forward networks with RMS normalization:</p>
+        <div class="formula-container">
+            \\[ z^{(i+1)} = z^{(i)} + \\text{SelfAttn}(\\text{RMSNorm}(z^{(i)})) \\tag{20} \\]
+            <div class="formula-label">公式(20)</div>
+        </div>
+        <div class="formula-container">
+            \\[ z^{(i+1)} = z^{(i+1)} + \\text{FFN}(\\text{RMSNorm}(z^{(i+1)})) \\tag{21} \\]
+            <div class="formula-label">公式(21)</div>
+        </div>
+        <p>The final encoder output \(z_{\\text{enc}} = z^{(L_{\\text{enc}}+1)} \in \mathbb{R}^{(1 + L_s + L_p + N_q) \times d_{\\text{model}}}\) provides a holistic multi-scale user behavior representation, serving as the foundation for subsequent recommendation generation.</p>
+    </div>
+    <div class="translation">
+        <h3>2.2.2. 编码器架构</h3>
+        <p>如<span class="figure-ref">图4</span>所示，OneRec的编码器架构通过统一的基于Transformer的框架整合多尺度用户行为表征。编码器拼接四个多尺度路径的输出形成综合输入序列：</p>
+        <p>其中 \(e_{\\text{pos}} \in \mathbb{R}^{(1 + L_s + L_p + N_q) \times d_{\\text{model}}}\) 表示可学习位置嵌入。集成表征通过 \(L_{\\text{enc}}\) 个Transformer编码层处理，每层包含全可见自注意力机制和带RMS归一化的前馈网络：</p>
+        <p>最终编码器输出 \(z_{\\text{enc}} = z^{(L_{\\text{enc}}+1)} \in \mathbb{R}^{(1 + L_s + L_p + N_q) \times d_{\\text{model}}}\) 提供完整的用户多尺度行为表征，作为后续推荐生成的基础。</p>
+    </div>
+
+    <div class="original">
+        <h3>2.3. Decoder</h3>
+        <p>OneRec adopts a point-wise generation paradigm during the decoding phase. For each target video \(m\), the decoder input sequence is constructed by concatenating a learnable beginning-of-sequence token with the video’s semantic identifiers:</p>
+        <div class="formula-container">
+            \\[ S_m = \\langle \\text{[BOS]}, s_m^1, s_m^2, \\cdots, s_m^{L_t} \\rangle \\tag{22} \\]
+            <div class="formula-label">公式(22)</div>
+        </div>
+        <div class="formula-container">
+            \\[ d_m^{(0)} = \\text{Emb\\_lookup}(S_m) \\tag{23} \\]
+            <div class="formula-label">公式(23)</div>
+        </div>
+    </div>
+    <div class="translation">
+        <h3>2.3. 解码器</h3>
+        <p>OneRec在解码阶段采用逐点生成范式。对于每个目标视频\(m\)，解码器输入序列通过拼接可学习的序列起始符与视频语义标识符构建：</p>
+    </div>
+</div>
+
+<!-- 摘要总结 -->
+<div class="section">
+    <h2>摘要总结</h2>
+    <p>本技术报告详细阐述了OneRec推荐系统的核心架构：</p>
+    <ol>
+        <li>提出<span class="term">差异化特征聚合</span>方法，对离散特征采用代表样本继承策略，连续特征采用簇内平均计算</li>
+        <li>设计<span class="term">多尺度行为建模框架</span>：通过QFormer压缩长期历史序列（公式17-18），整合短期/实时行为路径</li>
+        <li>构建<span class="term">统一Transformer编码器</span>（公式19-21），融合位置嵌入与多尺度表征，输出综合用户行为编码</li>
+        <li>实现<span class="term">基于语义标识符的解码器</span>（公式22-23），采用[BOS]令牌启动逐点推荐生成</li>
+    </ol>
+    <p>核心创新在于通过聚类表征压缩和层级注意力机制，高效处理用户长短期行为序列，为推荐系统提供可扩展的解决方案。</p>
+</div>
+
+<!-- 术语识别 -->
+<div class="section">
+    <h2>术语解释</h2>
+    <dl>
+        <dt><span class="term">QFormer (Query-based Transformer)</span></dt>
+        <dd>通过可学习查询向量（公式17中 \(h_l^{(0)}\)）压缩长序列的Transformer变体，使用交叉注意力机制聚焦关键信息，显著降低计算复杂度</dd>
+        
+        <dt><span class="term">RMSNorm (Root Mean Square Normalization)</span></dt>
+        <dd>层归一化变体（公式18,21），通过均方根值缩放激活值，相比LayerNorm减少15-20%计算量，公式：\(\\text{RMSNorm}(x) = \\frac{x}{\\sqrt{\\text{mean}(x^2) + \\epsilon}} \\odot g\)</dd>
+        
+        <dt><span class="term">Multi-scale Pathways</span></dt>
+        <dd>多尺度行为建模路径（公式19中 \(h_u, h_s, h_p, h_l\)），分别处理即时交互、短期会话、中期偏好和终身行为，形成时间颗粒度互补的表征体系</dd>
+        
+        <dt><span class="term">Point-wise Generation</span></dt>
+        <dd>逐点生成范式（公式22），为每个目标视频独立构建解码序列，相比序列生成更适配大规模推荐场景，避免自回归解码延迟</dd>
+        
+        <dt><span class="term">Semantic Identifiers</span></dt>
+        <dd>视频语义标识符（公式22中 \(s_m^k\)），将视频内容特征离散化为符号序列，使解码器可处理结构化语义信息，增强推荐可解释性</dd>
+    </dl>
+</div>
+
+</body>
+</html>

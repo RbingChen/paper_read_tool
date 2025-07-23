@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>算法专家解读报告</title>
+  <style>
+    body { font-family: 'Segoe UI', sans-serif; line-height: 1.6; }
+    .section { margin-bottom: 2rem; }
+    h2 { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 0.5rem; }
+    .original { background-color: #f5f5f5; border: 1px solid #cccccc; padding: 15px; margin-bottom: 5px; border-radius: 5px; }
+    .translation { background-color: #e8f5e9; border: 1px solid #4caf50; padding: 15px; border-radius: 5px; }
+    .figure-caption { background-color: #fffde7; padding: 10px; margin: 10px 0; border-left: 4px solid #ffd600; }
+    term { color: #e53935; font-weight: bold; }
+    .term-def { margin-top: 0.5rem; font-style: italic; color: #555; }
+    .formula-container { text-align: center; margin: 20px 0; }
+    .formula-label { display: block; font-size: 0.9em; color: #7f8c8d; }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>算法论文分析报告</h1>
+  
+  <!-- 内容理解 -->
+  <div class="section">
+    <h2>内容理解</h2>
+    <p>该文本包含两个消融实验结果图示（图25和图26）以及数据源选择标准说明。核心内容揭示：</p>
+    <ul>
+      <li>在增加训练资源的前提下，通过两种不同策略（增加<term>DR</term>或增大<term>group size</term>）提升<term>rollout budget</term>，均能在总训练时间不变的情况下改善模型测试性能</li>
+      <li>数学领域选用<term>NuminaMath-1.5</term>数据集（89.6万数学问题），但需严格质量审查</li>
+      <li>代码领域面临数据集质量不足的问题，测试<term>CODE-RL</term>、<term>TACO</term>、<term>Eurus-RL</term>等数据集效果不佳</li>
+      <li>数据筛选首要标准是<term>Verifiable</term>（可验证性），排除无测试用例的代码问题及证明类数学问题</li>
+    </ul>
+  </div>
+  
+  <!-- 内容翻译 -->
+  <div class="section">
+    <h2>内容翻译</h2>
+    
+    <div class="figure-caption">
+      <div class="original">Figure 25: Results of Ablation Experiments 11. Given more training resources, increasing the rollout budget by increasing DR achieves better test performance with similar total training hours.</div>
+      <div class="translation">图25：消融实验11结果。在提供更多训练资源的情况下，通过增加<term>DR</term>来提高<term>rollout budget</term>，可以在总训练时间相近的情况下获得更好的测试性能。</div>
+    </div>
+    
+    <div class="figure-caption">
+      <div class="original">Figure 26: Results of Ablation Experiments 12. Given more training resources, increasing rollout budget by increasing the group size can achieve better test performance with similar total training hours.</div>
+      <div class="translation">图26：消融实验12结果。在提供更多训练资源的情况下，通过增大<term>group size</term>来提高<term>rollout budget</term>，可以在总训练时间相近的情况下获得更好的测试性能。</div>
+    </div>
+    
+    <div class="original">6.1 Data Source Selection and Preprocessing</div>
+    <div class="translation">6.1 数据源选择与预处理</div>
+    
+    <div class="original">For the math domain, we primarily focus on NuminaMath-1.5 [13], a comprehensive dataset containing 896K math problems drawn from widely used sources and advanced mathematical topics. Although the dataset is sufficiently large, its quality requires careful examination prior to use.</div>
+    <div class="translation">在数学领域，我们主要关注<term>NuminaMath-1.5</term>[13]数据集，这是一个包含89.6万数学问题的综合性数据集，涵盖广泛来源和高级数学主题。尽管该数据集规模足够大，但其质量在使用前需要仔细检查。</div>
+    
+    <div class="original">For the code domain, we find that data source options are more limited, and the overall difficulty of available datasets is generally low relative to the capabilities of current models. In our pilot studies, we experimented with several popular datasets – including CODE-RL [12], TACO [14], and the Eurus-RL collection [2] – in their original mixtures, but obtained unsatisfactory results.</div>
+    <div class="translation">在代码领域，我们发现数据源选择更为有限，且现有数据集的整体难度相对于当前模型的能力普遍较低。在初步研究中，我们尝试了多个流行数据集的原始混合——包括<term>CODE-RL</term>[12]、<term>TACO</term>[14]和<term>Eurus-RL</term>集合[2]——但获得的结果不尽人意。</div>
+    
+    <div class="original">Selection Criteria To select and curate high-quality data for RL, we adhere to the following general criteria for both data domains:</div>
+    <div class="translation">选择标准：为强化学习选择和整理高质量数据时，我们在两个数据领域均遵循以下通用标准：</div>
+    
+    <div class="original">1.Verifiable : We exclude problems that cannot be verified, such as proof-based problems and code problems lacking test cases.</div>
+    <div class="translation">1. <term>可验证性(Verifiable)</term>：我们排除无法验证的问题，例如基于证明的问题和缺少测试用例的代码问题。</div>
+  </div>
+  
+  <!-- 摘要总结 -->
+  <div class="section">
+    <h2>摘要总结</h2>
+    <p>本文本核心内容包含：</p>
+    <ul>
+      <li><strong>消融实验结果</strong>：增加训练资源时，通过提升<term>rollout budget</term>（采用增大<term>DR</term>或<term>group size</term>策略）可在同等训练时长下显著提升模型测试性能</li>
+      <li><strong>数据源选择</strong>：数学领域采用<term>NuminaMath-1.5</term>大规模数据集（需质量验证），代码领域现有数据集（如<term>CODE-RL</term>、<term>TACO</term>）难度不足且效果不佳</li>
+      <li><strong>筛选标准</strong>：首要准则为<term>可验证性(Verifiable)</term>，排除无法验证的问题类型（如无测试用例的代码问题）</li>
+    </ul>
+  </div>
+  
+  <!-- 术语识别 -->
+  <div class="section">
+    <h2>术语识别</h2>
+    <dl>
+      <dt><term>Ablation Experiments</term></dt>
+      <dd>消融实验：通过系统性移除模型组件或训练条件来评估各要素对性能贡献的实验方法</dd>
+      
+      <dt><term>rollout budget</term></dt>
+      <dd>推演预算：强化学习中用于环境交互的轨迹采样资源总量限制</dd>
+      
+      <dt><term>DR</term></dt>
+      <dd>动态范围/数据复用（具体根据上下文）：可能指动态调整采样范围或数据复用策略的参数</dd>
+      
+      <dt><term>group size</term></dt>
+      <dd>组大小：并行训练中同时推演的实例数量，影响探索效率</dd>
+      
+      <dt><term>NuminaMath-1.5</term></dt>
+      <dd>数学问题数据集：包含89.6万数学问题的综合数据集，覆盖基础到高级数学主题</dd>
+      
+      <dt><term>CODE-RL</term></dt>
+      <dd>代码强化学习数据集：专为代码生成任务设计的强化学习训练数据集</dd>
+      
+      <dt><term>TACO</term></dt>
+      <dd>代码优化数据集：通常包含代码转换/优化任务的基准数据集</dd>
+      
+      <dt><term>Eurus-RL</term></dt>
+      <dd>强化学习集合：整合多种强化学习任务的数据集组合</dd>
+      
+      <dt><term>Verifiable</term></dt>
+      <dd>可验证性：数据筛选核心标准，要求问题必须存在客观验证方法（如测试用例）</dd>
+    </dl>
+  </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>论文解析</title>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    body { font-family: Arial, sans-serif; line-height: 1.6; }
+    .original { background-color: #f0f0f0; border: 1px solid #cccccc; padding: 15px; margin-bottom: 20px; }
+    .translation { background-color: #e0ffe0; border: 1px solid #00cc00; padding: 15px; margin-bottom: 30px; }
+    .term { color: red; font-weight: bold; }
+    .formula-container { text-align: center; margin: 20px 0; }
+    .formula-number { font-style: italic; margin-top: 5px; }
+    h2 { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 5px; }
+    h3 { color: #2980b9; }
+    ul { list-style-type: none; padding-left: 0; }
+    li { margin-bottom: 15px; }
+  </style>
+</head>
+<body>
+
+<!-- 内容理解 -->
+<h2>内容理解</h2>
+<p>本文提出了一种生成高质量推理轨迹的两阶段方法：<br>
+1. <strong>轨迹重构</strong>：首先利用专家模型生成完整解决方案（含原始思考），但仅保留动作-观察序列（a₀,o₀,a₁,o₁,...）。随后使用指令遵循模型为每个动作生成<strong>简洁的逻辑依据</strong>（短链式思考），重构缺失的"为什么"。核心公式通过条件概率建模：\(\hat{\tau}_t \sim \pi^*(\tau|H_{t-1},a_t,o_t)\)。<br>
+2. <strong>两阶段训练</strong>：先通过<strong>拒绝采样微调（RFT）</strong>进行冷启动，建立基础工具使用能力；再用<strong>复制采样策略优化（DUPO）</strong>强化推理能力。训练数据经过三重过滤：仅保留正确答案、短于32k token、含5+工具调用的复杂轨迹，且损失计算中屏蔽环境观察。</p>
+
+<!-- 内容翻译 -->
+<h2>内容翻译</h2>
+
+<div class="original">
+  <p>The process is as follows: first, we prompt an expert open-source <strong class="term">LRM</strong> to generate a complete solution trajectory, including its native thoughts. From this full trajectory, we selectively discard the <strong class="term">LRM</strong>’s original, verbose thoughts, retaining only the successful <strong class="term">action-observation sequence</strong> (a<sub>0</sub>,o<sub>0</sub>,a<sub>1</sub>,o<sub>1</sub>,...). This trace represents the "what" and "how" of the solution path, but not the "why".</p>
+  <p>Next, we reconstruct the missing "why". For each step t in the action trace, we possess the history up to the previous step, H<sub>t−1</sub> = (ˆτ<sub>0</sub>,a<sub>0</sub>,o<sub>0</sub>,...,ˆτ<sub>t−1</sub>,a<sub>t−1</sub>,o<sub>t−1</sub>), along with the expert’s chosen action a<sub>t</sub> and the subsequent observation o<sub>t</sub>. We then prompt a separate, powerful <strong class="term">instruction-following model</strong>, π∗, to generate a new thought ˆτ<sub>t</sub> that serves as a concise, logical justification for taking action a<sub>t</sub>:</p>
+  <div class="formula-container">
+    \[ \hat{\tau}_t \sim \pi^*(\tau|H_{t-1},a_t,o_t) \]
+    <div class="formula-number">(2)</div>
+  </div>
+  <p>By iteratively applying this for every step, we synthesize a complete, high-quality <strong class="term">reasoning trajectory</strong> Ĥ<sub>T</sub> = (ˆτ<sub>0</sub>,a<sub>0</sub>,o<sub>0</sub>,...,ˆτ<sub>T</sub>,a<sub>T</sub>,o<sub>T</sub>) where the reasoning is clean and goal-oriented. For this reconstruction, we use another <strong class="term">LLM</strong> and enforce a "<strong class="term">short-CoT</strong>" style. This is a critical design choice, ensuring the final reasoning chain is compact enough for long-horizon tasks. This method allows us to scalably generate supervision data that instills complex reasoning patterns without the negative side effects of direct imitation.</p>
+</div>
+
+<div class="translation">
+  <p>流程如下：首先，我们提示一个专家级开源<strong class="term">LRM（Large Reasoning Model，大型推理模型）</strong>生成完整的解决方案轨迹，包括其原始思考。从该完整轨迹中，我们选择性丢弃<strong class="term">LRM</strong>原本冗长的思考，仅保留成功的<strong class="term">动作-观察序列（action-observation sequence）</strong>（a<sub>0</sub>,o<sub>0</sub>,a<sub>1</sub>,o<sub>1</sub>,...）。该轨迹表示解决路径的"做什么"和"怎么做"，但不包含"为什么"。</p>
+  <p>接着，我们重构缺失的"为什么"。对于动作轨迹中的每个步骤t，我们拥有截至前一步的历史H<sub>t−1</sub> = (ˆτ<sub>0</sub>,a<sub>0</sub>,o<sub>0</sub>,...,ˆτ<sub>t−1</sub>,a<sub>t−1</sub>,o<sub>t−1</sub>)，以及专家选择的动作a<sub>t</sub>和后续观察o<sub>t</sub>。我们随后提示一个独立的强大<strong class="term">指令遵循模型（instruction-following model）</strong>π∗，生成新思考ˆτ<sub>t</sub>作为执行动作a<sub>t</sub>的简洁逻辑依据：</p>
+  <div class="formula-container">
+    \[ \hat{\tau}_t \sim \pi^*(\tau|H_{t-1},a_t,o_t) \]
+    <div class="formula-number">(2)</div>
+  </div>
+  <p>通过对每一步迭代应用此方法，我们合成完整且高质量的<strong class="term">推理轨迹（reasoning trajectory）</strong>Ĥ<sub>T</sub> = (ˆτ<sub>0</sub>,a<sub>0</sub>,o<sub>0</sub>,...,ˆτ<sub>T</sub>,a<sub>T</sub>,o<sub>T</sub>)，其中推理过程简洁且目标明确。在此重构中，我们使用另一个<strong class="term">LLM（Large Language Model，大语言模型）</strong>并强制采用"<strong class="term">短链式思考（short-CoT）</strong>"风格。这一关键设计确保最终推理链足够紧凑，适用于长视野任务。该方法可规模化生成监督数据，灌输复杂推理模式，同时避免直接模仿的副作用。</p>
+</div>
+
+<div class="original">
+  <h3>4 Reinforcement Learning with Cold Start</h3>
+  <p>Our training methodology is a two-stage process. Inspired by recent advancements in post-training (Chu et al., 2025; Swamy et al., 2025; Ye et al., 2025) which highlight the efficacy of targeted fine-tuning before more complex learning, we first employ a modest <strong class="term">RFT</strong> phase as a "<strong class="term">cold start</strong>". This initial phase aims to equip the model with fundamental tool-use capabilities and adherence to the long-horizon reasoning skeleton. Subsequently, we leverage <strong class="term">RL</strong> to further refine the agent’s reasoning abilities, enhance its <strong class="term">sample efficiency</strong> (Yue et al., 2025), and enable fuller utilization of our high-quality, complex training data.</p>
+</div>
+
+<div class="translation">
+  <h3>4 冷启动强化学习（Reinforcement Learning with Cold Start）</h3>
+  <p>我们的训练方法是两阶段过程。受训后优化最新进展（Chu等，2025；Swamy等，2025；Ye等，2025）的启发——这些研究强调在复杂学习前进行定向微调的有效性——我们首先采用适度的<strong class="term">RFT（Rejection Sampling Fine-Tuning，拒绝采样微调）</strong>阶段作为"<strong class="term">冷启动（cold start）</strong>"。该初始阶段旨在让模型掌握基础工具使用能力并遵循长视野推理框架。随后，我们利用<strong class="term">RL（Reinforcement Learning，强化学习）</strong>进一步优化智能体推理能力，提升其<strong class="term">样本效率（sample efficiency）</strong>（Yue等，2025），并更充分利用高质量复杂训练数据。</p>
+</div>
+
+<div class="original">
+  <h3>4.1 Rejection Sampling Fine-Tuning</h3>
+  <p><strong>Setup</strong> Within a complete trajectory H<sub>T</sub>, the agent’s thoughts (τ<sub>i</sub>) are enclosed by <think> and </think> tags. Actions (a<sub>i</sub>) are demarcated by &lt;tool_call&gt; and &lt;/tool_call&gt; for function calls, or &lt;answer&gt; and &lt;/answer&gt; for final responses. The environment’s observations (o<sub>i</sub>) resulting from tool calls are wrapped with &lt;tool_response&gt; and &lt;/tool_response&gt; tags. Different segments are separated by these special tokens.</p>
+  <p><strong>Filtering</strong> We apply a three-stage filtering process to the expert-generated trajectories. Firstly, to guarantee the correctness of the supervisory signal, we conduct <strong class="term">rejection sampling</strong> that only trajectories culminating in a correct final answer are retained. Secondly, acknowledging that the expert models possess superior long-context processing capabilities compared to our policy model, we discard any trajectory exceeding 32k <strong class="term">tokens</strong> in length. Thirdly, we filter for task complexity by retaining those trajectories with more than 5 tool calls, as intricate reasoning patterns and effective planning strategies typically manifest through a more extended sequence of decision-making steps.</p>
+  <p><strong>Training objective</strong> The training objective is to specifically enhance the agent’s decision-making capability—that is, its ability to generate effective thoughts and actions. Consequently, the tokens corresponding to the environment’s observations (o<sub>i</sub>) are masked out from the loss calculation (Chen et al., 2023).</p>
+</div>
+
+<div class="translation">
+  <h3>4.1 拒绝采样微调（Rejection Sampling Fine-Tuning）</h3>
+  <p><strong>设置</strong> 在完整轨迹H<sub>T</sub>中，智能体的思考（τ<sub>i</sub>）由<thinking>和</thinking>标签包裹。动作（a<sub>i</sub>）通过&lt;tool_call&gt;和&lt;/tool_call&gt;标记函数调用，或通过&lt;answer&gt;和&lt;/answer&gt;标记最终响应。工具调用产生的环境观察（o<sub>i</sub>）由&lt;tool_response&gt;和&lt;/tool_response&gt;标签包裹。不同片段通过这些特殊<strong class="term">令牌（tokens）</strong>分隔。</p>
+  <p><strong>过滤</strong> 我们对专家生成的轨迹应用三重过滤：首先，为保证监督信号正确性，执行<strong class="term">拒绝采样（rejection sampling）</strong>——仅保留最终答案正确的轨迹；其次，鉴于专家模型比策略模型具有更强的长上下文处理能力，丢弃长度超过32k<strong class="term">令牌（tokens）</strong>的轨迹；第三，通过保留含5次以上工具调用的轨迹过滤任务复杂度，因为复杂推理模式和有效规划策略通常通过更长的决策步骤序列显现。</p>
+  <p><strong>训练目标</strong> 训练目标专门提升智能体决策能力——即生成有效思考和动作的能力。因此，环境观察（o<sub>i</sub>）对应的令牌在损失计算中被屏蔽（Chen等，2023）。</p>
+</div>
+
+<div class="original">
+  <h3>4.2 Duplicating Sampling Policy Optimization</h3>
+  <p>Following the <strong class="term">RFT</strong> cold-start phase, which equips the model with fundamental tool-use capabilities and adherence to a reasoning skeleton, we propose <strong class="term">Duplicating Sampling Policy Optimization (DUPO)</strong> to further refine the reasoning abilities, enhance the <strong class="term">sample efficiency</strong> (Yue et al., 2025) and ultimately elicit 6</p>
+</div>
+
+<div class="translation">
+  <h3>4.2 复制采样策略优化（Duplicating Sampling Policy Optimization）</h3>
+  <p>在<strong class="term">RFT</strong>冷启动阶段（使模型具备基础工具使用能力并遵循推理框架）后，我们提出<strong class="term">复制采样策略优化（DUPO，Duplicating Sampling Policy Optimization）</strong>，以进一步优化推理能力，提升<strong class="term">样本效率（sample efficiency）</strong>（Yue等，2025），最终实现6</p>
+</div>
+
+<!-- 摘要总结 -->
+<h2>摘要总结</h2>
+<p>本文核心提出：<br>
+1. <strong>轨迹重构方法</strong>：从专家模型生成的动作-观察序列中，通过指令模型逐步骤重建简洁逻辑依据（短链式思考），生成高质量推理轨迹；<br>
+2. <strong>两阶段训练框架</strong>：先通过<strong>拒绝采样微调（RFT）</strong>冷启动（三重过滤数据），再用<strong>复制采样策略优化（DUPO）</strong>提升样本效率和推理能力；<br>
+3. <strong>关键技术设计</strong>：公式\(\hat{\tau}_t \sim \pi^*(\tau|H_{t-1},a_t,o_t)\)实现思考重建，训练中屏蔽观察令牌以专注决策能力。</p>
+
+<!-- 术语识别 -->
+<h2>术语识别</h2>
+<ul>
+  <li><strong class="term">LRM（Large Reasoning Model，大型推理模型）</strong>：开源专家模型，能生成完整解决方案轨迹（含动作序列和原始思考）。</li>
+  <li><strong class="term">动作-观察序列（action-observation sequence）</strong>：形式化表示为(a₀,o₀,a₁,o₁,...)，描述智能体与环境的交互历史，包含"做什么"和"怎么做"，但缺失"为什么"。</li>
+  <li><strong class="term">指令遵循模型（instruction-following model）</strong>：强大模型π∗，根据历史H<sub>t-1</sub>、动作a<sub>t</sub>和观察o<sub>t</sub>生成逻辑依据ˆτ<sub>t</sub>（公式(2)）。</li>
+  <li><strong class="term">短链式思考（short-CoT）</strong>：强制实施的简洁推理风格，确保推理链紧凑，适用于长视野任务。</li>
+  <li><strong class="term">冷启动（cold start）</strong>：训练初始阶段（RFT），建立基础工具使用能力和推理框架。</li>
+  <li><strong class="term">RFT（Rejection Sampling Fine-Tuning，拒绝采样微调）</strong>：基于三重过滤（答案正确性、32k令牌长度限制、≥5工具调用复杂度）的微调方法。</li>
+  <li><strong class="term">拒绝采样（rejection sampling）</strong>：数据过滤技术，仅保留最终答案正确的轨迹。</li>
+  <li><strong class="term">令牌（tokens）</strong>：文本处理单位，轨迹长度限制为32k令牌（约2.4万汉字）。</li>
+  <li><strong class="term">DUPO（Duplicating Sampling Policy Optimization，复制采样策略优化）</strong>：RFT后的强化学习阶段，优化推理能力和样本效率。</li>
+  <li><strong class="term">样本效率（sample efficiency）</strong>：模型利用训练数据的有效性指标，高样本效率意味着用更少数据达到更好性能。</li>
+</ul>
+
+</body>
+</html>

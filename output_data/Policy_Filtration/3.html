@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>RLHF策略过滤技术解析</title>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    body { font-family: Arial, sans-serif; line-height: 1.6; }
+    .original { background-color: #f0f0f0; border: 1px solid #ccc; padding: 15px; margin: 10px 0; }
+    .translation { background-color: #e0f7e0; border: 1px solid #4CAF50; padding: 15px; margin: 10px 0; }
+    .formula-container { text-align: center; margin: 20px 0; }
+    .formula-label { font-weight: bold; margin-top: 5px; }
+    table { border-collapse: collapse; width: 100%; margin: 20px 0; }
+    th, td { border: 1px solid #ddd; padding: 8px; text-align: center; }
+    th { background-color: #f2f2f2; }
+    .term { color: red; font-weight: bold; }
+    .figure { background-color: #fffde7; padding: 15px; margin: 20px 0; text-align: center; font-weight: bold; }
+    h2 { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 5px; }
+  </style>
+</head>
+<body>
+
+<h1>RLHF策略过滤技术解析</h1>
+
+<!-- 内容理解 -->
+<h2>1. 内容理解</h2>
+<p>本文提出<strong class="term">策略过滤（Policy Filtration）</strong>技术用于改进<strong class="term">基于人类反馈的强化学习（RLHF）</strong>。核心创新在于：通过在策略优化过程中引入响应过滤机制，显著降低奖励模型的噪声干扰。具体实现为<strong class="term">PF-PPO算法</strong>，该算法在标准PPO框架中增加采样过滤步骤，通过权重向量控制响应选择策略（包括BoN/BR/BW三种模式）。实验使用<strong class="term">决定系数（R²）</strong>验证过滤策略能提升奖励信号与实际得分的相关性，其中BR和BW策略效果最佳。</p>
+
+<!-- 内容翻译 -->
+<h2>2. 内容翻译</h2>
+
+<div class="original">
+  <h3>Policy Filtration for RLHF to Mitigate Noise in Reward Models</h3>
+  <p>Algorithm 2 Policy Filtration Proximal Policy Optimization (PF-PPO)</p>
+  <p>for iteration = 1,2,··· do</p>
+  <p>Fill the buffer B with samples collected by the current language model μ<sub>θ</sub></p>
+  <p>Update π<sub>θ</sub> using PPO w.r.t. the cumulative reward defined in Equation (4) based on B</p>
+  <p>end for</p>
+</div>
+<div class="translation">
+  <h3>基于RLHF的策略过滤技术用于缓解奖励模型噪声</h3>
+  <p>算法2 策略过滤近端策略优化（PF-PPO）</p>
+  <p>对于迭代次数 = 1,2,··· 执行：</p>
+  <p>用当前语言模型μ<sub>θ</sub>收集的样本填充缓冲区B</p>
+  <p>基于B，使用PPO算法根据公式(4)定义的累积奖励更新π<sub>θ</sub></p>
+  <p>结束循环</p>
+</div>
+
+<div class="original">
+  <p>that, if we wrap the policy with proper filtration during policy optimization of RLHF, the reward model can avoid yielding unreliable rewards and thus give better signal to guide policy learning.</p>
+</div>
+<div class="translation">
+  <p>在RLHF的策略优化过程中引入适当的过滤机制，可使奖励模型避免产生不可靠的奖励值，从而为策略学习提供更优质的指导信号。</p>
+</div>
+
+<div class="original">
+  <p>Policy filtration. Given an unfiltered policy model π<sub>θ</sub>(y|c) that generates responses y to the context c, we denote the corresponding filtered policy as μ<sub>θ</sub>(y|c). We consider a family of policy filtration, from which we can sample responses to the context c as follows: We first sample N responses from π<sub>θ</sub>(·|c) and rank them by the reward model R<sub>ϕ</sub>, obtaining y<sub>1</sub>,···, y<sub>N</sub> with R<sub>ϕ</sub>(y<sub>1</sub>|c)≥ ··· ≥ R<sub>ϕ</sub>(y<sub>N</sub>|c). Then, given a weight vector w = (w<sub>1</sub>,···, w<sub>N</sub>) satisfying ∑<sub>i∈[N]</sub>w<sub>i</sub> = 1, we sample a one-hot vector z = (z<sub>1</sub>,···, z<sub>N</sub>) from the categorical distribution parameterized by w such that P[z<sub>i</sub> = 1] = w<sub>i</sub>. At last, the filtered policy μ<sub>θ</sub>(·|c) yields the response selected by z following y = ∑<sub>i∈[N]</sub>z<sub>i</sub>y<sub>i</sub>.</p>
+</div>
+<div class="translation">
+  <p><strong>策略过滤</strong>。给定未过滤策略模型π<sub>θ</sub>(y|c)（生成针对上下文c的响应y），其对应的过滤策略记为μ<sub>θ</sub>(y|c)。我们设计如下策略过滤流程：1）从π<sub>θ</sub>(·|c)采样N个响应；2）用奖励模型R<sub>ϕ</sub>排序得到y<sub>1</sub>,···,y<sub>N</sub>（满足R<sub>ϕ</sub>(y<sub>1</sub>|c)≥···≥R<sub>ϕ</sub>(y<sub>N</sub>|c)）；3）给定权重向量w=(w<sub>1</sub>,···,w<sub>N</sub>)且∑<sub>i∈[N]</sub>w<sub>i</sub>=1；4）从w参数化的分类分布采样one-hot向量z，满足P[z<sub>i</sub>=1]=w<sub>i</sub>；5）过滤策略输出响应y=∑<sub>i∈[N]</sub>z<sub>i</sub>y<sub>i</sub>。</p>
+</div>
+
+<div class="original">
+  <p>We can define several filtered policies under this family. Specifically, we obtain the best-of-N (BoN), best-random (BR), and best-worst (BW) filtered policy by setting the weight vector as follows:</p>
+  <div class="formula-container">
+    $$ w_{BoN} = (1,0,\cdots,0) $$
+    $$ w_{BR} = \left(\frac{1}{2},\frac{1}{2(N-1)},\cdots,\frac{1}{2(N-1)}\right) $$
+    $$ w_{BW} = \left(\frac{1}{2},0,\cdots,0,\frac{1}{2}\right) $$
+    <div class="formula-label">公式(5)</div>
+  </div>
+</div>
+<div class="translation">
+  <p>基于此框架可定义三种过滤策略：1）<strong class="term">BoN（Best-of-N）</strong>：仅选最高分响应；2）<strong class="term">BR（Best-Random）</strong>：50%概率选最优，其余均匀分配；3）<strong class="term">BW（Best-Worst）</strong>：50%概率选最优或最差响应。其权重向量定义如公式(5)。</p>
+</div>
+
+<div class="original">
+  <p>Training objective. Since our target is to learn a good filtered policy μ<sub>θ</sub>, we consider the follow objective:</p>
+  <div class="formula-container">
+    $$ \max_{\theta} \mathbb{E}_c \mathbb{E}_{y\sim\mu_\theta(\cdot|c)} \left[ r_\phi(y|c) - \beta D_{KL}(\mu_\theta(\cdot|x) \| \pi_{SFT}(\cdot|x)) \right] $$
+    <div class="formula-label">公式(6)</div>
+  </div>
+</div>
+<div class="translation">
+  <p><strong>训练目标</strong>。目标函数如公式(6)所示，最大化过滤策略的期望奖励同时约束与监督微调（SFT）策略的KL散度，其中β为平衡系数。</p>
+</div>
+
+<div class="original">
+  <p>In practice, use the samples collected by the unfiltered policy π<sub>θ</sub> as if they were collected by μ<sub>θ</sub> in the original PPO algorithm. This leads to Policy Filtration Proximal Policy Optimization (PF-PPO) listed in Algorithm 2, which is an algorithm that only modifies the sampling process of PPO.</p>
+</div>
+<div class="translation">
+  <p>实际实现中，将未过滤策略π<sub>θ</sub>采集的样本视为μ<sub>θ</sub>样本用于PPO更新。此方法形成<strong class="term">PF-PPO算法</strong>（算法2），仅修改PPO的采样过程。</p>
+</div>
+
+<div class="original">
+  <p>Weight choice. By defining different weight vectors w, we can obtain different policy filtering strategies for PF-PPO. Our objective is to choose a weight vector w such that the accuracy of the reward model on the responses generated by the filtered policies can be maximized. To measure this accuracy, we choose a simple heuristic, the coefficient of determination (aka R-squared or R²) between the rewards and the actual scores of the responses generated by the policy.</p>
+</div>
+<div class="translation">
+  <p><strong>权重选择</strong>。目标是通过权重向量w最大化奖励模型在过滤响应上的准确性。使用<strong class="term">决定系数（R²）</strong>衡量奖励值与实际得分的线性相关性：</p>
+  <div class="formula-container">
+    $$ R^2 = 1 - \frac{\sum_i (s_i - \hat{s}_i)^2}{\sum_i (s_i - \bar{s})^2} $$
+  </div>
+  <p>其中s<sub>i</sub>为实际得分，ŝ<sub>i</sub>为基于奖励值R<sub>i</sub>的线性预测值，s̄为平均得分。</p>
+</div>
+
+<div class="figure">
+  <p>表1：未过滤策略π<sub>θ</sub>与不同过滤策略μ<sub>θ</sub>的决定系数（R²）对比</p>
+  <table>
+    <tr>
+      <th>Policy</th>
+      <th>No filter</th>
+      <th>BoN</th>
+      <th>BR</th>
+      <th>BW</th>
+    </tr>
+    <tr>
+      <td>SFT</td>
+      <td>0.886</td>
+      <td>0.454</td>
+      <td>0.922</td>
+      <td>0.952</td>
+    </tr>
+    <tr>
+      <td>Middle RLHF</td>
+      <td>0.907</td>
+      <td>0.389</td>
+      <td>0.935</td>
+      <td>0.956</td>
+    </tr>
+    <tr>
+      <td>Final RLHF</td>
+      <td>0.876</td>
+      <td>0.431</td>
+      <td>0.916</td>
+      <td>0.946</td>
+    </tr>
+  </table>
+</div>
+
+<div class="original">
+  <p>We present the results in Table 1. We observe that best-random (BR) and best-worst (BW) can improve the reliability of the given reward model on sampled responses compared with unfiltered policy. The BoN strategy does not improve the R², which indicates that learning a BoN filtered policy may not result in good performance in RL.</p>
+</div>
+<div class="translation">
+  <p>表1结果显示：相比未过滤策略，<strong class="term">BR</strong>和<strong class="term">BW</strong>策略显著提升奖励可靠性（R² > 0.9），而<strong class="term">BoN</strong>策略反而降低指标值，说明其在强化学习中效果不佳。</p>
+</div>
+
+<!-- 摘要总结 -->
+<h2>3. 摘要总结</h2>
+<p>本文核心贡献是提出<strong class="term">策略过滤近端策略优化（PF-PPO）</strong>算法，用于解决RLHF中奖励模型的噪声问题。关键技术包括：</p>
+<ol>
+  <li>在PPO采样阶段引入<strong>策略过滤机制</strong>，通过权重向量控制响应选择</li>
+  <li>设计三种过滤策略：<strong>BoN</strong>（仅选最优）、<strong>BR</strong>（最优+随机）、<strong>BW</strong>（最优+最差）</li>
+  <li>使用<strong>决定系数（R²）</strong>作为奖励可靠性的量化指标</li>
+  <li>实验证明<strong>BR/BW策略</strong>显著提升奖励信号质量（R² > 0.9）</li>
+</ol>
+<p>该方法仅修改PPO的采样过程，即可有效抑制奖励过优化问题，提升RLHF最终性能。</p>
+
+<!-- 术语识别 -->
+<h2>4. 术语解释</h2>
+<dl>
+  <dt><span class="term">策略过滤（Policy Filtration）</span></dt>
+  <dd>在策略优化前对生成的响应进行筛选的机制。通过权重向量控制选择概率，保留高质量响应用于训练，公式表示为：μ<sub>θ</sub>(y|c) = ∑z<sub>i</sub>y<sub>i</sub></dd>
+  
+  <dt><span class="term">PF-PPO（Policy Filtration Proximal Policy Optimization）</span></dt>
+  <dd>改进的PPO算法，核心修改是在采样阶段用过滤策略μ<sub>θ</sub>替代原始策略π<sub>θ</sub>（见算法2）</dd>
+  
+  <dt><span class="term">BoN/BR/BW策略</span></dt>
+  <dd>
+    <ul>
+      <li><strong>BoN</strong>（Best-of-N）：仅选择奖励分数最高的响应（w=(1,0,...,0)）</li>
+      <li><strong>BR</strong>（Best-Random）：50%概率选最优，其余概率均匀分配给其他响应（w=(0.5, 0.5/(N-1),...)）</li>
+      <li><strong>BW</strong>（Best-Worst）：50%概率选最优或最差响应（w=(0.5,0,...,0.5)）</li>
+    </ul>
+  </dd>
+  
+  <dt><span class="term">决定系数（R² / R-squared）</span></dt>
+  <dd>奖励模型可靠性的量化指标，计算公式：R²=1-∑(s<sub>i</sub>-ŝ<sub>i</sub>)²/∑(s<sub>i</sub>-s̄)²。值越接近1表明奖励预测实际得分的线性相关性越强</dd>
+  
+  <dt><span class="term">奖励过优化（Reward Over-optimization）</span></dt>
+  <dd>RLHF中的常见问题，指策略过度优化奖励模型分数却导致实际性能下降的现象</dd>
+</dl>
+
+</body>
+</html>

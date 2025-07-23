@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>论文解析：策略过滤在RLHF中的应用</title>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    body { font-family: Arial, sans-serif; line-height: 1.6; }
+    .original { background-color: #f0f0f0; border: 1px solid #cccccc; padding: 15px; margin: 10px 0; border-radius: 5px; }
+    .translation { background-color: #e0f7e0; border: 1px solid #4caf50; padding: 15px; margin: 10px 0; border-radius: 5px; }
+    .table-container { background-color: #fffde7; padding: 15px; margin: 20px 0; border-radius: 5px; }
+    table { width: 100%; border-collapse: collapse; margin: 10px 0; }
+    th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+    .term { color: red; font-weight: bold; }
+    .formula { text-align: center; margin: 20px 0; }
+    h2 { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 5px; }
+    h3 { color: #2980b9; }
+  </style>
+</head>
+<body>
+
+<h1>论文解析：策略过滤在RLHF中的应用</h1>
+
+<!-- 内容理解 -->
+<h2>1. 内容理解</h2>
+<div>
+  <p>本文研究<span class="term">策略过滤（Policy Filtration）</span>在<span class="term">基于人类反馈的强化学习（RLHF）</span>中的应用，核心目标是降低<span class="term">奖励模型（Reward Models）</span>中的噪声干扰。主要贡献包括：</p>
+  <ul>
+    <li>提出三类策略过滤方法：基于阈值的过滤（<span class="term">PF-PPO (BoN/BR/BW)</span>）、基于奖励重新加权（<span class="term">PPO-pow-k</span>）和基于排名的过滤（<span class="term">PF-PPO (BR/BW)</span>）。</li>
+    <li>引入<span class="term">R²指标（R2）</span>作为预测工具，通过对比<span class="term">监督微调策略（SFT policy）</span>的奖励值与实际表现的相关性，提前评估过滤策略效果。</li>
+    <li>在代码生成（<span class="term">HumanEval</span>、<span class="term">MBPP</span>）和数学推理（<span class="term">Ape210K</span>、<span class="term">CMATH</span>）任务上验证：
+      <ul>
+        <li>基于排名的<span class="term">PF-PPO (BW)</span>在HumanEval上取得最佳效果（pass@1: 82.4, R²: 0.952）</li>
+        <li>策略过滤显著提升基础<span class="term">近端策略优化（PPO）</span>算法性能</li>
+        <li>在数学任务中，<span class="term">PF-PPO + ORM</span>组合在Ape210K上达到86.2分</li>
+      </ul>
+    </li>
+    <li>关键结论：策略过滤通过剔除不可靠奖励样本提升<span class="term">信噪比（Signal-to-Noise Ratio）</span>，且基于排名的方法对奖励分布更具鲁棒性。</li>
+  </ul>
+</div>
+
+<!-- 内容翻译 -->
+<h2>2. 内容翻译</h2>
+
+<div class="original">
+  <p>Policy Filtration for RLHF to Mitigate Noise in Reward Models</p>
+</div>
+<div class="translation">
+  <p>基于RLHF的策略过滤以降低奖励模型中的噪声</p>
+</div>
+
+<div class="table-container">
+  <div class="original">
+    <p>Table 3. The comparison on the pass@1 results of different policy filtering strategies on HumanEval and their corresponding R2 based on the SFT policy. The background are colored based on their values with blue and red indicating the minimum and the maximum respectively.</p>
+  </div>
+  <div class="translation">
+    <p>表3. 不同策略过滤方法在HumanEval上的pass@1结果及其基于SFT策略的R²对比。背景色根据数值着色，蓝色和红色分别表示最小值和最大值。</p>
+  </div>
+  <table>
+    <tr>
+      <th>策略</th>
+      <th>HumanEval pass@1</th>
+      <th>MBPP pass@1</th>
+      <th>基于SFT策略的R²</th>
+    </tr>
+    <tr><td>PPO</td><td>78.1</td><td>73.8</td><td>0.782</td></tr>
+    <tr><td>PPO-M</td><td>80.8</td><td>75.0</td><td>0.886</td></tr>
+    <tr><td>PF-PPO (BoN)</td><td>75.8</td><td>71.7</td><td>0.454</td></tr>
+    <tr><td>PF-PPO (BR)</td><td>82.9</td><td>75.9</td><td>0.841</td></tr>
+    <tr><td>PF-PPO (BW)</td><td>82.4</td><td>76.2</td><td>0.952</td></tr>
+    <tr><td>PPO-top</td><td>80.5</td><td>71.2</td><td>0.621</td></tr>
+    <tr><td>PPO-top-rand</td><td>81.9</td><td>75.3</td><td>0.889</td></tr>
+    <tr><td>PPO-top-bott</td><td>81.7</td><td>75.4</td><td>0.927</td></tr>
+    <tr><td>PPO-pow-1</td><td>81.0</td><td>74.2</td><td>0.926</td></tr>
+    <tr><td>PPO-pow-2</td><td>81.3</td><td>75.4</td><td>0.939</td></tr>
+    <tr><td>PPO-pow-3</td><td>81.9</td><td>76.5</td><td>0.946</td></tr>
+  </table>
+</div>
+
+<div class="original">
+  <p>ified threshold. These strategies can be regarded as the threshold version of PF-PPO (BoN), PF-PPO (BR) and PF-PPO (BW) respectively. The thresholds are tuned coarsely to achieve good results on a separate validation set.</p>
+</div>
+<div class="translation">
+  <p>特定阈值。这些策略可分别视为<span class="term">PF-PPO (BoN)</span>、<span class="term">PF-PPO (BR)</span>和<span class="term">PF-PPO (BW)</span>的阈值版本。阈值经过粗调以在独立验证集上获得良好结果。</p>
+</div>
+
+<div class="original">
+  <p>•Filtering based on reward reweighting. Compared with the above strategies that use thresholds, we consider a softer version that adjusts the sample weights based on their rewards, aiming at down-weight the samples with moderate and possibly unreliable rewards. Specifically, we increase the sample weight of the responses with rewards in the reliable region and decrease the sample weight otherwise. To achieve this goal, given a reward model \(R_\\phi\) that returns rewards in the range \([-1,1]\), we assign the weight for the sample \((c, y)\) proportional to \(|R_\\phi(y|c)|^k\) and collect samples with these weights from the buffer \(B\) to train the policy network and the value network. We denote these strategies as PPO-pow-\(k\).</p>
+</div>
+<div class="translation">
+  <p>• 基于奖励重新加权的过滤。相比使用阈值的策略，我们提出一种更柔和的版本：根据奖励值调整样本权重，旨在降低中等或不可靠奖励样本的权重。具体而言，对奖励值位于可靠区域的响应增加样本权重，反之则降低权重。为实现此目标，给定奖励模型 \(R_\\phi\)（其奖励值范围为 \([-1,1]\)），我们为样本 \((c, y)\) 分配与 \(|R_\\phi(y|c)|^k\) 成比例的权重，并从缓冲区 \(B\) 中按权重收集样本来训练策略网络和价值网络。此类策略记为<span class="term">PPO-pow-\(k\)</span>。</p>
+  <div class="formula">
+    \[ \\text{权重} \\propto |R_\\phi(y|c)|^k \\quad (公式1) \\]
+  </div>
+</div>
+
+<div class="original">
+  <p>A question then arises: how to choose a policy filtering strategy from these strategies? To answer this question, we propose to calculate the R2 between the rewards and the actual scores on the samples collected by different strategies, and then choose a strategy with good results on this metrics. We can use the SFT policy as the unfiltered policy and calculate R2 as described in Section 4. Since the SFT policy is obtained prior to the PPO training phase, this metric can be used to predict the results of different filtering strategies before actually conduct costly PPO training.</p>
+</div>
+<div class="translation">
+  <p>随之而来的问题是：如何从这些策略中选择最佳策略？为此，我们提出计算不同策略收集样本的奖励值与实际得分间的<span class="term">R²（R2）</span>，并选择该指标表现优异的策略。使用<span class="term">SFT策略（SFT policy）</span>作为未过滤基准，按第4节方法计算R²。由于SFT策略在PPO训练前即可获得，该指标可在实际进行高成本PPO训练前预测不同过滤策略的效果。</p>
+</div>
+
+<div class="original">
+  <p>We compare theses strategies on HumanEval and present the performance of different policy filtering strategies and their corresponding R2 in Table 3. We make the following observations: First, the R2 of different strategies positively correlate with their performance in general, indicating R2 can serve as a tool to predict the performance of different policy filtering strategies. Second, different policy filtering strategies (except for BoN versions) improve the performance of the base PPO algorithms. This indicates that filtering samples with unreliable rewards can increase the signal-to-noise ratio of the reward model feedback and thus improve the performance. Third, PF-PPO strategies (which are rank-based) outperforms other strategies (which are threshold-based or reweighting-based). This may due to the fact that rank-based strategies are more robust to the reward distribution of the given reward model.</p>
+</div>
+<div class="translation">
+  <p>我们在HumanEval上比较这些策略（表3），得出以下结论：首先，各策略的R²与性能呈正相关，表明R²可作为预测策略过滤效果的指标；其次，多数策略过滤方法（除BoN变体外）均能提升基础<span class="term">PPO算法（PPO algorithms）</span>性能，证明过滤不可靠奖励样本可提高奖励模型反馈的<span class="term">信噪比（Signal-to-Noise Ratio）</span>；最后，基于排名的<span class="term">PF-PPO策略（PF-PPO strategies）</span>优于阈值或重新加权方法，因其对奖励分布更具鲁棒性。</p>
+</div>
+
+<div class="table-container">
+  <div class="original">
+    <p>Table 4. Comparison between PF-PPO and PPO-S on two math benchmarks (Ape210K and CMATH) using three different reward functions (the original reward model, the oracle model, and the combined reward model). Better results for each reward model is highlighted in bold.</p>
+  </div>
+  <div class="translation">
+    <p>表4. PF-PPO与PPO-S在数学基准（Ape210K和CMATH）上使用三种奖励函数（原始奖励模型、Oracle模型和组合奖励模型）的对比。每种奖励模型的最佳结果以粗体标出。</p>
+  </div>
+  <table>
+    <tr>
+      <th>方法</th>
+      <th>Ape210K</th>
+      <th>CMATH</th>
+    </tr>
+    <tr><td>PPO-S + ORM</td><td>84.1</td><td>92.3</td></tr>
+    <tr><td>PF-PPO + ORM</td><td><strong>86.2</strong></td><td><strong>95.1</strong></td></tr>
+    <tr><td>PPO-S + Oracle</td><td>82.1</td><td>90.8</td></tr>
+    <tr><td>PF-PPO + Oracle</td><td>83.8</td><td>91.2</td></tr>
+    <tr><td>PPO-S + CRM</td><td>83.9</td><td>93.1</td></tr>
+    <tr><td>PF-PPO + CRM</td><td>84.3</td><td>94.2</td></tr>
+  </table>
+</div>
+
+<div class="original">
+  <p>Discussion. The performance of different policy filtering strategies may vary across different tasks, different reward models, and different base models. Therefore, although we find that PF-PPO (BR) and PF-PPO (BW) are the best strategies in our setting, other policy filtering strategies may be a better choice in other settings. Therefore, a more practical procedure should be first calculate the R2 using the given reward model and the corresponding SFT policy on the specific task and select candidate policy filtering strategies. Note that R2 is not a perfect tool to select policy filtering strategies and we leave seeking for better predictive metrics as a future research direction.</p>
+</div>
+<div class="translation">
+  <p>讨论：不同策略过滤方法的性能因任务、奖励模型和基础模型而异。尽管<span class="term">PF-PPO (BR)</span>和<span class="term">PF-PPO (BW)</span>在当前设置中最优，但其他场景可能适用不同策略。建议实践流程：针对特定任务，用给定奖励模型和SFT策略计算R²，再筛选候选策略。需注意R²并非完美指标，寻找更优预测指标是未来研究方向。</p>
+</div>
+
+<div class="original">
+  <p>5.5. Experiment Results on Math Reasoning</p>
+  <p>To evaluate the effectiveness of PF-PPO in other domains and different types of reward models, we applied PF-PPO to solve math problems. We consider three types of reward models: the original reward model (ORM) that is trained on preference datasets using a Bradley–Terry model (Bradley & Terry, 1952), an oracle model (Oracle) that extracts the final answer from the response and compares it with the ground truth, and a combined reward model (CRM) that integrates the above two models, similar to the approach used in Qwen-Math (Yang et al., 2024). We compare PF-PPO (BR) to PPO-S using these reward models.</p>
+  <p>We can observe that PF-PPO consistently outperforms the baseline.</p>
+</div>
+<div class="translation">
+  <p>5.5 数学推理实验结果</p>
+  <p>为验证<span class="term">PF-PPO</span>在其他领域及不同奖励模型中的有效性，我们将其应用于数学问题求解。使用三类奖励模型：基于<span class="term">Bradley-Terry模型</span>在偏好数据集上训练的<span class="term">原始奖励模型（ORM）</span>；从响应中提取最终答案并与真实值对比的<span class="term">Oracle模型</span>；整合前两者的<span class="term">组合奖励模型（CRM）</span>（类似Qwen-Math方法）。对比<span class="term">PF-PPO (BR)</span>与<span class="term">PPO-S</span>的结果表明，PF-PPO持续超越基线。</p>
+</div>
+
+<!-- 摘要总结 -->
+<h2>3. 摘要总结</h2>
+<div>
+  <p>本文提出<span class="term">策略过滤（Policy Filtration）</span>框架以优化<span class="term">RLHF（Reinforcement Learning from Human Feedback）</span>中的奖励噪声问题，核心创新点包括：</p>
+  <ul>
+    <li>开发三类过滤策略：阈值过滤（<span class="term">PF-PPO (BoN/BR/BW)</span>）、奖励重加权（<span class="term">PPO-pow-k</span>）和排名过滤（<span class="term">PF-PPO (BR/BW)</span>）</li>
+    <li>引入<span class="term">R²指标（R2）</span>作为预筛选工具，通过<span class="term">SFT策略（SFT policy）</span>预测过滤策略效果</li>
+    <li>实验验证：
+      <ul>
+        <li>在HumanEval上，<span class="term">PF-PPO (BW)</span>取得最佳pass@1（82.4）和R²（0.952）</li>
+        <li>策略过滤普遍提升<span class="term">PPO（Proximal Policy Optimization）</span>基础性能，信噪比提高是关键机制</li>
+        <li>数学任务中，<span class="term">PF-PPO + ORM</span>在Ape210K上达86.2分，显著优于基线</li>
+      </ul>
+    </li>
+  </ul>
+  <p>结论：基于排名的过滤策略对奖励分布最具鲁棒性，R²可作为有效的策略预选指标，但需结合具体任务特性选择最优方法。</p>
+</div>
+
+<!-- 术语识别 -->
+<h2>4. 术语识别</h2>
+<div>
+  <dl>
+    <dt><span class="term">RLHF (Reinforcement Learning from Human Feedback)</span></dt>
+    <dd>基于人类反馈的强化学习：通过人类偏好数据训练奖励模型，再指导强化学习策略优化的框架。</dd>
+    
+    <dt><span class="term">Policy Filtration (策略过滤)</span></dt>
+    <dd>在强化学习训练过程中筛选高置信度样本的方法，旨在降低奖励模型噪声，包含阈值过滤、奖励重加权和排名过滤三类技术。</dd>
+    
+    <dt><span class="term">PF-PPO (BW/BR/BoN)</span></dt>
+    <dd>策略过滤PPO的变体：BW（Best-Worst）基于排名选择最佳-最差样本，BR（Best Reward）选择最高奖励样本，BoN（Best of N）选择奖励前N的样本。</dd>
+    
+    <dt><span class="term">PPO-pow-k</span></dt>
+    <dd>基于奖励重加权的PPO策略：样本权重按公式 \( \\text{权重} \\propto |R_\\phi(y|c)|^k \) 计算，k控制权重分布陡峭度。</dd>
+    
+    <dt><span class="term">R² (R-squared)</span></dt>
+    <dd>决定系数：衡量奖励模型预测值与实际表现相关性的统计指标，本文用作过滤策略效果的预测工具。</dd>
+    
+    <dt><span class="term">SFT policy (Supervised Fine-Tuned policy)</span></dt>
+    <dd>监督微调策略：通过监督学习微调的基础策略，在PPO训练前生成初始样本。</dd>
+    
+    <dt><span class="term">Signal-to-Noise Ratio (信噪比)</span></dt>
+    <dd>有效信号

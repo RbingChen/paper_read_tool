@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+  .original { background-color: #f5f5f5; border: 1px solid #999; padding: 15px; margin: 10px 0; }
+  .translation { background-color: #e8f5e9; border: 1px solid #4CAF50; padding: 15px; margin: 10px 0; }
+  .term { color: red; font-weight: bold; }
+  .formula { text-align: center; margin: 20px 0; }
+  table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+  th, td { border: 1px solid #ddd; padding: 8px; }
+</style>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.0/es5/tex-mml-chtml.js'></script>
+</head>
+<body>
+
+<section>
+  <h2>1. 内容理解</h2>
+  <p>本文档是OneRec技术报告中的符号定义部分，主要包含三个模块：</p>
+  <ul>
+    <li><span class='term'>编码器-解码器架构（Encoder-Decoder Architecture）</span>：详细说明了Transformer结构的层数配置、位置编码和MoE层参数</li>
+    <li><span class='term'>偏好对齐与强化学习（Preference Alignment & RL）</span>：描述策略模型参数、采样机制和ECPO优化目标</li>
+    <li><span class='term'>工业约束（Industrial Constraints）</span>：定义合法内容集、病毒式内容处理规则等生产环境约束</li>
+  </ul>
+</section>
+
+<section>
+  <h2>2. 内容翻译</h2>
+  <div class='original'>
+    <h3>Encoder-Decoder Architecture</h3>
+    <p>𝐿enc Number of transformer encoder layers</p>
+    <p>epos Positional embeddings, epos∈ℝ<sup>(1+𝐿𝑠+𝐿𝑝+𝑁𝑞)×𝑑model</sup></p>
+  </div>
+  <div class='translation'>
+    <h3>编码器-解码器架构</h3>
+    <p>𝐿enc Transformer编码器层数</p>
+    <div class='formula'>
+      $$epos \in \mathbb{R}^{(1+𝐿_𝑠+𝐿_𝑝+𝑁_𝑞)×𝑑_{\text{model}}}$$
+      <p>（公式1）位置编码</p>
+    </div>
+  </div>
+
+  <div class='original'>
+    <h3>Preference Alignment & Reinforcement Learning</h3>
+    <p>𝜋𝜃 Policy model with parameters 𝜃</p>
+  </div>
+  <div class='translation'>
+    <h3>偏好对齐与强化学习</h3>
+    <p>𝜋𝜃 参数为𝜃的策略模型</p>
+  </div>
+</section>
+
+<section>
+  <h2>3. 摘要总结</h2>
+  <p>该技术文档系统性地定义了OneRec推荐系统的核心组件参数：</p>
+  <ul>
+    <li>基于Transformer的编解码架构配置（层数、位置编码、MoE专家网络）</li>
+    <li>强化学习策略模型（ECPO优化目标、奖励机制、采样策略）</li>
+    <li>工业部署约束条件（合法内容过滤、病毒式内容调控）</li>
+  </ul>
+</section>
+
+<section>
+  <h2>4. 术语解释</h2>
+  <table>
+    <tr>
+      <th>术语</th>
+      <th>解释</th>
+    </tr>
+    <tr>
+      <td><span class='term'>MoE（Mixture of Experts）</span></td>
+      <td>混合专家网络层，包含𝑁experts个并行专家网络，通过Top-𝑘路由策略选择激活专家</td>
+    </tr>
+    <tr>
+      <td><span class='term'>ECPO（Early Clipped Policy Optimization）</span></td>
+      <td>带早期截断的策略优化算法，使用𝜖,𝛿双参数控制策略更新幅度</td>
+    </tr>
+    <tr>
+      <td><span class='term'>P-Score</span></td>
+      <td>个性化奖励评分机制，用于评估生成项𝑟𝑖的质量</td>
+    </tr>
+  </table>
+</section>
+
+</body>
+</html>

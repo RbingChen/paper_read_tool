@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>论文分析 - Ablation Experiments on Sampling Temperature</title>
+  <style>
+    body { font-family: Arial, sans-serif; line-height: 1.6; margin: 20px; }
+    h1 { color: #2c3e50; text-align: center; }
+    h2 { color: #3498db; border-bottom: 2px solid #3498db; padding-bottom: 5px; }
+    .section { margin-bottom: 30px; }
+    .original { background-color: #f0f0f0; border: 1px solid #cccccc; padding: 15px; margin: 10px 0; border-radius: 5px; }
+    .translation { background-color: #e0f7e0; border: 1px solid #4caf50; padding: 15px; margin: 10px 0; border-radius: 5px; }
+    .figure { background-color: #fffde7; padding: 15px; margin: 10px 0; border: 1px dashed #ffd600; text-align: center; font-weight: bold; }
+    .term { color: red; font-weight: bold; }
+    table { width: 100%; border-collapse: collapse; margin: 15px 0; }
+    th, td { border: 1px solid #dddddd; padding: 8px; text-align: left; }
+    th { background-color: #f2f2f2; }
+    .formula { text-align: center; margin: 15px 0; font-style: italic; }
+    .formula-number { display: block; text-align: center; font-size: 0.9em; color: #666666; }
+  </style>
+</head>
+<body>
+  <h1>论文分析：采样温度的消融实验</h1>
+  
+  <div class="section">
+    <h2>内容翻译（英文与中文对照）</h2>
+    <div class="figure">Figure9: AIME25avg@8performanceandentropyversusthenumberoftrainingstepsinAblationExperiments</div>
+    <div class="figure">图9：在消融实验中，AIME25平均@8性能和熵随训练步数的变化</div>
+    
+    <div class="original">3. Training with a <span class="term">temperature</span> of 0.6 starts with the lowest <span class="term">entropy</span> and learns more slowly than at a <span class="term">temperature</span> of 1.0. Note that the <span class="term">entropy</span> in the right plot remains around 0.2 because <span class="term">adaptive entropy control</span> is enabled. This experiment was conducted on an earlier version of the 32B variant using only math data. Note also that in the left plot, the two <span class="term">temperatures</span> indicate the <span class="term">rollout temperatures</span> used during training. The scores of AIME25 were obtained by evaluating both models at a <span class="term">temperature</span> of 0.6 to ensure a fair comparison.</div>
+    <div class="translation">3. 使用<span class="term">温度 (temperature)</span>为0.6的训练开始时<span class="term">熵 (entropy)</span>最低，学习速度比<span class="term">温度 (temperature)</span>为1.0时慢。注意，在右侧图中，<span class="term">熵 (entropy)</span>保持在0.2左右，因为启用了<span class="term">自适应熵控制 (adaptive entropy control)</span>。此实验是在32B变体的早期版本上进行的，仅使用数学数据。还需注意，在左侧图中，两个<span class="term">温度 (temperature)</span>表示训练期间使用的<span class="term">rollout温度 (rollout temperature)</span>。AIME25的分数是通过在<span class="term">温度 (temperature)</span>0.6下评估两个模型获得的，以确保公平比较。</div>
+    
+    <div class="original">training efficiency due to the absence of advantageous signals. On the other hand, using a low <span class="term">temperature</span> reduces <span class="term">group diversity</span>, resulting in solutions that are highly similar or potentially all correct. Therefore, selecting an appropriate <span class="term">temperature</span> is critical to ensure sufficient in-group solution diversity. We conducted <span class="term">ablation experiments</span> on the choice of <span class="term">sampling temperature</span> τ, and the results are presented in Figure 9.</div>
+    <div class="translation">训练效率由于缺乏有利信号而降低。另一方面，使用低<span class="term">温度 (temperature)</span>会减少<span class="term">组多样性 (group diversity)</span>，导致解决方案高度相似或可能全部正确。因此，选择适当的<span class="term">温度 (temperature)</span>对于确保组内解决方案的足够多样性至关重要。我们对<span class="term">采样温度 (sampling temperature)</span> τ的选择进行了<span class="term">消融实验 (ablation experiments)</span>，结果如图9所示。</div>
+    
+    <div class="original">Ablation Experiments 4: Different Online Sampling Temperatures τ</div>
+    <div class="translation">消融实验4：不同的在线采样温度τ</div>
+    
+    <div class="original">We compared two different <span class="term">sampling temperatures</span> in online RL training: 1. High <span class="term">Temperature</span>: We set the <span class="term">temperature</span> hyperparameter τ= 1.0. 2. Low <span class="term">Temperature</span>: We set the <span class="term">temperature</span> hyperparameter τ= 0.6. The other hyperparameters were kept the same for both experiments and are reported in Table 3. The results can be found in Figure 9.</div>
+    <div class="translation">我们在在线强化学习训练中比较了两种不同的<span class="term">采样温度 (sampling temperature)</span>：1. 高<span class="term">温度 (temperature)</span>：我们设置<span class="term">温度 (temperature)</span>超参数τ=1.0。2. 低<span class="term">温度 (temperature)</span>：我们设置<span class="term">温度 (temperature)</span>超参数τ=0.6。其他超参数在两次实验中保持一致，并在表3中报告。结果可以在图9中找到。</div>
+    
+    <div class="original">Batch Size Mini-batch Size Group Size Context Length TEntropy Control KL Loss 64 32 16 Stage I16K target entropy 0.2 0</div>
+    <div class="translation">批大小 小批大小 组大小 上下文长度 T熵控制 KL损失 64 32 16 阶段I 16K 目标熵 0.2 0</div>
+    
+    <div class="original">Table 3: Shared hyperparameters in Ablation Experiments 4</div>
+    <div class="translation">表3：消融实验4中的共享超参数</div>
+    
+    <div class="original">In our experiments, we identified an additional <span class="term">entropy</span>-related phenomenon: when a low <span class="term">temperature</span> is used (e.g., 0.6), the model either begins with extremely low <span class="term">entropy</span> or its <span class="term">entropy</span> quickly collapses to near zero within approximately 100 steps. This behavior initially slows learning progress and ultimately leads to stagnation. We hypothesize that with a less diverse group of solutions – despite containing both correct and incorrect responses – the policy update becomes overly focused on a narrow subset of tokens. This results in a large probability mass being assigned to specific tokens that frequently appear in the sampled responses. When we increased the <span class="term">rollout temperature</span> to 1.0, the model’s initial <span class="term">entropy</span> rose to a more desirable range. Although <span class="term">entropy</span> still eventually converges, the higher <span class="term">temperature</span> substantially enhances the learning signal in the early stages and preserves greater potential for continued training, as shown in the figure above.</div>
+    <div class="translation">在我们的实验中，我们发现了一个额外的<span class="term">熵 (entropy)</span>相关现象：当使用低<span class="term">温度 (temperature)</span>（例如0.6）时，模型要么以极低<span class="term">熵 (entropy)</span>开始，要么其<span class="term">熵 (entropy)</span>在大约100步内迅速崩溃到接近零。这种行为最初会减慢学习进度，并最终导致停滞。我们假设，由于解决方案组多样性较低——尽管包含正确和错误响应——策略更新变得过度集中在令牌的狭窄子集上。这导致大量概率质量被分配给在采样响应中频繁出现的特定令牌。当我们将<span class="term">rollout温度 (rollout temperature)</span>增加到1.0时，模型的初始<span class="term">熵 (entropy)</span>上升到更理想的范围。尽管<span class="term">熵 (entropy)</span>最终仍然收敛，但更高的<span class="term">温度 (temperature)</span>在早期阶段显著增强了学习信号，并保留了继续训练的更大潜力，如上图所示。</div>
+    
+    <table>
+      <caption>Table 3: Shared hyperparameters in Ablation Experiments 4</caption>
+      <tr>
+        <th>Batch Size</th>
+        <th>Mini-batch Size</th>
+        <th>Group Size</th>
+        <th>Context Length</th>
+        <th>T</th>
+        <th>Entropy Control</th>
+        <th>KL Loss</th>
+      </tr>
+      <tr>
+        <td>64</td>
+        <td>32</td>
+        <td>16</td>
+        <td>Stage I</td>
+        <td>16K</td>
+        <td>target entropy 0.2</td>
+        <td>0</td>
+      </tr>
+    </table>
+    <div class="translation">表3：消融实验4中的共享超参数（中文对照）</div>
+  </div>
+  
+  <div class="section">
+    <h2>内容理解</h2>
+    <p>文本描述了在强化学习（RL）训练中，针对采样温度（τ）进行的消融实验（Ablation Experiments）。核心焦点是比较高温（τ=1.0）和低温（τ=0.6）对模型性能的影响，特别是熵（entropy）、学习效率和解决方案多样性的变化。</p>
+    <p>实验设置：使用在线RL训练框架，比较两种温度设置（τ=1.0 和 τ=0.6），其他超参数保持一致（见表3）。实验基于32B模型的早期版本，仅使用数学数据，并通过AIME25指标评估性能。</p>
+    <p>关键发现：</p>
+    <ul>
+      <li>低温（τ=0.6）导致初始熵极低或快速崩溃至零（约100步内），学习速度缓慢，最终停滞。这是因为低温减少组多样性（group diversity），使解决方案高度相似（可能全部正确），但策略更新过度集中在少数令牌上，限制了探索。</li>
+      <li>高温（τ=1.0）提升初始熵到理想范围，增强早期学习信号，尽管熵最终收敛，但能保持训练潜力，避免停滞。</li>
+      <li>自适应熵控制（adaptive entropy control）用于维持熵在0.2左右，确保公平比较（所有模型在τ=0.6下评估）。</li>
+    </ul>
+    <p>总体认知：温度选择是权衡探索（高温增加多样性）和利用（低温聚焦最优解）的关键。过高温度可能降低效率，而过低温度导致早熟收敛。实验通过图9展示熵和性能随训练步数的变化，验证了高温在初期训练的优势。</p>
+  </div>
+  
+  <div class="section">
+    <h2>摘要总结</h2>
+    <p>本段文本摘要总结了在强化学习消融实验中，不同采样温度（τ）对模型训练的影响。核心内容如下：</p>
+    <ul>
+      <li>实验比较了高温（τ=1.0）和低温（τ=0.6）设置，发现低温导致熵快速崩溃至零、学习停滞，而高温提升初始熵和早期学习信号。</li>
+      <li>低温减少组多样性，使解决方案高度相似，但可能正确；高温增强多样性，促进探索，避免早熟收敛。</li>
+      <li>自适应熵控制用于稳定熵值，确保实验公平性（在τ=0.6下评估所有模型）。</li>
+      <li>结果强调选择适当温度的重要性，以平衡多样性和效率，高温（τ=1.0）在训练初期更有效。实验数据通过图9和表3展示。</li>
+    </ul>
+  </div>
+  
+  <div class="section">
+    <h2>术语识别</h2>
+    <p>文本中识别出的关键术语如下（以红色粗体高亮显示，包含英文原文）：</p>
+    <ul>
+      <li><span class="term">温度 (temperature)</span>：一个超参数（τ），用于控制采样过程中的随机性。高温（如τ=1.0）增加输出多样性（探索），低温（如τ=0.6）减少多样性（利用），聚焦高概率解。在RL中，影响策略的探索-利用权衡。</li>
+      <li><span class="term">熵 (entropy)</span>：信息论指标，衡量系统的不确定性或随机性。在RL中，高熵表示策略更随机（更多探索），低熵表示更确定性（更多利用）。文本中，熵崩溃（collapse to near zero）表示策略过早收敛，减少学习潜力。</li>
+      <li><span class="term">自适应熵控制 (adaptive entropy control)</span>：一种技术，通过动态调整策略以维持目标熵值（如0.2），防止熵过高或过低。用于稳定训练，确保公平比较。</li>
+      <li><span class="term">rollout温度 (rollout temperature)</span>：在训练过程中用于生成轨迹（rollout）的温度参数。区别于采样温度，但文本中两者类似，影响策略输出的多样性。</li>
+      <li><span class="term">采样温度 (sampling temperature)</span>：同温度（τ），特指在动作采样阶段使用的温度，控制策略输出的随机性。</li>
+      <li><span class="term">组多样性 (group diversity)</span>：指在训练中，一组解决方案（solutions）的差异程度。高多样性促进探索，低多样性导致相似解，可能限制学习。</li>
+      <li><span class="term">消融实验 (ablation experiments)</span>：一种实验设计，通过移除或修改特定组件（如温度τ）来研究其对系统的影响。文本中实验4聚焦温度选择。</li>
+      <li><span class="term">KL损失 (KL loss)</span>：Kullback-Leibler散度损失，用于衡量两个概率分布（如新旧策略）的差异。在RL中，约束策略更新，防止过大偏差。表3中值为0，表示未使用KL正则化。</li>
+      <li><span class="term">AIME25</span>：一个评估指标（具体未详述），可能表示在25个任务上的平均性能得分（avg@8）。用于比较模型性能。</li>
+    </ul>
+  </div>
+</body>
+</html>

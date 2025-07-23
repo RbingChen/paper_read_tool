@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>OneRec Technical Report Analysis</title>
+<style>
+  body { font-family: Arial, sans-serif; line-height: 1.6; margin: 20px; }
+  h1 { color: #2c3e50; text-align: center; }
+  h2 { color: #3498db; border-bottom: 2px solid #3498db; padding-bottom: 5px; }
+  h3 { color: #2980b9; }
+  .original { background-color: lightgrey; border: 1px solid grey; padding: 15px; margin: 15px 0; border-radius: 5px; }
+  .translation { background-color: lightgreen; border: 1px solid green; padding: 15px; margin: 15px 0; border-radius: 5px; }
+  .figure { background-color: yellow; padding: 15px; margin: 15px 0; border-radius: 5px; text-align: center; }
+  .term { font-weight: bold; color: red; }
+  table { width: 100%; border-collapse: collapse; margin: 10px 0; }
+  th, td { border: 1px solid black; padding: 8px; text-align: center; }
+  th { background-color: #f2f2f2; }
+  .section { margin-bottom: 30px; }
+  dl dt { font-weight: bold; margin-top: 10px; }
+  dl dd { margin-left: 20px; margin-bottom: 10px; }
+</style>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+<h1>OneRec Technical Report Analysis</h1>
+
+<div id="understanding">
+  <h2>内容理解</h2>
+  <p>本报告是OneRec推荐系统的技术研究报告，重点探讨了三个关键缩放实验对模型性能的影响。首先，<span class="term">特征缩放（Feature Scaling）</span>实验比较了仅使用基础<span class="term">项目ID视频嵌入（item ID vidembeddings）</span>的基线模型与加入全面特征集的增强模型，结果显示添加特征能显著降低<span class="term">训练损失（training loss）</span>并提升推荐质量的多维度指标。其次，<span class="term">代码本缩放（Codebook Scaling）</span>实验通过增加代码本大小（从8,192到32,768），揭示了代码本扩展会扩大交叉熵损失计算的候选集，因此使用<span class="term">基于奖励的指标（reward-based metrics）</span>评估性能，观察到播放时间指标的显著改进。最后，<span class="term">推理缩放（Infer Scaling）</span>实验研究了推理时生成项数量（Pass@K）的影响，表明增加K值（从8到512）能带来一致性能提升，但超过512后收益边际化，因此选择K=512作为生产部署的权衡点。整体上，报告强调了特征工程、代码本大小和推理策略在优化推荐系统中的关键作用，并通过实证数据展示了性能改进的具体维度。</p>
+</div>
+
+<div id="translation">
+  <h2>内容翻译</h2>
+  
+  <div class="section">
+    <div class="original">
+      <h3>OneRec Technical Report</h3>
+      <p>FeatureScaling To investigate the impact of feature engineering on model performance, we compare the model with two input configurations: a baseline using only item ID vidembeddings from 256 positive-feedback items, and an enhanced version incorporating the comprehensive feature set described in our methodology. As shown in Figure 10 and Table 2, the enhanced model with additional features achieves lower training loss and substantial improvements across multiple dimensions of recommendation quality.</p>
+      <div class="figure">
+        <p>Figure 10 | Training loss comparison with and without additional features.</p>
+        <table>
+          <tr><th>Metric</th><th>w/o. feature</th><th>w/. feature</th><th>Impr.</th></tr>
+          <tr><td>lvtr</td><td>0.4940</td><td>0.5500</td><td>11.34%</td></tr>
+          <tr><td>vtr</td><td>0.8730</td><td>0.8901</td><td>1.96%</td></tr>
+          <tr><td>ltr</td><td>0.0391</td><td>0.0441</td><td>12.79%</td></tr>
+          <tr><td>wtr</td><td>0.0190</td><td>0.0224</td><td>17.89%</td></tr>
+          <tr><td>cmtr</td><td>0.0919</td><td>0.1010</td><td>9.90%</td></tr>
+          <tr><td>P-score</td><td>0.0749</td><td>0.0966</td><td>28.88%</td></tr>
+        </table>
+      </div>
+      <div class="figure">
+        <p>Table 2 | Performance comparison with and without additional features.</p>
+      </div>
+    </div>
+    <div class="translation">
+      <h3>OneRec技术报告</h3>
+      <p>特征缩放：为研究<span class="term">特征工程（feature engineering）</span>对<span class="term">模型性能（model performance）</span>的影响，我们比较了两种输入配置的模型：一个基线模型仅使用来自256个<span class="term">正反馈项（positive-feedback items）</span>的<span class="term">项目ID视频嵌入（item ID vidembeddings）</span>，以及一个增强版本，包含我们方法论中描述的全面特征集。如图10和表2所示，带有额外特征的增强模型实现了更低的<span class="term">训练损失（training loss）</span>，并在<span class="term">推荐质量（recommendation quality）</span>的多个维度上取得了显著改进。</p>
+      <div class="figure">
+        <p>图10 | 有与无额外特征的训练损失比较。</p>
+        <table>
+          <tr><th>指标</th><th>无特征</th><th>有特征</th><th>改进</th></tr>
+          <tr><td>lvtr</td><td>0.4940</td><td>0.5500</td><td>11.34%</td></tr>
+          <tr><td>vtr</td><td>0.8730</td><td>0.8901</td><td>1.96%</td></tr>
+          <tr><td>ltr</td><td>0.0391</td><td>0.0441</td><td>12.79%</td></tr>
+          <tr><td>wtr</td><td>0.0190</td><td>0.0224</td><td>17.89%</td></tr>
+          <tr><td>cmtr</td><td>0.0919</td><td>0.1010</td><td>9.90%</td></tr>
+          <tr><td>P-score</td><td>0.0749</td><td>0.0966</td><td>28.88%</td></tr>
+        </table>
+      </div>
+      <div class="figure">
+        <p>表2 | 有与无额外特征的性能比较。</p>
+      </div>
+    </div>
+  </div>
+  
+  <div class="section">
+    <div class="original">
+      <p>CodebookScaling To investigate the impact of codebook size on model performance, we experiment by expanding the codebook from 8,192 to 32,768. It is important to note that NTP loss, as defined in our parameter scaling experiments, cannot be directly used for comparison here. This is because an increase in codebook size inherently expands the candidate set for the cross-entropy loss calculation, rendering direct loss comparisons misleading. Consequently, we evaluate performance using reward-based metrics. The performance improvements across various metrics are presented in Table 3. As shown in the result, increasing the codebook size yields significant improvements in playtime metrics and a slight gain in interaction metrics.</p>
+      <div class="figure">
+        <p>Table 3 | Codebook Scaling.</p>
+        <table>
+          <tr><th>Metric</th><th>Size=8K</th><th>Size=32K</th><th>Impr.</th></tr>
+          <tr><td>lvtr</td><td>0.5118</td><td>0.5245</td><td>2.48%</td></tr>
+          <tr><td>vtr</td><td>0.9384</td><td>0.9491</td><td>1.14%</td></tr>
+          <tr><td>ltr</td><td>0.0298</td><td>0.0299</td><td>0.34%</td></tr>
+          <tr><td>wtr</td><td>0.0153</td><td>0.0154</td><td>0.65%</td></tr>
+          <tr><td>cmtr</td><td>0.0650</td><td>0.0664</td><td>2.15%</td></tr>
+          <tr><td>P-score</td><td>0.2516</td><td>0.2635</td><td>4.75%</td></tr>
+        </table>
+      </div>
+    </div>
+    <div class="translation">
+      <p>代码本缩放：为研究<span class="term">代码本大小（codebook size）</span>对模型性能的影响，我们通过将代码本从8,192扩展到32,768进行实验。需要注意的是，如参数缩放实验中定义的<span class="term">NTP损失（NTP loss）</span>不能直接用于此处比较。这是因为代码本大小的增加固有地扩展了<span class="term">交叉熵损失（cross-entropy loss）</span>计算的候选集，使得直接损失比较具有误导性。因此，我们使用<span class="term">基于奖励的指标（reward-based metrics）</span>评估性能。各种指标的改进如表3所示。结果显示，增加代码本大小在<span class="term">播放时间指标（playtime metrics）</span>上带来显著改进，在<span class="term">交互指标（interaction metrics）</span>上略有提升。</p>
+      <div class="figure">
+        <p>表3 | 代码本缩放。</p>
+        <table>
+          <tr><th>指标</th><th>大小=8K</th><th>大小=32K</th><th>改进</th></tr>
+          <tr><td>lvtr</td><td>0.5118</td><td>0.5245</td><td>2.48%</td></tr>
+          <tr><td>vtr</td><td>0.9384</td><td>0.9491</td><td>1.14%</td></tr>
+          <tr><td>ltr</td><td>0.0298</td><td>0.0299</td><td>0.34%</td></tr>
+          <tr><td>wtr</td><td>0.0153</td><td>0.0154</td><td>0.65%</td></tr>
+          <tr><td>cmtr</td><td>0.0650</td><td>0.0664</td><td>2.15%</td></tr>
+          <tr><td>P-score</td><td>0.2516</td><td>0.2635</td><td>4.75%</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+  
+  <div class="section">
+    <div class="original">
+      <p>Infer Scaling We investigate the impact of different numbers of generated items in inference (Pass@K) on model performance. As detailed in Table 4, increasing K of Pass@K from 8 to 512 results in consistent performance improvements across all evaluated metrics. However, further increasing K from 512 to 1,024 yields only marginal gains. Considering the trade-off between performance improvements and the associated computational resource consumption, we select K=512 for deployment in our production environment.</p>
+      <div class="figure">
+        <p>Table 4 | Inference Pass@K Scaling.</p>
+        <table>
+          <tr><th>Metric</th><th>Pass@8</th><th>Pass@64</th><th>Pass@512</th><th>Pass@1024</th><th>Impr.</th></tr>
+          <tr><td>lvtr</td><td>0.3675</td><td>0.4927</td><td>0.5351</td><td>0.5443</td><td>48.11%</td></tr>
+          <tr><td>vtr</td><td>0.9444</td><td>0.9462</td><td>0.9513</td><td>0.9530</td><td>0.91%</td></tr>
+          <tr><td>ltr</td><td>0.0278</td><td>0.0346</td><td>0.0425</td><td>0.0452</td><td>62.59%</td></tr>
+          <tr><td>wtr</td><td>0.0114</td><td>0.0138</td><td>0.0182</td><td>0.0197</td><td>72.81%</td></tr>
+          <tr><td>cmtr</td><td>0.0350</td><td>0.0566</td><td>0.0809</td><td>0.0891</td><td>154.57%</td></tr>
+          <tr><td>P-score</td><td>0.0811</td><td>0.2051</td><td>0.3375</td><td>0.3859</td><td>376.10%</td></tr>
+        </table>
+      </div>
+    </div>
+    <div class="translation">
+      <p>推理缩放：我们研究了推理中生成项数量（<span class="term">Pass@K</span>）对模型性能的影响。如表4详细所示，将Pass@K的K从8增加到512在所有评估指标上带来一致的性能改进。然而，进一步将K从512增加到1,024仅产生边际收益。考虑到性能改进与相关计算资源消耗之间的权衡，我们选择K=512用于生产环境部署。</p>
+      <div class="figure">
+        <p>表4 | 推理Pass@K缩放。</p>
+        <table>
+          <tr><th>指标</th><th>Pass@8</th><th>Pass@64</th><th>Pass@512</th><th>Pass@1024</th><th>改进</th></tr>
+          <tr><td>lvtr</td><td>0.3675</td><td>0.4927</td><td>0.5351</td><td>0.5443</td><td>48.11%</td></tr>
+          <tr><td>vtr</td><td>0.9444</td><td>0.9462</td><td>0.9513</td><td>0.9530</td><td>0.91%</td></tr>
+          <tr><td>ltr</td><td>0.0278</td><td>0.0346</td><td>0.0425</td><td>0.0452</td><td>62.59%</td></tr>
+          <tr><td>wtr</td><td>0.0114</td><td>0.0138</td><td>0.

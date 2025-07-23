@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>论文解析报告</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; }
+        .original { 
+            background-color: #f0f0f0; 
+            border: 1px solid #ccc; 
+            padding: 15px; 
+            margin-bottom: 10px;
+        }
+        .translation { 
+            background-color: #e0f7e0; 
+            border: 1px solid #4CAF50; 
+            padding: 15px; 
+            margin-bottom: 20px;
+        }
+        .formula {
+            background-color: #fffde7;
+            padding: 15px;
+            text-align: center;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        .term {
+            color: red;
+            font-weight: bold;
+        }
+        h1, h2, h3 { color: #2c3e50; }
+        .section { margin-bottom: 30px; }
+    </style>
+</head>
+<body>
+
+<!-- 内容理解 -->
+<div class="section">
+    <h1>内容理解</h1>
+    <p>该文本聚焦于生成式奖励模型（GRM）的技术局限性和未来研究方向，特别是DeepSeek-GRM模型。核心内容分为两部分：</p>
+    <ol>
+        <li><strong>局限性分析</strong>：指出DeepSeek-GRM在可验证任务中落后于标量模型，归因于标量奖励模型（RM）能捕捉推理过程的隐藏特征，而GRM需更强的推理能力。同时提出两种改进方案：基于参考的奖励生成和长程推理。</li>
+        <li><strong>未来方向</strong>：提出四大创新路径：工具集成（代码解释器/搜索引擎）、原则与批评解耦生成、LLM离线评估应用，以及长程推理优化。</li>
+        <li><strong>技术实现</strong>：系统对比三类奖励生成范式（标量/半标量/生成式）和两种评分模式（点对/配对），通过数学公式明确定义技术框架。</li>
+    </ol>
+    <p>文本通过公式化定义（如公式7-9）建立了严谨的技术分类体系，强调GRM在可解释性和可扩展性上的潜在优势。</p>
+</div>
+
+<!-- 内容翻译 -->
+<div class="section">
+    <h1>内容翻译</h1>
+    
+    <div class="original">
+        Preprint. Under review. could alleviate the problem. (2) In specific domains such as verifiable tasks, <strong class="term">DeepSeek-GRM</strong> still lags behind <strong class="term">scalar models</strong>. This could be because the <strong class="term">scalar RMs</strong> capture hidden features of reasoning queries and responses, while <strong class="term">GRMs</strong> need stronger reasoning capabilities to examine responses thoroughly. However, scalar RMs suffer severe biases and scalability issues. For GRMs, we found that both <strong class="term">reference-based reward generation</strong> (Appendix E.1.3) and <strong class="term">long-horizon reasoning</strong> (Appendix D.3) could mitigate this limitation. (3) Due to the universality of the <strong class="term">pointwise GRM approach</strong>, DeepSeek-GRM could potentially serve as a <strong class="term">process RM</strong> in addition to the <strong class="term">outcome RM</strong>. Though we have not explored much in this direction in the paper, the performance in the Reasoning subset of Reward Bench, which mainly comprises of MATH-prm data (Lightman et al., 2024), could partially support the potential of this application.
+    </div>
+    <div class="translation">
+        预印本，正在评审中。（2）在可验证任务等特定领域，<strong class="term">DeepSeek-GRM</strong>仍落后于<strong class="term">标量模型（scalar models）</strong>。这可能是因为<strong class="term">标量奖励模型（scalar RMs）</strong>能捕捉推理查询和响应的隐藏特征，而<strong class="term">生成式奖励模型（GRMs）</strong>需要更强的推理能力来全面审查响应。然而标量奖励模型存在严重偏差和可扩展性问题。我们发现，对GRM而言，<strong class="term">基于参考的奖励生成（reference-based reward generation）</strong>（附录E.1.3）和<strong class="term">长程推理（long-horizon reasoning）</strong>（附录D.3）均可缓解此限制。（3）由于<strong class="term">点对式GRM方法（pointwise GRM approach）</strong>的普适性，DeepSeek-GRM除作为<strong class="term">结果奖励模型（outcome RM）</strong>外，还可能充当<strong class="term">过程奖励模型（process RM）</strong>。尽管本文未深入探索此方向，但Reward Bench中推理子集（主要包含MATH-prm数据）的表现可部分支持此应用的潜力。
+    </div>
+
+    <div class="original">
+        Future Directions There are also several promising directions for future research based on <strong class="term">SPCT</strong> or DeepSeek-GRM models. (1) <strong class="term">Tool incorporation</strong> of RMs is studied by previous work (Li et al., 2024b), and could also be used for DeepSeek-GRM augmentation. With tools such as code interpreters and search engine interfaces, the generated critiques could be more accurate for tasks that requires strict procedures or extensive knowledge, and the cases in which GRMs fail to follow principles related to numeric calculations, pattern matching, etc. could be avoided. (2) The generation paradigm for principles and critiques could be decomposed into separate stages, that is, the principles could be generated ahead of time for each query and the responses to be rated and stored, and then the critiques are generated with GRMs, rules, or other agentic approaches. The principle generation serves as an interface for the following critiques. This might improve the efficiency of current GRMs for the integration of <strong class="term">RL pipelines</strong>. (3) The DeepSeek-GRM could be potentially used in <strong class="term">LLM offline evaluation</strong>. Since each principle reflects a criteria, we can get criteria from all data points that a particular LLM is inferior than one another, as a interpretable protocol of the weaknesses of the particular LLM. (4) The DeepSeek-GRM might be benefit from long-horizon reasoning. However, this will further affect its efficiency. These directions should be studied in the future work.
+    </div>
+    <div class="translation">
+        <strong>未来方向</strong> 基于<strong class="term">SPCT</strong>或DeepSeek-GRM模型，未来研究存在多个潜力方向：（1）奖励模型的<strong class="term">工具集成（Tool incorporation）</strong>已在先前工作中被研究（Li等，2024b），也可用于增强DeepSeek-GRM。通过代码解释器和搜索引擎接口等工具，生成的批评可在需要严格流程或广泛知识的任务中更准确，并避免GRM在数值计算、模式匹配等原则遵循上的失误。（2）原则与批评的生成范式可解耦为独立阶段：即预先为每个待评估查询和响应生成原则并存储，再通过GRM、规则或其他智能体方法生成批评。原则生成为后续批评提供接口，此举可提升当前GRM在<strong class="term">强化学习流程（RL pipelines）</strong>中的效率。（3）DeepSeek-GRM或可用于<strong class="term">LLM离线评估（LLM offline evaluation）</strong>。由于每条原则对应一个标准，我们能从特定LLM的劣势数据点中提取标准，作为其弱点的可解释性协议。（4）DeepSeek-GRM可能受益于长程推理，但这会进一步影响其效率。这些方向应在未来工作中探索。
+    </div>
+
+    <div class="original">
+        C Implementation Details
+    </div>
+    <div class="translation">
+        <strong>附录C 实现细节</strong>
+    </div>
+
+    <div class="original">
+        C.1 Comparisons of Different RM Approaches
+    </div>
+    <div class="translation">
+        <strong>C.1 不同奖励模型方法的比较</strong>
+    </div>
+
+    <div class="original">
+        Reward Generation Paradigms Classic RMs adopt the (a) scalar approach to generate rewards ( R), which assigns scalar values to the given query and responses. The scalar approach is further extended to the (b) semi-scalar approach, which generates texts besides the scalar value. And the (c) generative approach only generates textual rewards.
+    </div>
+    <div class="translation">
+        <strong>奖励生成范式</strong> 经典奖励模型采用（a）<strong class="term">标量方法（scalar approach）</strong>生成奖励（R），为给定查询和响应分配标量值。该方法进一步扩展为（b）<strong class="term">半标量方法（semi-scalar approach）</strong>，除标量值外还生成文本；以及（c）<strong class="term">生成式方法（generative approach）</strong>，仅生成文本奖励。
+    </div>
+
+    <div class="formula">
+        \\[
+        R = \\begin{cases} 
+        S & \\text{(Scalar)} \\\\
+        (S, C) & \\text{(Semi-Scalar)} \\\\
+        C & \\text{(Generative)}
+        \\end{cases} \\sim r_\\theta(x,\\{y_i\\}_{i=1}^n) \\quad (7)
+        \\]
+        <p>公式7：奖励生成函数定义。其中 \\(x\\) 为查询，\\(y_i\\) 为第 \\(i\\) 个响应，\\(r_\\theta\\) 是参数化奖励函数，\\(S \\in \\mathbb{R}^m (m \\leq n)\\) 为标量奖励，\\(C\\) 为批评文本。</p>
+    </div>
+
+    <div class="original">
+        Scoring Patterns We distinguish two main scoring approaches for rewards: <strong class="term">pointwise</strong> and <strong class="term">pairwise</strong>. The (i) pointwise approach assigns an individual score to each response:
+    </div>
+    <div class="translation">
+        <strong>评分模式</strong> 我们区分两种主要奖励评分方法：<strong class="term">点对式（pointwise）</strong>和<strong class="term">配对式（pairwise）</strong>。（i）点对式方法为每个响应分配独立分数：
+    </div>
+
+    <div class="formula">
+        \\[
+        \\{S_i\\}_{i=1}^n = f_{\\text{point}}(R, \\{y_i\\}_{i=1}^n), \\quad R \\sim r_\\theta(x, \\{y_i\\}_{i=1}^n), \\quad S_i \\in \\mathbb{R} \\quad (8)
+        \\]
+        <p>公式8：点对式评分函数。\\(f_{\\text{point}}(\\cdot,\\cdot)\\) 为分割函数。</p>
+    </div>
+
+    <div class="original">
+        In contrast, the (ii) pairwise approach can be viewed as a best-of- n method, selecting a single best response from all candidates:
+    </div>
+    <div class="translation">
+        相比之下，（ii）配对式方法可视为最优-n选择，从候选响应中选出最佳响应：
+    </div>
+
+    <div class="formula">
+        \\[
+        \\hat{y} = f_{\\text{pair}}(R, \\{y_i\\}_{i=1}^n), \\quad R \\sim r_\\theta(x, \\{y_i\\}_{i=1}^n), \\quad \\hat{y} \\in \\{y_i\\}_{i=1}^n \\quad (9)
+        \\]
+        <p>公式9：配对式评分函数。\\(f_{\\text{pair}}(\\cdot,\\cdot)\\) 为选择函数，通常 \\(n=2\\)，无法应用于单响应评分（\\(n=1\\)）。</p>
+    </div>
+</div>
+
+<!-- 摘要总结 -->
+<div class="section">
+    <h1>摘要总结</h1>
+    <p>本文核心聚焦于生成式奖励模型（GRM）的技术突破与挑战：</p>
+    <ul>
+        <li><strong>问题诊断</strong>：DeepSeek-GRM在可验证任务中落后于标量模型，因后者能捕捉推理隐藏特征，但标量模型存在偏差和扩展性问题。</li>
+        <li><strong>解决方案</strong>：提出基于参考的奖励生成和长程推理作为改进路径，并论证点对式GRM兼具过程与结果评估的双重潜力。</li>
+        <li><strong>未来方向</strong>：规划四大创新路径——工具增强（代码/搜索接口）、原则-批评解耦生成、LLM离线评估框架、长程推理优化。</li>
+        <li><strong>技术框架</strong>：系统定义三类奖励生成范式（标量/半标量/生成式）和两种评分模式（点对/配对），通过数学公式建立严谨模型（公式7-9）。</li>
+    </ul>
+    <p>研究强调GRM在可解释性和扩展性上的优势，为下一代奖励模型提供理论蓝图和技术路线。</p>
+</div>
+
+<!-- 术语识别 -->
+<div class="section">
+    <h1>术语识别</h1>
+    <dl>
+        <dt><strong class="term">DeepSeek-GRM</strong> (生成式奖励模型)</dt>
+        <dd>基于生成式AI的奖励模型，通过文本批评（critiques）而非标量分数评估LLM输出，增强可解释性。</dd>
+        
+        <dt><strong class="term">Scalar RMs</strong> (标量奖励模型)</dt>

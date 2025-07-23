@@ -1,0 +1,54 @@
+<html>
+<head>
+<style>
+  .original { background: #f0f0f0; border: 1px solid #999; padding: 15px; margin: 10px 0; }
+  .translation { background: #e8f5e9; border: 1px solid #4CAF50; padding: 15px; margin: 10px 0; }
+  .term { color: red; font-weight: bold; }
+  .figure { background: #fffde7; padding: 15px; margin: 15px 0; }
+  h3 { color: #2c3e50; }
+</style>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.0/es5/tex-mml-chtml.js'></script>
+</head>
+<body>
+
+<h2>论文解析：WebSailor导航超人推理能力的Web Agent</h2>
+
+<!-- 内容理解 -->
+<h3>1. 内容理解</h3>
+<div class='original'>
+  <p>论文提出WebSailor作为突破LLM认知限制的后训练框架，通过结构化采样生成高不确定性任务，结合RFT冷启动和DUPO强化学习算法，在BrowseComp等复杂信息搜索基准上首次实现开源模型与专有系统（如DeepResearch）的性能对齐。</p>
+</div>
+
+<!-- 内容翻译 -->
+<h3>2. 内容翻译</h3>
+<div class='original'>
+  <h4>Abstract</h4>
+  <p>Transcending human cognitive limitations represents a critical frontier in LLM training...</p>
+</div>
+<div class='translation'>
+  <h4>摘要</h4>
+  <p>突破人类认知局限是大型语言模型训练的关键前沿。DeepResearch等专有系统已在BrowseComp等极端复杂的信息检索基准上展现出超人能力...</p>
+</div>
+
+<!-- 摘要总结 -->
+<h3>3. 摘要总结</h3>
+<div class='original'>
+  <p>核心创新：1）通过<term>结构化采样(structured sampling)</term>和<term>信息模糊化(information obfuscation)</term>生成高不确定性任务 2）<term>RFT冷启动(RFT cold start)</term>策略 3）新型强化学习算法<term>DUPO</term>。实验显示WebSailor在BrowseComp中英基准上达到专有系统水平。</p>
+</div>
+
+<!-- 术语识别 -->
+<h3>4. 关键术语解析</h3>
+<ul>
+  <li><term>BrowseComp</term>: 衡量Web Agent复杂信息检索能力的基准测试，包含中英双语版本</li>
+  <li><term>DUPO (Duplicating Sampling Policy Optimization)</term>: 基于样本复制的策略优化算法，通过并行采样提升训练效率</li>
+  <li><term>RFT冷启动</term>: 基于推理轨迹微调(Reasoning-aware Fine-Tuning)的初始化策略</li>
+  <li><term>信息模糊化</term>: 通过部分信息隐藏构建高不确定性环境的技术</li>
+</ul>
+
+<div class='figure'>
+  <h4>图示说明</h4>
+  <p>图1: BrowseComp中英基准测试结果对比。WebSailor（蓝色）与专有系统（灰色）性能对比，显示能力差距显著缩小。</p>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>论文内容处理报告</title>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    body { font-family: Arial, sans-serif; line-height: 1.6; margin: 20px; }
+    h1 { color: #2c3e50; text-align: center; }
+    h2 { color: #3498db; border-bottom: 2px solid #3498db; padding-bottom: 5px; }
+    .section { margin-bottom: 30px; }
+    .original { background-color: #f0f0f0; border: 1px solid #cccccc; padding: 15px; margin: 10px 0; border-radius: 5px; }
+    .translation { background-color: #e0f7e0; border: 1px solid #4CAF50; padding: 15px; margin: 10px 0; border-radius: 5px; }
+    .term { color: red; font-weight: bold; }
+    .summary, .explanation { background-color: #f9f9f9; padding: 15px; border-left: 4px solid #3498db; margin: 10px 0; }
+    .term-list { margin: 10px 0; padding-left: 20px; }
+    .term-list li { margin-bottom: 10px; }
+    .formula-container { text-align: center; margin: 20px 0; background-color: #fffde7; padding: 15px; border: 1px solid #ffd54f; border-radius: 5px; }
+    .formula-label { font-style: italic; margin-top: 5px; }
+  </style>
+</head>
+<body>
+  <h1>论文内容处理报告</h1>
+  
+  <!-- 任务a: 内容理解 -->
+  <div class="section">
+    <h2>a. 内容理解</h2>
+    <div class="explanation">
+      <p>该文本描述了大型语言模型训练数据的收集和过滤过程。核心内容包括：数据收集阶段，从多个公开开源数据集获取数据，覆盖数学推理、代码生成、科学推理、指令跟随和通用聊天等任务；每个任务类别都确保数据包含可验证的真实答案（<span class="term">ground truth</span>）或测试用例（<span class="term">test cases</span>），并列出具体数据集。查询过滤阶段涉及数据清洗：先移除重复项，再处理常见质量问题，如移除包含URL或图像引用的查询，以防止模型产生幻觉（<span class="term">hallucinations</span>）；最后，通过精确匹配（<span class="term">exact matching</span>）和语义去重（<span class="term">semantic deduplication</span>）移除与评估集相似的查询。特别针对数学数据，有额外过滤机制：使用大型语言模型（<span class="term">LLM</span>）分析模糊查询，并通过工具如math_verify验证真实答案的正确性；不适合的数据类型（如证明问题）被过滤或重写。整体上，文本强调数据质量和可靠性，确保训练集的有效性。</p>
+    </div>
+  </div>
+  
+  <!-- 任务b: 内容翻译（英文与中文对照） -->
+  <div class="section">
+    <h2>b. 内容翻译</h2>
+    
+    <!-- 2.1 Data Collection 部分 -->
+    <div class="original">
+      <h3>2.1 Data Collection</h3>
+      <p>Our training data is collected from multiple publicly available open source datasets, spanning tasks such as mathematical reasoning, code generation, scientific reasoning, instruction follow, and general chat.</p>
+      <p>Mathematical Reasoning During the collection of mathematical data, we ensure that each data point include a verifiable <span class="term">ground truth</span>. We incorporate datasets such as OpenR1-Math-220k[12], Big-Math-RL-Verified[13], data_ablation_full59K[14], NuminaMath[15], MetaMathQA[16], 2023_amc_data[17], DeepMath-103K[18], and AIME[19]3.</p>
+      <p>Code Generation We ensure that all collected code data include verifiable <span class="term">test cases</span>. Datasets selected for this category include PRIME[20], DeepCoder[21], KodCode[22], liveincode_generation[10], codeforces_cots[23], verifiable_coding[24], opencoder[25], OpenThoughts-114k-Code_decontaminated[12], and AceCode-87K[26].</p>
+      <p>Scientific Reasoning This category includes natural sciences (physics, chemistry, natural sciences) and logical reasoning. They primarily consist of <span class="term">multiple-choice questions</span>, each paired with a reliable <span class="term">ground truth</span>. We include datasets such as task_mmmlu[27], chemistryQA[28], Llama-Nemotron-Post-Training-Dataset-v1[29], LOGIC-701[30], ncert[31, 32, 33, 34, 35, 36], and logicLM[37].</p>
+      <p>Instruction Follow (IF) We select two instruction-following datasets: Llama-Nemotron-Post-Training-Dataset[38], tulu-3-sft-mixture[39].</p>
+      <p>General Chat This category includes a broad range of tasks, covering open-ended queries, general knowledge, and everyday reasoning, and it supports both single-turn and multi-turn interactions. The selected datasets are evol[40], InfinityInstruct[41], open_orca[42], tulu-3-sft-mixture[39], natural_reasoning[43], flan[44], ultra_chat[45], and OpenHermes-2.5[46].</p>
+    </div>
+    <div class="translation">
+      <h3>2.1 数据收集</h3>
+      <p>我们的训练数据收集自多个公开可用的开源数据集，涵盖任务如数学推理、代码生成、科学推理、指令跟随和通用聊天。</p>
+      <p>数学推理 在收集数学数据时，我们确保每个数据点包含可验证的<span class="term">真实答案（ground truth）</span>。我们整合了数据集如 OpenR1-Math-220k[12]、Big-Math-RL-Verified[13]、data_ablation_full59K[14]、NuminaMath[15]、MetaMathQA[16]、2023_amc_data[17]、DeepMath-103K[18] 和 AIME[19]3。</p>
+      <p>代码生成 我们确保所有收集的代码数据包含可验证的<span class="term">测试用例（test cases）</span>。为此类别选择的数据集包括 PRIME[20]、DeepCoder[21]、KodCode[22]、liveincode_generation[10]、codeforces_cots[23]、verifiable_coding[24]、opencoder[25]、OpenThoughts-114k-Code_decontaminated[12] 和 AceCode-87K[26]。</p>
+      <p>科学推理 此类别包括自然科学（物理、化学、自然科学）和逻辑推理。它们主要由<span class="term">多项选择题（multiple-choice questions）</span>组成，每个问题配有一个可靠的<span class="term">真实答案（ground truth）</span>。我们包括数据集如 task_mmmlu[27]、chemistryQA[28]、Llama-Nemotron-Post-Training-Dataset-v1[29]、LOGIC-701[30]、ncert[31, 32, 33, 34, 35, 36] 和 logicLM[37]。</p>
+      <p>指令跟随 (IF) 我们选择了两个指令跟随数据集：Llama-Nemotron-Post-Training-Dataset[38] 和 tulu-3-sft-mixture[39]。</p>
+      <p>通用聊天 此类别包括广泛的任务，涵盖开放式查询、常识和日常推理，并支持单轮和多轮交互。选择的数据集有 evol[40]、InfinityInstruct[41]、open_orca[42]、tulu-3-sft-mixture[39]、natural_reasoning[43]、flan[44]、ultra_chat[45] 和 OpenHermes-2.5[46]。</p>
+    </div>
+    
+    <!-- 2.2 Query filtering 部分 -->
+    <div class="original">
+      <h3>2.2 Query filtering</h3>
+      <p>After collecting the data, we first remove duplicates, then apply two cleaning steps to address common query quality issues:</p>
+      <ul>
+        <li>Removal of queries containing URLs. Since the model cannot access external links during training, the presence of URLs may lead to <span class="term">hallucinations</span> or misleading outputs.</li>
+        <li>Removal of image-referencing queries. Since our model is purely text-based, it cannot perceive or process any visual information; such queries are therefore excluded from training.</li>
+      </ul>
+      <p>Finally, we remove queries from the training set that are similar to those in the evaluation set, using both <span class="term">exact matching</span> and <span class="term">semantic deduplication</span>.</p>
+    </div>
+    <div class="translation">
+      <h3>2.2 查询过滤</h3>
+      <p>收集数据后，我们首先移除重复项，然后应用两个清洗步骤以解决常见查询质量问题：</p>
+      <ul>
+        <li>移除包含URL的查询。由于模型在训练期间无法访问外部链接，URL的存在可能导致<span class="term">幻觉（hallucinations）</span>或误导性输出。</li>
+        <li>移除引用图像的查询。由于我们的模型纯基于文本，无法感知或处理任何视觉信息；因此，此类查询被排除在训练之外。</li>
+      </ul>
+      <p>最后，我们移除训练集中与评估集相似的查询，使用<span class="term">精确匹配（exact matching）</span>和<span class="term">语义去重（semantic deduplication）</span>。</p>
+    </div>
+    
+    <!-- 2.2.1 Mathematical query filtering 部分 -->
+    <div class="original">
+      <h3>2.2.1 Mathematical query filtering</h3>
+      <p>During our analysis of the mathematical data, we identify issues with unclear or incomplete query descriptions and incorrect <span class="term">ground truths</span>. To address the former, we use an <span class="term">LLM</span> to analyze and filter out queries lacking clear or complete descriptions. For the latter, we implement a rigorous <span class="term">ground truth</span> validation process: for each query, we prompt DeepSeek-R1[1] to generate multiple responses and compare the most frequent answer (Deepseek-R1-common) with the original <span class="term">ground truth</span> using math_verify4. Discrepancies between model predictions and the original <span class="term">ground truth</span> prompt us to re-evaluate the correctness of certain annotations. For these cases, we consult o4-mini[47] to obtain an alternative answer (o4-mini-answer). If math_verify determines that o4-mini-answer and Deepseek-R1-common produce equivalent results, we consider the original <span class="term">ground truth</span> potentially incorrect and revise it to o4-mini-answer.</p>
+      <p>Following this processing, we further identify and handle specific data types unsuitable for training: mathematical proof problems and queries with multiple sub-questions are filtered out. While <span class="term">multiple-choice questions</span> are also deemed unsuitable, their significant volume prompt us to rewrite them as <span class="term">fill-in-the-blank questions</span> instead of discarding them.</p>
+      <p>3AIME 2024 and AIME 2025 are excluded from the training data.</p>
+      <p>4https://github.com/huggingface/Math-Verify</p>
+    </div>
+    <div class="translation">
+      <h3>2.2.1 数学查询过滤</h3>
+      <p>在分析数学数据时，我们识别出查询描述模糊或不完整以及<span class="term">真实答案（ground truths）</span>错误的问题。为解决前者，我们使用<span class="term">大型语言模型（LLM）</span>分析和过滤掉缺乏清晰或完整描述的查询。对于后者，我们实施严格的<span class="term">真实答案（ground truth）</span>验证过程：对于每个查询，我们提示 DeepSeek-R1[1] 生成多个响应，并使用 math_verify4 比较最常见答案 (Deepseek-R1-common) 与原始<span class="term">真实答案（ground truth）</span>。模型预测与原始<span class="term">真实答案（ground truth）</span>之间的差异促使我们重新评估某些注释的正确性。对于这些情况，我们咨询 o4-mini[47] 获取替代答案 (o4-mini-answer)。如果 math_verify 确定 o4-mini-answer 和 Deepseek-R1-common 产生等效结果，我们认为原始<span class="term">真实答案（ground truth）</span>可能错误，并将其修订为 o4-mini-answer。</p>
+      <p>在此处理后，我们进一步识别和处理不适合训练的具体数据类型：数学证明问题和具有多个子问题的查询被过滤掉。虽然<span class="term">多项选择题（multiple-choice questions）</span>也被认为不合适，但由于其数量庞大，我们将其重写为<span class="term">填空题（fill-in-the-blank questions）</span>而不是丢弃。</p>
+      <p>3AIME 2024 和 AIME 2025 被排除在训练数据之外。</p>
+      <p>4https://github.com/huggingface/Math-Verify</p>
+    </div>
+  </div>
+  
+  <!-- 任务c: 摘要总结 -->
+  <div class="section">
+    <h2>c. 摘要总结</h2>
+    <div class="summary">
+      <p>文本核心内容概括为数据收集和查询过滤两大过程。在数据收集阶段，训练数据源自多个公开开源数据集，覆盖数学推理、代码生成、科学推理、指令跟随和通用聊天等任务，每个任务确保数据包含可验证的真实答案（<span class="term">ground truth</span>）或测试用例（<span class="term">test cases</span>），并列出具体数据集。查询过滤阶段包括数据清洗：移除重复项、包含URL或图像引用的查询（以防止模型幻觉），并通过精确匹配（<span class="term">exact matching</span>）和语义去重（<span class="term">semantic deduplication</span>）确保训练集与评估集无重叠。特别针对数学数据，有额外验证机制：使用大型语言模型（<span class="term">LLM</span>）过滤模糊查询，并通过工具math_verify校正错误真实答案；不适合的数据（如证明问题）被过滤或重写为填空题。整体目标是提升数据质量和模型训练可靠性。</p>
+    </div>
+  </div>
+  
+  <!-- 任务d: 术语识别 -->
+  <div class="section">
+    <h2>d. 术语识别</h2>
+    <ul class="term-list">
+      <li><span class="term">ground truth</span>（真实答案）：指数据中的参考标准或正确答案，用于验证模型输出的准确性。在文本中，它出现在数学推理、科学推理等任务中，确保每个数据点有可验证的基准。</li>
+      <li><span class="term">test cases</span>（测试用例）：在代码生成任务中，指用于验证代码功能正确性的输入-输出对。文本强调所有代码数据必须包含这些用例，以保证模型生成的代码可靠。</li>
+      <li><span class="term">multiple-choice questions</span>（多项选择题）：一种问题形式，提供多个选项供选择。在科学推理中，这类问题占主导，每个问题配对真实答案，便于模型学习。</li>
+      <li><span class="term">semantic deduplication</span>（语义去重）：基于查询含义而非字面匹配来移除重复数据的过程。在查询过滤中，它与精确匹配结合使用，防止训练集与评估集相似。</li>
+      <li><span class="term">LLM</span>（大型语言模型）：指Large Language Model，如DeepSeek-R1。在数学查询过滤中，用于分析和过滤描述模糊的查询。</li>
+      <li><span class="term">hallucinations</span>（幻觉）：模型生成不真实或误导性内容的现象。文本中，移除URL查询以防止此问题，因为模型无法访问外部链接。</li>
+      <li><span class="term">exact matching</span>（精确匹配）：基于字面完全一致来比较查询的方法。在去重过程中，用于识别重复项。</li>
+      <li><span class="term">fill-in-the-blank questions</span>（填空题）：一种问题形式，要求填写缺失部分。文本中，多项选择题被重写为此类问题以适应训练。</li>
+      <li><span class="term">math_verify</span>：一个工具（如GitHub链接所示），用于验证数学答案的正确性。在数学查询过滤中，它比较模型输出和真实答案，以校正错误标注。</li>
+    </ul>
+  </div>
+</body>
+</html>

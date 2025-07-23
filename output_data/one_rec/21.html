@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>OneRec技术报告分析</title>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<style>
+  body { font-family: Arial, sans-serif; line-height: 1.6; }
+  .original { background-color: #f5f5f5; border: 1px solid #ccc; padding: 15px; margin-bottom: 10px; }
+  .translation { background-color: #e8f5e9; border: 1px solid #4caf50; padding: 15px; margin-bottom: 20px; }
+  .figure { background-color: #fffde7; padding: 15px; margin: 20px 0; text-align: center; font-style: italic; }
+  .term { color: red; font-weight: bold; }
+  .formula-container { text-align: center; margin: 20px 0; }
+  .formula-number { display: block; font-style: italic; }
+  section { margin-bottom: 30px; }
+  h2 { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 5px; }
+  ul { list-style-type: none; padding-left: 0; }
+  li { margin-bottom: 15px; }
+</style>
+</head>
+<body>
+
+<!-- 内容理解 -->
+<section>
+  <h2>内容理解</h2>
+  <p>该技术报告主要讨论OneRec推荐系统的两个关键技术：</p>
+  <ol>
+    <li><strong class="term">格式奖励训练（Format Reward Training）</strong>：通过不同采样策略（随机选择 vs TopK选择）优化生成内容的合法性（Legality）。实验表明添加格式奖励能显著提升模型输出的合规性。</li>
+    <li><strong class="term">特定工业奖励（SIR）</strong>：提出病毒内容抑制机制，当病毒内容比例超过阈值𝑓时，通过抑制因子𝛼降低其奖励值，公式见式(33)。该方法在保持核心指标稳定的同时，成功降低病毒内容曝光率9.59%。</li>
+    <li><strong class="term">Tokenizer评估体系</strong>：使用重构损失、码本利用率和令牌分布熵三大指标评估分词效果，实验证明RQ-Kmeans方法在各项指标上均优于传统RQ-VAE。</li>
+  </ol>
+</section>
+
+<!-- 内容翻译 -->
+<section>
+  <h2>内容翻译</h2>
+  
+  <div class="original">
+    OneRec Technical Report
+  </div>
+  <div class="translation">
+    OneRec技术报告
+  </div>
+  
+  <div class="original">
+    01.00.5Training  StepLegalityRandomSelectionTopkSelectionAdd Format RewardLegality of Generated Items
+    RandomSelectionTopkSelectionAdd Format RewardLegalityof the Format Loss Samples
+    Training  StepLegality01.00.5
+  </div>
+  <div class="translation">
+    01.00.5训练步数合法性随机选择TopK选择添加格式奖励生成项目的合法性
+    随机选择TopK选择添加格式奖励格式损失样本的合法性
+    训练步数合法性01.00.5
+  </div>
+  
+  <div class="figure">
+    <strong>Figure 12</strong> | The impact of training with format reward with samples obtained through different sampling strategies on the model’s legality.
+    <p><strong>图12</strong> | 使用不同采样策略获得的样本进行格式奖励训练对模型合法性的影响</p>
+  </div>
+  
+  <div class="original">
+    demonstrates superior performance over traditional recommendation systems across multiple business metrics, 
+    we observe that without proper post-filtering strategies, the exposure ratio of viral content increases significantly, 
+    which may negatively impact the platform’s ecosystem.
+  </div>
+  <div class="translation">
+    虽然在多个业务指标上优于传统推荐系统，但我们观察到若无合适的后过滤策略，
+    <strong class="term">病毒内容（viral content）</strong>的曝光率会显著增加，
+    可能对平台生态系统产生负面影响。
+  </div>
+  
+  <div class="original">
+    The optimal proportion of viral content videos can be set to 𝑓. When the proportion exceeds 𝑓,
+    we down-weight their P-score reward to suppress them while maintaining the system’s perception of
+    the quality of these contents.
+  </div>
+  <div class="translation">
+    病毒内容视频的最佳比例可设为𝑓。当比例超过𝑓时，
+    我们降低其<strong class="term">P-score奖励（P-score reward）</strong>以抑制曝光，
+    同时保持系统对这些内容质量的感知。
+  </div>
+  
+  <div class="formula-container">
+    \[
+    r'_i = \begin{cases} 
+    r_i & \text{if } o_i \notin I_{\text{viral}} \\
+    \alpha r_i & \text{if } o_i \in I_{\text{viral}}
+    \end{cases}
+    \]
+    <span class="formula-number">(33)</span>
+  </div>
+  
+  <div class="original">
+    where 𝛼 ∈ (0,1) is the suppression factor.
+  </div>
+  <div class="translation">
+    其中𝛼 ∈ (0,1)为<strong class="term">抑制因子（suppression factor）</strong>。
+  </div>
+  
+  <div class="original">
+    We term this approach Specific Industrial Reward (SIR). Experimental results show that SIR
+    effectively reduces viral content exposure by 9.59% while maintaining stable performance on core
+    metrics (Watch time and APP Stay Time). This experiment highlights OneRec’s key advantage: the
+    ability to achieve precise and consistent optimization through reinforcement learning’s reward-shaping
+    capability, a feature fundamentally unavailable in traditional recommendation systems.
+  </div>
+  <div class="translation">
+    我们称此方法为<strong class="term">特定工业奖励（Specific Industrial Reward, SIR）</strong>。
+    实验表明SIR在保持核心指标（观看时间和APP停留时间）稳定的同时，
+    有效降低病毒内容曝光率9.59%。该实验凸显了OneRec的关键优势：
+    通过<strong class="term">强化学习（reinforcement learning）</strong>的<strong class="term">奖励塑造（reward-shaping）</strong>能力
+    实现精确一致的优化，这是传统推荐系统无法具备的特性。
+  </div>
+  
+  <div class="original">
+    <h3>4.4. Tokenizer</h3>
+    We employ three metrics to comprehensively evaluate our tokenization method, encompassing aspects
+    of accuracy, resource utilization, and distribution uniformity:
+  </div>
+  <div class="translation">
+    <h3>4.4. 分词器</h3>
+    我们采用三个指标全面评估分词方法，涵盖准确性、资源利用率和分布均匀性：
+  </div>
+  
+  <div class="original">
+    • Reconstruction Loss : This metric assesses the accuracy with which discrete tokens reconstruct the
+    original input, serving as an indicator of the model’s fidelity in preserving the input data.
+  </div>
+  <div class="translation">
+    • <strong class="term">重构损失（Reconstruction Loss）</strong>：评估离散令牌重构原始输入的准确性，
+    作为模型保留输入数据保真度的指标。
+  </div>
+  
+  <div class="original">
+    • Codebook Utilization (Zhu et al., 2024) : This metric evaluates the efficiency of vector usage
+    within the codebook, reflecting how effectively the model leverages available resources to represent
+    data.
+  </div>
+  <div class="translation">
+    • <strong class="term">码本利用率（Codebook Utilization）</strong> (Zhu et al., 2024)：
+    评估码本内向量使用效率，反映模型利用可用资源表示数据的有效性。
+  </div>
+  
+  <div class="original">
+    • Token Distribution Entropy (Bentz and Alikaniotis, 2016) : Utilizing Shannon entropy, this
+    metric quantifies the uniformity of token distribution, providing insight into the diversity and
+    balance of token allocation across the model.
+  </div>
+  <div class="translation">
+    • <strong class="term">令牌分布熵（Token Distribution Entropy）</strong> (Bentz and Alikaniotis, 2016)：
+    利用香农熵量化令牌分布的均匀性，揭示模型中令牌分配的多样性和平衡性。
+  </div>
+  
+  <div class="original">
+    As shown in Table 11, compared to RQ-VAE, RQ-Kmeans’s reconstruction loss is reduced by
+    25.18%, demonstrating superior accuracy in preserving input information. Simultaneously, RQ-
+    Kmeans achieves perfect utilization (1.0000) in all three layers, indicating optimal resource efficiency
+    in the codebook, while RQ-VAE shows slightly lower utilization rates in layers 2 and 3. Furthermore,
+    RQ-Kmeans exhibits higher entropy values in all three layers compared to RQ-VAE, with significant im-
+    provements of 6.31%, 3.50%, and 1.44% in layers 1, 2, and 3, respectively, suggesting that RQ-Kmeans
+  </div>
+  <div class="translation">
+    如表11所示，相比<strong class="term">RQ-VAE</strong>，<strong class="term">RQ-Kmeans</strong>的重构损失降低25.18%，
+    在保留输入信息方面表现出更高准确性。同时RQ-Kmeans在所有三层均实现完美利用率(1.0000)，
+    表明码本资源效率最优，而RQ-VAE在2、3层利用率略低。此外，
+    RQ-Kmeans在所有三层的熵值均高于RQ-VAE，在1、2、3层分别显著提升6.31%、3.50%和1.44%，
+    表明RQ-Kmeans
+  </div>
+</section>
+
+<!-- 摘要总结 -->
+<section>
+  <h2>摘要总结</h2>
+  <p>本技术报告核心内容聚焦于OneRec推荐系统的三大创新：</p>
+  <ol>
+    <li>通过<strong class="term">格式奖励训练（Format Reward Training）</strong>提升内容合法性，不同采样策略（随机选择 vs TopK选择）对模型合规性产生显著影响（图12）</li>
+    <li>提出<strong class="term">特定工业奖励（SIR）</strong>机制，采用动态奖励抑制公式（式33）控制病毒内容曝光，在保持核心指标稳定的同时降低病毒内容曝光率9.59%</li>
+    <li>建立Tokenizer三维评估体系（重构损失/码本利用率/令牌分布熵），验证RQ-Kmeans方法相比RQ-VAE在信息保留（+25.18%）、资源利用（100%）和分布均匀性（熵值提升1.44-6.31%）的全面优势</li>
+  </ol>
+  <p>核心结论：OneRec通过强化学习的奖励塑造能力，实现了传统系统无法达到的精准业务指标优化。</p>
+</section>
+
+<!-- 术语识别 -->
+<section>
+  <h2>术语解释</h2>
+  <ul>
+    <li><strong class="term">Legality（合法性）</strong>：生成内容符合预定格式规范和质量标准的程度，通过格式奖励机制优化</li>
+    <li><strong class="term">Specific Industrial Reward - SIR（特定工业奖励）</strong>：动态调整病毒内容奖励权重的机制，当内容比例超过阈值𝑓时应用抑制因子𝛼（式33）</li>
+    <li><strong class="term">Suppression Factor α（抑制因子）</strong>：取值(0,1)的权重系数，用于降低病毒内容的奖励值</li>
+    <li><strong class="term">Reconstruction Loss（重构损失）</strong>：衡量离散令牌还原原始输入数据的准确性，损失越低表明信息保留越好</li>
+    <li><strong class="term">Codebook Utilization（码本利用率）</strong>：评估向量在码本中被使用的效率，1.0表示完全利用</li>
+    <li><strong class="term">Token Distribution Entropy（令牌分布熵）</strong>：基于香农熵的分布均匀性量化指标，熵值越高表明令牌分配越均衡</li>
+    <li><strong class="term">RQ-VAE（残差量化变分自编码器）</strong>：传统向量量化方法，通过变分自编码器学习离散表示</li>
+    <li><strong class="term">RQ-Kmeans</strong>：改进的残差量化方法，结合K均值聚类提升码本利用率和分布均匀性</li>
+    <li><strong class="term">Reward-Shaping（奖励塑造）</strong>：强化学习中通过修改奖励函数引导智能体行为的技术，为OneRec的核心优化手段</li>
+  </ul>
+</section>
+
+</body>
+</html>

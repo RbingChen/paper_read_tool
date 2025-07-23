@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>RankMixer Paper Analysis</title>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    body { font-family: Arial, sans-serif; line-height: 1.6; }
+    .section { margin-bottom: 30px; }
+    h2 { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 5px; }
+    .original { 
+      background-color: #f8f9fa; 
+      border: 1px solid #ced4da; 
+      padding: 15px; 
+      margin-bottom: 10px; 
+      border-radius: 5px;
+    }
+    .translation { 
+      background-color: #e8f5e9; 
+      border: 1px solid #81c784; 
+      padding: 15px; 
+      border-radius: 5px;
+    }
+    .term { 
+      color: #e53935; 
+      font-weight: bold; 
+      font-style: italic;
+    }
+    .formula-container { 
+      text-align: center; 
+      margin: 20px 0; 
+      padding: 10px;
+      background-color: #fffde7;
+      border: 1px solid #ffd54f;
+    }
+    .formula-number { 
+      display: block; 
+      text-align: right; 
+      font-style: italic; 
+      margin-top: 5px;
+    }
+    .highlight-box { 
+      background-color: #fffde7; 
+      border: 1px solid #ffd54f; 
+      padding: 15px; 
+      margin: 15px 0;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Title Section -->
+<div class="section">
+  <div class="original">
+    <h1>RankMixer: Scaling Up Ranking Models in Industrial Recommenders</h1>
+    <p>Jie Zhu*, Zhifang Fan*, Xiaoxie Zhu*, Yuchen Jiang*, Hangyu Wang, Xintian Han, Haoran Ding, Xinmin Wang, Wenlin Zhao, Zhen Gong, Huizhi Yang, Zheng Chai, Zhe Chen, Yuchao Zheng, Qiwei Chen†, Feng Zhang, Xun Zhou, Peng Xu, Xiao Yang, Di Wu, Zuotao Liu<br>ByteDance<br>{zhujie.zj, zhuxiaoxie.777, jiangyuchen.jyc, wanghangyu.123, hanxintian, dinghaoran, xinmin.wang, zhaowenlin, gongzhen.666, yanghuizhi, chaizheng.cz, chenzhe.john, zhengyuchao.yc, feng.zhang, zhouxun, xupeng, wuqi.shaw, di.wu, michael.liu}@bytedance.com, {fanzhifangfzf, chenqiwei05}@gmail.com</p>
+  </div>
+  <div class="translation">
+    <h1>RankMixer：工业推荐系统中的排序模型扩展</h1>
+    <p>朱杰*，范志方*，朱晓燮*，蒋雨辰*，王瀚宇，韩新天，丁浩然，王新民，赵文林，龚震，杨慧芝，柴政，陈喆，郑宇超，陈琪伟†，张峰，周迅，徐鹏，杨晓，吴迪，刘佐涛<br>字节跳动<br>邮箱同上</p>
+  </div>
+</div>
+
+<!-- Abstract Section -->
+<div class="section">
+  <div class="original">
+    <h2>Abstract</h2>
+    <p>Recent progress on large language models (LLMs) has spurred interest in scaling up recommendation systems, yet two practical obstacles remain. First, training and serving cost on industrial Recommenders must respect strict latency bounds and high QPS demands. Second, most human-designed feature-crossing modules in ranking models were inherited from the CPU era and fail to exploit modern GPUs, resulting in low <span class="term">Model Flops Utilization (MFU)</span> and poor scalability. We introduce <span class="term">RankMixer</span>, a hardware-aware model design tailored towards a unified and scalable feature-interaction architecture. RankMixer retains the transformer’s high parallelism while replacing quadratic self-attention with multi-head token mixing module for higher efficiency. Besides, RankMixer maintains both the modeling for distinct feature subspaces and cross-feature-space interactions with <span class="term">Per-token FFNs</span>. We further extend it to one billion parameters with a <span class="term">Sparse-MoE</span> variant for higher ROI. A <span class="term">dynamic routing strategy</span> is adapted to address the inadequacy and imbalance of experts training. Experiments show RankMixer’s superior scaling abilities on a trillion-scale production dataset. By replacing previously diverse handcrafted low-MFU modules with RankMixer, we boost the model MFU from 4.5% to 45%, and scale our ranking model parameters by 100x while maintaining roughly the same inference latency. We verify RankMixer’s universality with online <span class="term">A/B tests</span> across three core application scenarios (Recommendation, Advertisement and Search). Finally, we launch 1B <span class="term">Dense-Parameters</span> RankMixer for full traffic serving without increasing the serving cost, which improves user active days by 0.2% and total in-app usage duration by 0.5%.</p>
+  </div>
+  <div class="translation">
+    <h2>摘要</h2>
+    <p>大型语言模型（LLMs）的最新进展激发了扩展推荐系统的兴趣，但仍存在两个实际障碍。首先，工业推荐系统的训练和服务成本必须满足严格的延迟限制和高<span class="term">QPS（每秒查询数）</span>需求。其次，排序模型中大多数人工程设计的特征交叉模块继承自CPU时代，无法充分利用现代GPU，导致<span class="term">模型浮点运算利用率（MFU）</span>低下和可扩展性差。我们提出<span class="term">RankMixer</span>——一种面向统一可扩展特征交互架构的硬件感知模型设计。RankMixer保留Transformer的高并行性，同时用多头令牌混合模块替代二次自注意力机制以提高效率。此外，通过<span class="term">逐令牌前馈网络（Per-token FFNs）</span>，RankMixer同时支持不同特征子空间建模和跨特征空间交互。我们进一步采用<span class="term">稀疏混合专家（Sparse-MoE）</span>变体将其扩展至十亿参数以实现更高<span class="term">投资回报率（ROI）</span>，并采用<span class="term">动态路由策略</span>解决专家训练不足与不均衡问题。实验证明RankMixer在万亿级生产数据集上具有卓越的扩展能力。通过用RankMixer替换先前多样化的低MFU手工模块，我们将模型MFU从4.5%提升至45%，并在保持相近推理延迟的同时将排序模型参数扩大100倍。我们在三个核心应用场景（推荐、广告和搜索）中通过在线<span class="term">A/B测试</span>验证了RankMixer的普适性。最终，我们部署了十亿<span class="term">稠密参数（Dense-Parameters）</span>的RankMixer进行全流量服务，未增加服务成本的同时，用户活跃天数提升0.2%，应用内总使用时长增加0.5%。</p>
+  </div>
+</div>
+
+<!-- CCS Concepts & Keywords -->
+<div class="section">
+  <div class="original">
+    <h2>CCS Concepts</h2>
+    <p>•Information systems → <span class="term">Recommender systems</span>.</p>
+    <h2>Keywords</h2>
+    <p><span class="term">Scaling Laws</span>, <span class="term">Ranking Model</span>, <span class="term">Recommender System</span></p>
+  </div>
+  <div class="translation">
+    <h2>CCS概念</h2>
+    <p>•信息系统 → <span class="term">推荐系统</span>。</p>
+    <h2>关键词</h2>
+    <p><span class="term">缩放定律（Scaling Laws）</span>, <span class="term">排序模型（Ranking Model）</span>, <span class="term">推荐系统（Recommender System）</span></p>
+  </div>
+</div>
+
+<!-- Introduction Section -->
+<div class="section">
+  <div class="original">
+    <h2>1 Introduction</h2>
+    <p><span class="term">Recommender System (RS)</span> is essential in the process of distributing information. As a significant machine learning scenario, RS predicts users’ behaviors towards items based on a large amount of multi-field feature data, including numerical features such as diverse statistics, categorical features such as user and item IDs, user behavior features and content features [19,41]. The state-of-the-art recommendation methods are based on <span class="term">Deep Learning Recommendation Models (DLRMs)</span>, which flexibly capture feature interactions based on neural networks as the dense interaction layers above the input embeddings from features. The Dense interaction layer in DLRM is critical for RS performance and diverse model structures are proposed [7, 11, 33, 38, 42].</p>
+    <p>Driven by advancements in <span class="term">Large Language Models (LLMs)</span> that benefit from increasing parameters [1,14,16], scaling up DLRMs to take full advantage of the volume of data is an urgent need. Previous research has yielded numerous outcomes on the scaling DLRMs, early studies [2,6,40] just widen or stack feature interaction layers without modifying the structure. The benefits achieved in this way are modest and occasionally negative [18,32]. Then the follow-up efforts, such as DHEN [39] and Wukong [38], focus on designing innovative DNN structures to boost the scaling performance. However, leveraging model scale to improve performance in recommendation presents unique practical challenges. Unlike NLP or vision tasks, industrial-scale recommendation systems must strictly adhere to tight latency constraints and support extremely high <span class="term">QPS (queries per second)</span>. As a result, the core challenge lies in finding a sweet spot that balances model effectiveness and computational efficiency.</p>
+    <p>Historically, the architecture of ranking models in recommendation has been shaped by CPU-era design principles. These models typically relied on combining heterogeneous diverse handcrafted cross-feature modules to extract feature interactions, but many of their core operators are memory-bound rather than compute-bound on modern GPUs, leading to poor GPU parallelism and extremely low <span class="term">MFU(Model Flops Utilization)</span> often in the single-digit percentage range. Moreover, since the computational cost of CPU-era models was approximately proportional to the number of parameters, the potential <span class="term">ROI</span> from aggressive scaling—as suggested by scaling laws—was difficult to realize in practice.</p>
+    <p>In summary, the research on scaling laws of DLRMs must overcome the following problems:</p>
+    <ul>
+      <li>Architectures should be hardware-aligned, maximizing MFU and compute throughput on modern GPUs.</li>
+      <li>The model design must leverage the characteristics of recommendation data, such as the heterogeneous feature spaces and personalized cross-feature interactions among hundreds of fields.</li>
+    </ul>
+    <p>To address these challenges, we propose a hardware-aware model design method, RankMixer. The core design of RankMixer...</p>
+  </div>
+  <div class="translation">
+    <h2>1 引言</h2>
+    <p><span class="term">推荐系统（Recommender System, RS）</span>在信息分发过程中至关重要。作为重要的机器学习场景，RS基于大量多领域特征数据预测用户对物品的行为，这些数据包括多样统计量等数值特征、用户和物品ID等类别特征、用户行为特征和内容特征[19,41]。最先进的推荐方法基于<span class="term">深度学习推荐模型（Deep Learning Recommendation Models, DLRMs）</span>，其通过神经网络灵活捕获特征交互，在特征输入嵌入层之上构建稠密交互层。DLRM中的稠密交互层对RS性能至关重要，已有多种模型结构被提出[7,11,33,38,42]。</p>
+    <p>在<span class="term">大型语言模型（Large Language Models, LLMs）</span>进步的推动下[1,14,16]，扩展DLRM以充分利用海量数据成为迫切需求。早期研究[2,6,40]仅扩宽或堆叠特征交互层而未修改结构，所得收益有限甚至为负[18,32]。后续工作如DHEN[39]和Wukong[38]专注于设计创新DNN结构以提升扩展性能。然而，在推荐系统中利用模型规模提升性能存在独特挑战：与NLP或视觉任务不同，工业级推荐系统必须严格满足低延迟约束并支持极高<span class="term">QPS（每秒查询数）</span>。核心挑战在于找到模型效能与计算效率的平衡点。</p>
+    <p>历史上，推荐排序模型架构受CPU时代设计原则影响。这些模型通常依赖异构手工特征交叉模块组合来提取特征交互，但其核心算子在现代GPU上多为内存受限型而非计算受限型，导致GPU并行性差且<span class="term">模型浮点运算利用率（MFU）</span>极低（常为个位数百分比）。此外，由于CPU时代模型计算成本近似与参数数量成正比，激进扩展带来的潜在<span class="term">投资回报率（ROI）</span>难以实现。</p>
+    <p>综上，DLRM缩放定律研究需解决：</p>
+    <ul>
+      <li>架构需硬件对齐，最大化现代GPU上的MFU和计算吞吐量</li>
+      <li>模型设计必须利用推荐数据特性（如异构特征空间和数百字段间的个性化跨特征交互）</li>
+    </ul>
+    <p>为此，我们提出硬件感知模型设计方法RankMixer，其核心设计...</p>
+  </div>
+</div>
+
+<!-- Content Understanding -->
+<div class="section">
+  <h2>内容理解</h2>
+  <p>本文提出RankMixer模型，旨在解决工业推荐系统扩展的两大核心挑战：1）高并发（QPS）和低延迟的服务约束；2）传统排序模型在GPU上利用率（MFU）低下的问题。RankMixer采用硬件感知设计，通过<strong>多头令牌混合模块</strong>替代Transformer的自注意力机制，在保持并行性的同时提升效率，并利用<strong>逐令牌FFN</strong>处理异构特征交互。通过<strong>稀疏混合专家（Sparse-MoE）</strong>架构和<strong>动态路由策略</strong>，模型扩展至十亿参数规模。实验证明其将MFU从4.5%提升至45%，参数扩大100倍而不增加延迟，并在推荐/广告/搜索场景验证了有效性。</p>
+</div>
+
+<!-- Summary -->
+<div class="section">
+  <h2>摘要总结</h2>
+  <p>RankMixer是针对工业推荐系统设计的可扩展排序模型，核心创新包括：1）硬件感知架构提升GPU利用率（MFU从4.5%→45%）；2）多头令牌混合模块替代自注意力降低计算复杂度；3）稀疏MoE扩展支持十亿参数规模；4）动态路由优化专家训练。在万亿级生产数据上实现100倍参数扩展，保持延迟不变，全流量部署后用户活跃度提升0.5%。</p>
+</div>
+
+<!-- Terminology -->
+<div class="section">
+  <h2>关键术语解释</h2>
+  <div class="highlight-box">
+    <dl>
+      <dt><span class="term">Model Flops Utilization (MFU)</span></dt>
+      <dd>模型浮点运算利用率：衡量硬件计算资源实际使用效率的指标，计算公式为 <div class="formula-container">\\( \\text{MFU} = \\frac{\\text{实际FLOPS}}{\\text{理论峰值FLOPS}} \\) <span class="formula-number">(1)</span></div> 传统推荐模型因内存访问瓶颈常低于10%。</dd>
+      
+      <dt><span class="term">Sparse-MoE (Sparse Mixture of Experts)</span></dt>
+      <dd>稀疏混合专家：通过动态激活子模块（专家）实现模型容量扩展的技术。公式表示为 <div class="formula-container">\\( y = \\sum_{i=1}^n G(x)_i \\cdot E_i(x) \\) <span class="formula-number">(2)</span></div> 其中 \\( G(x) \\) 为门控函数，\\( E_i \\) 为专家网络。</dd>
+      
+      <dt><span class="term">Per-token FFNs (Per-token Feed-Forward Networks)</span></dt>
+      <dd>逐令牌前馈网络：独立处理每个特征令牌的多层感知机，数学形式为 <div class="formula-container">\\( \\text{FFN}(x) = \\sigma(xW_1 + b_1)W_2 + b_2 \\) <span class="formula-number">(3)</span></div> 其中 \\( \\sigma \\) 为激活函数，保留特征空间独立性。</dd>
+      
+      <dt><span class="term">Dynamic Routing Strategy</span></dt>
+      <dd>动态路由策略：MoE中根据输入特征动态分配专家的算法，解决负载不均衡问题。核心是通过可学习参数优化门控决策： <div class="formula-container">\\( G(x) = \\text{softmax}(\\text{TopK}(x \\cdot W_g, k)) \\) <span class="formula-number">(4)</span></div> 其中TopK限制激活专家数。</dd>
+      
+      <dt><span class="term">QPS (Queries Per Second)</span></dt>
+      <dd>每秒查询数：系统吞吐量关键指标，工业推荐系统常需处理百万级QPS。</dd>
+      
+      <dt><span

@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>OneRec技术报告解析</title>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<style>
+  body { font-family: Arial, sans-serif; line-height: 1.6; }
+  .original { 
+    background-color: #f0f0f0; 
+    border: 1px solid #ccc; 
+    padding: 15px; 
+    margin-bottom: 10px; 
+    border-radius: 5px;
+  }
+  .translation { 
+    background-color: #e0f7e0; 
+    border: 1px solid #4CAF50; 
+    padding: 15px; 
+    margin-bottom: 20px; 
+    border-radius: 5px;
+  }
+  .table-container { 
+    background-color: #fffde7; 
+    padding: 15px; 
+    margin: 20px 0; 
+    border-radius: 5px; 
+    overflow-x: auto;
+  }
+  table { width: 100%; border-collapse: collapse; }
+  th, td { border: 1px solid #ddd; padding: 8px; text-align: center; }
+  th { background-color: #f5f5f5; }
+  .term { color: red; font-weight: bold; }
+  h2 { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 5px; }
+  .section { margin-bottom: 30px; }
+</style>
+</head>
+<body>
+
+<h1>OneRec技术报告解析</h1>
+
+<div class="section">
+  <h2>内容理解</h2>
+  <p>该文本聚焦推荐系统中强化学习(RL)的应用效果验证：</p>
+  <ol>
+    <li>研究使用<strong class="term">观看完成率(vtr)</strong>作为RL的奖励信号，对应<strong class="term">观看时长(Watch Time)</strong>和<strong class="term">应用停留时长(App Stay Time)</strong>等在线指标</li>
+    <li>实验发现vtr奖励虽提升时长指标，但可能导致<strong class="term">视频观看量(Video View)</strong>下降，揭示单一指标的局限性</li>
+    <li>通过<strong class="term">Pass@K</strong>采样实验证明RL显著提升采样效率，尤其在少量采样(Pass@32)时效果最显著</li>
+    <li>最终目标是通过P-Score奖励验证RL优势，平衡推荐系统的成本与收益</li>
+  </ol>
+</div>
+
+<div class="section">
+  <h2>内容翻译</h2>
+  
+  <div class="original">
+    OneRec Technical Report<br>
+    Given these compelling advantages and the competitive performance demonstrated at the 2.6B parameter scale, we are actively pursuing further scaling exploration based on semantic identifier input representation. This approach promises to unlock new possibilities for large-scale recommendation systems while maintaining computational efficiency and architectural elegance.
+  </div>
+  <div class="translation">
+    OneRec技术报告<br>
+    鉴于在26亿参数规模上展现出的显著优势和竞争力，我们正积极基于语义标识符输入表示开展进一步的扩展探索。该方法有望为大规模推荐系统解锁新的可能性，同时保持计算效率和架构优雅性。
+  </div>
+
+  <div class="original">
+    <strong>4.3. Reinforcement Learning</strong><br>
+    <strong>4.3.1. User Preference Alignment</strong><br>
+    Defining what constitutes a "good" recommendation has always been a challenging task. To rigorously verify RL’s impact, we use the single-objective vtr (view-through rate) as the reward, which corresponds to online metrics such as Watch Time and App Stay Time. The reported online results are relative improvements compared to Kuaishou’s traditional recommendation system, referred to as the overall baseline. Relative Impr. in the table indicates the relative enhancement of the latter group over the former group.
+  </div>
+  <div class="translation">
+    <strong>4.3. 强化学习</strong><br>
+    <strong>4.3.1. 用户偏好对齐</strong><br>
+    定义何为"优质"推荐始终是项挑战性任务。为严格验证强化学习(RL)的影响，我们采用单目标<strong class="term">观看完成率(vtr)</strong>作为奖励信号，其对应<strong class="term">观看时长(Watch Time)</strong>和<strong class="term">应用停留时长(App Stay Time)</strong>等在线指标。报告的在线结果是相对于快手传统推荐系统（称为整体基线）的相对改进。表格中的"相对提升(Relative Impr.)"表示后一组较前组的相对增强幅度。
+  </div>
+
+  <div class="original">
+    Notably, while using vtr as the reward can significantly improve duration metrics, it does not necessarily indicate a high-quality recommendation, as other metrics, such as Video View, which represent the number of videos viewed, may decrease significantly. We primarily focus on Watch Time and App Stay Time to find the optimal RL setting, and ultimately use it to validate the benefits of the P-Score reward.
+  </div>
+  <div class="translation">
+    值得注意的是，虽然使用vtr作为奖励可显著提升时长指标，但这未必代表高质量推荐，因为其他指标如反映视频观看数量的<strong class="term">视频观看量(Video View)</strong>可能显著下降。我们主要关注观看时长和应用停留时长以寻找最优RL设置，并最终用于验证P-Score奖励的收益。
+  </div>
+
+  <div class="original">
+    <strong>Sampling Efficiency</strong> Reinforcement learning optimizes the probability distribution of sampled items to increase the likelihood of selecting high-reward items, thereby significantly enhancing sampling efficiency. To quantify this effect, we conduct multi-point sampling experiments at pass@32, pass@128, and pass@512, with results summarized in Table 6. Treating the model without RL as the baseline, we define the improvement in app stay time as the sampling efficiency gap. Notably, RL shows the most substantial improvement gap at pass@32, indicating that the accuracy of top-ranked items is significantly enhanced. This improvement is crucial for reducing sampling overhead, as it ensures high precision when sampling a small number of items. In recommendation systems, balancing cost and benefit is essential, and the enhanced accuracy at lower sample numbers \(K\) provides a solid foundation for achieving this balance.
+  </div>
+  <div class="translation">
+    <strong>采样效率</strong> 强化学习通过优化采样物品的概率分布，增加高奖励物品的选中概率，从而显著提升<strong class="term">采样效率(Sampling Efficiency)</strong>。为量化此效果，我们在<strong class="term">pass@32</strong>、<strong class="term">pass@128</strong>和<strong class="term">pass@512</strong>进行多点采样实验，结果汇总于表6。以无RL模型为基线，我们将应用停留时长的改进定义为<strong class="term">采样效率差距(Sampling Efficiency Gap)</strong>。值得注意的是，RL在pass@32时显示出最显著的改进差距，表明顶部物品的准确性显著提升。这对降低采样开销至关重要，因其确保在少量物品采样时仍保持高精度。在推荐系统中，平衡成本与收益至关重要，而在较低样本数\(K\)下提升的准确性为实现此平衡奠定坚实基础。
+  </div>
+
+  <div class="table-container">
+    <table>
+      <caption>表6 | 推理过程中不同生成物品数量(Pass@K)下强化学习的影响</caption>
+      <thead>
+        <tr>
+          <th>Method</th>
+          <th>vtr</th>
+          <th>Watch time</th>
+          <th>App Stay Time</th>
+          <th>Video View<sup>1</sup></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td colspan="5"><strong>Pass@32</strong></td></tr>
+        <tr><td>OneRec w/o RL</td><td>0.1978</td><td>+1.62%</td><td>-0.10%</td><td>-4.18%</td></tr>
+        <tr><td>OneRec w/ RL</td><td>0.2138</td><td>+3.17%</td><td>+0.39%</td><td>-9.87%</td></tr>
+        <tr><td>Relative Impr.</td><td>+8.08%</td><td>+1.55%</td><td>+0.49% ↑↑↑</td><td>-3.69%</td></tr>
+        <tr><td colspan="5"><strong>Pass@128</strong></td></tr>
+        <tr><td>OneRec w/o RL</td><td>0.2239</td><td>+4.61%</td><td>+1.11%</td><td>-12.75%</td></tr>
+        <tr><td>OneRec w/ RL</td><td>0.2387</td><td>+5.22%</td><td>+1.49%</td><td>-15.06%</td></tr>
+        <tr><td>Relative Impr.</td><td>+6.61%</td><td>+1.53%</td><td>+0.38% ↑↑</td><td>-2.65%</td></tr>
+        <tr><td colspan="5"><strong>Pass@512</strong></td></tr>
+        <tr><td>OneRec w/o RL</td><td>0.2444</td><td>+6.32%</td><td>+1.66%</td><td>-15.54%</td></tr>
+        <tr><td>OneRec w/ RL</td><td>0.2494</td><td>+5.88%</td><td>+1.75%</td><td>-13.88%</td></tr>
+        <tr><td>Relative Impr.</td><td>+2.05%</td><td>-0.41%</td><td>+0.09% ↑</td><td>+1.97%</td></tr>
+      </tbody>
+    </table>
+    <p><sup>1</sup>视频观看量(Video View)仅供参考，我们主要关注观看时长(Watch Time)和应用停留时长(App Stay Time)以确定最佳RL设置。</p>
+  </div>
+</div>
+
+<div class="section">
+  <h2>摘要总结</h2>
+  <p>本技术报告核心内容：</p>
+  <ul>
+    <li>研究基于<strong class="term">语义标识符(semantic identifier)</strong>扩展大规模推荐系统，平衡计算效率与架构优雅性</li>
+    <li>通过<strong class="term">强化学习(Reinforcement Learning)</strong>优化推荐效果，使用<strong class="term">观看完成率(vtr)</strong>作为奖励信号</li>
+    <li>实验发现vtr奖励提升<strong class="term">观看时长(Watch Time)</strong>和<strong class="term">应用停留时长(App Stay Time)</strong>，但可能降低<strong class="term">视频观看量(Video View)</strong></li>
+    <li><strong class="term">Pass@K</strong>采样实验证明RL显著提升采样效率，在少量采样(Pass@32)时顶部物品准确性提升最显著</li>
+    <li>最终目标是通过P-Score奖励验证RL优势，实现推荐系统成本-收益平衡</li>
+  </ul>
+</div>
+
+<div class="section">
+  <h2>术语识别</h2>
+  <dl>
+    <dt><strong class="term">Reinforcement Learning (RL) / 强化学习</strong></dt>
+    <dd>机器学习范式，通过奖励机制优化决策过程。在推荐系统中，RL通过最大化长期奖励（如用户停留时长）来改进推荐策略。</dd>
+    
+    <dt><strong class="term">vtr (view-through rate) / 观看完成率</strong></dt>
+    <dd>视频被完整观看的比例，用作RL的奖励信号。反映用户对内容的真实兴趣程度，与观看时长正相关。</dd>
+    
+    <dt><strong class="term">Watch Time / 观看时长</strong></dt>
+    <dd>用户观看视频的总时长，关键的用户参与度指标。本研究中作为vtr奖励的主要关联指标。</dd>
+    
+    <dt><strong class="term">App Stay Time / 应用停留时长</strong></dt>
+    <dd>用户在应用内的总停留时间，反映平台粘性。实验中以该指标的改进量化采样效率。</dd>
+    
+    <dt><strong class="term">Video View / 视频观看量</strong></dt>
+    <dd>用户观看的视频总数。研究发现过度优化vtr可能导致此指标下降，揭示单一目标优化的局限性。</dd>
+    
+    <dt><strong class="term">Pass@K</strong></dt>
+    <dd>推荐系统推理时生成的物品数量（K=32/128/512）。实验显示在K较小时RL提升最显著。</dd>
+    
+    <dt><strong class="term">Sampling Efficiency / 采样效率</strong></dt>
+    <dd>单位采样量获得的推荐质量增益。RL通过优化概率分布提升高价值物品的命中率。</dd>
+    
+    <dt><strong class="term">P-Score / P分数</strong></dt>
+    <dd>研究中用于验证RL收益的奖励函数（未明确公式），旨在平衡多目标优化。</dd>
+    
+    <dt><strong class="term">Relative Impr. (Relative Improvement) / 相对提升</strong></dt>
+    <dd>实验组较对照组的性能提升百分比，计算公式：\((RL\_result - non\_RL\_result)/non\_RL\_result \\times 100\\%\)</dd>
+  </dl>
+</div>
+
+</body>
+</html>

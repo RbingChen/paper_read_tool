@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>论文解析 - Theorem 1 证明</title>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<style>
+  body { font-family: Arial, sans-serif; line-height: 1.6; }
+  .original { background-color: #f0f0f0; border: 1px solid #ccc; padding: 15px; margin-bottom: 10px; }
+  .translation { background-color: #e0f7e0; border: 1px solid #4CAF50; padding: 15px; margin-bottom: 20px; }
+  .formula-container { background-color: #fffde7; padding: 15px; text-align: center; margin: 20px 0; }
+  .formula-label { font-style: italic; margin-top: 5px; }
+  .term { color: red; font-weight: bold; }
+  h2 { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 5px; }
+  .section { margin-bottom: 30px; }
+</style>
+</head>
+<body>
+
+<h1>Theorem 1 证明解析</h1>
+
+<!-- 内容理解 -->
+<div class="section">
+  <h2>内容理解</h2>
+  <p>该文本证明了强化学习中关于<strong class="term">最优策略（optimal policy）</strong>π<sup>optimal</sup><sub>r,c</sub>的关键定理：</p>
+  <ol>
+    <li>定理给出了最优策略的显式密度函数形式：π<sup>optimal</sup><sub>r,c</sub>(y|x) ∝ π<sub>0</sub>(y|x)exp{cQ<sub>x</sub>(r(x,y))}</li>
+    <li>通过<strong class="term">KL散度（KL divergence）</strong>约束推导出常数c需满足特定方程</li>
+    <li>证明了该策略的<strong class="term">条件胜率（context-conditional win rate）</strong>和KL散度具有闭式解</li>
+    <li>证明核心是通过变分优化将约束问题转化为KL散度最小化问题</li>
+    <li>最终验证了全局胜率和KL散度在任意提示集D上保持恒定</li>
+  </ol>
+</div>
+
+<!-- 内容翻译 -->
+<div class="section">
+  <h2>内容翻译</h2>
+  
+  <div class="original">
+    A.2 Proof of Theorem 1<br>
+    Theorem 1. Let π<sup>optimal</sup><sub>r,c</sub> be the solution to (3.3). Then, for all x, the density of the optimal policy is
+  </div>
+  <div class="translation">
+    A.2 定理1的证明<br>
+    定理1. 令π<sup>optimal</sup><sub>r,c</sub>为公式(3.3)的解。则对所有x，<strong class="term">最优策略（optimal policy）</strong>的密度为
+  </div>
+  
+  <div class="formula-container">
+    \[
+    \pi_{\text{optimal}}^{r,c}(y|x) = \pi_0(y|x) \frac{\exp\{c Q_x(r(x,y))\}}{Z_c^r} \tag{3.6}
+    \]
+    <div class="formula-label">公式(3.6): 最优策略的密度函数形式</div>
+  </div>
+  
+  <div class="original">
+    where Z<sup>c</sup><sub>r</sub> is the normalizing constant, and c is a positive constant such that
+  </div>
+  <div class="translation">
+    其中Z<sup>c</sup><sub>r</sub>是<strong class="term">归一化常数（normalizing constant）</strong>，c是满足下式的正常数：
+  </div>
+  
+  <div class="formula-container">
+    \[
+    (c-1)\frac{e^c + 1}{e^c - 1} - \log\left(\frac{e^c - 1}{c}\right) = d \tag{3.7}
+    \]
+    <div class="formula-label">公式(3.7): 约束条件方程</div>
+  </div>
+  
+  <div class="original">
+    Furthermore, the context-conditional win rate and KL divergence of this optimal policy are<br>
+    1. Context-conditional win rate: \( p_{\pi_{\text{optimal}}^{r,c} \succ \pi_0 | x} = \frac{(c-1)e^c + 1}{c(e^c - 1)} \)<br>
+    2. Context-conditional KL divergence: \( D_{\text{KL}} \left( \pi_{\text{optimal}}^{r,c} \| \pi_0 | x \right) = (c-1)\frac{e^c + 1}{e^c - 1} - \log\left(\frac{e^c - 1}{c}\right) \)<br>
+    Since for any prompt x, both the context conditional win rate and KL divergence are constants, the overall win rate \( p_{\pi_{\text{optimal}}^{r,c} \succ \pi_0} \) and KL divergence \( D_{\text{KL}}(\pi_{\text{optimal}}^{r,c} \| \pi_0) \) on any prompt set \( \mathcal{D} \) are also these values. [Proof ]
+  </div>
+  <div class="translation">
+    此外，该最优策略的<strong class="term">上下文条件胜率（context-conditional win rate）</strong>和<strong class="term">KL散度（KL divergence）</strong>为：<br>
+    1. 上下文条件胜率：\( p_{\pi_{\text{optimal}}^{r,c} \succ \pi_0 | x} = \frac{(c-1)e^c + 1}{c(e^c - 1)} \)<br>
+    2. 上下文条件KL散度：\( D_{\text{KL}} \left( \pi_{\text{optimal}}^{r,c} \| \pi_0 | x \right) = (c-1)\frac{e^c + 1}{e^c - 1} - \log\left(\frac{e^c - 1}{c}\right) \)<br>
+    由于对任意提示x，上下文条件胜率和KL散度均为常数，因此在任意提示集\( \mathcal{D} \)上的全局胜率\( p_{\pi_{\text{optimal}}^{r,c} \succ \pi_0} \)和KL散度\( D_{\text{KL}}(\pi_{\text{optimal}}^{r,c} \| \pi_0) \)也取这些值。[证明]
+  </div>
+  
+  <div class="original">
+    Proof. Since (3.3) is equivalent to (3.4) with some β>0. Now we have:
+    \[
+    \begin{align*}
+    &\arg\max_{\pi} \mathbb{E}_{x\sim\mathcal{D}, y\sim\pi(y|x)} [Q_x(r(x,y))] - \beta(D_{\text{KL}}(\pi\|\pi_0) - d) \\
+    =& \arg\max_{\pi} \mathbb{E}_{x\sim\mathcal{D}} \mathbb{E}_{y\sim\pi(y|x)} \left[ Q_x(r(x,y)) - \beta \log \frac{\pi(y|x)}{\pi_0(y|x)} \right] \\
+    =& \arg\min_{\pi} \mathbb{E}_{x\sim\mathcal{D}} \mathbb{E}_{y\sim\pi(y|x)} \left[ \log \frac{\pi(y|x)}{\pi_0(y|x)} - \frac{1}{\beta} Q_x(r(x,y)) \right] \\
+    =& \arg\min_{\pi} \mathbb{E}_{x\sim\mathcal{D}} \mathbb{E}_{y\sim\pi(y|x)} \left[ \log \frac{\pi(y|x)}{\frac{1}{Z} \pi_0(y|x) \exp\left\{ \frac{1}{\beta} Q_x(r(x,y)) \right\}} - \log Z \right] \\
+    =& \arg\min_{\pi} \mathbb{E}_{x\sim\mathcal{D}} D_{\text{KL}} \left( \pi(y|x)  \Bigg\|  \frac{1}{Z} \pi_0(y|x) \exp\left\{ \frac{1}{\beta} Q_x(r(x,y)) \right\} \right)
+    \end{align*}
+    \tag{A.2}
+    \]
+  </div>
+  <div class="translation">
+    证明：由于(3.3)式等价于存在β>0的(3.4)式，我们有：
+    <div class="formula-container">
+      \[
+      \begin{align*}
+      &\arg\max_{\pi} \mathbb{E}_{x\sim\mathcal{D}, y\sim\pi(y|x)} [Q_x(r(x,y))] - \beta(D_{\text{KL}}(\pi\|\pi_0) - d) \\
+      =& \arg\max_{\pi} \mathbb{E}_{x\sim\mathcal{D}} \mathbb{E}_{y\sim\pi(y|x)} \left[ Q_x(r(x,y)) - \beta \log \frac{\pi(y|x)}{\pi_0(y|x)} \right] \\
+      =& \arg\min_{\pi} \mathbb{E}_{x\sim\mathcal{D}} \mathbb{E}_{y\sim\pi(y|x)} \left[ \log \frac{\pi(y|x)}{\pi_0(y|x)} - \frac{1}{\beta} Q_x(r(x,y)) \right] \\
+      =& \arg\min_{\pi} \mathbb{E}_{x\sim\mathcal{D}} \mathbb{E}_{y\sim\pi(y|x)} \left[ \log \frac{\pi(y|x)}{\frac{1}{Z} \pi_0(y|x) \exp\left\{ \frac{1}{\beta} Q_x(r(x,y)) \right\}} - \log Z \right] \\
+      =& \arg\min_{\pi} \mathbb{E}_{x\sim\mathcal{D}} D_{\text{KL}} \left( \pi(y|x)  \Bigg\|  \frac{1}{Z} \pi_0(y|x) \exp\left\{ \frac{1}{\beta} Q_x(r(x,y)) \right\} \right)
+      \end{align*}
+      \]
+      <div class="formula-label">公式(A.2): 优化问题转化为KL散度最小化</div>
+    </div>
+  </div>
+  
+  <div class="original">
+    where the second to last equation is because the normalizer Z is a constant:
+    \[
+    Z := \int \pi_0(y|x) \exp\left\{ \frac{1}{\beta} Q_x(r(x,y)) \right\} dy = \int_0^1 e^{u / \beta} du = \beta (e^{1/\beta} - 1)
+    \]
+    Since the KL divergence is minimized at 0 if and only if the two distributions are identical, the minimizer of (A.2) is the π* satisfying that for any prompt x∈D,
+    \[
+    \pi^*(y|x) = \frac{1}{Z} \pi_0(y|x) \exp(c Q_x(r(x,y)))
+    \]
+    where c=1/β.
+  </div>
+  <div class="translation">
+    其中倒数第二个等式成立是因为归一化因子Z是常数：
+    <div class="formula-container">
+      \[
+      Z := \int \pi_0(y|x) \exp\left\{ \frac{1}{\beta} Q_x(r(x,y)) \right\} dy = \int_0^1 e^{u / \beta} du = \beta (e^{1/\beta} - 1)
+      \]
+    </div>
+    由于当且仅当两个分布相同时KL散度最小化为0，(A.2)式的最小化解π*满足：对任意提示x∈D，
+    <div class="formula-container">
+      \[
+      \pi^*(y|x) = \frac{1}{Z} \pi_0(y|x) \exp(c Q_x(r(x,y)))
+      \]
+    </div>
+    其中c=1/β。
+  </div>
+  
+  <div class="original">
+    Then we confirm the closed forms of the context-conditional win rate and KL divergence. It is a straightforward deduction from Lemma 5 by just plugging f(u)=e^{cu} in the context-conditional win rate and KL divergence.
+    Furthermore, we require
+    \[
+    D_{\text{KL}}(\pi^* \| \pi_0) = d
+    \]
+  </div>
+  <div class="translation">
+    接着我们确认上下文条件胜率和KL散度的闭式解。这可通过在引理5中代入f(u)=e^{cu}直接推导得出。<br>
+    此外，我们要求：
+    <div class="formula-container">
+      \[
+      D_{\text{KL}}(\pi^* \| \pi_0) = d
+      \]
+    </div>
+  </div>
+</div>
+
+<!-- 摘要总结 -->
+<div class="section">
+  <h2>摘要总结</h2>
+  <p>本证明建立了强化学习中带约束的最优策略形式：</p>
+  <ul>
+    <li>推导出最优策略密度函数：π<sup>optimal</sup><sub>r,c</sub>(y|x) ∝ π<sub>0</sub>(y|x)exp{cQ<sub>x</sub>(r(x,y))}</li>
+    <li>通过KL散度约束\( D_{\text{KL}}(\pi^* \| \pi_0) = d \)确定参数c</li>
+    <li>证明核心步骤：将原始优化问题转化为KL散度最小化问题</li>
+    <li>获得闭式解：条件胜率=\( \frac{(c-1)e^c + 1}{c(e^c - 1)} \)，KL散度=\( (c-1)\frac{e^c + 1}{e^c - 1} - \log\left(\frac{e^c - 1}{c}\right) \)</li>
+    <li>证明这些量在任意提示集D上保持恒定</li>
+  </ul>
+</div>
+
+<!-- 术语识别 -->
+<div class="section">
+  <h2>术语识别</h2>
+  <dl>
+    <dt><strong class="term">最优策略 (optimal policy) π<sup>optimal</sup><sub>r,c</sub></strong></dt>
+    <dd>在给定奖励函数r和约束参数c下，最大化期望奖励同时满足KL散度约束的策略解。其密度函数形式为π<sub>0</sub>(y|x)exp{cQ<sub>x</sub>(r(x,y))}/Z</dd>
+    
+    <dt><strong class="term">KL散度 (KL divergence) D<sub>KL</sub>(π∥π<sub>0</sub>)</strong></dt>
+    <dd>衡量策略π与参考策略π<sub>0</sub>之间差异的信息论度量，定义为\( \mathbb{E}_\pi [\log(\pi/\pi_0)] \)。本定理中作为优化约束条件使用。</dd>
+    
+    <dt><strong class="term">上下文条件胜率 (context-conditional win rate) p<sub>π≻π<sub>0</sub>|x</sub></strong></dt>
+    <dd>在给定上下文x时，策略π战胜参考策略π<sub>0</sub>的概率。本定理给出其闭式解\( \frac{(c-1)e^c + 1}{c(e^c - 1)} \).</dd>
+    
+    <dt><strong class="term">归一化常数 (normalizing constant) Z<sup>c</sup><sub>r</sub></strong></dt>
+    <dd>确保概率密度积分为1的标准化因子，计算公式为\( \int \pi_0(y|x) \exp(cQ_x(r(x,y))) dy \).</dd>
+    
+    <dt><strong class="term">奖励函数 (reward function) r(x,y)</strong></dt>
+    <dd>评估在上下文x下生成结果y的质量函数，Q<sub>x</sub>为其变换形式（文中未显式定义）。</dd>
+    
+    <dt><strong class="term">参考策略 (reference policy) π<sub>0</sub></strong></dt>
+    <dd>作为优化基准的初始策略，通常为预训练模型或随机策略。</dd>
+  </dl>
+</div>
+
+</body>
+</html>

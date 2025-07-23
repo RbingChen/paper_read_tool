@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>论文解析报告</title>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    body { font-family: Arial, sans-serif; line-height: 1.6; }
+    .section { margin-bottom: 30px; }
+    h2 { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 5px; }
+    .original { background-color: #f0f0f0; border: 1px solid #cccccc; padding: 15px; margin: 10px 0; }
+    .translation { background-color: #e0ffe0; border: 1px solid #2ecc71; padding: 15px; margin: 10px 0; }
+    .figure { background-color: #ffffcc; padding: 15px; margin: 20px 0; text-align: center; }
+    .term { color: red; font-weight: bold; }
+    table { width: 100%; border-collapse: collapse; margin: 10px 0; }
+    th, td { border: 1px solid #ddd; padding: 8px; text-align: center; }
+    th { background-color: #f2f2f2; }
+  </style>
+</head>
+<body>
+
+<!-- 内容理解部分 -->
+<section class="section">
+  <h2>内容理解</h2>
+  <p>本文是AI模型评估领域的预印本论文，聚焦于<strong class="term">点式通用奖励模型（Pointwise GRM）</strong>的输入灵活性实验。核心内容包括：</p>
+  <ul>
+    <li><strong>实验设置</strong>：在多个基准测试（如RMB BoN、PPE Correctness和ReaLMistake）上评估DeepSeek-GRM模型，比较不同输入类型（对输入 vs. 列表输入）和模型变体（如16B和27B参数版本）。</li>
+    <li><strong>关键发现</strong>：
+      <ul>
+        <li>输入类型灵活性：在<strong class="term">多响应场景（Generating Rewards for Many Responses）</strong>中，模型对输入类型（pair/list）不敏感，性能差异小于1%（表11）。</li>
+        <li>单响应评估能力：在<strong class="term">单响应场景（Generating Rewards for Single Responses）</strong>中，DeepSeek-GRM-27B在ReaLMistake基准上达到74.4% ROC-AUC，优于同类模型（表13）。</li>
+        <li>模型比较：DeepSeek-GRM在相同规模模型中表现最佳，且通过<strong class="term">投票机制（Voting@k）</strong>和<strong class="term">元奖励模型（Meta RM）</strong>提升性能（表12）。</li>
+      </ul>
+    </li>
+    <li><strong>理论支撑</strong>：点式GRM方法在理论上支持灵活输入（第2.1节），本文通过实证验证了这一特性。</li>
+    <li><strong>整体认知</strong>：论文强调点式GRM的鲁棒性，适用于多响应和单响应场景，并通过基准测试证明其竞争力。未定义数学公式，但依赖表格数据展示结果。</li>
+  </ul>
+</section>
+
+<!-- 内容翻译部分 -->
+<section class="section">
+  <h2>内容翻译</h2>
+  
+  <div class="original">
+    <p>Preprint. Under review.</p>
+    <p>Method Helpfulness Harmlessness</p>
+    <p>DeepSeek-GRM-27B</p>
+    <p>w/ Pair Input 62.1 57.5</p>
+    <p>w/ List Input 62.3 57.0</p>
+    <p>|∆| 0.2 0.5</p>
+    <p>Table 11: Experiments of response input types on the RMB BoN benchmarks.</p>
+  </div>
+  <div class="translation">
+    <p>预印本。正在审阅中。</p>
+    <p>方法 帮助性 无害性</p>
+    <p>DeepSeek-GRM-27B</p>
+    <p>带对输入 62.1 57.5</p>
+    <p>带列表输入 62.3 57.0</p>
+    <p>|∆| 0.2 0.5</p>
+    <p>表11：响应输入类型在RMB BoN基准上的实验。</p>
+  </div>
+  
+  <div class="figure">
+    <table>
+      <caption>Table 11: Experiments of response input types on the RMB BoN benchmarks.</caption>
+      <tr><th>Method</th><th>Helpfulness</th><th>Harmlessness</th></tr>
+      <tr><td>DeepSeek-GRM-27B</td><td>-</td><td>-</td></tr>
+      <tr><td>w/ Pair Input</td><td>62.1</td><td>57.5</td></tr>
+      <tr><td>w/ List Input</td><td>62.3</td><td>57.0</td></tr>
+      <tr><td>|∆|</td><td>0.2</td><td>0.5</td></tr>
+    </table>
+    <p>表11：响应输入类型在<strong class="term">RMB BoN（RMB Best-of-N）</strong>基准上的实验结果。</p>
+  </div>
+  
+  <div class="original">
+    <p>Method Overall</p>
+    <p>DeepSeek-GRM-27B 59.8</p>
+    <p>w/ Voting@32 60.4</p>
+    <p>w/ Meta RM (k<sub>meta</sub>=8) 64.7</p>
+    <p>w/ Reference 91.6</p>
+    <p>Table 12: Experiments on reference-based RM on the PPE correctness benchmark.</p>
+  </div>
+  <div class="translation">
+    <p>方法 总体</p>
+    <p>DeepSeek-GRM-27B 59.8</p>
+    <p>带投票@32 60.4</p>
+    <p>带元RM (k<sub>meta</sub>=8) 64.7</p>
+    <p>带参考 91.6</p>
+    <p>表12：基于参考的奖励模型在PPE正确性基准上的实验。</p>
+  </div>
+  
+  <div class="figure">
+    <table>
+      <caption>Table 12: Experiments on reference-based RM on the PPE correctness benchmark.</caption>
+      <tr><th>Method</th><th>Overall</th></tr>
+      <tr><td>DeepSeek-GRM-27B</td><td>59.8</td></tr>
+      <tr><td>w/ Voting@32</td><td>60.4</td></tr>
+      <tr><td>w/ Meta RM (k<sub>meta</sub>=8)</td><td>64.7</td></tr>
+      <tr><td>w/ Reference</td><td>91.6</td></tr>
+    </table>
+    <p>表12：基于参考的奖励模型在<strong class="term">PPE正确性（PPE Correctness）</strong>基准上的实验结果。</p>
+  </div>
+  
+  <div class="original">
+    <p>Model Overall</p>
+    <p>DeepSeek-V2.5-0905 69.4</p>
+    <p>GPT-4o-2024-08-06 74.3</p>
+    <p>DeepSeek-V2-Lite-Chat 61.9</p>
+    <p>DeepSeek-GRM-16B (Ours) 64.9</p>
+    <p>Gemma-2-27B-it 65.8</p>
+    <p>DeepSeek-BTRM-27B 69.3</p>
+    <p>DeepSeek-GRM-27B (Ours) 72.2</p>
+    <p>DeepSeek-GRM-27B (Voting@8) (Ours) 74.4</p>
+    <p>Table 13: Experimental results (ROC-AUC (%)) on the ReaLMistake benchmark.</p>
+  </div>
+  <div class="translation">
+    <p>模型 总体</p>
+    <p>DeepSeek-V2.5-0905 69.4</p>
+    <p>GPT-4o-2024-08-06 74.3</p>
+    <p>DeepSeek-V2-Lite-Chat 61.9</p>
+    <p>DeepSeek-GRM-16B (我们的) 64.9</p>
+    <p>Gemma-2-27B-it 65.8</p>
+    <p>DeepSeek-BTRM-27B 69.3</p>
+    <p>DeepSeek-GRM-27B (我们的) 72.2</p>
+    <p>DeepSeek-GRM-27B (投票@8) (我们的) 74.4</p>
+    <p>表13：在ReaLMistake基准上的实验结果（ROC-AUC (%)）。</p>
+  </div>
+  
+  <div class="figure">
+    <table>
+      <caption>Table 13: Experimental results (ROC-AUC (%)) on the ReaLMistake benchmark.</caption>
+      <tr><th>Model</th><th>Overall</th></tr>
+      <tr><td>DeepSeek-V2.5-0905</td><td>69.4</td></tr>
+      <tr><td>GPT-4o-2024-08-06</td><td>74.3</td></tr>
+      <tr><td>DeepSeek-V2-Lite-Chat</td><td>61.9</td></tr>
+      <tr><td>DeepSeek-GRM-16B (Ours)</td><td>64.9</td></tr>
+      <tr><td>Gemma-2-27B-it</td><td>65.8</td></tr>
+      <tr><td>DeepSeek-BTRM-27B</td><td>69.3</td></tr>
+      <tr><td>DeepSeek-GRM-27B (Ours)</td><td>72.2</td></tr>
+      <tr><td>DeepSeek-GRM-27B (Voting@8) (Ours)</td><td>74.4</td></tr>
+    </table>
+    <p>表13：在<strong class="term">ReaLMistake</strong>基准上的实验结果（<strong class="term">ROC-AUC（Receiver Operating Characteristic - Area Under Curve）</strong>，单位为百分比）。</p>
+  </div>
+  
+  <div class="original">
+    <p>Table 4 in Table 7, with scores on each RM benchmark. Furthermore, we list detailed results for all tested methods on each RM benchmarks, with the Reward Bench benchmark in Table 8, the PPE Correctness benchmark in Table 9, and the RMB benchmark in Table 10. We found that DeepSeek-R1 achieves the highest result in the Reasoning subset of the Reward Bench benchmark, indicating that long-horizon reasoning could boost GRMs in reasoning extensive scenarios.</p>
+  </div>
+  <div class="translation">
+    <p>表7中包含表4，展示了每个奖励模型基准的分数。此外，我们在每个奖励模型基准上列出了所有测试方法的详细结果：Reward Bench基准在表8，PPE正确性基准在表9，RMB基准在表10。我们发现DeepSeek-R1在Reward Bench基准的推理子集上取得了最高结果，表明长视野推理能提升<strong class="term">通用奖励模型（GRMs）</strong>在推理密集型场景中的表现。</p>
+  </div>
+  
+  <div class="original">
+    <h3>E Additional Experiments</h3>
+    <h4>E.1 Input Flexibility of the Pointwise GRM Approach</h4>
+    <p>In Section 2.1, we demonstrate the input flexibility of the pointwise GRM approach theoretically. In this section, we provide empirical evidence on various input types to support it.</p>
+  </div>
+  <div class="translation">
+    <h3>E 附加实验</h3>
+    <h4>E.1 点式GRM方法的输入灵活性</h4>
+    <p>在第2.1节中，我们从理论上证明了点式GRM方法的输入灵活性。本节中，我们提供多种输入类型的实证证据来支持这一点。</p>
+  </div>
+  
+  <div class="original">
+    <h4>E.1.1 Generating Rewards for Many Responses</h4>
+    <p>In Table 11, we show the experimental results of DeepSeek-GRM-27B on the BoN subsets of the RMB benchmark, where each query has multiple responses. If there is a total n, (n>2) responses for a query, the pair input setting is to evaluate (n−1) pairs comprised of the best response and the other responses, and only when the best response is correctly identified from all (n−1) pairs, the data point is considered as correct. It is also the default setting for the original benchmark. We compare the performance of DeepSeek-GRM-27B with pair input and list input, where the list input setting is to identify the best response with inputting all n responses. The result shows that DeepSeek-GRM-27B is barely affected by the input types, and the performance difference is less than 1% on both helpfulness and harmlessness subsets. This indicates that the pointwise GRM is flexible to input many responses, and the performance is not sensitive to the input types.</p>
+  </div>
+  <div class="translation">
+    <h4>E.1.1 为多响应生成奖励</h4>
+    <p>在表11中，我们展示了DeepSeek-GRM-27B在RMB基准的BoN子集上的实验结果，其中每个查询有多个响应。如果一个查询共有n个响应（n>2），对输入设置是评估(n−1)个对（由最佳响应和其他响应组成），只有当所有(n−1)个对中正确识别出最佳响应时，该数据点才被视为正确。这也是原始基准的默认设置。我们比较了DeepSeek-GRM-27B在对输入和列表输入下的性能，其中列表输入设置是通过输入所有n个响应来识别最佳响应。结果显示，DeepSeek-GRM-27B几乎不受输入类型影响，在帮助性和无害性子集上的性能差异均小于1%。这表明点式GRM能灵活输入多个响应，且性能对输入类型不敏感。</p>
+  </div>
+  
+  <div class="original">
+    <h4>E.1.2 Generating Rewards for Single Responses</h4>
+    <p>In Table 13, we show the experimental results of DeepSeek-GRM in 16B and 27B on the ReaLMistake benchmark, where each query has only one response. We compare with public models, e.g., DeepSeek-V2.5-0905, GPT-4o-2024-08-06, DeepSeek-V2-Lite, and Gemma-2-27B-it, and DeepSeek-BTRM-27B. The result shows that DeepSeek-GRM achieves the best performance among models with the same size, and comparable performance with the best public models with inference-time scaling. This indicates that the pointwise GRM could effectively rate single responses.</p>
+  </div>
+  <div class="translation">
+    <h4>E.1.2 为单响应生成奖励</h4>
+    <p>在表13中，我们展示了DeepSeek-GRM的16B和27B版本在ReaLMistake基准上的实验结果，其中每个查询仅有一个响应。我们与公共模型比较，例如DeepSeek-V2.5-0905、GPT-4o-2024-08-06、DeepSeek-V2-Lite、Gemma-2-27B-it和DeepSeek-BTRM-27B。结果显示，DeepSeek-GRM在相同规模的模型中表现最佳，并通过推理时缩放与最佳公共模型性能相当。这表明点式GRM能有效评估单响应。</p>
+  </div>
+  
+  <div class="original">
+    <p>28</p>
+  </div>
+  <div class="translation">
+    <p>28</p>
+  </div>
+</section>
+
+<!-- 摘要总结部分 -->
+<section class="section">
+  <h2>摘要总结</h2>
+  <p>本文核心内容总结如下：</p>
+  <ul>
+    <li><strong>研究主题</strong>：验证<strong class="term">点式通用奖励模型（Pointwise GRM）</strong>的输入灵活性，重点在多响应和单响应场景。</li>
+    <li><strong>关键实验</strong>：
+      <ul>
+        <li>在<strong class="term">RMB BoN基准</strong>上，比较对输入（pair input）和列表输入（list input），结果显示性能差异小于1%（表11），证明模型对输入类型不敏感。</li>
+        <li>在<strong class="term">ReaLMistake基准</strong>上，DeepSeek-GRM-27B（带投票@8）达到74.4% ROC-AUC，优于GPT-4o等公共模型（表13）。</li>
+        <li>辅助机制如<strong class="term">投票（Voting@k）</strong>和<strong class="term">元奖励模型（Meta RM）</strong>显著提升模型性能（表12）。</li>
+      </ul>
+    </li>
+    <li><strong>主要结论</strong>：点式GRM方法具有鲁棒性，能灵活处理不同输入类型（单/多响应），并在多个基准上实现最先进性能，尤其通过缩放技术（如投票）增强推理能力。</li>
+    <li><strong>论文状态</strong>：预印本，正在审阅中。</li>
+  </ul>
+</section>
+
+<!-- 术语识别部分 -->
+<section class="section">
+  <h2>术语识别</h2>
+  <p>文本中关键术语及其解释：</p>
+  <ul>
+    <li><strong class="term">GRM (General Reward Model，通用奖励模型)</strong>：一种AI模型，用于评估和生成响应奖励分数，本文特指点式GRM变体。</li>
+    <li><strong class="term">Pointwise GRM (点式通用奖励模型)</strong>：GRM的一种方法，独立评估每个响应，支持灵活输入类型（如单响应或多响应列表）。</li>
+    <li><strong class="term">BoN (Best-of-N，最佳N选择)</strong>：基准测试场景，每个查询有多个响应，目标是从中选出最佳响应。</li>
+    <li><strong class="term">RMB (Response Model Benchmark，响应模型基准)</strong>：评估奖励模型的基准套件，包括BoN子集。</li>
+    <li><strong class="term">PPE Correctness (PPE正确性)</strong>：一个基准测试，衡量模型在基于参考的奖励生成中的准确性。</li>
+    <li><strong class="term">ReaLMistake</strong>：一个基准测试，专注于单响应场景的评估，使用ROC-AUC指标。</li>
+    <li><strong class="term">ROC-AUC (Receiver Operating Characteristic - Area Under Curve，接收者操作特征曲线下面积)</strong>：性能评估指标，值越高表示模型区分正负样本能力越强（范围0-100%）。</li>
+    <li><strong class="term">Pair Input (对输入)</strong>：输入形式，将响应成对（最佳响应 vs. 其他响应）评估。</li>
+    <li><strong class="term">List Input (列表输入)</strong>：输入形式，同时输入所有响应列表进行评估。</li>
+    <li><strong class="term">Voting@k (投票@k)</strong>：集成方法，使用k个模型投票提升性能（如Voting@8）。</li>
+    <li><strong class="term">Meta RM (元奖励模型)</strong>：高层模型，用于优化基础GRM的输出（参数k<sub>meta</sub>控制规模）。</li>
+    <li><strong class="term">DeepSeek-BTRM (DeepSeek Binary TRM)</strong>：一种二进制奖励模型变体，用于比较。</li>
+  </ul>
+</section>
+
+</body>
+</html>

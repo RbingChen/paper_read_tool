@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>论文内容分析报告</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    h2 { color: #333; border-bottom: 2px solid #ddd; padding-bottom: 5px; }
+    h3 { color: #444; }
+    .original { background-color: #f0f0f0; border: 1px solid #ccc; padding: 15px; margin-bottom: 15px; border-radius: 5px; }
+    .translation { background-color: #e0f7e0; border: 1px solid #4CAF50; padding: 15px; margin-bottom: 15px; border-radius: 5px; }
+    .figure { background-color: #fffde7; padding: 15px; margin-bottom: 15px; border-radius: 5px; border: 1px dashed #ffc107; }
+    .term { color: red; font-weight: bold; }
+    .summary { background-color: #e3f2fd; padding: 15px; margin-bottom: 15px; border-radius: 5px; }
+    .terms-list { background-color: #ffebee; padding: 15px; border-radius: 5px; }
+    ul { list-style-type: none; padding: 0; }
+    li { margin-bottom: 10px; }
+  </style>
+</head>
+<body>
+  <h2>内容理解</h2>
+  <p>该文本讨论了在强化学习（RL）训练中优化长链思维（CoT）模型时，采用多阶段训练策略的核心优势。主要挑战是处理过长的模型输出，这会导致收敛速度慢和训练方差高。受DeepScaleR的启发，作者引入了多阶段训练：在初始阶段使用较短的上下文长度（T），待模型性能收敛后，在后续阶段逐步增加T。这种方法显著提高了训练效率（减少训练时间）和性能（在基准测试如AIME24上的表现）。实验比较了“从零开始训练”（固定上下文长度）和“多阶段训练”（动态调整上下文长度），结果显示多阶段训练能以更少的资源达到相同或更好的准确度，同时提升令牌效率。文本还指出，RL训练对少量地面真实噪声具有鲁棒性，与现有研究一致，因此作者在后续实验中采用默认数据组成。</p>
+
+  <h2>内容翻译</h2>
+  <div class="figure">
+    <div class="original">(a)
+(b)
+Figure 5: Left: Comparison of From-Scratch vs. Multi-Stage training. Top left: Response length during RL training. Bottom left: AIME24 avg@8 performance at temperature 1 (left y-axis) and cumulative training hours (right y-axis). Multi-stage training achieves the same final accuracy with significantly fewer training hours due to a smaller context length in the early stages. Right: AIME24 avg@32 vs. response length for Skywork-OR1-Math-7B and DeepSeek-R1-Distill-Qwen-7B with 32K context length. The Stage I checkpoint of Skywork-OR1-Math-7B reaches comparable performance to DeepSeek-R1-Distill-Qwen-7B with notably better token efficiency; further performance gains are seen in Stages II & III.</div>
+    <div class="translation">(a)
+(b)
+图5：左：从零开始训练与多阶段训练的比较。左上：<span class="term">RL训练（Reinforcement Learning Training）</span>期间的响应长度。左下：温度1下的<span class="term">AIME24 avg@8（AIME24平均@8）</span>性能（左y轴）和累积训练小时数（右y轴）。多阶段训练由于在早期阶段使用较小的<span class="term">上下文长度（Context Length T）</span>，以显著更少的训练小时数达到相同的最终准确度。右：具有32K上下文长度的Skywork-OR1-Math-7B和DeepSeek-R1-Distill-Qwen-7B的<span class="term">AIME24 avg@32（AIME24平均@32）</span>与响应长度的关系。Skywork-OR1-Math-7B的第一阶段检查点达到与DeepSeek-R1-Distill-Qwen-7B相当的性能，但具有显著更好的<span class="term">令牌效率（Token Efficiency）</span>；在第二阶段和第三阶段观察到进一步的性能提升。</div>
+  </div>
+
+  <div>
+    <div class="original">progress, possibly due to noise in the provided answers. We hypothesize that RL training is robust to small amounts of ground truth noise, consistent with findings in [36]. Therefore, we adopt the default data composition described in Section 6 for all subsequent exploration experiments.</div>
+    <div class="translation">进展，可能是由于提供的答案中的噪声。我们假设<span class="term">RL训练（Reinforcement Learning Training）</span>对少量<span class="term">地面真实噪声（Ground Truth Noise）</span>具有鲁棒性，这与[36]中的发现一致。因此，我们在所有后续探索实验中采用第6节描述的默认数据组成。</div>
+  </div>
+
+  <div>
+    <div class="original">3.2.2 Multi-Stage Training</div>
+    <div class="translation">3.2.2 <span class="term">多阶段训练（Multi-Stage Training）</span></div>
+  </div>
+
+  <div>
+    <div class="original">One of the major challenges in optimizing long Chain-of-Thought (CoT) models with RL is managing excessively long outputs, which can lead to slow convergence and high training variance. Inspired by DeepScaleR [17], we incorporated multi-stage training in all our released models to improve training efficiency. Specifically, we used a shorter context length T in the initial stages. Once the model’s performance converged, we increased T in the subsequent stage. This approach led to significant performance improvements on benchmarks while also enhancing training efficiency.</div>
+    <div class="translation">在优化长<span class="term">链式思维模型（Chain-of-Thought Models）</span>时，使用<span class="term">强化学习（Reinforcement Learning）</span>的主要挑战之一是管理过长的输出，这可能导致收敛速度慢和训练方差高。受DeepScaleR [17]的启发，我们在所有发布的模型中引入了<span class="term">多阶段训练（Multi-Stage Training）</span>以提高训练效率。具体来说，我们在初始阶段使用较短的<span class="term">上下文长度T（Context Length T）</span>。一旦模型的性能收敛，我们在后续阶段增加T。这种方法在基准测试上带来了显著的性能改进，同时也提高了训练效率。</div>
+  </div>
+
+  <div>
+    <div class="original">Same Improvement, Higher Efficiency. To demonstrate the effectiveness of multi-stage training, we conducted two experiments based on DeepSeek-R1-Distill-Qwen-7B with different schedules for T:
+Ablation Experiments 2: From-Scratch vs. Multi-Stage
+1. From-Scratch: We started with T= 16K at step 0 and kept it fixed during training.
+2. Multi-Stage: We started with T= 8K at step 0. At a later step (i.e., step 540), we switched to Stage II and increased T to 16K.</div>
+    <div class="translation">相同的改进，更高的效率。为了证明<span class="term">多阶段训练（Multi-Stage Training）</span>的有效性，我们基于DeepSeek-R1-Distill-Qwen-7B进行了两个实验，使用不同的T调度：
+<span class="term">消融实验2（Ablation Experiments 2）</span>：从零开始训练与多阶段训练
+1. 从零开始训练：我们在步骤0时以T=16K开始，并在训练期间保持固定。
+2. 多阶段训练：我们在步骤0时以T=8K开始。在稍后的步骤（即步骤540），我们切换到第二阶段并将T增加到16K。</div>
+  </div>
+
+  <div>
+    <div class="original">The other hyper-parameters were kept same for both experiments and are reported in Table 1. The results are presented in Figure 5(a) and Figure 5(b).</div>
+    <div class="translation">其他超参数在两个实验中保持相同，并在表1中报告。结果呈现在图5(a)和图5(b)中。</div>
+  </div>
+
+  <div>
+    <div class="original">Figure 5(a) illustrates how AIME24 accuracy, generated response length, and cumulative training hours evolve with the number of training steps in Ablation Experiments 2. As shown, the AIME24 accuracy in both experiments converges to approximately 60 when the number of training steps is sufficiently large. However, in the multi-stage experiment, the context length in Stage I (i.e., 8K) is only half that used in the from-scratch experiment (i.e., 16K). As a result, the average response length in the multi-stage experiment is</div>
+    <div class="translation">图5(a)展示了在<span class="term">消融实验2（Ablation Experiments 2）</span>中，<span class="term">AIME24准确度（AIME24 Accuracy）</span>、生成的响应长度和累积训练小时数如何随训练步骤数演变。如图所示，当训练步骤数足够大时，两个实验中的AIME24准确度都收敛到大约60。然而，在多阶段实验中，第一阶段（即8K）的<span class="term">上下文长度（Context Length）</span>仅是从零开始实验（即16K）的一半。因此，多阶段实验中的平均响应长度是</div>
+  </div>
+
+  <h2>摘要总结</h2>
+  <div class="summary">
+    <p>本文核心内容聚焦于强化学习（RL）训练中多阶段策略的应用，以优化长链思维（CoT）模型。关键发现包括：1) <strong>多阶段训练通过逐步增加上下文长度（T）</strong>（初始阶段使用较小T，如8K，后续阶段增至16K），显著减少训练时间并提高效率，同时保持或提升模型性能；2) 实验证明，相比“从零开始训练”（固定T=16K），多阶段训练在AIME24基准测试上达到相同准确度（约60），但训练小时数更少，且Skywork-OR1-Math-7B模型在第一阶段就展现出更好的令牌效率；3) RL训练对少量地面真实噪声具有鲁棒性，支持在后续实验中采用默认数据组成。整体上，该方法解决了长输出导致的收敛慢和高方差问题，提升了训练效能。</p>
+  </div>
+
+  <h2>术语识别</h2>
+  <div class="terms-list">
+    <ul>
+      <li><span class="term">Multi-Stage Training (多阶段训练)</span>: 一种训练策略，模型在初始阶段使用较短的上下文长度（T）训练，待性能收敛后逐步增加T。优势是减少训练时间和资源消耗，同时提升基准测试性能。例如，实验中从T=8K开始，后增至16K。</li>
+      <li><span class="term">Chain-of-Thought (CoT) Models (链式思维模型)</span>: 通过生成逐步推理链来解决问题的模型，模仿人类思考过程。优化挑战包括输出过长导致的收敛慢和训练方差高。</li>
+      <li><span class="term">Context Length T (上下文长度T)</span>: 训练中输入序列的最大长度，影响模型处理的信息量。在实验中，T值（如8K或16K）被动态调整以提高效率。</li>
+      <li><span class="term">AIME24 avg@8 / AIME24 avg@32 (AIME24平均@8 / AIME24平均@32)</span>: 基准测试指标，用于评估模型性能。avg@8表示在特定配置（如温度1）下的平均得分，反映准确度；avg@32则可能涉及更复杂的评估设置。</li>
+      <li><span class="term">RL Training (强化学习训练)</span>: 使用强化学习算法训练模型，通过奖励机制优化行为。文本强调其对少量地面真实噪声的鲁棒性。</li>
+      <li><span class="term">Token Efficiency (令牌效率)</span>: 模型生成输出的效率指标，指在较少令牌（token）使用下达到相同性能。例如，Skywork-OR1-Math-7B在第一阶段就比DeepSeek-R1-Distill-Qwen-7B更高效。</li>
+      <li><span class="term">Ground Truth Noise (地面真实噪声)</span>: 训练数据中的错误或不准确标签。文本指出RL训练能容忍少量此类噪声，不影响整体进展。</li>
+      <li><span class="term">Ablation Experiments (消融实验)</span>: 对照实验方法，用于比较不同训练策略（如“从零开始”vs“多阶段”）的影响。实验中控制超参数一致，以隔离变量效果。</li>
+      <li><span class="term">Convergence (收敛)</span>: 训练过程中模型性能稳定达到最优的状态。多阶段训练通过调整T加速收敛，减少训练小时数。</li>
+    </ul>
+  </div>
+</body>
+</html>

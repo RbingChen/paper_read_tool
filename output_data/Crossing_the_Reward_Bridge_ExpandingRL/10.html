@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>论文解析报告</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; line-height: 1.6; max-width: 900px; margin: 0 auto; padding: 20px; }
+        .original { background-color: #f0f0f0; border: 1px solid #ccc; padding: 15px; margin-bottom: 10px; border-radius: 5px; }
+        .translation { background-color: #e0ffe0; border: 1px solid #4CAF50; padding: 15px; margin-bottom: 25px; border-radius: 5px; }
+        .term { color: red; font-weight: bold; }
+        .section-title { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 5px; margin-top: 30px; }
+        .ref-item { margin-bottom: 25px; }
+        .formula-container { text-align: center; margin: 20px 0; background-color: #fffde7; padding: 15px; border-radius: 5px; }
+        .formula-label { display: block; font-style: italic; margin-top: 5px; }
+        ul { padding-left: 20px; }
+        li { margin-bottom: 10px; }
+    </style>
+</head>
+<body>
+
+<h1 style="text-align: center; color: #2c3e50;">论文解析报告</h1>
+
+<!-- 内容理解 -->
+<h2 class="section-title">内容理解</h2>
+<div class="original">
+    <p>该文本是一个关于<strong class="term">强化学习（Reinforcement Learning, RL）</strong>在代码生成与推理任务中应用的参考文献列表，包含17篇论文的引用信息。这些论文主要探讨如何利用<strong class="term">强化学习</strong>技术改进<strong class="term">大型语言模型（Large Language Models, LLMs）</strong>的代码生成能力、数学推理能力和自我验证能力。核心研究方向包括：通过<strong class="term">执行反馈（Execution Feedback）</strong>优化代码生成、利用<strong class="term">奖励机制（Reward Mechanisms）</strong>提升推理能力、以及开发<strong class="term">自我验证（Self-Verify）</strong>和<strong class="term">自我纠正（Self-Correct）</strong>方法。</p>
+</div>
+
+<!-- 内容翻译 -->
+<h2 class="section-title">内容翻译</h2>
+
+<div class="ref-item">
+    <div class="original">
+        Jonas Gehring, Kunhao Zheng, Jade Copet, Vegard Mella, Taco Cohen, and Gabriel Synnaeve. Rlef: Grounding code llms in execution feedback with reinforcement learning. arXiv preprint arXiv:2410.02089 , 2024.
+    </div>
+    <div class="translation">
+        Jonas Gehring, Kunhao Zheng, Jade Copet, Vegard Mella, Taco Cohen 和 Gabriel Synnaeve。RLEF：通过<strong class="term">强化学习（Reinforcement Learning）</strong>将代码<strong class="term">大型语言模型（LLMs）</strong>基于<strong class="term">执行反馈（Execution Feedback）</strong>进行基础训练。arXiv预印本 arXiv:2410.02089，2024年。
+    </div>
+</div>
+
+<div class="ref-item">
+    <div class="original">
+        Daya Guo, Dejian Yang, Haowei Zhang, Junxiao Song, Ruoyu Zhang, Runxin Xu, Qihao Zhu, Shirong Ma, Peiyi Wang, Xiao Bi, et al. Deepseek-r1: Incentivizing reasoning capability in llms via reinforcement learning. arXiv preprint arXiv:2501.12948 , 2025.
+    </div>
+    <div class="translation">
+        Daya Guo, Dejian Yang, Haowei Zhang 等。Deepseek-R1：通过<strong class="term">强化学习</strong>激励<strong class="term">大型语言模型（LLMs）</strong>的<strong class="term">推理能力（Reasoning Capability）</strong>。arXiv预印本 arXiv:2501.12948，2025年。
+    </div>
+</div>
+
+<div class="ref-item">
+    <div class="original">
+        Dan Hendrycks, Steven Basart, Saurav Kadavath, Mantas Mazeika, Akul Arora, Ethan Guo, Collin Burns, Samir Puranik, Horace He, Dawn Song, et al. Measuring coding challenge competence with apps. arXiv preprint arXiv:2105.09938 , 2021a.
+    </div>
+    <div class="translation">
+        Dan Hendrycks, Steven Basart, Saurav Kadavath 等。通过APP测量编程挑战能力。arXiv预印本 arXiv:2105.09938，2021a。
+    </div>
+</div>
+
+<div class="ref-item">
+    <div class="original">
+        Dan Hendrycks, Collin Burns, Saurav Kadavath, Akul Arora, Steven Basart, Eric Tang, Dawn Song, and Jacob Steinhardt. Measuring mathematical problem solving with the math dataset, 2021b.
+    </div>
+    <div class="translation">
+        Dan Hendrycks, Collin Burns, Saurav Kadavath 等。使用数学数据集测量数学问题解决能力，2021b。
+    </div>
+</div>
+
+<div class="ref-item">
+    <div class="original">
+        Jian Hu. Reinforce++: A simple and efficient approach for aligning large language models. arXiv preprint arXiv:2501.03262 , 2025.
+    </div>
+    <div class="translation">
+        Jian Hu。Reinforce++：一种简单高效的<strong class="term">大型语言模型（LLMs）</strong><strong class="term">对齐（Aligning）</strong>方法。arXiv预印本 arXiv:2501.03262，2025年。
+    </div>
+</div>
+
+<div class="ref-item">
+    <div class="original">
+        Paul Jaccard. The distribution of the flora in the alpine zone. New phytologist , 1912.
+    </div>
+    <div class="translation">
+        Paul Jaccard。高山地区植物区系分布。《新植物学家》，1912年。
+    </div>
+</div>
+
+<div class="ref-item">
+    <div class="original">
+        Wouter Kool, Herke van Hoof, and Max Welling. Buy 4 reinforce samples, get a baseline for free! 2019.
+    </div>
+    <div class="translation">
+        Wouter Kool, Herke van Hoof 和 Max Welling。购买4个<strong class="term">强化学习（Reinforce）</strong>样本，免费获得基线！2019年。
+    </div>
+</div>
+
+<div class="ref-item">
+    <div class="original">
+        Nathan Lambert, Jacob Morrison, Valentina Pyatkin, Shengyi Huang, Hamish Ivison, Faeze Brahman, Lester James V Miranda, Alisa Liu, Nouha Dziri, Shane Lyu, et al. T \” ulu 3: Pushing frontiers in open language model post-training. arXiv preprint arXiv:2411.15124 , 2024.
+    </div>
+    <div class="translation">
+        Nathan Lambert, Jacob Morrison, Valentina Pyatkin 等。Tülu 3：推动开放语言模型<strong class="term">后训练（Post-training）</strong>的前沿。arXiv预印本 arXiv:2411.15124，2024年。
+    </div>
+</div>
+
+<div class="ref-item">
+    <div class="original">
+        Long Li, Xuzheng He, Haozhe Wang, Linlin Wang, and Liang He. How do humans write code? large models do it the same way too. arXiv preprint arXiv:2402.15729 , 2024.
+    </div>
+    <div class="translation">
+        Long Li, Xuzheng He, Haozhe Wang 等。人类如何编写代码？<strong class="term">大型模型（Large Models）</strong>也以相同方式进行。arXiv预印本 arXiv:2402.15729，2024年。
+    </div>
+</div>
+
+<div class="ref-item">
+    <div class="original">
+        Hunter Lightman, Vineet Kosaraju, Yura Burda, Harri Edwards, Bowen Baker, Teddy Lee, Jan Leike, John Schulman, Ilya Sutskever, and Karl Cobbe. Let’s verify step by step. arXiv preprint arXiv:2305.20050 , 2023.
+    </div>
+    <div class="translation">
+        Hunter Lightman, Vineet Kosaraju, Yura Burda 等。让我们逐步验证。arXiv预印本 arXiv:2305.20050，2023年。
+    </div>
+</div>
+
+<div class="ref-item">
+    <div class="original">
+        Jiawei Liu and Lingming Zhang. Code-r1: Reproducing r1 for code with reliable rewards. 2025.
+    </div>
+    <div class="translation">
+        Jiawei Liu 和 Lingming Zhang。Code-R1：通过可靠<strong class="term">奖励（Rewards）</strong>复现代码R1。2025年。
+    </div>
+</div>
+
+<div class="ref-item">
+    <div class="original">
+        Michael Luo, Sijun Tan, Justin Wong, Xiaoxiang Shi, William Y. Tang, Manan Roongta, Colin Cai, Jeffrey Luo, Tianjun Zhang, Li Erran Li, Raluca Ada Popa, and Ion Stoica. Deepscaler: Surpassing o1-preview with a 1.5b model by scaling rl, 2025. Notion Blog.
+    </div>
+    <div class="translation">
+        Michael Luo, Sijun Tan, Justin Wong 等。DeepScaler：通过扩展<strong class="term">强化学习（RL）</strong>，用15亿参数模型超越O1-Preview。2025年。Notion博客。
+    </div>
+</div>
+
+<div class="ref-item">
+    <div class="original">
+        Trung Quoc Luong, Xinbo Zhang, Zhanming Jie, Peng Sun, Xiaoran Jin, and Hang Li. Reft: Reasoning with reinforced fine-tuning. arXiv preprint arXiv:2401.08967 , 2024.
+    </div>
+    <div class="translation">
+        Trung Quoc Luong, Xinbo Zhang, Zhanming Jie 等。ReFT：通过<strong class="term">强化微调（Reinforced Fine-tuning）</strong>进行推理。arXiv预印本 arXiv:2401.08967，2024年。
+    </div>
+</div>
+
+<div class="ref-item">
+    <div class="original">
+        Ruotian Ma, Peisong Wang, Cheng Liu, Xingyan Liu, Jiaqi Chen, Bang Zhang, Xin Zhou, Nan Du, and Jia Li. S2r: Teaching llms to self-verify and self-correct via reinforcement learning. arXiv preprint arXiv:2502.12853 , 2025a.
+    </div>
+    <div class="translation">
+        Ruotian Ma, Peisong Wang, Cheng Liu 等。S2R：通过<strong class="term">强化学习</strong>教导<strong class="term">大型语言模型（LLMs）</strong><strong class="term">自我验证（Self-verify）</strong>和<strong class="term">自我纠正（Self-correct）</strong>。arXiv预印本 arXiv:2502.12853，2025a。
+    </div>
+</div>
+
+<div class="ref-item">
+    <div class="original">
+        Zexiong Ma, Chao Peng, Pengfei Gao, Xiangxin Meng, Yanzhen Zou, and Bing Xie. Sorft: Issue resolving with subtask

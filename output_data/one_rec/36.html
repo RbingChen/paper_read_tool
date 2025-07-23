@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>OneRec技术报告分析</title>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<style>
+  body { font-family: Arial, sans-serif; line-height: 1.6; }
+  .original { background-color: #f0f0f0; border: 1px solid gray; padding: 15px; margin-bottom: 10px; }
+  .translation { background-color: #e0ffe0; border: 1px solid green; padding: 15px; margin-bottom: 20px; }
+  .figure { background-color: #ffffcc; padding: 15px; text-align: center; margin: 20px 0; }
+  .term { color: red; font-weight: bold; }
+  .section { margin-bottom: 30px; }
+  h2 { border-bottom: 2px solid #333; padding-bottom: 5px; }
+  .formula-container { text-align: center; margin: 20px 0; }
+  .formula-number { display: block; font-style: italic; }
+</style>
+</head>
+<body>
+
+<h1>OneRec技术报告分析</h1>
+
+<div class="section">
+  <h2>内容理解</h2>
+  <p>该文本包含两个核心部分：</p>
+  <ol>
+    <li><strong>体育领域术语集</strong>：中英文对照的篮球/足球专业术语，涵盖球队名称（如湖人篮球队）、球员（如科比、C罗）、赛事（四川女篮vs江苏女篮）、技术概念（篮球智商）等。</li>
+    <li><strong>算法技术内容</strong>：展示RQ-Kmeans算法生成的层级语义标识符（Figure 18），并引用符号说明表（Table 14-15）。层级标识符采用<strong class="term">从粗到细（coarse-to-fine）</strong>结构，如「体育→篮球&足球→篮球」的层级路径。</li>
+  </ol>
+</div>
+
+<div class="section">
+  <h2>内容翻译</h2>
+  
+  <div class="original">OneRec Technical Report</div>
+  <div class="translation">OneRec技术报告</div>
+  
+  <div class="original">⽤⽓球做保龄球/ Use balloons to make a bowling game</div>
+  <div class="translation">用气球制作保龄球游戏</div>
+  
+  <div class="original">保龄球 / Bowling</div>
+  <div class="translation">保龄球</div>
+  
+  <div class="original">科⽐ / Kobe</div>
+  <div class="translation">科比</div>
+  
+  <div class="original">篮球运动员科比 / Basketball PlayerKobe</div>
+  <div class="translation">篮球运动员科比</div>
+  
+  <div class="original">辽宁男篮/ Liaoning Men's Basketball Team</div>
+  <div class="translation">辽宁男子篮球队</div>
+  
+  <div class="original">辽宁男篮 / LiaoningMen'sBasketballTeam</div>
+  <div class="translation">辽宁男篮</div>
+  
+  <div class="original">乒乓球事业 / table tennis career</div>
+  <div class="translation">乒乓球事业</div>
+  
+  <div class="original">乒乓球 / TableTennis</div>
+  <div class="translation">乒乓球</div>
+  
+  <div class="original">四川⼥篮对阵江苏⼥篮/ Sichuan Women's Basketball Team vs. Jiangsu Women's Basketball Team</div>
+  <div class="translation">四川女篮对阵江苏女篮</div>
+  
+  <div class="original">女篮 / Women's BasketballTeam</div>
+  <div class="translation">女子篮球队</div>
+  
+  <div class="original">精彩⾜球/ exciting football</div>
+  <div class="translation">精彩足球</div>
+  
+  <div class="original">足球运动员肥罗 / FootballPlayerRonaldo</div>
+  <div class="translation">足球运动员罗纳尔多（肥罗）</div>
+  
+  <div class="original">中国短跑⼥神/ Chinese sprint goddess</div>
+  <div class="translation">中国短跑女神</div>
+  
+  <div class="original">短跑 / Sprint</div>
+  <div class="translation">短跑</div>
+  
+  <div class="original">吉达联合近5轮1胜3平1负/ Al-Ittihad has 1 win, 3 draws, and 1 loss in the last 5 rounds</div>
+  <div class="translation">吉达联合足球俱乐部近5轮比赛1胜3平1负</div>
+  
+  <div class="original">吉达联合足球俱乐部 / Al-Ittihad</div>
+  <div class="translation">吉达联合足球俱乐部</div>
+  
+  <div class="original">保罗⼀⽣之敌/ Paul’ s lifelong rival</div>
+  <div class="translation">保罗的一生之敌</div>
+  
+  <div class="original">篮球运动员保罗 / Basketball PlayerPaul</div>
+  <div class="translation">篮球运动员保罗</div>
+  
+  <div class="original">塔图姆对战灰熊/ Tatum against the Grizzlies</div>
+  <div class="translation">塔图姆对战孟菲斯灰熊队</div>
+  
+  <div class="original">塔图姆篮球队 / TatumBasketballTeam</div>
+  <div class="translation">塔图姆篮球队</div>
+  
+  <div class="original">⼤巴黎球员全部站着不动/ The PSG players all stood still</div>
+  <div class="translation">巴黎圣日耳曼队球员全部站立不动</div>
+  
+  <div class="original">大巴黎足球队 / ThePSG</div>
+  <div class="translation">巴黎圣日耳曼足球队</div>
+  
+  <div class="original">尼克斯战胜太阳/ The Knicks defeated the Suns</div>
+  <div class="translation">尼克斯队战胜太阳队</div>
+  
+  <div class="original">尼克斯篮球队 / TheKnicksBasketballTeam</div>
+  <div class="translation">纽约尼克斯篮球队</div>
+  
+  <div class="original">C罗 定义伟⼤/ Cristiano Ronaldo defines greatness</div>
+  <div class="translation">C罗定义伟大</div>
+  
+  <div class="original">希望穆迪和⼩穆迪没事/ Hope Moody and Little Moody are okay</div>
+  <div class="translation">希望穆迪和小穆迪平安</div>
+  
+  <div class="original">⾜坛⼤盘点/ Football roundup</div>
+  <div class="translation">足坛大盘点</div>
+  
+  <div class="original">什么是NBA中的哈登规则？/ What is the Harden Rule in the NBA?</div>
+  <div class="translation">什么是NBA中的哈登规则？</div>
+  
+  <div class="original">足球运动员C罗 / FootballPlayerCristiano Ronaldo</div>
+  <div class="translation">足球运动员C罗</div>
+  
+  <div class="original">篮球运动员穆迪/ BasketballPlayerMoody</div>
+  <div class="translation">篮球运动员穆迪</div>
+  
+  <div class="original">足球盘点 / FootballRoundup</div>
+  <div class="translation">足球盘点</div>
+  
+  <div class="original">NBA哈登规则 / NBAHardenRule</div>
+  <div class="translation">NBA哈登规则</div>
+  
+  <div class="original">锡安当年被吹爆了/ Zion was hyped up back</div>
+  <div class="translation">锡安当年被高度吹捧</div>
+  
+  <div class="original">篮球运动员锡安 / BasketballPlayerZion</div>
+  <div class="translation">篮球运动员锡安</div>
+  
+  <div class="original">泰斯球商⾮常⾼/ Tice has a very high basketball IQ</div>
+  <div class="translation">泰斯篮球智商非常高</div>
+  
+  <div class="original">篮球智商 / BasketballIQ</div>
+  <div class="translation">篮球智商</div>
+  
+  <div class="original">热⻔球员/ Popular player</div>
+  <div class="translation">热门球员</div>
+  
+  <div class="original">篮球球员/ BasketballPlayers</div>
+  <div class="translation">篮球运动员</div>
+  
+  <div class="original">鹈

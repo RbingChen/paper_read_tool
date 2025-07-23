@@ -1,0 +1,64 @@
+<html>
+<head>
+<style>
+  .original { background: #f0f0f0; border: 1px solid #888; padding: 10px; margin: 10px 0; }
+  .translation { background: #e8f5e9; border: 1px solid #4CAF50; padding: 10px; margin: 10px 0; }
+  .term { color: red; font-weight: bold; }
+  .formula { background: #fffde7; padding: 20px; text-align: center; margin: 20px 0; }
+  h3 { color: #2c3e50; }
+</style>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML'></script>
+</head>
+<body>
+
+<section>
+  <h3>内容理解</h3>
+  <p>文本讨论了多个信息检索基准测试及其评估结果，重点对比了直接推理模型、商业浏览代理和开源代理在复杂搜索任务中的性能表现。研究揭示了预训练模型的局限性，并展示了增强推理模型的潜力。</p>
+</section>
+
+<section>
+  <h3>内容翻译</h3>
+  <div class='original'>
+    <p>•BrowseComp-zh (Zhou et al., 2025): Similar to BrowseComp-en, but the QAs are in Chinese.</p>
+  </div>
+  <div class='translation'>
+    <p>•<span class='term'>BrowseComp-zh（周等人，2025）</span>: 与BrowseComp-en类似，但问答对采用中文形式。</p>
+  </div>
+
+  <div class='original'>
+    <p>pass@1 =1/n ∑_{i=1}^n p_i, (6)</p>
+  </div>
+  <div class='translation'>
+    <div class='formula'>
+      $$\text{pass@1} = \frac{1}{n}\sum_{i=1}^{n} p_i \tag{6}$$
+      <p>公式6: 其中p_i表示第i个响应的正确性</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h3>摘要总结</h3>
+  <ul>
+    <li>提出多个跨语言/多模态基准测试（BrowseComp系列、GAIA、XbenchDeepSearch）</li>
+    <li>对比三类基线方法：直接推理模型、商业代理、开源代理</li>
+    <li>实验显示：传统模型在复杂检索任务中表现接近零，增强推理模型展现潜力</li>
+    <li>提出pass@k评估指标及温度参数设置方案</li>
+  </ul>
+</section>
+
+<section>
+  <h3>术语解释</h3>
+  <dl>
+    <dt class='term'>BrowseComp-zh（Zhou et al., 2025）</dt>
+    <dd>中文版网页浏览理解基准测试，要求模型通过动态网页交互获取答案</dd>
+    
+    <dt class='term'>pass@1</dt>
+    <dd>评估指标，计算公式为：$$\text{pass@1} = \frac{1}{n}\sum_{i=1}^{n} p_i$$，反映单次生成答案的平均正确率</dd>
+
+    <dt class='term'>DeepSeek-R1（Guo et al., 2025）</dt>
+    <dd>深度求索团队开发的增强推理模型，在BrowseComp-zh上达到26.3分</dd>
+  </dl>
+</section>
+
+</body>
+</html>

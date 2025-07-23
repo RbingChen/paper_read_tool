@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>论文解析报告</title>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<style>
+  body { font-family: Arial, sans-serif; line-height: 1.6; }
+  .original { 
+    background-color: #f0f0f0; 
+    border: 1px solid #ccc; 
+    padding: 15px; 
+    margin-bottom: 20px;
+  }
+  .translation { 
+    background-color: #e0f7e0; 
+    border: 1px solid #4CAF50; 
+    padding: 15px; 
+    margin-bottom: 20px;
+  }
+  .term { 
+    color: red; 
+    font-weight: bold; 
+    font-style: italic;
+  }
+  .formula-container { 
+    text-align: center; 
+    margin: 20px 0; 
+    padding: 10px;
+    background-color: #fffde7;
+    border: 1px dashed #ffd54f;
+  }
+  .section-title { 
+    color: #2c3e50; 
+    border-bottom: 2px solid #3498db; 
+    padding-bottom: 5px; 
+    margin-top: 30px;
+  }
+  .highlight {
+    background-color: #fffde7;
+    padding: 2px 5px;
+    border-radius: 3px;
+  }
+</style>
+</head>
+<body>
+
+<h1>论文解析报告</h1>
+
+<!-- 内容理解 -->
+<h2 class="section-title">内容理解</h2>
+<p>该文本研究离散与连续概率模型下策略的数学特性，核心是比较<b class="term">best-of-n策略</b>与<b class="term">最优策略</b>的统计行为。主要贡献：</p>
+<ol>
+  <li>推导离散情形下best-of-n策略的<b class="term">概率质量函数（PMF）</b>解析形式，揭示其与连续情形的结构相似性</li>
+  <li>建立<b class="term">奖励对齐模型（reward aligned model）</b>的统一框架π<sup>f</sup><sub>r</sub>，证明best-of-n（F(u)=u<sup>n</sup>）和最优策略（F(u)=e<sup>cu</sup>/c）均为特例</li>
+  <li>提出<b class="term">定理7</b>：离散KL散度上界可由连续情形控制，关键量为积分∫<sup>1</sup><sub>0</sub>f(u)log(f(u))du</li>
+  <li>论证当响应概率p<sub>i</sub>趋近0时，离散与连续模型的累积分布函数（CDF）差异可忽略</li>
+</ol>
+
+<!-- 内容翻译 -->
+<h2 class="section-title">内容翻译</h2>
+
+<div class="original">
+  <p>Since \(\sum_{i=1}^L p_i \cdot p_{1:(i-1)}\) goes to \(\int_0^1 u  du\) as \(\max_i p_i \to 0\), this area also converges to 0 as \(\max_i p_i \to 0\). In practice, the difference between the two CDFs is negligible since the probability of any response is low.</p>
+</div>
+<div class="translation">
+  <p>由于当 \(\max_i p_i \to 0\) 时，\(\sum_{i=1}^L p_i \cdot p_{1:(i-1)}\) 收敛于 \(\int_0^1 u  du\)，该面积也随 \(\max_i p_i \to 0\) 收敛到0。实践中，两个<b class="term">累积分布函数（CDFs）</b>的差异可忽略，因为任何响应的概率都很低。</p>
+</div>
+
+<h3>B.2 KL散度与获胜率</h3>
+<div class="original">
+  <p>In the discrete case, the PMF of the best-of-n policy has a different form from (3.1). Specifically, its PMF is:</p>
+  <div class="formula-container">
+    \(\pi^{(n)}(y_i|x) = (p_{1:i})^n - (p_{1:(i-1)})^n, \quad i=1,\ldots,L.\)
+  </div>
+  <p>This is actually similar to its continuous density in the sense that:</p>
+  <div class="formula-container">
+    \((p_{1:i})^n - (p_{1:(i-1)})^n = \frac{(p_{1:i})^n - (p_{1:(i-1)})^n}{p_i} \cdot p_i \approx n p_{1:i}^{n-1} \pi_0(y_i|x)\)
+  </div>
+  <p>where \(\tilde{U}\) is the CDF of the distribution of \(Q_x(r(x,Y_0))\) with \(Y_0 \sim \pi_0(y|x)\). The approximation is due to the fact that \(p_i\) is small.</p>
+</div>
+<div class="translation">
+  <p>在离散情形下，best-of-n策略的<b class="term">概率质量函数（PMF）</b>与(3.1)式形式不同。具体而言，其PMF为：</p>
+  <div class="formula-container">
+    \(\pi^{(n)}(y_i|x) = (p_{1:i})^n - (p_{1:(i-1)})^n, \quad i=1,\ldots,L.\)
+  </div>
+  <p>这实际上与其连续密度相似，因为：</p>
+  <div class="formula-container">
+    \((p_{1:i})^n - (p_{1:(i-1)})^n = \frac{(p_{1:i})^n - (p_{1:(i-1)})^n}{p_i} \cdot p_i \approx n p_{1:i}^{n-1} \pi_0(y_i|x)\)
+  </div>
+  <p>其中 \(\tilde{U}\) 是 \(Q_x(r(x,Y_0))\) 分布的<b class="term">累积分布函数（CDF）</b>，且 \(Y_0 \sim \pi_0(y|x)\)。近似成立的原因是 \(p_i\) 较小。</p>
+</div>
+
+<div class="original">
+  <p>To align with the PMF of the best-of-n policy, we adapt Definition 4 to the discrete case as follows:</p>
+  <p><b>Definition 6 (Reward aligned model \(\pi^f_r\) in discrete case)</b>. For any prompt \(x\), the reward aligned model \(\pi^f_r\) satisfies:</p>
+  <div class="formula-container">
+    \(\pi^f_{r,\text{discrete}}(y_i|x) = \frac{F(p_{1:i}) - F(p_{1:(i-1)})}{\sum_{i=1}^L [F(p_{1:i}) - F(p_{1:(i-1)})]} = \frac{F(p_{1:i}) - F(p_{1:(i-1)})}{F(1) - F(0)}, \quad i=1,\ldots,L, \quad (B.3)\)
+  </div>
+  <p>where \(f \in \mathcal{F} = \{ f: \mathbb{R} \to \mathbb{R} \mid f \text{ is increasing and } f \geq 0 \}\) and \(F(t) = \int_{-\infty}^t f(x)  dx\) is the integral function of \(f\).</p>
+</div>
+<div class="translation">
+  <p>为与best-of-n策略的PMF对齐，我们将定义4适配到离散情形：</p>
+  <p><b>定义6（离散情形下的奖励对齐模型 \(\pi^f_r\)）</b>。对于任意提示 \(x\)，奖励对齐模型 \(\pi^f_r\) 满足：</p>
+  <div class="formula-container">
+    \(\pi^f_{r,\text{discrete}}(y_i|x) = \frac{F(p_{1:i}) - F(p_{1:(i-1)})}{\sum_{i=1}^L [F(p_{1:i}) - F(p_{1:(i-1)})]} = \frac{F(p_{1:i}) - F(p_{1:(i-1)})}{F(1) - F(0)}, \quad i=1,\ldots,L, \quad (B.3)\)
+  </div>
+  <p>其中 \(f \in \mathcal{F} = \{ f: \mathbb{R} \to \mathbb{R} \mid f \text{ 单调递增且 } f \geq 0 \}\)，且 \(F(t) = \int_{-\infty}^t f(x)  dx\) 是 \(f\) 的积分函数。</p>
+</div>
+
+<div class="original">
+  <p>Since \(f\) is increasing, \(F\) exists and is also increasing. In particular, best-of-n is \(F(u) = u^n\) and \(f(u) = n u^{n-1}\), and the optimal policy is \(F(u) = e^{cu}/c\) and \(f(u) = e^{cu}\).</p>
+  <p>Subsequently, we investigate the KL divergence and win rate of this general framework Definition 6 and compare them with their corresponding continuous case.</p>
+</div>
+<div class="translation">
+  <p>由于 \(f\) 单调递增，\(F\) 存在且也单调递增。特别地，best-of-n对应 \(F(u) = u^n\) 和 \(f(u) = n u^{n-1}\)，而最优策略对应 \(F(u) = e^{cu}/c\) 和 \(f(u) = e^{cu}\)。</p>
+  <p>随后，我们研究该通用框架（定义6）的<b class="term">KL散度（KL Divergence）</b>和获胜率，并与连续情形进行比较。</p>
+</div>
+
+<div class="original">
+  <p><b>Theorem 7.</b> Suppose \(\pi^f_{r,\text{discrete}}\) based on the reference model \(\pi_0(y|x)\) is defined in Definition 6, given a reward model \(r\), a non-decreasing function \(f\), and its integral function \(F\). Then, the KL divergence is:</p>
+  <div class="formula-container">
+    \(\mathbb{E}_{x \sim \mathcal{D}} \left[ \sum_{i=1}^L \frac{F(p_{1:i}) - F(p_{1:(i-1)})}{F(1) - F(0)} \log \left( \frac{F(p_{1:i}) - F(p_{1:(i-1)})}{p_i (F(1) - F(0))} \right) \right], \quad (B.4)\)
+  </div>
+  <p>which is smaller than \(\int_0^1 f(u) \log(f(u))  du - \log(F(1) - F(0))\).</p>
+</div>
+<div class="translation">
+  <p><b>定理7.</b> 假设基于参考模型 \(\pi_0(y|x)\) 的 \(\pi^f_{r,\text{discrete}}\) 如定义6所述，给定奖励模型 \(r\)、非减函数 \(f\) 及其积分函数 \(F\)。则<b class="term">KL散度（KL Divergence）</b>为：</p>
+  <div class="formula-container">
+    \(\mathbb{E}_{x \sim \mathcal{D}} \left[ \sum_{i=1}^L \frac{F(p_{1:i}) - F(p_{1:(i-1)})}{F(1) - F(0)} \log \left( \frac{F(p_{1:i}) - F(p_{1:(i-1)})}{p_i (F(1) - F(0))} \right) \right], \quad (B.4)\)
+  </div>
+  <p>其值小于 \(\int_0^1 f(u) \log(f(u))  du - \log(F(1) - F(0))\)。</p>
+</div>
+
+<!-- 摘要总结 -->
+<h2 class="section-title">摘要总结</h2>
+<p>本片段核心研究<b class="term">best-of-n策略</b>与<b class="term">最优策略</b>在离散概率模型下的数学性质：</p>
+<ol>
+  <li>推导离散best-of-n策略的<b class="term">概率质量函数（PMF）</b>显式表达式，证明当响应概率趋近0时其行为收敛于连续情形</li>
+  <li>提出统一框架<b class="term">奖励对齐模型（reward aligned model）</b> \(\pi^f_r\)，将best-of-n（\(F(u)=u^n\)）和最优策略（\(F(u)=e^{cu}/c\)）纳入同一理论体系</li>
+  <li>建立<b class="term">定理7</b>：离散KL散度存在明确上界 \(\int_0^1 f(u)\log f(u)du - \log(F(1)-F(0))\)，严格小于连续情形的KL散度</li>
+  <li>通过累积分布函数（CDF）分析，论证离散与连续模型在实际低概率场景中的差异可忽略</li>
+</ol>
+
+<!-- 术语识别 -->
+<h2 class="section-title">关键术语解释</h2>
+<dl>
+  <dt><b class="term">PMF (Probability Mass Function，概率质量函数)</b></dt>
+  <dd>描述离散随机变量在各特定取值点概率的函数。文中给出best-of-n策略的PMF解析式：\(\pi^{(n)}(y_i|x) = (p_{1:i})^n - (p_{1:(i-1)})^n\)</dd>
+  
+  <dt><b class="term">CDF (Cumulative Distribution Function，累积分布函数)</b></dt>
+  <dd>描述随机变量取值小于或等于某值的概率。文中用\(\tilde{U}\)表示\(Q_x(r(x,Y_0))\)的CDF，并分析离散与连续CDF的渐近等价性</dd>
+  
+  <dt><b class="term">KL Divergence (Kullback-Leibler Divergence，KL散度)</b></dt>
+  <dd>衡量两个概率分布差异的信息论度量。定理7给出离散奖励对齐模型\(\pi^f_r\)的KL散度计算式及其上界</dd>
+  
+  <dt><b class="term">Best-of-n Policy (Best-of-n策略)</b></dt>
+  <dd>通过从基础策略\(\pi_0\)采样n次并选取最高奖励响应实现的策略。其离散PMF形式为\((p_{1:i})^n - (p_{1:(i-1)})^n\)，连续对应\(F(u)=u^n\)</dd>
+  
+  <dt><b class="term">Reward Aligned Model (奖励对齐模型，\(\pi^f_r\))</b></dt>
+  <dd>通过单调递增函数\(f\)将奖励映射转换为概率分布的统一框架。定义6给出其离散形式：\(\pi^f_{r,\text{discrete}}(y_i|x) = \frac{F(p_{1:i}) - F(p_{1:(i-1)})}{F(1)-F(0)}\)</dd>
+  
+  <dt><b class="term">Optimal Policy (最优策略)</b></dt>
+  <dd>在奖励对齐模型中对应\(F(u)=e^{cu}/c\)和\(f(u)=e^{cu}\)的特殊情形，具有理论最优性</dd>
+</dl>
+
+</body>
+</html>

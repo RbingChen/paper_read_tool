@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>论文解析报告</title>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    body { font-family: 'Segoe UI', Arial, sans-serif; line-height: 1.6; }
+    .original { background-color: #f0f0f0; border: 1px solid #cccccc; padding: 15px; margin-bottom: 20px; border-radius: 5px; }
+    .translation { background-color: #e0ffe0; border: 1px solid #4CAF50; padding: 15px; margin-bottom: 30px; border-radius: 5px; }
+    .formula-container { text-align: center; margin: 25px 0; padding: 15px; }
+    .formula-number { display: block; font-style: italic; margin-top: 5px; }
+    .term { color: #ff0000; font-weight: bold; }
+    .section-title { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 5px; margin-top: 30px; }
+    .figure { background-color: #fffde7; padding: 15px; border: 1px solid #ffd600; margin: 20px 0; border-radius: 5px; }
+    .term-list { background-color: #f8f9fa; padding: 20px; border-left: 4px solid #e74c3c; margin-top: 20px; }
+  </style>
+</head>
+<body>
+
+<h1 style="text-align: center; color: #2c3e50;">强化学习奖励模型技术解析</h1>
+
+<!-- 内容理解部分 -->
+<h2 class="section-title">内容理解</h2>
+<div class="understanding">
+  <p>该文本探讨强化学习中的奖励模型（Reward Models, RMs）技术框架，核心聚焦于三种奖励生成范式（标量、半标量、生成式）与两种评分模式（点对点、成对）的组合应用。通过数学公式和实例（如Bradley-Terry模型、PairRM等）具体说明不同组合的技术实现路径，并分析各类方法的优劣势。文本进一步提出<b class="term">推理时扩展（inference-time scaling）</b>的投票机制解决方案，详细推导了半标量RM的平均投票算法和生成式RM的多数投票算法。最后引入GRPO（规则在线强化学习）的数学优化框架，通过策略梯度更新实现模型训练。</p>
+  <p>核心创新点在于：1）系统化分类奖励生成与评分模式的组合范式；2）揭示标量奖励在扩展性上的局限性；3）提出生成式奖励模型（GRMs）的语言表示解决方案；4）设计可扩展的投票机制处理多响应评估。</p>
+</div>
+
+<!-- 内容翻译部分 -->
+<h2 class="section-title">内容翻译</h2>
+
+<div class="original">
+  <p>Preprint. Under review.<br>
+  Representative Methods Figure 2 illustrates how the three reward generation paradigms (scalar, semi-scalar, generative) can be combined with the two scoring patterns (pointwise, pairwise). Specifically, <b class="term">Bradley-Terry model</b> (Kendall & Smith, 1940) ( (a)+(i) ) is trained with pairwise preference data and outputs scalar rewards pointwisely</p>
+</div>
+<div class="translation">
+  <p>预印本，正在审阅中。<br>
+  <b class="term">代表方法</b> 图2展示了三种奖励生成范式（<b class="term">标量（scalar）</b>、<b class="term">半标量（semi-scalar）</b>、<b class="term">生成式（generative）</b>）如何与两种评分模式（<b class="term">点对点（pointwise）</b>、<b class="term">成对（pairwise）</b>）结合。具体而言，<b class="term">Bradley-Terry模型</b>（Kendall & Smith, 1940）（(a)+(i)）使用成对偏好数据进行训练，并点对点地输出标量奖励</p>
+</div>
+
+<div class="formula-container">
+  $$\\{S_i\\}^n_{i=1} = f_{\\text{point}}(R,\\{y_i\\}^n_{i=1}) = S \\in \\mathbb{R}^n$$
+  <span class="formula-number">(10)</span>
+</div>
+
+<div class="original">
+  <p><b class="term">PairRM</b> (Jiang et al., 2023) ( (a)+(ii) ) compares a pair of responses with the sign of the scalar reward</p>
+</div>
+<div class="translation">
+  <p><b class="term">PairRM</b>（Jiang et al., 2023）（(a)+(ii)）通过标量奖励的符号比较响应对</p>
+</div>
+
+<div class="formula-container">
+  $$\\hat{y} = f_{\\text{pair}}(R,\\{y_i\\}^n_{i=1}) = y_{\\lfloor\\frac{1}{2}(3-\\text{sgn}(S))\\rfloor}, \\quad n=2, \\quad S \\in \\mathbb{R}$$
+  <span class="formula-number">(11)</span>
+</div>
+
+<div class="original">
+  <p>The scalar methods above could barely perform <b class="term">inference-time scaling</b> due to the lack of diversity in reward generation. <b class="term">CLoud</b> (Ankner et al., 2024) ( (b)+(i) ) generates scalar rewards for each response based on pre-generated critiques, similar to Equation 10. <b class="term">LLM-as-a-Judge</b> (Zheng et al., 2023) ( (c)+(ii) ) judges the preference order between paired responses textually,</p>
+</div>
+<div class="translation">
+  <p>上述标量方法因奖励生成缺乏多样性而难以执行<b class="term">推理时扩展（inference-time scaling）</b>。<b class="term">CLoud</b>（Ankner et al., 2024）（(b)+(i)）基于预生成评论为每个响应生成标量奖励（类似公式10）。<b class="term">LLM-as-a-Judge</b>（Zheng et al., 2023）（(c)+(ii)）通过文本判断成对响应的偏好顺序：</p>
+</div>
+
+<div class="formula-container">
+  $$\\hat{y} = f_{\\text{pair}}(R,\\{y_i\\}^n_{i=1}) = y_{f_{\\text{extract}}(C)}, \\quad n=2$$
+  <span class="formula-number">(12)</span>
+</div>
+
+<div class="original">
+  <p>where \(f_{\\text{extract}}(\\cdot)\) extracts the index of best response from language representations. However, this approach defaults to neglect ties of the paired responses. Following Zhang et al. (2025a), the generation probability of the token that indicates the preference order could be used as the scalar reward ( (b)+(ii) ): \(S = \\text{TokenProb}(\\hat{C}) = r_\\theta(\\hat{C}|x,\\{y_i\\}^n_{i=1})\), where \(\\hat{C}\) is a pre-defined token related to the preference order. However, without additional constraints, <b class="term">GRMs</b> are able to generate pointwise rewards for multiple responses within pure language representation ( (c)+(i) ):</p>
+</div>
+<div class="translation">
+  <p>其中\(f_{\\text{extract}}(\\cdot)\)从语言表示中提取最佳响应索引。但该方法默认忽略成对响应的平局情况。根据Zhang et al. (2025a)，指示偏好顺序的token生成概率可作为标量奖励（(b)+(ii)）：\(S = \\text{TokenProb}(\\hat{C}) = r_\\theta(\\hat{C}|x,\\{y_i\\}^n_{i=1})\)，\(\\hat{C}\)为预定义的偏好顺序相关token。然而在无额外约束时，<b class="term">生成式奖励模型（GRMs, Generative Reward Models）</b>能在纯语言表示中为多响应生成点对点奖励（(c)+(i)）：</p>
+</div>
+
+<div class="formula-container">
+  $$\\{S_i\\}^n_{i=1} = f_{\\text{point}}(R,\\{y_i\\}^n_{i=1}) = f_{\\text{extract}}(C)$$
+  <span class="formula-number">(13)</span>
+</div>
+
+<div class="original">
+  <p>where \(f_{\\text{extract}}(\\cdot)\) extracts the rewards assigned to each response from generation results. Usually, the rewards are discrete, and in this work we assign \(S_i \\in \\mathbb{N}, 1 \\leq S_i \\leq 10\) by default. This approach promisingly allows both inference-time scalability and input flexibility.</p>
+</div>
+<div class="translation">
+  <p>其中\(f_{\\text{extract}}(\\cdot)\)从生成结果中提取分配给各响应的奖励。通常奖励为离散值，本文默认设定\(S_i \\in \\mathbb{N}, 1 \\leq S_i \\leq 10\)。该方法同时实现了推理时扩展性和输入灵活性。</p>
+</div>
+
+<div class="original">
+  <h3>Voting with Generated Rewards</h3>
+  <p>Voting is a widely adopted method for inference-time scaling in RM. Recalling the approaches in Section 2.1, we demonstrate voting results of \(k\) samples for semi-scalar and generative RMs. For <b class="term">semi-scalar RMs</b> (Ankner et al., 2024; Zhang et al., 2025a), voting is performed as averaging:</p>
+</div>
+<div class="translation">
+  <h3>基于生成奖励的投票</h3>
+  <p>投票是RM中广泛采用的<b class="term">推理时扩展（inference-time scaling）</b>方法。回顾2.1节方法，我们展示半标量和生成式RM的\(k\)样本投票结果。对于<b class="term">半标量RM（semi-scalar RMs）</b>（Ankner et al., 2024; Zhang et al., 2025a），投票通过平均实现：</p>
+</div>
+
+<div class="formula-container">
+  $$S^* = \\frac{1}{k} \\sum_{i=1}^k S_i, \\quad \\{R = (S_i, C_i)\\}^k_{i=1} \\sim r_\\theta(x,\\{y_i\\}^n_{i=1})$$
+  <span class="formula-number">(14)</span>
+</div>
+
+<div class="original">
+  <p>where \(S^*\) is the final reward. In practice, the scalar value has limited variance which could hinder the scalability. For <b class="term">pairwise GRMs</b> (Mahan et al., 2024; Wang et al., 2024c), voting is performed as selecting the response identified to be the best with the highest frequency, i.e. majority:</p>
+</div>
+<div class="translation">
+  <p>其中\(S^*\)为最终奖励。实践中标量值方差有限，可能阻碍扩展性。对于<b class="term">成对GRMs（pairwise GRMs）</b>（Mahan et al., 2024; Wang et al., 2024c），投票通过选择最高频的最佳响应实现（即多数表决）：</p>
+</div>
+
+<div class="formula-container">
+  $$\\hat{y}^* = \\arg \\max_y \\sum_{i=1}^k \\mathbb{I}(y = \\hat{y}_i), \\quad \\{\\hat{y}_i = f_{\\text{pair}}(C_i,\\{y_i\\}^n_{i=1})\\}^k_{i=1} \\sim r_\\theta(x,\\{y_i\\}^n_{i=1})$$
+  <span class="formula-number">(15)</span>
+</div>
+
+<div class="original">
+  <p>where \(\\hat{y}^*\) is the final predicted best response, \(f_{\\text{pair}}(\\cdot,\\cdot)\) is a selection function, \(\\hat{y}_i\) is the individually selected best response of each sample, and \(\\mathbb{I}(\\cdot)\) is the indicator function. Though the voting process is scalable, the majority voted result might be biased since ties is not allowed in each sample, and may not be able to tell apart subtle differences between responses due to the lack of quantitative scores.</p>
+</div>
+<div class="translation">
+  <p>其中\(\\hat{y}^*\)是最终预测的最佳响应，\(f_{\\text{pair}}(\\cdot,\\cdot)\)为选择函数，\(\\hat{y}_i\)是各样本独立选择的最佳响应，\(\\mathbb{I}(\\cdot)\)为指示函数。尽管投票过程可扩展，但多数表决结果可能存在偏差（因每个样本不允许平局），且由于缺乏量化分数可能无法区分响应的细微差异。</p>
+</div>
+
+<div class="original">
+  <h3>C.2 Model Training</h3>
+  <p>For the <b class="term">rule-based online RL</b>, we use the standard <b class="term">GRPO</b> setting (Shao et al., 2024). The overall objective is</p>
+</div>
+<div class="translation">
+  <h3>C.2 模型训练</h3>
+  <p>对于<b class="term">基于规则的在线强化学习（rule-based online RL）</b>，我们采用标准<b class="term">GRPO</b>设置（Shao et al., 2024）。整体目标函数为：</p>
+</div>
+
+<div class="formula-container">
+  $$\\begin{aligned}
+  J_{\\text{GRPO}}(\\theta) = \\mathbb{E} \\left[ q \\sim P(Q), \\{o_i\\}^G_{i=1} \\sim \\pi_{\\theta_{\\text{old}}}(O|q) \\right] \\frac{1}{G} \\sum_{i=1}^G \\frac{1}{|o_i|} \\sum_{t=1}^{|o_i|} \\Bigg[ & \\min \\left( \\frac{\\pi_\\theta(o_{i,t}|q,o_{i,<t})}{\\pi_{\\theta_{\\text{old}}}(o_{i,t}|q,o_{i,<t})} \\hat{A}_{i,t}, \\\\
+  & \\text{clip} \\left( \\frac{\\pi_\\theta(o_{i,t}|q,o_{i,<t})}{\\pi_{\\theta_{\\text{old}}}(o_{i,t}|q,o_{i,<t})}, 1-\\epsilon, 1+\\epsilon \\right) \\hat{A}_{i,t} \\Bigg] \\\\
+  & - \\beta D_{\\text{KL}} \\left[ \\pi_\\theta \\parallel \\pi_{\\text{ref}} \\right]
+  \\end{aligned}$$
+  <span class="formula-number">(16)</span>
+</div>
+
+<!-- 摘要总结部分 -->
+<h2 class="section-title">摘要总结</h2>
+<div class="summary">
+  <p>本文系统分析了强化学习中奖励模型（RM）的三大技术范式：<b class="term">标量奖励（scalar rewards）</b>、<b class="term">半标量（semi-scalar）</b>和<b class="term">生成式（generative）</b>奖励，及其与<b class="term">点对点（pointwise）</b>和<b class="term">成对（pairwise）</b>评分模式的组合应用。核心发现包括：</p>
+  <ul>
+    <li>传统标量方法（如Bradley-Terry模型）受限于奖励多样性，难以实现<b class="term">推理时扩展（inference-time scaling）</b></li>
+    <li>生成式奖励模型（GRMs）通过语言表示直接提取离散奖励（公式13），兼具扩展性与输入灵活性</li>
+    <li>提出两种投票机制：半标量RM采用<b class="term">奖励平均（公式14）</b>，生成式RM采用<b class="term">多数表决（公式15）</b></li>
+    <li>建立基于规则的在线强化学习框架GRPO（公式16），通过KL散度约束实现策略优化</li>
+  </ul>
+  <p>研究为大规模奖励建模提供了理论框架和技术路径，特别在语言模型对齐任务中具有显著应用价值。</p>
+</div>
+
+<!-- 术语识别部分 -->
+<h2 class="section-title">术语解释</h2>
+<div class="term-list">
+  <ul>
+    <li><b class="term">标量奖励（Scalar Rewards）</b>：数值型奖励输出（如公式10），直接量化响应质量，但扩展性受限</li>
+    <li><b class="term">半标量（Semi-Scalar）</b>：结合标量奖励与语言评论的混合范式（如CLoud），通过预生成评论增强可解释性</li>
+    <li><b class="term">生成式奖励模型（GRMs, Generative Reward Models）</b>：直接生成语言格式的奖励（如公式13），支持离散值输出和复杂语义表示</li>
+    <li><b class="term">点对点评分（Pointwise Scoring）</b>：独立评估单个响应质量（如公式10），输出维度为\(\\mathbb{R}^n\)</li>
+    <li><b class="term">成对评分（Pairwise Scoring）</b>：比较响应对的相对优劣（如公式11），输出偏好顺序</li>
+    <li><b class="term">推理时扩展（Inference-Time Scaling）</b>：通过多次采样和聚合（如投票）提升评估可靠性，解决单次推理方差问题</li>
+    <li><b class="term">GRPO（规则在线强化学习）</b>：策略优化算法（公式16），包含剪切目标函数和KL散度约束，确保训练稳定性</li>
+    <li><b class="term">指示函数（Indicator Function）</b>：数学函数\(\\mathbb{I}(condition)\)，条件满足时输出1否则0（用于公式15的计数）</li>
+  </ul>
+</div>
+
+</body>
+</html>

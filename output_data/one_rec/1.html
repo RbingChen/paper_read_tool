@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>OneRec技术报告分析</title>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<style>
+  body { font-family: Arial, sans-serif; line-height: 1.6; }
+  .section { margin-bottom: 30px; }
+  h2 { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 5px; }
+  .original { background-color: #f8f9fa; border: 1px solid #ced4da; padding: 15px; margin: 10px 0; border-radius: 5px; }
+  .translated { background-color: #e8f5e9; border: 1px solid #c8e6c9; padding: 15px; margin: 10px 0; border-radius: 5px; }
+  .highlight { color: #e74c3c; font-weight: bold; }
+  .term-list { list-style-type: none; padding: 0; }
+  .term-list li { margin-bottom: 15px; }
+  .term { font-weight: bold; color: #c0392b; }
+</style>
+</head>
+<body>
+
+<!-- 内容理解 -->
+<div class="section">
+  <h2>内容理解</h2>
+  <p>本文档是<span class="highlight">OneRec</span>技术报告的目录结构，展示了完整的报告框架。核心内容分为五个主要章节：</p>
+  <ul>
+    <li><span class="highlight">架构设计</span>（第2章）：详细描述了系统的四个核心组件</li>
+    <li><span class="highlight">训练框架</span>（第3章）：涵盖基础设施和训练流程</li>
+    <li><span class="highlight">评估体系</span>（第4章）：包含多维度的评估方法和实验</li>
+    <li><span class="highlight">结论与展望</span>（第5章）：总结成果并规划未来方向</li>
+    <li><span class="highlight">附录</span>（A-D）：提供实施细节和案例研究</li>
+  </ul>
+  <p>该目录显示报告采用了模块化结构，强调<span class="highlight">Tokenizer</span>、<span class="highlight">Encoder-Decoder</span>架构、<span class="highlight">强化学习</span>等关键技术，并通过<span class="highlight">A/B测试</span>进行线上验证。</p>
+</div>
+
+<!-- 内容翻译 -->
+<div class="section">
+  <h2>内容翻译</h2>
+  
+  <div class="original">OneRec Technical Report</div>
+  <div class="translated">OneRec技术报告</div>
+  
+  <div class="original">Contents</div>
+  <div class="translated">目录</div>
+  
+  <div class="original">1 Introduction 3</div>
+  <div class="translated">1 引言 3</div>
+  
+  <div class="original">2 Architecture 5</div>
+  <div class="translated">2 架构 5</div>
+  
+  <div class="original">2.1 Tokenizer . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 5</div>
+  <div class="translated">2.1 分词器 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 5</div>
+  
+  <div class="original">2.2 Encoder . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 7</div>
+  <div class="translated">2.2 编码器 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 7</div>
+  
+  <div class="original">2.3 Decoder . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 9</div>
+  <div class="translated">2.3 解码器 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 9</div>
+  
+  <div class="original">2.4 Reward System . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 10</div>
+  <div class="translated">2.4 奖励系统 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 10</div>
+  
+  <div class="original">3 Training Framework 13</div>
+  <div class="translated">3 训练框架 13</div>
+  
+  <div class="original">3.1 Training Infrastructure . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 13</div>
+  <div class="translated">3.1 训练基础设施 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 13</div>
+  
+  <div class="original">3.2 Pre-training . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 14</div>
+  <div class="translated">3.2 预训练 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 14</div>
+  
+  <div class="original">3.3 Post-training . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 14</div>
+  <div class="translated">3.3 后训练 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 14</div>
+  
+  <div class="original">4 Evaluation 15</div>
+  <div class="translated">4 评估 15</div>
+  
+  <div class="original">4.1 Evaluation Metric . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 15</div>
+  <div class="translated">4.1 评估指标 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 15</div>
+  
+  <div class="original">4.2 Scaling . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 16</div>
+  <div class="translated">4.2 扩展性 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 16</div>
+  
+  <div class="original">4.3 Reinforcement Learning . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 19</div>
+  <div class="translated">4.3 强化学习 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 19</div>
+  
+  <div class="original">4.4 Tokenizer . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 22</div>
+  <div class="translated">4.4 分词器 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 22</div>
+  
+  <div class="original">4.5 Online A/B Test . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 23</div>
+  <div class="translated">4.5 在线A/B测试 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 23</div>
+  
+  <div class="original">5 Conclusion, Limitations, and Future Directions 24</div>
+  <div class="translated">5 结论、局限性与未来方向 24</div>
+  
+  <div class="original">A Contributions 29</div>
+  <div class="translated">A 贡献 29</div>
+  
+  <div class="original">B Implementation Details of Online A/B Test 30</div>
+  <div class="translated">B 在线A/B测试实施细节 30</div>
+  
+  <div class="original">C Case Study for Tokenization 31</div>
+  <div class="translated">C 分词案例研究 31</div>
+  
+  <div class="original">C.1 Representation Cases . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 31</div>
+  <div class="translated">C.1 表示案例 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 31</div>
+  
+  <div class="original">C.2 Tokenization Cases . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 35</div>
+  <div class="translated">C.2 分词案例 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 35</div>
+  
+  <div class="original">D Notations 37</div>
+  <div class="translated">D 符号说明 37</div>
+</div>
+
+<!-- 摘要总结 -->
+<div class="section">
+  <h2>摘要总结</h2>
+  <p>OneRec技术报告系统性地介绍了推荐系统架构及其训练评估框架。核心内容包含：</p>
+  <ol>
+    <li><span class="highlight">架构设计</span>：基于Tokenizer-Encoder-Decoder的组件化结构，集成奖励系统实现闭环反馈</li>
+    <li><span class="highlight">训练流程</span>：涵盖预训练、后训练两阶段，依赖专用基础设施支持</li>
+    <li><span class="highlight">多维评估</span>：通过量化指标、扩展性测试、强化学习和A/B测试进行系统验证</li>
+    <li><span class="highlight">专项研究</span>：附录提供分词案例研究和A/B测试实施细节</li>
+  </ol>
+  <p>报告强调<span class="highlight">Tokenizer</span>的核心作用（在架构和评估中均有专门章节）和<span class="highlight">强化学习</span>的应用，并通过严格的在线测试验证系统效果。</p>
+</div>
+
+<!-- 术语识别 -->
+<div class="section">
+  <h2>术语识别</h2>
+  <ul class="term-list">
+    <li>
+      <span class="term">Tokenizer（分词器）</span>：将输入数据（如文本）分解为基本处理单元（token）的组件。在推荐系统中常用于特征处理，如将用户行为序列分割为离散事件单元。
+    </li>
+    <li>
+      <span class="term">Encoder-Decoder（编码器-解码器）</span>：深度学习核心架构，编码器将输入转换为隐含表示，解码器基于该表示生成输出。在推荐系统中常用于序列建模和生成推荐结果。
+    </li>
+    <li>
+      <span class="term">Reward System（奖励系统）</span>：量化用户反馈的机制，将隐式/显式反馈（点击、购买等）转化为可量化的奖励信号，用于优化推荐策略。
+    </li>
+    <li>
+      <span class="term">Pre-training/Post-training（预训练/后训练）</span>：<br>
+      • 预训练：在大规模通用数据上训练基础模型<br>
+      • 后训练：在特定领域数据上对预训练模型进行微调
+    </li>
+    <li>
+      <span class="term">Reinforcement Learning - RL（强化学习）</span>：机器学习范式，智能体通过与环境交互学习最优策略。在推荐系统中用于优化长期用户满意度，数学表示为：
+      <div style="text-align:center; background-color:#fffde7; padding:10px; margin:10px 0; border:1px solid #ffd54f;">
+        $$\max_\pi \mathbb{E}\left[\sum_{t=0}^T \gamma^t r_t | \pi\right]$$
+        <div>公式1：强化学习目标函数，最大化累积折扣奖励</div>
+      </div>
+    </li>
+    <li>
+      <span class="term">Online A/B Test（在线A/B测试）</span>：将用户流量分为对照组（A）和实验组（B），通过实时对比指标评估系统改进效果的关键实验方法。
+    </li>
+    <li>
+      <span class="term">Scaling（扩展性）</span>：系统处理数据量/请求量增长的能力，包括：<br>
+      • 垂直扩展：增强单节点能力<br>
+      • 水平扩展：增加节点数量
+    </li>
+  </ul>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>OneRec 技术报告分析</title>
+  <style>
+    body { font-family: Arial, sans-serif; line-height: 1.6; margin: 20px; }
+    .section { margin-bottom: 30px; }
+    h2 { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 5px; }
+    .translation-block { margin-bottom: 15px; }
+    .original { background-color: #f5f5f5; border: 1px solid #cccccc; padding: 10px; border-radius: 5px; margin-bottom: 5px; }
+    .translated { background-color: #e8f5e9; border: 1px solid #4caf50; padding: 10px; border-radius: 5px; }
+    .figure { background-color: #fffde7; border: 1px solid #ffd600; padding: 10px; margin: 15px 0; text-align: center; font-style: italic; }
+    .term { color: red; font-weight: bold; }
+    .formula { text-align: center; margin: 15px 0; font-family: monospace; }
+    .term-list { list-style-type: none; padding: 0; }
+    .term-list li { margin-bottom: 10px; }
+  </style>
+</head>
+<body>
+  <h1>OneRec 技术报告分析</h1>
+  
+  <!-- 内容理解部分 -->
+  <div class="section">
+    <h2>内容理解</h2>
+    <p>文本是 OneRec 技术报告的片段，主要描述了 OneRec 系统的后训练（post-training）过程及其评估框架。核心内容包括：</p>
+    <ul>
+      <li><strong>后训练流程</strong>：分为持续预训练（continual pre-training）和强化学习（<span class="term">Reinforcement Learning, RL</span>）两个阶段。在预训练中，使用 <span class="term">LNTP loss</span>（下一个令牌预测损失）作为损失函数，并通过学习率退火（annealing）优化（稀疏参数学习率降至 1×10⁻⁴，密集参数降至 8×10⁻⁵）。在强化学习阶段，系统采用外部推理服务（<span class="term">Post-Training Inference Service</span>）解耦样本生成与训练过程：随机选择 1% 用户生成物品，请求奖励模型（<span class="term">Reward System</span>）计算奖励，并通过消息队列（<span class="term">Message Queue, MQ</span>）每 1000 步同步参数。</li>
+      <li><strong>评估方法</strong>：在评估部分（Section 4），定义了多个指标来衡量模型性能，包括交叉熵损失（<span class="term">Cross-entropy loss</span>）、<span class="term">P-Score</span>（偏好得分）和 <span class="term">xtr metrics</span>（用户参与度指标）。评估基于流数据（streaming data），需在相同时间段内比较以处理数据时变问题，确保统计可靠性。</li>
+      <li><strong>关键创新</strong>：通过外部服务实现资源高效利用，避免训练阻塞；评估指标结合了预测损失和实际用户行为（如观看率、点赞率），提供全面模型反馈。Figure 8 概括了整个后训练流程。</li>
+    </ul>
+    <p>整体上，文本展示了 OneRec 如何整合强化学习和高效推理服务来优化推荐系统，并强调评估的严谨性。</p>
+  </div>
+  
+  <!-- 内容翻译部分 -->
+  <div class="section">
+    <h2>内容翻译</h2>
+    
+    <!-- 段落 1: 标题 -->
+    <div class="translation-block">
+      <div class="original">OneRec Technical Report</div>
+      <div class="translated">OneRec 技术报告</div>
+    </div>
+    
+    <!-- 段落 2: 图表标题 -->
+    <div class="figure">
+      <div class="original">Figure 8 | The overall process of OneRec’s post-training, including continual pre-training and reinforcement learning.</div>
+      <div class="translated">图 8 | OneRec 后训练的整体流程，包括持续预训练和强化学习。</div>
+    </div>
+    
+    <!-- 段落 3: 第一文本段落 -->
+    <div class="translation-block">
+      <div class="original">LNTPloss in the pre-training process, but we apply annealing by reducing the learning rate of sparse parameters to 1×10⁻⁴ and dense parameters to 8×10⁻⁵. For <span class="term">RL</span>, we randomly select 1% of users from the <span class="term">RSFT</span> data to generate <span class="term">RL</span> samples.</div>
+      <div class="translated">在预训练过程中，使用 <span class="term">LNTP loss（下一个令牌预测损失）</span>，但我们通过退火（annealing）优化：将稀疏参数的学习率降至 1×10⁻⁴，密集参数的学习率降至 8×10⁻⁵。对于 <span class="term">强化学习（Reinforcement Learning, RL）</span>，我们从 <span class="term">拒绝采样微调（Reject Sampling Fine-Tuning, RSFT）</span> 数据中随机选择 1% 的用户来生成 <span class="term">RL</span> 样本。</div>
+    </div>
+    
+    <!-- 段落 4: 第二文本段落 -->
+    <div class="translation-block">
+      <div class="original">To maximize computational resource utilization, we decouple the generation of <span class="term">RL</span> samples from the training process by using an external inference service. During training, 1% of users access the external service to generate 512 items, request rewards for each item from the <span class="term">reward model</span>, and then return the data to the training task. The training task sends updated parameters to the external inference service via a <span class="term">Message Queue (MQ)</span> every 1000 steps. The overall post-training process is summarized in Figure 8.</div>
+      <div class="translated">为最大化计算资源利用率，我们通过使用外部推理服务（<span class="term">Post-Training Inference Service</span>）将 <span class="term">RL</span> 样本生成与训练过程解耦。训练期间，1% 的用户访问外部服务以生成 512 个物品，从 <span class="term">奖励模型（Reward System）</span> 为每个物品请求奖励，然后将数据返回训练任务。训练任务每 1000 步通过 <span class="term">消息队列（Message Queue, MQ）</span> 将更新后的参数发送给外部推理服务。整个后训练流程总结于图 8。</div>
+    </div>
+    
+    <!-- 段落 5: 评估标题 -->
+    <div class="translation-block">
+      <div class="original">4. Evaluation</div>
+      <div class="translated">4. 评估</div>
+    </div>
+    
+    <!-- 段落 6: 评估子标题 -->
+    <div class="translation-block">
+      <div class="original">4.1. Evaluation Metric</div>
+      <div class="translated">4.1. 评估指标</div>
+    </div>
+    
+    <!-- 段落 7: 评估指标列表和描述 -->
+    <div class="translation-block">
+      <div class="original">We assess model performance through the following metrics:
+•<span class="term">Cross-entropy loss</span> : Next-token prediction loss <span class="term">LNTP</span> curves.
+•<span class="term">P (preference)-Score</span> : Learned comprehensive evaluation metric, as detailed in Section 2.4.1.
+•<span class="term">xtr metrics</span> : A set of user engagement indicators derived from a pre-trained ranking model (Chang et al., 2023; Wang et al., 2024) currently deployed in our system, including:
+– <span class="term">lvtr</span>(Long View Through Rate): Predicted probability of significant video viewing
+– <span class="term">vtr</span>(View Through Rate): Predicted probability of video viewing
+– <span class="term">ltr</span>(Like Through Rate): Predicted probability of video liking
+– <span class="term">wtr</span>(Follow Through Rate): Predicted probability of the creator following
+– <span class="term">cmtr</span>(Comment Through Rate): Predicted probability of video commenting</div>
+      <div class="translated">我们通过以下指标评估模型性能：
+•<span class="term">交叉熵损失（Cross-entropy loss）</span>：下一个令牌预测损失 <span class="term">LNTP</span> 曲线。
+•<span class="term">P-Score（偏好得分，Preference-Score）</span>：学习到的综合评估指标，详见章节 2.4.1。
+•<span class="term">xtr 指标（xtr metrics）</span>：一组用户参与度指标，源自我们系统中部署的预训练排序模型（Chang 等人, 2023; Wang 等人, 2024），包括：
+– <span class="term">lvtr（长观看率，Long View Through Rate）</span>：显著视频观看的预测概率
+– <span class="term">vtr（观看率，View Through Rate）</span>：视频观看的预测概率
+– <span class="term">ltr（点赞率，Like Through Rate）</span>：视频点赞的预测概率
+– <span class="term">wtr（关注率，Follow Through Rate）</span>：创作者关注的预测概率
+– <span class="term">cmtr（评论率，Comment Through Rate）</span>：视频评论的预测概率</div>
+    </div>
+    
+    <!-- 段落 8: 评估系统说明 -->
+    <div class="translation-block">
+      <div class="original">For <span class="term">P-Score</span> and <span class="term">xtr</span> reward metrics, our evaluation system operates on streaming data where values may vary across different periods. Consequently, identical metrics may show different absolute values across experiments due to temporal variations in the data stream. However, we ensure reliable evaluation by conducting comparative experiments within the same periods and averaging results over sufficiently long observation windows, making our findings statistically confident.</div>
+      <div class="translated">对于 <span class="term">P-Score</span> 和 <span class="term">xtr</span> 奖励指标，我们的评估系统基于流数据（streaming data）运行，其中值可能随时间变化。因此，相同指标在不同实验中可能因数据流的时间变化而显示不同的绝对值。但为确保可靠评估，我们在相同时间段内进行对比实验，并在足够长的观察窗口上平均结果，从而使发现具有统计置信度。</div>
+    </div>
+  </div>
+  
+  <!-- 摘要总结部分 -->
+  <div class="section">
+    <h2>摘要总结</h2>
+    <p>文本摘要概括了 OneRec 技术报告的核心内容：</p>
+    <ul>
+      <li><strong>后训练框架</strong>：OneRec 的后训练包括持续预训练和强化学习（<span class="term">Reinforcement Learning, RL</span>）两个阶段。预训练使用 <span class="term">LNTP loss</span> 和学习率退火（稀疏参数 1×10⁻⁴，密集参数 8×10⁻⁵）。强化学习通过外部推理服务解耦样本生成：1% 用户生成 512 个物品，从奖励模型获取奖励，并通过消息队列（<span class="term">MQ</span>）每 1000 步同步参数，优化资源利用。</li>
+      <li><strong>评估指标</strong>：模型性能通过三类指标评估：<span class="term">交叉熵损失（Cross-entropy loss）</span> 衡量预测准确性；<span class="term">P-Score</span> 作为综合偏好指标；<span class="term">xtr metrics</span> 反映用户参与度（如 lvtr、vtr、ltr、wtr、cmtr）。评估基于流数据，需在相同时间段内比较以确保可靠性。</li>
+      <li><strong>整体贡献</strong>：系统设计高效，结合了强化学习的动态优化和严格评估方法，Figure 8 可视化后训练流程。</li>
+    </ul>
+    <p>核心是 OneRec 如何通过强化学习和外部服务实现高效后训练，并使用多维度指标进行鲁棒评估。</p>
+  </div>
+  
+  <!-- 术语识别部分 -->
+  <div class="section">
+    <h2>术语识别</h2>
+    <p>识别文本中的关键术语，并给出详细解释：</p>
+    <ul class="term-list">
+      <li><span class="term">Reject Sampling Fine-Tuning (RSFT)</span>：拒绝采样微调。一种微调技术，可能涉及基于拒绝采样的方法来优化模型参数，常用于处理不平衡数据或强化学习上下文。在文本中，RSFT 数据用于生成强化学习样本。</li>
+      <li><span class="term">Reinforcement Learning (RL)</span>：强化学习。一种机器学习范式，智能体通过与环境交互（如生成物品并获取奖励）来学习最优策略，以最大化累积奖励。在 OneRec 中，RL 用于后训练阶段，通过用户反馈优化推荐系统。</li>
+      <li><span class="term">Feedback Session</span>：反馈会话。指系统收集用户反馈（如点击、观看）的过程，用于训练奖励模型或评估指标。在上下文中，与 RL 样本生成相关。</li>
+      <li><span class="term">Reward System</span>：奖励系统。在强化学习中，提供奖励信号的组件，基于用户行为（如观看或点赞）计算奖励值，用于指导模型优化。</li>
+      <li><span class="term">Post-Training Inference Service</span>：后训练推理服务。一个外部服务，用于在训练过程中解耦样本生成和推理任务。在 OneRec 中，它生成物品并请求奖励，提升计算效率。</li>
+      <li><span class="term">LNTP loss</span>：下一个令牌预测损失（Next-token prediction loss）。一种损失函数，用于预训练阶段，通过预测序列中的下一个令牌（token）来优化模型，常用于语言或推荐模型。</li>
+      <li><span class="term">Annealing</span>：退火。这里指学习率退火，一种优化技术，逐步降低学习率以提高训练稳定性和收敛性。文本中应用于稀疏和密集参数。</li>
+      <li><span class="term">Message Queue (MQ)</span>：消息队列。一种异步通信机制，用于不同服务间传递数据。在 OneRec 中，MQ 每 1000 步传输更新参数，实现训练与推理服务的解耦。</li>
+      <li><span class="term">Cross-entropy loss</span>：交叉熵损失。一种评估指标，衡量模型预测概率分布与真实分布的差异。在文本中，特指 LNTP 曲线，用于监控预训练性能。</li>
+      <li><span class="term">P-Score (Preference-Score)</span>：偏好得分。一个综合评估指标，学习自用户偏好数据，用于全面量化推荐质量。详见报告章节 2.4.1。</li>
+      <li><span class="term">xtr metrics</span>：用户参与度指标集合。源自预训练排序模型，包括：
+        <ul>
+          <li><span class="term">lvtr (Long View Through Rate)</span>：长观看率，预测用户显著观看视频的概率。</li>
+          <li><span class="term">vtr (View Through Rate)</span>：观看率，预测用户观看视频的概率。</li>
+          <li><span class="term">ltr (Like Through Rate)</span>：点赞率，预测用户点赞视频的概率。</li>
+          <li><span class="term">wtr (Follow Through Rate)</span>：关注率，预测用户关注创作者的概率。</li>
+          <li><span class="term">cmtr (Comment Through Rate)</span>：评论率，预测用户评论视频的概率。</li>
+        </ul>
+        这些指标基于实时流数据，反映实际用户行为。</li>
+      <li><span class="term">Streaming data</span>：流数据。连续生成的数据流，评估系统在此类数据上运行，值可能随时间变化，需特定处理方法（如时间窗口平均）来保证评估可靠性。</li>
+    </ul>
+  </div>
+</body>
+</html>

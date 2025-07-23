@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>论文解析：DeepSeek-GRM 响应评分标准</title>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    body { font-family: Arial, sans-serif; line-height: 1.6; }
+    .original { 
+      background-color: #f8f9fa; 
+      border: 1px solid #dee2e6; 
+      padding: 15px; 
+      margin-bottom: 20px;
+    }
+    .translation { 
+      background-color: #e6ffed; 
+      border: 1px solid #c3e6cb; 
+      padding: 15px; 
+      margin-bottom: 30px;
+    }
+    .term { color: red; font-weight: bold; }
+    .example { background-color: #fffde7; padding: 10px; margin: 10px 0; }
+    .section { margin-top: 30px; }
+    h2 { color: #2c3e50; border-bottom: 2px solid #eee; padding-bottom: 5px; }
+    h3 { color: #3498db; }
+  </style>
+</head>
+<body>
+
+<!-- 内容理解 -->
+<section class="section">
+  <h2>1. 内容理解</h2>
+  <p>本文档描述了 DeepSeek-GRM 模型的响应评分框架，包含两套评价标准：</p>
+  <ul>
+    <li><strong>通用评价标准</strong>：包含<b class="term">准确性（Accuracy）</b>、<b class="term">详细程度（Level of Detail）</b>、<b class="term">相关性（Relevance）</b>三个维度，每项按 1-10 分四级划分。</li>
+    <li><strong>指令遵循专项标准</strong>：新增<b class="term">指令遵循度（Instruction Adherence）</b>、<b class="term">清晰度（Clarity）</b>、<b class="term">准确性（Accuracy）</b>维度，同样采用四级评分。</li>
+  </ul>
+  <p>核心机制：根据对话上下文和查询要求，先分析潜在特定标准及权重，再基于标准对多个响应进行严格评分（0/1 二元判定）。评分需包含三个输出行：具体标准、对比分析、最终得分。</p>
+</section>
+
+<!-- 内容翻译 -->
+<section class="section">
+  <h2>2. 内容翻译</h2>
+  
+  <div class="original">
+    <h3>General Evaluation Criteria</h3>
+    <p>1. Accuracy: <br>- Completely Accurate (9-10 points): The response provides completely accurate information, fully addressing the issue. <br>- Useful but Incomplete (6-8 points): The response provides some useful information, but lacks details or accuracy. <br>- Limited Usefulness (3-5 points): The response offers little useful information, with most content being irrelevant or incorrect. <br>- Useless or Incorrect (1-2 points): The response is completely irrelevant or incorrect.</p>
+    <div class="example">Example: If there are factual errors in the response but the overall direction is correct, it falls under “Useful but Incomplete.”</div>
+    
+    <p>2. Level of Detail: <br>- Very Detailed (9-10 points): The response includes ample details covering all aspects of the issue. <br>- Detailed but Slightly Lacking (6-8 points): The response is fairly detailed but misses some important details. <br>- Basically Detailed (3-5 points): The response provides some details but is not thorough enough overall. <br>- Not Detailed (1-2 points): The response is very brief and lacks necessary details.</p>
+    <div class="example">Example: If the response provides only a simple conclusion without an explanation, it falls under “Not Detailed.”</div>
+    
+    <p>3. Relevance: <br>- Highly Relevant (9-10 points): The response is highly relevant to the question, with information closely aligned with the topic. <br>- Generally Relevant (6-8 points): The response is generally relevant but includes some unnecessary information. <br>- Partially Relevant (3-5 points): The response has a lot of content that deviates from the topic. <br>- Not Relevant (1-2 points): The response is completely irrelevant.</p>
+    <div class="example">Example: If the response strays from the topic but still provides some relevant information, it falls under “Partially Relevant.”</div>
+  </div>
+  
+  <div class="translation">
+    <h3>通用评价标准</h3>
+    <p>1. <b class="term">准确性（Accuracy）</b>：<br>- 完全准确（9-10分）：响应提供完全准确的信息，彻底解决问题。<br>- 有用但不完整（6-8分）：响应提供部分有用信息，但缺乏细节或准确性。<br>- 有限价值（3-5分）：响应提供的有用信息很少，大部分内容无关或不正确。<br>- 无用或错误（1-2分）：响应完全无关或不正确。</p>
+    <div class="example">示例：若响应存在事实错误但整体方向正确，则属于“有用但不完整”。</div>
+    
+    <p>2. <b class="term">详细程度（Level of Detail）</b>：<br>- 非常详细（9-10分）：响应包含涵盖问题所有方面的充分细节。<br>- 详细但略有不足（6-8分）：响应相当详细但遗漏重要细节。<br>- 基本详细（3-5分）：响应提供部分细节但整体不够全面。<br>- 不详细（1-2分）：响应非常简略且缺乏必要细节。</p>
+    <div class="example">示例：若响应仅提供简单结论而无解释，则属于“不详细”。</div>
+    
+    <p>3. <b class="term">相关性（Relevance）</b>：<br>- 高度相关（9-10分）：响应与问题高度相关，信息紧扣主题。<br>- 总体相关（6-8分）：响应基本相关但包含不必要信息。<br>- 部分相关（3-5分）：响应有大量偏离主题的内容。<br>- 不相关（1-2分）：响应完全无关。</p>
+    <div class="example">示例：若响应偏离主题但仍提供部分相关信息，则属于“部分相关”。</div>
+  </div>
+  
+  <div class="original">
+    <h3>Evaluation Criteria (Instruction-Focused)</h3>
+    <p>1. Instruction Adherence: <br>- Fully Adhered: The response fully complies with all instructions and requirements of the question. <br>- Partially Adhered: The response meets most of the instructions but has some omissions or misunderstandings. <br>- Basically Adhered: The response meets some instructions, but the main requirements are not fulfilled. <br>- Not Adhered: The response does not meet any instructions.</p>
+    <div class="example">Example: If the question requires three examples and the response provides only one, it falls under “Partially Adhered.”</div>
+    
+    <p>2. Clarity: <br>- Very Clear: The response is fluent, well-structured, and logically clear. <br>- Clear but Minor Issues: The response is mostly clear but has some minor language or structural issues. <br>- Basically Clear: The response has noticeable language or logic issues but is still understandable. <br>- Not Clear: The response is disjointed, illogical, and hard to understand.</p>
+    <div class="example">Example: If the response has complex sentence structures and lacks punctuation, it falls under “Basically Clear” or “Not Clear.”</div>
+    
+    <p>3. Accuracy: <br>- Completely Accurate: All information and data are completely accurate. <br>- Mostly Accurate: Most information is accurate, with minor errors. <br>- Some Errors: There are some noticeable errors affecting comprehension. <br>- Mostly Incorrect: There are numerous errors seriously affecting the credibility of the information.</p>
+    <div class="example">Example: If a specific data point is incorrectly cited but doesn’t affect the overall conclusion, it falls under “Mostly Accurate.”</div>
+  </div>
+  
+  <div class="translation">
+    <h3>评价标准（指令遵循专项）</h3>
+    <p>1. <b class="term">指令遵循度（Instruction Adherence）</b>：<br>- 完全遵循：响应完全符合问题的所有指示和要求。<br>- 部分遵循：响应满足大部分指示但存在遗漏或误解。<br>- 基本遵循：响应满足部分指示，但主要要求未达成。<br>- 未遵循：响应未满足任何指示。</p>
+    <div class="example">示例：若问题要求三个例子而响应仅提供一个，则属于“部分遵循”。</div>
+    
+    <p>2. <b class="term">清晰度（Clarity）</b>：<br>- 非常清晰：响应流畅、结构良好、逻辑清晰。<br>- 清晰但有小问题：响应基本清晰但存在轻微语言或结构问题。<br>- 基本清晰：响应存在明显语言或逻辑问题但仍可理解。<br>- 不清晰：响应支离破碎、缺乏逻辑且难以理解。</p>
+    <div class="example">示例：若响应句式复杂且缺少标点，则属于“基本清晰”或“不清晰”。</div>
+    
+    <p>3. <b class="term">准确性（Accuracy）</b>：<br>- 完全准确：所有信息和数据完全正确。<br>- 基本准确：大部分信息准确，存在轻微错误。<br>- 部分错误：存在影响理解的明显错误。<br>- 基本错误：存在严重损害信息可信度的多处错误。</p>
+    <div class="example">示例：若具体数据引用错误但不影响整体结论，则属于“基本准确”。</div>
+  </div>
+</section>
+
+<!-- 摘要总结 -->
+<section class="section">
+  <h2>3. 摘要总结</h2>
+  <p>本文定义了 DeepSeek-GRM 模型的双层响应评分体系：</p>
+  <ol>
+    <li><strong>通用标准</strong>：从<b class="term">准确性（Accuracy）</b>、<b class="term">详细程度（Level of Detail）</b>、<b class="term">相关性（Relevance）</b>三个维度，按 1-10 分四级制评估响应质量，每项均配有分级描述和示例。</li>
+    <li><strong>指令专项标准</strong>：强化对<b class="term">指令遵循度（Instruction Adherence）</b>、<b class="term">清晰度（Clarity）</b>、<b class="term">准确性（Accuracy）</b>的考核，同样采用四级评分机制。</li>
+    <li><strong>评分流程</strong>：基于对话上下文，先确定特定标准及权重，再严格对比多个响应，最终输出三项内容（具体标准说明、响应对比分析、逗号分隔的 0/1 评分结果）。</li>
+  </ol>
+  <p>核心特点：采用严格二元判定（0/1），要求评分过程包含逐步分析，示例系统完善。</p>
+</section>
+
+<!-- 术语识别 -->
+<section class="section">
+  <h2>4. 术语识别</h2>
+  <dl>
+    <dt><b class="term">Instruction Adherence（指令遵循度）</b></dt>
+    <dd>衡量响应符合用户指令的程度。四级标准：完全遵循（满足所有要求）、部分遵循（满足主要要求但有遗漏）、基本遵循（仅满足次要要求）、未遵循（完全偏离指令）。</dd>
+    
+    <dt><b class="term">Accuracy（准确性）</b></dt>
+    <dd>评估响应信息的正确性。在通用标准中关注事实准确性，在指令标准中额外关注数据精确性。分级包括：完全准确（无错误）、基本准确（非关键错误）、部分错误（影响理解）、基本错误（严重失真）。</dd>
+    
+    <dt><b class="term">Level of Detail（详细程度）</b></dt>
+    <dd>考察响应内容的完整性与深度。四级划分：非常详细（覆盖所有方面）、详细但略有不足（遗漏次要细节）、基本详细（仅核心内容）、不详细（缺失必要细节）。</dd>
+    
+    <dt><b class="term">Relevance（相关性）</b></dt>
+    <dd>判定响应与主题的关联强度。分级标准：高度相关（完全聚焦主题）、总体相关（含少量冗余）、部分相关（显著偏离主题）、不相关（完全无关）。</dd>
+    
+    <dt><b class="term">Clarity（清晰度）</b></dt>
+    <dd>评价语言表达与逻辑结构。四级描述：非常清晰（流畅且逻辑严密）、清晰但有小问题（轻微表达瑕疵）、基本清晰（可理解但有明显缺陷）、不清晰（支离破碎难以理解）。</dd>
+    
+    <dt><b class="term">DeepSeek-GRM（评分模型）</b></dt>
+    <dd>专注于响应评分的AI系统，通过双层标准（通用+指令专项）对多个响应进行严格对比分析，最终输出二元评分（0/1）。</dd>
+  </dl>
+</section>
+
+</body>
+</html>

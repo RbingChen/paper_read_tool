@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>MAGIC Components Analysis</title>
+  <style>
+    body { font-family: Arial, sans-serif; line-height: 1.6; margin: 20px; }
+    h1, h2, h3 { color: #333; }
+    .section { margin-bottom: 30px; padding: 15px; border-radius: 5px; background-color: #f9f9f9; border: 1px solid #ddd; }
+    .original { background-color: #f0f0f0; border: 1px solid #ccc; padding: 15px; margin: 10px 0; border-radius: 5px; }
+    .translation { background-color: #e0f7e0; border: 1px solid #4caf50; padding: 15px; margin: 10px 0; border-radius: 5px; }
+    .figure-ref { background-color: #fffde7; padding: 10px; margin: 10px 0; border-radius: 5px; font-style: italic; }
+    .term { color: red; font-weight: bold; }
+    .formula { text-align: center; margin: 15px 0; font-family: monospace; }
+    .formula-number { display: block; text-align: center; font-size: 0.9em; color: #666; }
+  </style>
+  <!-- MathJax support for LaTeX formulas (not used in this text) -->
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <h1>MAGIC Components 分析报告</h1>
+  
+  <!-- Section 1: Content Understanding -->
+  <div class="section">
+    <h2>a. 内容理解</h2>
+    <p>本部分（3.2节）探讨了 <span class="term">MAGIC recipe (MAGIC配方)</span> 中各组件的有效性，重点通过实验分析数据混合对强化学习性能的影响。核心认知包括：</p>
+    <ul>
+      <li><strong>实验目的</strong>：评估不同数据混合策略在强化学习后训练（post-training）中的作用，比较了作者自定义的 <span class="term">Skywork-OR1 mixture (Skywork-OR1混合)</span> 与现有方法 <span class="term">DeepScaleR mixture (DeepScaleR混合)</span>。</li>
+      <li><strong>关键发现</strong>：DeepScaleR混合在小型模型上表现良好，但在长期训练中性能下降；自定义混合（包含来自 <span class="term">NuminaMath-1.5</span> 的难题）能稳定提升性能。添加潜在错误数据（低验证标准）仅轻微减慢早期学习，不影响最终准确性。</li>
+      <li><strong>方法学</strong>：通过 <span class="term">ablation study (消融研究)</span> 控制变量（如超参数和训练步数），确保结果可比性。实验基于 <span class="term">AIME (American Invitational Mathematics Examination)</span> 等数学竞赛数据集。</li>
+      <li><strong>意义</strong>：数据质量（如难度过滤和质量控制）对强化学习性能至关重要，尤其在处理大型模型时。自定义混合策略通过多样化数据源提升了鲁棒性。</li>
+    </ul>
+  </div>
+  
+  <!-- Section 2: Content Translation -->
+  <div class="section">
+    <h2>b. 内容翻译</h2>
+    <p>以下为英文原文与中文翻译对照。翻译按段落组织，区分标题、段落和图片引用。关键技术术语已用 <span class="term">红色粗体</span> 高亮显示。</p>
+    
+    <!-- 段落 1: 标题和介绍 -->
+    <div class="original">
+      <h3>3.2 Effectiveness of <span class="term">MAGIC recipe (MAGIC配方)</span></h3>
+      <p>In this section, we present results from extensive experiments conducted to examine how various components of our <span class="term">MAGIC recipe (MAGIC配方)</span> influence the performance improvement of reinforcement learning during post-training.</p>
+    </div>
+    <div class="translation">
+      <h3>3.2 <span class="term">MAGIC配方</span> 组件的有效性</h3>
+      <p>在本节中，我们展示了大量实验结果，旨在检验我们的 <span class="term">MAGIC配方</span> 中各种组件如何影响强化学习在后训练过程中的性能提升。</p>
+    </div>
+    
+    <!-- 段落 2: 子标题和图片引用 -->
+    <div class="original">
+      <h3>3.2.1 <span class="term">Data Mixture (数据混合)</span></h3>
+      <div class="figure-ref">(a) (b) <span class="term">Figure 4 (图4)</span>: Left:Comparison of our data mixture with <span class="term">DeepScaleR’s mixture (DeepScaleR混合)</span>. The experiment was conducted on an earlier version of the 32B variant, using only math data. Right:Comparison of <span class="term">AIME 24 (AIME 24)</span> performance between two mixtures: our official mixture (default) and a version with additional data selected using lower verification criteria (i.e., with potential errors in ground truth answers). Although the quality is lower, we observe only slower learning progress compared to the clean counterpart.</div>
+    </div>
+    <div class="translation">
+      <h3>3.2.1 <span class="term">数据混合</span></h3>
+      <div class="figure-ref">(a) (b) <span class="term">图4</span>: 左图：我们的数据混合与 <span class="term">DeepScaleR混合</span> 的比较。实验在32B变体的早期版本上进行，仅使用数学数据。右图：两种混合在 <span class="term">AIME 24</span> 性能上的比较：我们的官方混合（默认）和一个使用较低验证标准选择的额外数据版本（即真实答案可能存在错误）。尽管质量较低，我们观察到仅与干净版本相比学习进度较慢。</div>
+    </div>
+    
+    <!-- 段落 3: 内容段落 -->
+    <div class="original">
+      <p>In our formal training recipe, we include additional hard problems filtered from <span class="term">NuminaMath-1.5 [13] (NuminaMath-1.5 [13])</span> to construct our final data mixture. We conduct the following <span class="term">ablation study (消融研究)</span> to demonstrate the effectiveness of this design choice. We primarily compare against <span class="term">DeepScaleR’s data mixture [17] (DeepScaleR数据混合 [17])</span>, as existing models trained on it have shown strong performance.</p>
+    </div>
+    <div class="translation">
+      <p>在我们的正式训练配方中，我们包含了从 <span class="term">NuminaMath-1.5 [13]</span> 过滤出的额外难题，以构建最终的数据混合。我们进行了以下 <span class="term">消融研究</span> 来证明这一设计选择的有效性。我们主要与 <span class="term">DeepScaleR数据混合 [17]</span> 进行比较，因为在其上训练的现有模型已显示出强大性能。</p>
+    </div>
+    
+    <!-- 段落 4: 实验描述 -->
+    <div class="original">
+      <h4><span class="term">Ablation Experiments 1 (消融实验 1)</span>: Existing Mixture vs. Our Data Mixture</h4>
+      <p>1. <span class="term">DeepScaleR mixture [17] (DeepScaleR混合 [17])</span>: Comprises problems from previous years’ <span class="term">AIME (AIME)</span>, <span class="term">AMC (AMC)</span>, <span class="term">Omni-MATH [4] (Omni-MATH [4])</span>, and <span class="term">STILL [26] (STILL [26])</span>.</p>
+      <p>2. <span class="term">Skywork-OR1 mixture (Skywork-OR1混合)</span>: Our custom mixture described in Section 6, incorporating problems from more diverse sources (e.g., <span class="term">NuminaMath-1.5 (NuminaMath-1.5)</span>) and selected via difficulty filtering and quality control.</p>
+    </div>
+    <div class="translation">
+      <h4><span class="term">消融实验 1</span>: 现有混合 vs. 我们的数据混合</h4>
+      <p>1. <span class="term">DeepScaleR混合 [17]</span>: 包含来自往年 <span class="term">AIME</span>、<span class="term">AMC</span>、<span class="term">Omni-MATH [4]</span> 和 <span class="term">STILL [26]</span> 的问题。</p>
+      <p>2. <span class="term">Skywork-OR1混合</span>: 我们在第6节描述的自定义混合，整合了更多样化来源的问题（例如 <span class="term">NuminaMath-1.5</span>），并通过难度过滤和质量控制进行选择。</p>
+    </div>
+    
+    <!-- 段落 5: 结果描述 -->
+    <div class="original">
+      <p>We use the same hyperparameters and approximately the same number of training steps across both experiments to control for the effect of data size. Results are shown in <span class="term">Figure 4 (图4)</span>.</p>
+      <p>Although the <span class="term">DeepScaleR dataset (DeepScaleR数据集)</span> performs well with smaller model variants, we observed a slight initial improvement on <span class="term">AIME24 (AIME24)</span>. However, performance degraded sharply after 300 training steps, eventually returning to the same accuracy as before training. Additionally, in <span class="term">Figure 4(b) (图4(b))</span>, we test our data mixture combined with an extra subset obtained via a less stringent verification procedure. This extra subset contains hard problems from <span class="term">NuminaMath-1.5 (NuminaMath-1.5)</span> that were previously excluded due to potential mismatches between extracted and provided solutions. We find that the performance difference between the two mixtures is negligible within the first 900 steps. The version including the extra subset exhibits slightly slower early</p>
+    </div>
+    <div class="translation">
+      <p>我们在两个实验中使用相同的超参数和大致相同的训练步数，以控制数据规模的影响。结果如 <span class="term">图4</span> 所示。</p>
+      <p>尽管 <span class="term">DeepScaleR数据集</span> 在小型模型变体上表现良好，我们在 <span class="term">AIME24</span> 上观察到轻微的初始改进。然而，在300个训练步后，性能急剧下降，最终恢复到训练前的相同准确性。此外，在 <span class="term">图4(b)</span> 中，我们测试了我们的数据混合与通过较宽松验证程序获得的额外子集的组合。这个额外子集包含来自 <span class="term">NuminaMath-1.5</span> 的难题，这些难题之前因提取解与提供解之间可能存在不匹配而被排除。我们发现，在前900步内，两种混合的性能差异可忽略不计。包含额外子集的版本表现出稍慢的早期</p>
+    </div>
+  </div>
+  
+  <!-- Section 3: Summary -->
+  <div class="section">
+    <h2>c. 摘要总结</h2>
+    <p>本部分的核心内容总结如下：</p>
+    <ul>
+      <li><strong>主题</strong>：评估 <span class="term">MAGIC recipe (MAGIC配方)</span> 中数据混合组件对强化学习后训练性能的影响。</li>
+      <li><strong>关键实验</strong>：通过 <span class="term">ablation study (消融研究)</span> 比较 <span class="term">DeepScaleR mixture (DeepScaleR混合)</span> 和自定义 <span class="term">Skywork-OR1 mixture (Skywork-OR1混合)</span>（后者整合了 <span class="term">NuminaMath-1.5</span> 的难题）。</li>
+      <li><strong>主要发现</strong>：DeepScaleR混合在小型模型上初始表现好，但长期训练中性能下降；Skywork-OR1混合更稳定且提升性能。添加低质量数据（如潜在错误答案）仅轻微减慢早期学习，不影响最终结果。</li>
+      <li><strong>结论</strong>：数据混合的质量和多样性（通过难度过滤和质量控制）是优化强化学习的关键，自定义策略在大型模型中更有效。</li>
+    </ul>
+  </div>
+  
+  <!-- Section 4: Terminology -->
+  <div class="section">
+    <h2>d. 术语识别</h2>
+    <p>识别文本中的关键术语，并提供详细解释（包括英文原文）：</p>
+    <ul>
+      <li><span class="term">MAGIC recipe (MAGIC配方)</span>: 指作者提出的强化学习训练配方，用于优化模型后训练性能。它包含多个组件（如数据混合），旨在提升数学问题求解能力。</li>
+      <li><span class="term">Data Mixture (数据混合)</span>: 数据集组合策略，涉及从不同来源（如数学竞赛）整合问题，以平衡难度和多样性。在实验中，用于比较不同混合对学习的影响。</li>
+      <li><span class="term">DeepScaleR mixture (DeepScaleR混合)</span>: 一种现有数据混合方法，引用自文献[17]，包含AIME、AMC等数学竞赛数据。实验中作为基准比较对象。</li>
+      <li><span class="term">Skywork-OR1 mixture (Skywork-OR1混合)</span>: 作者自定义的数据混合策略，整合了NuminaMath-1.5等更多样化来源，并通过难度过滤和质量控制优化。在实验中表现优于现有方法。</li>
+      <li><span class="term">NuminaMath-1.5 (NuminaMath-1.5)</span>: 一个数学问题数据集，引用自文献[13]，包含高难度题目。在自定义混合中被用作额外数据源。</li>
+      <li><span class="term">AIME (American Invitational Mathematics Examination)</span>: 美国数学邀请赛，一个高中数学竞赛。实验中用作性能评估基准（如AIME24）。</li>
+      <li><span class="term">Ablation study (消融研究)</span>: 一种实验方法，通过移除或修改特定组件（如数据混合）来评估其对整体性能的影响。用于证明数据混合设计的有效性。</li>
+      <li><span class="term">Figure 4 (图4)</span>: 实验结果的视觉展示，左图比较数据混合，右图比较不同验证标准下的性能。用于支持实验结论。</li>
+      <li><span class="term">Post-training (后训练)</span>: 强化学习阶段，模型在初始训练后进行微调或优化。本实验中关注此阶段的性能提升。</li>
+    </ul>
+  </div>
+</body>
+</html>

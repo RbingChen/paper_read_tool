@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>OneRec技术报告解析</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        body { font-family: 'Segoe UI', Arial, sans-serif; line-height: 1.6; }
+        .original { 
+            background-color: #f5f5f5; 
+            border: 1px solid #cccccc; 
+            padding: 15px; 
+            margin-bottom: 5px;
+            border-radius: 5px;
+        }
+        .translation { 
+            background-color: #e8f5e9; 
+            border: 1px solid #4caf50; 
+            padding: 15px; 
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+        .figure { 
+            background-color: #fffde7; 
+            padding: 15px; 
+            margin: 20px 0; 
+            text-align: center;
+            border-radius: 5px;
+        }
+        .term { 
+            color: red; 
+            font-weight: bold; 
+        }
+        h1, h2, h3 { color: #2c3e50; }
+        dl { margin-left: 20px; }
+        dt { font-weight: bold; margin-top: 10px; }
+        dd { margin-bottom: 15px; }
+        section { margin-bottom: 30px; }
+    </style>
+</head>
+<body>
+
+<h1>OneRec技术报告解析</h1>
+
+<!-- 内容理解 -->
+<section>
+    <h2>内容理解</h2>
+    <p>本文是OneRec技术报告片段，聚焦多模态推荐系统中的查询-内容匹配机制。核心展示了三种检索策略：
+        <span class="term">协作行为（Collaborative Behaviors）</span>、
+        <span class="term">多模态行为（Multimodal Behaviors）</span>和
+        <span class="term">对齐协作感知多模态行为（Aligned Collaborative-Aware Multimodal Behaviors）</span>。
+        通过花卉主题案例（如插花、青瓷、绘画等）演示了如何根据查询的语义相似性（协作）和视觉相似性（多模态）从用户历史中检索视频。
+        图15对比了不同表示类型的检索效果，验证了多模态对齐策略的优越性。</p>
+</section>
+
+<!-- 内容翻译 -->
+<section>
+    <h2>内容翻译</h2>
+    
+    <div class="original">
+        OneRec Technical Report
+    </div>
+    <div class="translation">
+        OneRec技术报告
+    </div>
+    
+    <div class="original">
+        插花艺术 / flower arrangement art<br>
+        插花 / Flower Arrangement<br>
+        花艺 / FloralArt
+    </div>
+    <div class="translation">
+        插花艺术 / 花卉布置艺术<br>
+        插花 / 花卉布置<br>
+        花艺 / 花卉艺术
+    </div>
+    
+    <div class="original">
+        Query
+    </div>
+    <div class="translation">
+        查询
+    </div>
+    
+    <div class="original">
+        ⻰泉⻘瓷传统烧制全过程/ The entire traditional firing process of Longquan celadon.<br>
+        手工 / Handmade
+    </div>
+    <div class="translation">
+        龙泉青瓷传统烧制全过程/ 龙泉青瓷传统烧制完整流程<br>
+        手工 / 手工制作
+    </div>
+    
+    <div class="original">
+        教你画超帅的古⻛男武将/ Teach you how to draw a super cool ancient-style male warrior<br>
+        绘画 / Painting
+    </div>
+    <div class="translation">
+        教你画超帅的古风男武将/ 教你绘制超酷古风男性武将<br>
+        绘画 / 绘画艺术
+    </div>
+    
+    <div class="original">
+        桌⾯烟⾬江南/ Jiangnan in drizzling rain on the desktop<br>
+        鱼缸造景 / Aquascaping
+    </div>
+    <div class="translation">
+        桌面烟雨江南/ 桌面上的烟雨江南景致<br>
+        鱼缸造景 / 水族造景
+    </div>
+    
+    <div class="original">
+        创意艺术 / Creative Arts
+    </div>
+    <div class="translation">
+        创意艺术 / 创意艺术
+    </div>
+    
+    <div class="original">
+        <span class="term">Collaborative Behaviors</span> with collaborative similarity to the query
+    </div>
+    <div class="translation">
+        具有与查询<span class="term">协作相似性（Collaborative Similarity）</span>的<span class="term">协作行为</span>
+    </div>
+    
+    <div class="original">
+        花图案的连⾐裙 / Dress with floral pattern<br>
+        花卉连衣裙 / Floral Dress
+    </div>
+    <div class="translation">
+        花图案的连衣裙 / 花卉图案连衣裙<br>
+        花卉连衣裙 / 花卉主题连衣裙
+    </div>
+    
+    <div class="original">
+        玫瑰鲜花液⼀定认准我们玫瑰之乡原产地 / Choose our rose flower liquid from Rose Town<br>
+        花卉护肤/ Floral Skincare
+    </div>
+    <div class="translation">
+        玫瑰鲜花液请认准我们玫瑰之乡原产地 / 请选择我们玫瑰之乡原产的玫瑰鲜花液<br>
+        花卉护肤 / 花卉护肤
+    </div>
+    
+    <div class="original">
+        揭秘古⼈春天吃的花膳 / Unveiling the flower dishes ancient people ate in spring<br>
+        花卉料理/ Floral Cuisine
+    </div>
+    <div class="translation">
+        揭秘古人春天吃的花膳 / 揭秘古人春季食用的花卉菜肴<br>
+        花卉料理 / 花卉烹饪
+    </div>
+    
+    <div class="original">
+        花卉用途 / Floral Application
+    </div>
+    <div class="translation">
+        花卉用途 / 花卉应用
+    </div>
+    
+    <div class="original">
+        <span class="term">Multimodal Behaviors</span> with visual similarity to the query
+    </div>
+    <div class="translation">
+        具有与查询<span class="term">视觉相似性（Visual Similarity）</span>的<span class="term">多模态行为</span>
+    </div>
+    
+    <div class="original">
+        花艺师 / florist<br>
+        插花 / Flower Arrangement<br>
+        中式插花 / Chinese flower arrangement<br>
+        中式插花 / Chinese Flower Arrangement
+    </div>
+    <div class="translation">
+        花艺师 / 花艺设计师<br>
+        插花 / 花卉布置<br>
+        中式插花 / 中国式插花<br>
+        中式插花 / 中国风格插花
+    </div>
+    
+    <div class="original">
+        朱顶红/ Hippeastrum<br>
+        盆栽艺术 / Potted Plant Art
+    </div>
+    <div class="translation">
+        朱顶红 / 朱顶红属植物<br>
+        盆栽艺术 / 盆栽艺术
+    </div>
+    
+    <div class="original">
+        花艺 / Floral Art
+    </div>
+    <div class="translation">
+        花艺 / 花卉艺术
+    </div>
+    
+    <div class="original">
+        <span class="term">Aligned Collaborative-Aware Multimodal Behaviors</span> with both collaborative & visual similarity to the query
+    </div>
+    <div class="translation">
+        同时具有与查询<span class="term">协作相似性</span>和<span class="term">视觉相似性</span>的<span class="term">对齐协作感知多模态行为</span>
+    </div>
+    
+    <div class="figure">
+        <strong>Figure 15</strong> | Cases of top-ranked videos retrieved from user history triggered by the query using different representation types.
+        <p><strong>图15</strong> | 使用不同表示类型从用户历史中检索由查询触发的排名靠前视频案例</p>
+    </div>
+    
+    <div class="original">
+        33
+    </div>
+    <div class="translation">
+        33
+    </div>
+</section>
+
+<!-- 摘要总结 -->
+<section>
+    <h2>摘要总结</h2>
+    <p>本技术报告片段展示了OneRec系统基于用户查询的多模态视频检索能力。核心贡献包括：</p>
+    <ol>
+        <li>提出三种检索模式：
+            <span class="term">协作行为（Collaborative Behaviors）</span>（语义相似性）、
+            <span class="term">多模态行为（Multimodal Behaviors）</span>（视觉相似性）和
+            <span class="term">对齐协作感知多模态行为（Aligned Collaborative-Aware Multimodal Behaviors）</span>（多模态对齐）</li>
+        <li>通过花卉艺术（插花/花艺）、传统工艺（青瓷烧制）、艺术创作（古风绘画）等多样化案例验证检索效果</li>
+        <li>图15可视化对比不同表示类型下，从用户历史数据中检索与查询匹配的Top视频结果</li>
+        <li>证明多模态对齐策略能同时捕捉内容语义特征和视觉特征，优化推荐相关性</li>
+    </ol>
+</section>
+
+<!-- 术语识别 -->
+<section>
+    <h2>术语识别</h2>
+    <dl>
+        <dt><span class="term">协作行为 (Collaborative Behaviors)</span></dt>
+        <dd>基于用户历史交互数据（如点击、观看）的相似性匹配，通过协同过滤算法推荐与查询语义相关的内容。例如：当用户搜索"花卉护肤"时，系统推荐其他用户交互过的同类产品。</dd>
+        
+        <dt><span class="term">多模态行为 (Multimodal Behaviors)</span></dt>
+        <dd>利用视觉、文本等多模态特征计算内容相似性。例如：当查询为"中式插花"时，系统检索视觉特征匹配的花艺设计视频。</dd>
+        
+        <dt><span class="term">对齐协作感知多模态行为 (Aligned Collaborative-Aware Multimodal Behaviors)</span></dt>
+        <dd>结合协作过滤和多模态学习的混合模型，将用户行为数据与内容视觉特征在共享空间中对

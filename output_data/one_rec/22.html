@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>OneRec Technical Report Analysis</title>
+  <style>
+    body { font-family: Arial, sans-serif; line-height: 1.6; margin: 20px; }
+    h1 { color: #333; text-align: center; }
+    h2 { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 5px; }
+    h3 { color: #2980b9; margin-top: 15px; }
+    .original { background-color: lightgrey; border: 1px solid grey; padding: 15px; margin: 10px 0; border-radius: 5px; }
+    .translation { background-color: lightgreen; border: 1px solid green; padding: 15px; margin: 10px 0; border-radius: 5px; }
+    .figure { background-color: yellow; padding: 15px; margin: 15px 0; border-radius: 5px; text-align: center; }
+    .term { color: red; font-weight: bold; }
+    .formula { text-align: center; margin: 15px 0; font-style: italic; }
+    .formula-number { display: block; text-align: center; font-size: 0.9em; color: #7f8c8d; }
+    .section { margin-bottom: 30px; }
+    table { width: 100%; border-collapse: collapse; margin: 10px 0; }
+    th, td { border: 1px solid #ddd; padding: 8px; text-align: center; }
+    th { background-color: #f2f2f2; }
+  </style>
+</head>
+<body>
+  <h1>OneRec Technical Report Analysis</h1>
+  
+  <div class="section">
+    <h2>Content Understanding</h2>
+    <p>This text is an excerpt from the OneRec technical report, focusing on performance evaluations and deployment results. It begins with a quantitative comparison of tokenization algorithms (RQ-VAE vs. RQ-Kmeans) using a three-layer codebook, where RQ-Kmeans demonstrates superior performance across all metrics: lower reconstruction loss, higher codebook utilization, and higher token distribution entropy. This indicates a more balanced token distribution, enhancing model stability and generalization. The report then details online A/B tests conducted on Kuaishou's short-video platforms (main feed and Lite feed), involving 5% traffic over one week. Key metrics include APP Stay Time (total user engagement time) and LT7 (7-day user lifetime). Results show that OneRec, especially with reward model-based selection, achieves statistically significant improvements in user engagement and business metrics. Further experiments in Kuaishou's Local Life Service scenario confirm substantial growth in GMV, order volume, and buyer acquisition. The text concludes with infrastructure details, highlighting the use of NVIDIA GPUs, UniPredict platform, RDMA networking, and TensorRT for optimization. Overall, the report emphasizes OneRec's effectiveness in recommendation systems, its scalability across diverse scenarios, and the technical efficiency of its deployment.</p>
+  </div>
+  
+  <div class="section">
+    <h2>Translation</h2>
+    <p>Below is the English-Chinese translation of the text, presented in paragraph-level comparisons. Key technical terms are highlighted in <span class="term">red bold</span> with English originals. Tables are treated as figures with yellow backgrounds.</p>
+    
+    <h3>Part 1: Tokenization Algorithm Comparison</h3>
+    <div class="original">
+      <p>OneRec Technical Report</p>
+      <p>Table 11|Performance comparison of tokenization algorithms with a three-layer 8,192 codebook.</p>
+      <div class="figure">
+        <table>
+          <tr><th>Metric</th><th>RQ-VAE</th><th>RQ-Kmeans</th></tr>
+          <tr><td><span class="term">Reconstruction Loss</span> ↓</td><td>0.0548</td><td>0.0410</td></tr>
+          <tr><td><span class="term">Codebook Utilization</span> ↑ layer 1</td><td>1.0000</td><td>1.0000</td></tr>
+          <tr><td>layer 2</td><td>0.9963</td><td>1.0000</td></tr>
+          <tr><td>layer 3</td><td>0.9958</td><td>1.0000</td></tr>
+          <tr><td><span class="term">Token Distribution Entropy</span> ↑ layer 1</td><td>8.3892</td><td>8.9191</td></tr>
+          <tr><td>layer 2</td><td>8.4805</td><td>8.7770</td></tr>
+          <tr><td>layer 3</td><td>8.6037</td><td>8.7276</td></tr>
+        </table>
+      </div>
+      <p>produces a more uniform and balanced token distribution, which is beneficial for model stability and generalization capability. These comprehensive results demonstrate that RQ-Kmeans outperforms RQ-VAE across all three evaluation metrics, making it a more effective choice for tokenization. Further qualitative analyses of item representation and tokenization quality are provided in Appendix C.</p>
+    </div>
+    <div class="translation">
+      <p>OneRec技术报告</p>
+      <p>表11|使用三层8,192码本的tokenization算法性能比较。</p>
+      <div class="figure">
+        <table>
+          <tr><th>指标</th><th>RQ-VAE</th><th>RQ-Kmeans</th></tr>
+          <tr><td><span class="term">Reconstruction Loss (重建损失)</span> ↓</td><td>0.0548</td><td>0.0410</td></tr>
+          <tr><td><span class="term">Codebook Utilization (码本利用率)</span> ↑ 层1</td><td>1.0000</td><td>1.0000</td></tr>
+          <tr><td>层2</td><td>0.9963</td><td>1.0000</td></tr>
+          <tr><td>层3</td><td>0.9958</td><td>1.0000</td></tr>
+          <tr><td><span class="term">Token Distribution Entropy (令牌分布熵)</span> ↑ 层1</td><td>8.3892</td><td>8.9191</td></tr>
+          <tr><td>层2</td><td>8.4805</td><td>8.7770</td></tr>
+          <tr><td>层3</td><td>8.6037</td><td>8.7276</td></tr>
+        </table>
+      </div>
+      <p>产生更均匀和平衡的令牌分布，这有利于模型稳定性和泛化能力。这些全面结果表明，RQ-Kmeans在所有三个评估指标上都优于RQ-VAE，使其成为更有效的tokenization选择。项目表示和tokenization质量的进一步定性分析见附录C。</p>
+    </div>
+    
+    <h3>Part 2: Online A/B Test in Short-Video Scenarios</h3>
+    <div class="original">
+      <p>4.5. Online A/B Test</p>
+      <p>We deployed OneRec in two major short-video scenarios on Kuaishou: the main Kuaishou feed and Kuaishou Lite feed - the platform’s highest-traffic scenarios with daily active users of 400 million. Using a 5% traffic experimental group observed over one week, our primary metrics were <span class="term">APP Stay Time</span> (reflecting total user engagement time) and <span class="term">LT7</span> (7-day Lifetime). Two experimental groups were established: one employing a pure generative model (OneRec) and another augmenting generative outputs with <span class="term">reward model based selection</span> (OneRec with RM Selection). As shown in Table 12, the pure generative model with RL-based user preference alignment remarkably matched the performance of the entire complex recommendation system. Further applying reward model selection achieved statistically significant improvements of +0.54% and +1.24% in <span class="term">APP Stay Time</span>, and +0.05% and +0.08% in <span class="term">LT7</span> on these two scenarios, respectively. Notably, improvements of 0.1% in <span class="term">APP Stay Time</span> and 0.01% in <span class="term">LT7</span> are already considered statistically significant on Kuaishou. Additionally, OneRec demonstrated significant gains across all interaction metrics (likes, follows, comments, etc.), indicating its ability to converge multi-task systems to a more balanced equilibrium without seesaw effects. After validation, we’ve expanded deployment to approximately 25% of total <span class="term">QPS</span>, with implementation details available in Appendix B.</p>
+    </div>
+    <div class="translation">
+      <p>4.5. 在线A/B测试</p>
+      <p>我们在快手的两个主要短视频场景中部署了OneRec：主快手feed和快手Lite feed——该平台最高流量的场景，日活跃用户达4亿。使用5%流量实验组观察一周，我们的主要指标是<span class="term">APP Stay Time (APP停留时间)</span>（反映总用户参与时间）和<span class="term">LT7 (7天生命周期)</span>。建立了两个实验组：一个使用纯生成模型（OneRec），另一个通过<span class="term">reward model based selection (基于奖励模型的选择)</span>增强生成输出（OneRec with RM Selection）。如表12所示，基于强化学习的用户偏好对齐的纯生成模型显著匹配了整个复杂推荐系统的性能。进一步应用奖励模型选择在<span class="term">APP Stay Time (APP停留时间)</span>上分别实现了+0.54%和+1.24%的统计显著提升，在<span class="term">LT7 (7天生命周期)</span>上分别实现了+0.05%和+0.08%的提升。值得注意的是，在快手上，<span class="term">APP Stay Time (APP停留时间)</span>0.1%的提升和<span class="term">LT7 (7天生命周期)</span>0.01%的提升已被视为统计显著。此外，OneRec在所有交互指标（点赞、关注、评论等）上都表现出显著增益，表明其能够将多任务系统收敛到更平衡的均衡状态，而不会出现跷跷板效应。验证后，我们已将部署扩展到约25%的总<span class="term">QPS (每秒查询数)</span>，实现细节见附录B。</p>
+    </div>
+    
+    <h3>Part 3: Experiment in Local Life Service</h3>
+    <div class="original">
+      <p>In addition to Kuaishou’s short video recommendation scenarios, experiments have also been conducted in one of its significant business scenes — <span class="term">Local Life Service</span>. The results demonstrate that OneRec achieves a 21.01% growth in <span class="term">GMV</span>, a 17.89% increase in order volume, an 18.58% rise in buyer numbers, and a 23.02% increase in new buyer acquisition. Consequently, the system has now taken over 100% of <span class="term">QPS</span> for this business scenario. After full deployment, we observe even stronger growth across all metrics compared to the initial experimental phase. These results prove OneRec’s generalizability across diverse business contexts for enhanced recommendation performance.</p>
+    </div>
+    <div class="translation">
+      <p>除了快手的短视频推荐场景外，还在其重要业务场景之一——<span class="term">Local Life Service (本地生活服务)</span>中进行了实验。结果表明，OneRec实现了<span class="term">GMV (总商品交易额)</span>21.01%的增长，订单量17.89%的增加，买家数量18.58%的上升，以及新买家获取23.02%的增长。因此，该系统现已接管该业务场景100%的<span class="term">QPS (每秒查询数)</span>。全面部署后，我们观察到所有指标相比初始实验阶段有更强的增长。这些结果证明了OneRec在不同业务背景下增强推荐性能的泛化能力。</p>
+    </div>
+    
+    <h3>Part 4: Infrastructure and Efficiency</h3>
+    <div class="original">
+      <p>Infrastructure and Efficiency We utilize <span class="term">NVIDIA L20 GPUs</span> for inference, and each server is equipped with 4 GPUs and 2 CPUs, connected via <span class="term">PCIe</span>. We adopt Kuaishou’s prediction platform - <span class="term">UniPredict</span> to support online traffic. The inference service and embedding service are deployed in a 200Gb <span class="term">RDMA</span> data center, leveraging <span class="term">RoCE</span> networking. The maximum inter-machine communication bandwidth reaches 800Gb. In order to improve the efficiency, we employ <span class="term">TensorRT</span> to compile and optimize the model’s computation graph. Through custom plugins, we achieve high-performance implementations 23</p>
+    </div>
+    <div class="translation">
+      <p>基础设施和效率 我们使用<span class="term">NVIDIA L20 GPUs (NVIDIA L20 GPU)</span>进行推理，每台服务器配备4个GPU和2个CPU，通过<span class="term">PCIe (PCI Express)</span>连接。我们采用快手的预测平台——<span class="term">UniPredict (UniPredict)</span>来支持在线流量。推理服务和嵌入服务部署在200Gb <span class="term">RDMA (远程直接内存访问)</span>数据中心，利用<span class="term">RoCE (RDMA over Converged Ethernet)</span>网络。最大机间通信带宽达800Gb。为了提高效率，我们使用<span class="term">TensorRT (TensorRT)</span>编译和优化模型的计算图。通过自定义插件，我们实现了高性能实现 23</p>
+    </div>
+  </div>
+  
+  <div class="section">
+    <h2>Summary</h2>
+    <p>The OneRec technical report highlights the superiority of the RQ-Kmeans tokenization algorithm over RQ-VAE, evidenced by lower reconstruction loss (0.0410 vs. 0.0548), higher codebook utilization (100% across layers), and higher token distribution entropy (up to 8.9191), leading to more balanced token distributions and better model stability. In online A/B tests on Kuaishou's short-video platforms, OneRec significantly improved key metrics: APP Stay Time increased by +0.54% to +1.24% and LT7 by +0.05% to +0.08%, with reward model-based selection enhancing performance. In the Local Life Service scenario, OneRec drove a 21.01% GMV growth, 17.89% order volume increase, and

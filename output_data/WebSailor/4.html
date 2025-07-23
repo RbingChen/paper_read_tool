@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>算法专家论文解析</title>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<style>
+  body { font-family: Arial, sans-serif; line-height: 1.6; }
+  .original { background-color: #f0f0f0; border: 1px solid #888; padding: 15px; margin: 10px 0; }
+  .translation { background-color: #e0ffe0; border: 1px solid #4CAF50; padding: 15px; margin: 10px 0; }
+  .example { background-color: #ffffcc; padding: 15px; margin: 20px 0; }
+  .term { color: red; font-weight: bold; }
+  h1, h2, h3 { color: #2c3e50; }
+  section { margin-bottom: 30px; }
+</style>
+</head>
+<body>
+
+<h1>文本解析报告</h1>
+
+<section id="understanding">
+  <h2>1. 内容理解</h2>
+  <p>该文本描述了一种名为<span class="term">SailorFog-QA</span>的合成训练数据生成方法。核心创新点是通过：</p>
+  <ul>
+    <li>采样具有<span class="term">多样化拓扑的子图（subgraph topologies）</span>构建问题场景</li>
+    <li>采用<span class="term">信息模糊化（information obfuscation）</span>技术增加问题难度</li>
+    <li>生成需要复杂推理而非简单查找的QA对</li>
+  </ul>
+  <p>文本还讨论了使用开源<span class="term">LRM（Large Reasoning Models）</span>生成解决方案轨迹时面临的两个关键挑战：<span class="term">风格污染（Stylistic Contamination）</span>和<span class="term">上下文过载（Context Overload）</span>。</p>
+</section>
+
+<section id="translation">
+  <h2>2. 内容翻译</h2>
+  
+  <div class="original">
+    <p>achieved by sampling subgraphs with diverse topologies, each representing a unique constellation of coupled entities and relations. We then formulate a question and an answer based on the subgraph. Critically, we introduce ambiguity through deliberate information obfuscation. Instead of presenting clear facts, we obfuscate features and relationships within the question. For example, a precise date is transformed into a vague period ("in the early 2010s"), a name is partially masked ("an institution founded by someone with the initial 'F'"), or a quantitative attribute is described qualitatively ("a market share of less than 1%"). This obfuscation directly increases the initial uncertainty, forcing the agent to reason, compare, and synthesize information rather than simply executing a lookup. We name our synthetic training data SailorFog-QA , which has three key advantages:</p>
+    <ul>
+      <li>The data is grounded in the real-world internet, mirroring the challenges agents face in practice.</li>
+      <li>The diverse subgraph topologies naturally produce problems requiring a spectrum of complex reasoning patterns, from multi-step deduction to compositional and comparative analysis.</li>
+      <li>The approach is highly scalable, as the number of potential subgraphs—and thus challenging questions—grows non-linearly with the graph size, enabling efficient large-scale data synthesis.</li>
+    </ul>
+  </div>
+  <div class="translation">
+    <p>通过采样具有<span class="term">多样化拓扑（diverse topologies）</span>的子图实现，每个子图代表一组独特的耦合实体和关系组合。然后我们基于子图构建问题和答案。关键的是，我们通过故意的<span class="term">信息模糊化（information obfuscation）</span>引入歧义。我们不是呈现清晰的事实，而是在问题中模糊特征和关系。例如：将精确日期转换为模糊时段（"2010年代初"），部分掩盖名称（"由首字母为'F'的人创立的机构"），或将定量属性定性描述（"市场份额不到1%"）。这种模糊化直接增加了初始不确定性，迫使智能体进行推理、比较和综合信息，而非简单执行查找。我们将合成的训练数据命名为<span class="term">SailorFog-QA</span>，它具有三个关键优势：</p>
+    <ul>
+      <li>数据基于真实互联网，反映了智能体在实践中面临的挑战</li>
+      <li>多样化的子图拓扑自然产生需要复杂推理模式的问题，从多步演绎到组合和比较分析</li>
+      <li>方法高度可扩展，潜在子图数量（及挑战性问题）随图大小非线性增长，支持高效的大规模数据合成</li>
+    </ul>
+  </div>
+
+  <div class="original">
+    <p>To illustrate the characteristics of our generated Level 3 tasks, two examples are presented below. These questions epitomize our methodology: they feature multiple, intricately coupled entities and deliberately obfuscated information, such as vague time references ("around the mid-5th century", "early 21st century") and non-specific descriptors ("a prominent South American capital", "a respected arts institution"). This combination of structural complexity and informational ambiguity creates a high degree of initial uncertainty that is exceptionally difficult to reduce. In fact, our manual evaluations confirm that these problems are intractable for human researchers under typical time constraints (e.g., within two hours), as they lack clear starting points for search and require extensive, non-linear exploration. Further details on our QA generation process are available in Appendix A.2.</p>
+  </div>
+  <div class="translation">
+    <p>为说明生成的3级任务特性，下面展示两个示例。这些问题体现了我们的方法论：包含多个复杂耦合实体和故意模糊的信息，如模糊时间引用（"约5世纪中叶"、"21世纪初"）和非具体描述符（"著名的南美首都"、"受尊敬的艺术机构"）。这种结构复杂性和信息模糊性的结合产生了极难降低的高度初始不确定性。实际上，我们的人工评估证实，在典型时间限制下（如两小时内），人类研究人员无法解决这些问题，因为它们缺乏清晰的搜索起点，需要大量的非线性探索。QA生成过程详见附录A.2。</p>
+  </div>
+
+  <h3>Examples of Generated Questions</h3>
+  <div class="example">
+    <div class="original">
+      <p><strong>Question:</strong> There was an early Christian poetic hymn composed by a late antique writer who passed away around the mid-5th century. The year of this writer's death coincides with the last year of a scientific chronology that reconstructs environmental conditions from several centuries before the modern era. What is the name of this chronology?</p>
+      <p><strong>Answer:</strong> Estimated Tree-Ring Chronology: 300-450 A.D.</p>
+    </div>
+    <div class="translation">
+      <p><strong>问题：</strong> 有一首早期基督教诗歌赞美诗，由一位去世于5世纪中叶左右的古代晚期作家创作。这位作家去世的年份与一个科学年表的最后一年相吻合，该年表重建了现代纪元前几个世纪的环境条件。这个年表的名称是什么？</p>
+      <p><strong>答案：</strong> 估计树轮年表：公元300-450年</p>
+    </div>
+  </div>
+
+  <div class="example">
+    <div class="original">
+      <p><strong>Question:</strong> A musical piece closely associated with a prominent South American capital features lyrics written by a notable figure who was later recognized with a distinguished local civic honor in the early 21st century. The composition's melody was created by a musician who received formal training at a respected arts institution in western Colombia. What is the name of this musical piece?</p>
+      <p><strong>Answer:</strong> the Rue de Rivoli</p>
+    </div>
+    <div class="translation">
+      <p><strong>问题：</strong> 一首与著名南美首都有密切关联的音乐作品，其歌词由一位知名人物创作，该人物在21世纪初被授予当地杰出公民荣誉。作品旋律由一位在哥伦比亚西部受尊敬的艺术机构接受过正式培训的音乐家创作。这首音乐作品的名称是什么？</p>
+      <p><strong>答案：</strong> 里沃利街（Rue de Rivoli）</p>
+    </div>
+  </div>
+
+  <div class="original">
+    <h3>3.2 Reconstructing Reasoning from Expert LRM Trajectories</h3>
+    <p>Having synthesized complex QA pairs, the next challenge is to generate corresponding solution trajectories for cold-start supervision. While

@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>论文解析：DeepSeek-GRM 模型分析</title>
+  <style>
+    body { font-family: Arial, sans-serif; line-height: 1.6; margin: 20px; }
+    section { margin-bottom: 30px; }
+    h2 { color: #333; border-bottom: 2px solid #eee; padding-bottom: 5px; }
+    .original { background-color: #f0f0f0; border: 1px solid #cccccc; padding: 15px; margin-bottom: 10px; border-radius: 5px; }
+    .translation { background-color: #e0ffe0; border: 1px solid #00cc00; padding: 15px; margin-bottom: 20px; border-radius: 5px; }
+    .figure { background-color: #ffffcc; padding: 15px; margin: 15px 0; border-radius: 5px; }
+    .term { font-weight: bold; color: red; }
+    .formula-container { text-align: center; margin: 20px 0; }
+    .formula { font-family: monospace; background-color: #f8f8f8; padding: 10px; display: inline-block; }
+    .formula-label { font-style: italic; margin-top: 5px; }
+    ul { list-style-type: none; padding-left: 0; }
+    li { margin-bottom: 10px; }
+  </style>
+</head>
+<body>
+
+  <!-- 内容理解部分 -->
+  <section id="understanding">
+    <h2>内容理解</h2>
+    <p>本文是预印本论文的一部分，正处于审阅阶段。核心内容分为两大块：</p>
+    <ul>
+      <li><strong>失败模式分析</strong>：针对 DeepSeek-GRM-27B 模型在 Reward Model (RM) 基准测试中的表现，作者手动检查并归类了四种失败模式：<span class="term">Incorrect Critiques（错误批评）</span>、<span class="term">Imbalanced Weights of Principles（原则权重不平衡）</span>、<span class="term">Improper Principles（不当原则）</span> 和 <span class="term">Annotation Contradicting the Ground Truth（标注与地面真理矛盾）</span>。失败原因包括模型内部问题（如原则权重分配不当导致奖励生成错误）和外部数据问题（如基准数据的小规模标注偏见或错误）。</li>
+      <li><strong>提示模板设计</strong>：详细描述了 DeepSeek-GRM 模型的提示工程，包括默认模板、训练时使用单一响应的变体、<span class="term">Meta-RM（元奖励模型）</span> 和 <span class="term">LLM-as-a-Judge（大型语言模型作为评判者）</span> 的模板。模板强调基于评估标准（如指令遵守和有用性）进行严格评分，并采用分步分析。设计上，Meta-RM 使用简洁模板以适应上下文窗口，并整合 DeepSeek-V3 的聊天模板。</li>
+    </ul>
+    <p>整体上，论文揭示了模型在奖励生成中的脆弱性，同时展示了通过结构化提示提升评估可靠性的方法。</p>
+  </section>
+
+  <!-- 内容翻译部分 -->
+  <section id="translation">
+    <h2>内容翻译</h2>
+    
+    <!-- 段落 1: 预印本声明 -->
+    <div class="original">
+      <p>Preprint. Under review.</p>
+    </div>
+    <div class="translation">
+      <p>预印本。正在审阅中。</p>
+    </div>
+    
+    <!-- 段落 2: 失败模式标题和列表（作为Figure 8的上下文） -->
+    <div class="original">
+      <p>Incorrect Critiques</p>
+      <p>Imbalanced Weights of Principles</p>
+      <p>Improper Principles</p>
+      <p>Annotation Contradicting the Ground Truth</p>
+    </div>
+    <div class="translation">
+      <p>错误批评</p>
+      <p>原则权重不平衡</p>
+      <p>不当原则</p>
+      <p>标注与地面真理矛盾</p>
+    </div>
+    
+    <!-- 段落 3: Figure 8 描述 -->
+    <div class="figure">
+      <div class="original">
+        <p>Figure 8: The distributions of failure modes of DeepSeek-GRM-27B on different RM benchmarks. We manually examined and categorized the modes into four classes. “Annotation Contradicting the Ground Truth” represents the preference label provided in the benchmark is disagreed by the annotator.</p>
+      </div>
+      <div class="translation">
+        <p>图8：DeepSeek-GRM-27B在不同RM基准上的失败模式分布。我们手动检查并将模式分为四类。“标注与地面真理矛盾”表示基准中提供的偏好标签与注释者不一致。</p>
+      </div>
+    </div>
+    
+    <!-- 段落 4: 失败原因解释 -->
+    <div class="original">
+      <p>are correctly generated in most cases, the weights assigned by the model for each principle affect the generation of rewards and sometimes cause incorrect results. However, we also found that the ground truths of a few data points in the RM benchmarks are inconsistent with the preference of the human annotator, probably because of the bias from this small-scale human annotation study or potential mistakes in ground truth labeling.</p>
+    </div>
+    <div class="translation">
+      <p>在大多数情况下，原则被正确生成，但模型为每个原则分配的权重影响奖励的生成，有时导致错误结果。然而，我们也发现RM基准中一些数据点的地面真理与人类注释者的偏好不一致，可能是因为这个小规模人类标注研究的偏见或地面真理标注中的潜在错误。</p>
+    </div>
+    
+    <!-- 段落 5: G Prompt Templates 标题 -->
+    <div class="original">
+      <p>G Prompt Templates</p>
+    </div>
+    <div class="translation">
+      <p>G 提示模板</p>
+    </div>
+    
+    <!-- 段落 6: 提示模板介绍 -->
+    <div class="original">
+      <p>We demonstrate the prompt templates used for DeepSeek-GRM, for DeepSeek-GRM with a single response during training, for the meta-RM, and for LLM-as-a-Judge below. For prompt engineering, we design a few example principles for both in-context learning and basic critique guidance. We use a plainer template for the meta RM to ensure the query, responses, and the generated principles and critiques could fit in the context window. After assembling with the template of the meta RM, we further enclose the content with chat templates designed for DeepSeek-V3 (DeepSeek-AI, 2024b) before input.</p>
+    </div>
+    <div class="translation">
+      <p>我们展示了用于DeepSeek-GRM的提示模板，包括训练时使用单一响应的DeepSeek-GRM、元RM和LLM-as-a-Judge的模板。在提示工程中，我们设计了一些示例原则，用于上下文学习和基本批评指导。我们为元RM使用更简洁的模板，以确保查询、响应以及生成的原则和批评能适应上下文窗口。在组装元RM模板后，我们在输入前用为DeepSeek-V3设计的聊天模板进一步封装内容。</p>
+    </div>
+    
+    <!-- 段落 7: DeepSeek-GRM 默认提示模板标题 -->
+    <div class="original">
+      <p>DeepSeek-GRM (Default)</p>
+    </div>
+    <div class="translation">
+      <p>DeepSeek-GRM（默认）</p>
+    </div>
+    
+    <!-- 段落 8: 默认提示模板内容 -->
+    <div class="original">
+      <p>You are a skilled little expert at scoring responses. You should evaluate given responses based on the given judging criteria. 
+Given the context of the conversation (the last round is the User’s query) and multiple responses from the Assistant, you need to refer to the [General Evaluation Criteria] to score the responses. Based on the general evaluation criteria, state potential other specific criteria to the query, the weights of different criteria, and then provide an overall comprehensive score upon them. 
+Each score is an integer between 1 and 10, with a higher score indicating that the response meets the relevant criteria more closely. For example, a score of 1 means the response does not meet the criteria at all, a score of 6 means the response meets only some parts, and a score of 10 means the response perfectly meets the evaluation criteria. 
+Before scoring, please analyze step by step. Your scoring needs to be as strict as possible.</p>
+    </div>
+    <div class="translation">
+      <p>你是一个熟练的评分响应小专家。你应该根据给定的评判标准评估给定响应。
+给定对话上下文（最后一轮是用户的查询）和来自助手的多个响应，你需要参考[通用评估标准]来评分响应。基于通用评估标准，陈述针对查询的其他潜在具体标准、不同标准的权重，然后提供基于这些的全面总分。
+每个分数是1到10之间的整数，分数越高表示响应更符合相关标准。例如，分数1表示响应完全不符合标准，分数6表示响应仅部分符合，分数10表示响应完美符合评估标准。
+在评分前，请逐步分析。你的评分需要尽可能严格。</p>
+    </div>
+    
+    <!-- 段落 9: 评估标准标题 -->
+    <div class="original">
+      <p>#### Evaluation Criteria ####</p>
+    </div>
+    <div class="translation">
+      <p>#### 评估标准 ####</p>
+    </div>
+    
+    <!-- 段落 10: 指令遵守标准 -->
+    <div class="original">
+      <p>1. Instruction Adherence: 
+- Fully Adhered (9-10 points): The response fully complies with all instructions and requirements of the question. 
+- Partially Adhered (6-8 points): The response meets most of the instructions but has some omissions or misunderstandings. 
+- Basically Adhered (3-5 points): The response meets some instructions, but the main requirements are not fulfilled. 
+- Not Adhered (1-2 points): The response does not meet any instructions. 
+Example: If the question requires three examples and the response provides only one, it falls under “Partially Adhered.”</p>
+    </div>
+    <div class="translation">
+      <p>1. 指令遵守：
+- 完全遵守（9-10分）：响应完全符合问题的所有指令和要求。
+- 部分遵守（6-8分）：响应满足大部分指令，但有一些遗漏或误解。
+- 基本遵守（3-5分）：响应满足一些指令，但主要要求未实现。
+- 未遵守（1-2分）：响应不符合任何指令。
+示例：如果问题要求三个例子，而响应只提供一个，则属于“部分遵守”。</p>
+    </div>
+    
+    <!-- 段落 11: 有用性标准（文本截断，但翻译提供部分） -->
+    <div class="original">
+      <p>2. Usefulness: 
+- Highly Useful (9-10 points): The response provides comprehensive and 40</p>
+    </div>
+    <div class="translation">
+      <p>2. 有用性：
+- 高度有用（9-10分）：响应提供全面且40（注：原文在此处截断）</p>
+    </div>
+  </section>
+
+  <!-- 摘要总结部分 -->
+  <section id="summary">
+    <h2>摘要总结</h2>
+    <p>本文摘要总结如下：论文分析了 DeepSeek-GRM-27B 模型在 Reward Model (RM) 基准测试中的失败模式，将其手动归类为四类：<span class="term">Incorrect Critiques（错误批评）</span>、<span class="term">Imbalanced Weights of Principles（原则权重不平衡）</span>、<span class="term">Improper Principles（不当原则）</span> 和 <span class="term">Annotation Contradicting the Ground Truth（标注与地面真理矛盾）</span>。失败原因包括模型内部权重分配问题导致奖励生成错误，以及外部基准数据标注不一致（源于小规模标注偏见或错误）。此外，论文详细描述了 DeepSeek-GRM 的提示模板设计，涵盖默认模板、<span class="term">Meta-RM（元奖励模型）</span> 和 <span class="term">LLM-as-a-Judge（大型语言模型作为评判者）</span>，强调基于严格评估标准（如指令遵守和有用性）的分步评分流程。核心贡献是揭示模型脆弱性并提出通过结构化提示提升可靠性的方法。</p>
+  </section>
+
+  <!-- 术语识别部分 -->
+  <section id="terminology">
+    <h2>术语识别</h2>
+    <ul>
+      <li><span class="term">DeepSeek-GRM</span> (DeepSeek Generative Reward Model)：一个基于大型语言模型的生成式奖励模型，用于评估和生成响应。它通过原则指导的提示工程进行优化，在训练和推理中整合多种模板以提高评估准确性。</li>
+      <li><span class="term">RM benchmarks</span> (Reward Model benchmarks)：奖励模型基准测试集，用于评估模型性能的数据集合。文中指针对 DeepSeek-GRM 的测试，其中包含人工标注的偏好数据，但部分数据存在标注错误或不一致。</li>
+      <li><span class="term">Failure modes</span>：失败模式，指模型在特定任务中表现不佳的类型。本文中分为四类：<ul>
+          <li><span class="term">Incorrect Critiques</span>：错误批评，模型生成的批评反馈不准确或不相关。</li>
+          <li><span class="term">Imbalanced Weights of Principles</span>：原则权重不平衡，模型在分配不同原则（如指令遵守）的权重时失衡，导致奖励分数偏差。</li>
+          <li><span class="term">Improper Principles</span>：不当原则，模型生成的原则本身有缺陷或不适用。</li>
+          <li><span class="term">Annotation Contradicting the Ground Truth</span>：标注与地面真理矛盾，基准数据中的偏好标签与人类注释者实际偏好不一致，反映数据质量问题。</li>
+        </ul>
+      </li>
+      <li><span class="term">Ground Truth</span>：地面真理，机器学习中指正确的参考标准或标签。在本文中，指 RM 基准中预设的偏好标签，但部分标签因标注错误而与人类注释者冲突。</li>
+      <li><span class="term">Meta-RM</span> (Meta Reward Model)：元奖励模型，一种简化模板的奖励模型，用于生成原则和批评，并确保内容适应上下文窗口。它在 DeepSeek-GRM 框架中用于整合查询、响应和生成内容。</li>
+      <li><span class="term">LLM-as-a-Judge</span> (Large Language Model as a Judge)：大型语言模型作为评判者，使用 LLM 直接评估响应质量的方法。在本文中，它是 DeepSeek-GRM 提示模板的一部分，用于基于标准进行严格评分。</li>
+      <li><span class="term">Prompt engineering</span>：提示工程，设计输入提示以引导模型行为的技巧。文中涉及创建示例原则和模板（如 in-context learning），以优化模型评估性能。</li>
+      <li><span class="term">Instruction Adherence</span>：指令遵守，评估标准之一，衡量响应是否符合查询指令。分四级评分（完全遵守到未遵守），示例说明具体应用。</li>
+      <li><span class="term">Usefulness</span>：有用性，评估标准之一，衡量响应的实用性和全面性。文中部分截断，但定义为高度有用（9-10分）时响应提供全面信息。</li>
+    </ul>
+  </section>
+
+</body>
+</html>

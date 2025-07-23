@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>论文解析 - RLHF奖励模型噪声缓解</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; line-height: 1.6; max-width: 900px; margin: 0 auto; padding: 20px; }
+        h1 { color: #2c3e50; text-align: center; border-bottom: 2px solid #3498db; padding-bottom: 10px; }
+        h2 { color: #2980b9; border-left: 4px solid #3498db; padding-left: 10px; }
+        .original { background-color: #f0f0f0; border: 1px solid #cccccc; padding: 15px; margin: 10px 0; border-radius: 5px; }
+        .translation { background-color: #e0f7e0; border: 1px solid #4CAF50; padding: 15px; margin: 10px 0 20px 0; border-radius: 5px; }
+        .figure { background-color: #fffde7; padding: 15px; margin: 15px 0; border-radius: 5px; border: 1px dashed #ffd54f; }
+        .term { color: red; font-weight: bold; }
+        .section { margin-bottom: 30px; }
+        .formula-container { text-align: center; margin: 20px 0; }
+        .formula-number { display: block; font-style: italic; margin-top: 5px; }
+    </style>
+</head>
+<body>
+    <h1>论文解析：RLHF奖励模型噪声缓解策略</h1>
+    
+    <!-- 内容理解 -->
+    <div class="section">
+        <h2>1. 内容理解</h2>
+        <p>该文本聚焦于<strong class="term">强化学习人类反馈（Reinforcement Learning from Human Feedback, RLHF）</strong>中<strong class="term">奖励模型（Reward Model）</strong>的可靠性问题。核心发现是：当奖励模型输出中等奖励值时，其可靠性显著低于输出极高或极低奖励值的情况。研究者通过<strong class="term">MBPP</strong>和<strong class="term">LeetCode</strong>两个编程基准数据集进行验证：</p>
+        <ul>
+            <li>分别训练两个数据集的专用奖励模型</li>
+            <li>每个提示生成10个响应（通过<strong class="term">微调策略（Fine-tuned Policy）</strong>）</li>
+            <li>按奖励值分组计算<strong class="term">实际正确率（Actual Correctness）</strong>的平均值</li>
+            <li>重复实验10次以评估<strong class="term">可靠性（Reliability）</strong></li>
+        </ul>
+        <p>Figure 3 的(a)(b)子图可视化展示了奖励值与实际分数的对应关系，为中等奖励区间存在<strong class="term">噪声（Noise）</strong>提供了实证依据。</p>
+    </div>
+    
+    <!-- 内容翻译 -->
+    <div class="section">
+        <h2>2. 内容翻译</h2>
+        
+        <!-- 标题翻译 -->
+        <div class="original">Policy Filtration for RLHF to Mitigate Noise in Reward Models</div>
+        <div class="translation">基于RLHF的策略过滤以缓解奖励模型中的噪声</div>
+        
+        <!-- 图注翻译 -->
+        <div class="figure">
+            <div class="original">(a) The actual scores vs. the reward values for the reward model evaluated on MBPP</div>
+            <div class="translation">(a) 在MBPP上评估的奖励模型：实际分数 vs. 奖励值</div>
+            
+            <div class="original">(b) The actual scores vs. the reward values for the reward model evaluated on LeetCode</div>
+            <div class="translation">(b) 在LeetCode上评估的奖励模型：实际分数 vs. 奖励值</div>
+            
+            <div class="original">Figure 3. We provide additional evidence that the reward model is less reliable when it yields moderate rewards than when it yields high or low rewards. We conduct the same statistics as in Figure 1 but on different benchmarks. Specifically, the reward models for the MBPP and LeetCode benchmarks are trained separately using the corresponding datasets for these two benchmarks. The MBPP and LeetCode benchmarks contains 378 and 1570 prompts respectively and we collect 10 responses for each prompt using a fine-tuned policy. We group the responses with similar rewards and calculate the average of their actual scores (i.e., the average correctness), indicating each group by one point. To evaluate the reliability of the reward model, we repeat the process ten times resulting in ten lines.</div>
+            <div class="translation">图3. 我们提供进一步证据表明：当奖励模型产生中等奖励时，其可靠性低于产生高奖励或低奖励时。我们在不同基准测试上重复了图1的统计方法。具体而言，MBPP和LeetCode基准的奖励模型分别使用对应数据集独立训练。MBPP和LeetCode基准分别包含378和1570个提示，我们使用微调策略为每个提示收集10个响应。将奖励值相近的响应分组后，计算其实际分数（即平均正确率）的均值，每组用一个数据点表示。为评估奖励模型的可靠性，该过程重复十次得到十条曲线。</div>
+        </div>
+    </div>
+    
+    <!-- 摘要总结 -->
+    <div class="section">
+        <h2>3. 摘要总结</h2>
+        <p>本研究通过<strong class="term">MBPP</strong>（378提示）和<strong class="term">LeetCode</strong>（1570提示）两个编程基准验证了<strong class="term">奖励模型（Reward Model）</strong>的关键缺陷：<strong class="term">中等奖励值区间存在显著噪声（Noise）</strong>。实验采用<strong class="term">微调策略（Fine-tuned Policy）</strong>为每个提示生成10个响应，按奖励值分组计算平均实际正确率。重复10次的实验结果（Figure 3）一致表明：相比极端高/低奖励，<strong class="term">中等奖励的可靠性（Reliability）</strong>明显更低。该发现揭示了RLHF中奖励模型校准的重要挑战。</p>
+    </div>
+    
+    <!-- 术语识别 -->
+    <div class="section">
+        <h2>4. 术语识别</h2>
+        <ul>
+            <li><strong class="term">RLHF (Reinforcement Learning from Human Feedback)</strong>：基于人类反馈的强化学习，通过人类偏好数据训练奖励模型来指导策略优化。</li>
+            <li><strong class="term">Reward Model (奖励模型)</strong>：预测人类偏好的代理模型，将状态-动作对映射为标量奖励值。</li>
+            <li><strong class="term">Policy Filtration (策略过滤)</strong>：筛选高置信度策略输出的机制，用于降低噪声影响。</li>
+            <li><strong class="term">Noise in Reward Models (奖励模型噪声)</strong>：模型输出中与真实偏好无关的随机波动，尤其中等奖励区间显著。</li>
+            <li><strong class="term">MBPP/LeetCode Benchmarks (基准测试)</strong>：编程能力评估数据集，分别含378/1570个编码提示。</li>
+            <li><strong class="term">Fine-tuned Policy (微调策略)</strong>：经RLHF优化的策略网络，用于生成待评估的响应。</li>
+            <li><strong class="term">Actual Correctness (实际正确率)</strong>：响应通过测试用例的百分比，作为奖励模型预测的基准真值。</li>
+            <li><strong class="term">Reliability (可靠性)</strong>：奖励值预测与实际正确率一致性的量化指标。</li>
+        </ul>
+    </div>
+</body>
+</html>

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='UTF-8'>
+    <title>论文解析报告</title>
+    <style>
+        .original { background: #f0f0f0; border: 1px solid #999; padding: 10px; margin: 10px 0; }
+        .translation { background: #e8f5e9; border: 1px solid #4CAF50; padding: 10px; margin: 10px 0; }
+        .term { color: red; font-weight: bold; }
+        .figure { background: #fff9c4; padding: 10px; margin: 15px 0; text-align: center; }
+        .math { text-align: center; margin: 20px 0; }
+    </style>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.0/es5/tex-mml-chtml.js'></script>
+</head>
+<body>
+
+<!-- 内容理解 -->
+<section>
+    <h2>内容理解</h2>
+    <p>本文研究强化学习中<strong class='term'>过早熵崩溃（Premature Entropy Collapse）</strong>现象及其控制方法。实验表明：1）离线策略训练（DR=256）仍会导致熵快速收敛；2）熵正则化方法对系数αk高度敏感；3）动态调整αk和clip-higher技巧是潜在解决方案。</p>
+</section>
+
+<!-- 内容翻译 -->
+<section>
+    <h2>内容翻译</h2>
+    <div class='original'>
+        <h3>Figure 18: KeepingDR</h3>
+        <p>DT=4 and Nreuse=1, off-policy training with a larger DR, i.e., DR=256, does not prevent the premature entropy collapse. Both off-policy experiments, i.e. NSGD=4, exhibit faster entropy convergence compared with the on-policy experiment with NSGD=1.</p>
+    </div>
+    <div class='translation'>
+        <h3>图18：保持数据重用率</h3>
+        <p>当DT=4且Nreuse=1时，使用更大数据重用率（DR=256）的<strong class='term'>离线策略训练（off-policy training）</strong>仍无法避免过早熵崩溃。两个离线策略实验（NSGD=4）相比在线策略实验（NSGD=1）表现出更快的熵收敛速度。</p>
+    </div>
+
+    <div class='original'>
+        <h3>4.5 Preventing Premature Entropy Collapse</h3>
+        <p>As previously discussed... dynamic adjustment of the entropy loss coefficient.</p>
+    </div>
+    <div class='translation'>
+        <h3>4.5 防止过早熵崩溃</h3>
+        <p>如先前讨论，<strong class='term'>过早熵崩溃（premature entropy collapse）</strong>常导致测试性能下降。实验表明：增加NSGD和使用<strong class='term'>离线策略数据（off-policy data）</strong>会加速熵收敛。我们研究了两种控制方法：1）对系数敏感的熵正则化；2）动态调整αk和文献[34]提出的clip-higher技巧。</p>
+    </div>
+</section>
+
+<!-- 摘要总结 -->
+<section>
+    <h2>摘要总结</h2>
+    <ul>
+        <li>核心问题：离线策略训练场景下的过早熵崩溃现象</li>
+        <li>关键发现：增大数据重用率(DR=256)仍无法阻止熵崩溃；熵正则化对αk高度敏感</li>
+        <li>解决方案：提出动态调整αk系数和clip-higher技巧</li>
+        <li>实验验证：通过Skywork-OR1模型在αk=1e-4~1e-2范围的消融实验证明敏感性</li>
+    </ul>
+</section>
+
+<!-- 术语识别 -->
+<section>
+    <h2>关键术语</h2>
+    <dl>
+        <dt><strong class='term'>Premature Entropy Collapse (过早熵崩溃)</strong></dt>
+        <dd>策略熵在训练早期快速下降导致模型探索能力丧失的现象，与测试性能下降直接相关</dd>
+
+        <dt><strong class='term'>Entropy Regularization (熵正则化)</strong></dt>
+        <dd>在损失函数中添加熵项（\( \mathcal{L}_{ent} = \alpha_k H(\pi) \)）以维持策略随机性的方法</dd>
+
+        <dt><strong class='term'>NSGD (Normalized SGD Steps)</strong></dt>
+        <dd>归一化的随机梯度下降步数，控制策略更新频率的关键超参数</dd>
+
+        <dt><strong class='term'>Clip-Higher Trick</strong></dt>
+        <dd>文献[34]提出的通过限制最大概率值来维持熵水平的技术</dd>
+    </dl>
+</section>
+
+<!-- 数学公式 -->
+<div class='math'>
+    \[ \mathcal{L}_{total} = \mathcal{L}_{policy} + \alpha_k \cdot H(\pi) \quad (1) \]
+    <p>公式1：包含熵正则化的总损失函数，其中\( H(\pi) \)表示策略熵</p>
+</div>
+
+<!-- 图示 -->
+<div class='figure'>
+    <img src='figure19.png' alt='不同αk系数下的熵变化曲线'>
+    <p>图19：αk系数敏感性实验结果（当αk>5e-4时出现模型崩溃）</p>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>算法论文解析</title>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<style>
+  .original { background-color: #f0f0f0; border: 1px solid #ccc; padding: 15px; margin-bottom: 20px; }
+  .translation { background-color: #e0f7e0; border: 1px solid #4CAF50; padding: 15px; margin-bottom: 30px; }
+  .formula-container { background-color: #fffde7; padding: 20px; text-align: center; margin: 25px 0; }
+  .term { color: red; font-weight: bold; }
+  h2 { border-bottom: 2px solid #333; padding-bottom: 5px; }
+  section { margin-bottom: 40px; }
+</style>
+</head>
+<body>
+
+<h1>算法论文解析报告</h1>
+
+<section>
+  <h2>1. 内容理解与解释</h2>
+  <p>该文本描述强化学习算法GRPO的改进版本<strong class="term">MAGIC (Multi-stage Adaptive entropy scheduling for GRPO In Convergence)</strong>。核心包含：</p>
+  <ul>
+    <li><strong class="term">GRPO策略损失函数</strong>（公式2.4）：结合长度归一化、重要性采样裁剪和KL正则化</li>
+    <li><strong class="term">优势函数</strong>（公式2.5）：基于二元奖励的标准化计算</li>
+    <li><strong class="term">MAGIC框架</strong>三大组件：数据收集策略（动态过滤+拒绝采样）、训练策略、损失函数设计</li>
+    <li><strong class="term">数据优化技术</strong>：离线/在线过滤机制和零优势组样本排除策略</li>
+  </ul>
+  <p>核心目标是通过动态样本筛选和损失函数优化提升训练稳定性与收敛效率。</p>
+</section>
+
+<section>
+  <h2>2. 内容翻译（中英对照）</h2>
+  
+  <div class="original">
+    <p>introduces an additional length normalization term |y<sub>ij</sub>| for each response y<sub>ij</sub>. The policy loss employed in GRPO is formulated as:</p>
+    <div class="formula-container">
+      \[
+      L^{GRPO}_k (\theta) = -\mathbb{E}_{x_i \sim T_k}\mathbb{E}_{\{y_{ij}\}^M_{j=1} \sim \pi_k(\cdot|x)} \left[ \frac{1}{M} \sum_{i=1}^{M} \frac{1}{|y_{ij}|} \sum_{t=0}^{|y_{ij}|-1} \min\left( \rho^t_{ij}(\theta) A^t_{ij}, \text{clip}\left( \rho^t_{ij}(\theta), 1-\epsilon, 1+\epsilon \right) A^t_{ij} \right) - \beta D^t_{ij}(\theta) \right] \quad (2.4)
+      \]
+      <p>Equation 2.4: GRPO policy loss function</p>
+    </div>
+    <p>where \( y_{ij} = (a^0_{ij}, ..., a^{|y_{ij}|-1}_{ij}) \), \( a^t_{ij} \) is the t-th token in the sequence \( y_{ij} \), \( s^t_{ij} := (x_i, a^0_{ij}, ..., a^{t-1}_{ij}) \), \( \rho^t_{ij}(\theta) := \frac{\pi_\theta(a^t_{ij}|s^t_{ij})}{\pi_k(a^t_{ij}|s^t_{ij})} \), \( \epsilon \) is the clip hyperparameter, \( D^t_{ij} \) is the token-level k3 loss [21] applied in \( a^t_{ij} \) with coefficient \( \beta \) to keep the policy \( \pi_\theta \) stay in the trust region of reference policy \( \pi_{ref} \), i.e.</p>
+    <div class="formula-container">
+      \[
+      D^t_{ij}(\theta) := \pi_{ref}\left( a^t_{ij}|s^t_{ij} \right) \left( \frac{\pi_{ref}\left( a^t_{ij}|s^t_{ij} \right)}{\pi_\theta\left( a^t_{ij}|s^t_{ij} \right)} - \log \frac{\pi_{ref}\left( a^t_{ij}|s^t_{ij} \right)}{\pi_\theta\left( a^t_{ij}|s^t_{ij} \right)} - 1 \right)
+      \]
+    </div>
+    <p>For each prompt-response pair \( (x_i, y_{ij}) \), a binary reward \( r(x_i, y_{ij}) \in \{0,1\} \) is given by a rule-based verifier. The token-level advantage \( A^t_{ij} \) is estimated by</p>
+    <div class="formula-container">
+      \[
+      \forall t: A^t_{ij} = \frac{ r(x_i, y_{ij}) - \text{mean} \left( r(x_i, y_{i1}), ..., r(x_i, y_{iM}) \right) }{ \text{std} \left( r(x_i, y_{i1}), ..., r(x_i, y_{iM}) \right) } \quad (2.5)
+      \]
+      <p>Equation 2.5: Advantage estimation</p>
+    </div>
+  </div>
+  <div class="translation">
+    <p>为每个响应 \( y_{ij} \) 引入了额外的<strong class="term">长度归一化项</strong> \( |y_{ij}| \)。GRPO 中采用的策略损失定义为：</p>
+    <div class="formula-container">
+      \[
+      L^{GRPO}_k (\theta) = -\mathbb{E}_{x_i \sim T_k}\mathbb{E}_{\{y_{ij}\}^M_{j=1} \sim \pi_k(\cdot|x)} \left[ \frac{1}{M} \sum_{i=1}^{M} \frac{1}{|y_{ij}|} \sum_{t=0}^{|y_{ij}|-1} \min\left( \rho^t_{ij}(\theta) A^t_{ij}, \text{clip}\left( \rho^t_{ij}(\theta), 1-\epsilon, 1+\epsilon \right) A^t_{ij} \right) - \beta D^t_{ij}(\theta) \right] \quad (2.4)
+      \]
+      <p>公式 2.4：GRPO 策略损失函数</p>
+    </div>
+    <p>其中 \( y_{ij} = (a^0_{ij}, ..., a^{|y_{ij}|-1}_{ij}) \)，\( a^t_{ij} \) 是序列 \( y_{ij} \) 中的第 t 个 token，\( s^t_{ij} := (x_i, a^0_{ij}, ..., a^{t-1}_{ij}) \)，\( \rho^t_{ij}(\theta) := \frac{\pi_\theta(a^t_{ij}|s^t_{ij})}{\pi_k(a^t_{ij}|s^t_{ij})} \)，\( \epsilon \) 是裁剪超参数，\( D^t_{ij} \) 是应用于 \( a^t_{ij} \) 的<strong class="term">token 级别 k3 损失</strong> [21]，系数 \( \beta \) 用于保持策略 \( \pi_\theta \) 在参考策略 \( \pi_{ref} \) 的信任区域内，即：</p>
+    <div class="formula-container">
+      \[
+      D^t_{ij}(\theta) := \pi_{ref}\left( a^t_{ij}|s^t_{ij} \right) \left( \frac{\pi_{ref}\left( a^t_{ij}|s^t_{ij} \right)}{\pi_\theta\left( a^t_{ij}|s^t_{ij} \right)} - \log \frac{\pi_{ref}\left( a^t_{ij}|s^t_{ij} \right)}{\pi_\theta\left( a^t_{ij}|s^t_{ij} \right)} - 1 \right)
+      \]
+    </div>
+    <p>对于每个提示-响应对 \( (x_i, y_{ij}) \)，基于规则的验证器给出二元奖励 \( r(x_i, y_{ij}) \in \{0,1\} \)。token 级别的<strong class="term">优势函数</strong> \( A^t_{ij} \) 通过下式估计：</p>
+    <div class="formula-container">
+      \[
+      \forall t: A^t_{ij} = \frac{ r(x_i, y_{ij}) - \text{mean} \left( r(x_i, y_{i1}), ..., r(x_i, y_{iM}) \right) }{ \text{std} \left( r(x_i, y_{i1}), ..., r(x_i, y_{iM}) \right) } \quad (2.5)
+      \]
+      <p>公式 2.5：优势估计</p>
+    </div>
+  </div>
+
+  <div class="original">
+    <h3>3 MAGIC in Skywork-OR1</h3>
+    <p>We employ a training pipeline built upon a modified version of GRPO [21], referred to as Multi-stage Adaptive entropy scheduling for GRPO In Convergence (MAGIC). In the following sections, we first introduce the recipe of MAGIC and then analyze the effectiveness of each of its components.</p>
+    
+    <h3>3.1 MAGIC</h3>
+    <p>In the following, we present the MAGIC framework by detailing its components in terms of Data Collection, Training Strategy, and Loss Function.</p>
+    
+    <p><strong>Data Collection</strong> To ensure the quality of queries during post-training, we construct the initial dataset through stringent data preparation, as described in Section 6, and adopt more accurate verifiers to provide reward signals, as outlined in Section 7. Additionally, we employ the following strategies to further improve sample efficiency:</p>
+    <ol>
+      <li><strong>Offline and Online Filtering.</strong> We apply data filtering both before and during training. Prior to training, we remove prompts with base model correctness rates of 1 (fully correct) or 0 (completely incorrect). During training, at the beginning of each stage, we also discard training prompts for which the actor model achieved correctness of 1 in the previous stage. This dynamic online filtering mechanism ensures that the actor model is consistently trained on challenging problems at each stage.</li>
+      <li><strong>Rejection Sampling.</strong> Responses in the zero-advantage group (as defined by Equation (2.5)) do not contribute to the policy loss but may influence the KL loss or entropy loss, potentially leading to a more unstable training process due to the implicitly increased relative weight of these losses. To mitigate this issue, our training batches include only groups with non-zero advantages; specifically, the samples of prompt \( x_i \) are filtered out if \( i \notin \tilde{T}_k \), where
+        <div class="formula-container">
+          \[
+          \tilde{T}_k := \left\{ i \in [N] : \exists j \in [M] \, \hat{A}_{ij} \neq 0 \right\}
+          \]
+        </div>
+      </li>
+    </ol>
+  </div>
+  <div class="translation">
+    <h3>3 Skywork-OR1 中的 MAGIC</h3>
+    <p>我们采用基于改进版 GRPO [21] 的训练流程，称为<strong class="term">MAGIC（用于GRPO收敛的多阶段自适应熵调度）</strong>。在后续章节中，我们将首先介绍 MAGIC 的方案，然后分析其各组件的有效性。</p>
+    
+    <h3>3.1 MAGIC</h3>
+    <p>接下来，我们通过详细说明其<strong class="term">数据收集</strong>、<strong class="term">训练策略</strong>和<strong class="term">损失函数</strong>三个组件来介绍 MAGIC 框架。</p>
+    
+    <p><strong>数据收集</strong> 为确保训练后查询的质量，我们通过严格的数据准备构建初始数据集（如第6节所述），并采用更精确的验证器提供奖励信号（如第7节所述）。此外，我们采用以下策略进一步提高样本效率：</p>
+    <ol>
+      <li><strong>离线与在线过滤。</strong> 我们在训练前和训练中均进行数据过滤。训练前，移除基础模型正确率为1（完全正确）或0（完全错误）的提示。训练期间，在每个阶段开始时，丢弃智能体模型在前一阶段正确率达到1的训练提示。这种动态在线过滤机制确保智能体模型在每个阶段持续在挑战性问题上进行训练。</li>
+      <li><strong>拒绝采样。</strong> 零优势组（由公式2.5定义）的响应不贡献于策略损失，但可能影响KL损失或熵损失，由于这些损失的相对权重隐式增加，可能导致训练过程更不稳定。为缓解此问题，我们的训练批次仅包含非零优势组；具体而言，当 \( i \notin \tilde{T}_k \) 时过滤提示 \( x_i \) 的样本，其中
+        <div class="formula-container">
+          \[
+          \tilde{T}_k := \left\{ i \in [N] : \exists j \in [M] \, \hat{A}_{ij} \neq 0 \right\}
+          \]
+        </div>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<section>
+  <h2>3. 摘要总结</h2>
+  <p>本文核心提出<strong class="term">MAGIC训练框架</strong>——GRPO算法的改进版本，包含三大创新：</p>
+  <ol>
+    <li><strong>复合损失函数设计</strong>：在GRPO策略损失（公式2.4）中整合长度归一化、裁剪优势函数和KL正则项</li>
+    <li><strong>动态数据优化</strong>：
+      <ul>
+        <li>离线过滤：剔除全对/全错样本</li>
+        <li>在线过滤：阶段性地移除已掌握样本</li>
+        <li>拒绝采样：仅使用非零优势样本（\( \tilde{T}_k \) 定义）</li>
+      </ul>
+    </li>
+    <li><strong>优势计算机制</strong>：通过标准化奖励差异计算token级优势值（公式2.5）</li>
+  </ol>
+  <p>核心目标是通过<strong class="term">自适应样本筛选</strong>和<strong class="term">损失函数优化</strong>，解决训练不稳定性问题并提升收敛效率。</p>
+</section>
+
+<section>
+  <h2>4. 关键术语解释</h2>
+  <dl>
+    <dt><strong class="term">GRPO (Generative Reinforcement Policy Optimization)</strong></dt>
+    <dd>生成式强化策略优化算法，使用策略梯度方法优化语言模型，核心包含策略损失函数和KL正则项。</dd>
+    
+    <dt><strong class="term">MAGIC (Multi-stage Adaptive entropy scheduling for GRPO In Convergence)</strong></dt>
+    <dd>GRPO的改进框架，通过多阶段训练、动态熵调度和样本过滤机制提升收敛稳定性。</dd>
+    
+    <dt><strong class="term">长度归一化项 |y<sub>ij</sub>|</strong></dt>
+    <dd>在损失函数中对响应长度进行归一化，避免长文本序列主导梯度更新。</dd>
+    
+    <dt><strong class="term">Clip函数 clip(ρ,1−ε,1+ε)</strong></dt>
+    <dd>裁剪重要性采样比率ρ，限制其变化范围在[1−ε,1+ε]内，防止策略更新步长过大。</dd>
+    
+    <dt><strong class="term">Token级k3损失 D<sup>t</sup><sub>ij</sub>(θ)</strong></dt>
+    <dd>基于KL散度的正则项，约束当前策略π<sub>θ</sub>与参考策略π<sub>ref</sub>的偏差，维持信任区域优化。</dd>
+    
+    <dt><strong class="term">优势函数 A<sup>t</sup><sub>ij</sub></strong></dt>
+    <dd>度量特定token对奖励的贡献（公式2.5），通过当前奖励与平均奖励的标准化差值计算。</dd>
+    
+    <dt><strong class="term">拒绝采样 (Rejection Sampling)</strong></dt>
+    <dd>动态排除零优势样本（\( \hat{A}_{ij} = 0 \)）的策略，防止无效样本干扰损失函数平衡。</dd>
+    
+    <dt><strong class="term">在线过滤 \( \tilde{T}_k \)</strong></dt>
+    <dd>动态索引集 \( \tilde{T}_k = \{ i : \exists j \, \hat{A}_{ij} \neq 0 \} \)，用于实时筛选有效训练样本。</dd>
+  </dl>
+</section>
+
+</body>
+</html>

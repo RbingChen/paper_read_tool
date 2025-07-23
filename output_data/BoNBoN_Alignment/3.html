@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Algorithm Expert Analysis</title>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    body { font-family: Arial, sans-serif; line-height: 1.6; margin: 20px; }
+    h1 { color: #2c3e50; }
+    h2 { color: #3498db; border-bottom: 2px solid #3498db; padding-bottom: 5px; }
+    .original { background-color: #f0f0f0; border: 1px solid #cccccc; padding: 15px; margin-bottom: 10px; border-radius: 5px; }
+    .translation { background-color: #e0f7e0; border: 1px solid #4CAF50; padding: 15px; margin-bottom: 20px; border-radius: 5px; }
+    .formula { background-color: #ffffcc; text-align: center; padding: 15px; margin: 20px 0; border-radius: 5px; }
+    .formula-number { font-style: italic; margin-top: 5px; }
+    .term { color: red; font-weight: bold; }
+    .translation-pair { margin-bottom: 30px; }
+    ul { list-style-type: none; padding: 0; }
+    li { margin-bottom: 10px; padding: 10px; background-color: #f9f9f9; border-left: 4px solid #3498db; }
+  </style>
+</head>
+<body>
+  <h1>算法专家分析报告</h1>
+
+  <!-- 内容理解部分 -->
+  <div id="content-understanding">
+    <h2>内容理解</h2>
+    <p>本文聚焦于强化学习人类反馈（RLHF）中的对齐策略，核心是<strong class="term">Bradley-Terry模型 (Bradley-Terry model)</strong>和<strong class="term">best-of-n采样 (best-of-n sampling)</strong>。首先，在RLHF中，奖励函数通过Bradley-Terry模型估计，该模型使用sigmoid函数将噪声偏好数据映射为奖励差异（公式2.3）。当模型被良好指定时，对齐策略的目标分布是指数倾斜的参考模型（公式2.4）。其次，文章介绍了best-of-n采样方法：从参考模型独立采样多个响应，并选择奖励最高的作为输出（公式2.5）。第3节探讨了best-of-n分布与基于训练的对齐方法（如RLHF）的关系，提出两者均属于更广泛的奖励加权模型类（公式3.2），其中策略通过非递减函数<em>f<sub>x</sub></em>对参考模型重新加权。最后，讨论了最优对齐策略的权衡标准：在最大化胜率（win rate）的同时最小化KL散度（KL divergence），以确保策略不偏离参考模型的离目标属性。整体上，文本批判性地分析了Bradley-Terry模型的局限性（如well-specified假设不明确）和对齐目标的可取性，并引用了相关研究（如[Wan+24; Aza+24]）说明奖励函数转换的通用框架。</p>
+  </div>
+
+  <!-- 内容翻译部分 -->
+  <div id="content-translation">
+    <h2>内容翻译</h2>
+
+    <!-- 段落1 -->
+    <div class="translation-pair">
+      <div class="original">Bradley-Terry and Alignment Targets In <span class="term">RLHF (Reinforcement Learning from Human Feedback)</span>, the <span class="term">reward function (reward function)</span> is estimated using the <span class="term">Bradley-Terry model (Bradley-Terry model)</span>, which relates noisy observed preferences to rewards by:</div>
+      <div class="translation">在<span class="term">RLHF（强化学习人类反馈）</span>中，<span class="term">奖励函数 (reward function)</span>使用<span class="term">Bradley-Terry模型 (Bradley-Terry model)</span>进行估计，该模型通过以下方式将噪声观测偏好与奖励关联起来：</div>
+    </div>
+    <div class="formula">
+      \\[ P(y_1 \\succ y_0 | x) = \\sigma(r(x,y_1) - r(x,y_0)) \\]
+      <div class="formula-number">(2.3)</div>
+    </div>
+    <div class="translation-pair">
+      <div class="original">where <span class="term">σ(·) (sigmoid function)</span> is the <span class="term">sigmoid function (sigmoid function)</span>. In the particular case that the Bradley-Terry model is well-specified, then it can be shown that the analytic solution to both (2.1) and (2.2) is:</div>
+      <div class="translation">其中<span class="term">σ(·) (sigmoid函数)</span>是<span class="term">sigmoid函数 (sigmoid function)</span>。在Bradley-Terry模型被良好指定的特定情况下，可以证明(2.1)和(2.2)的解析解是：</div>
+    </div>
+    <div class="formula">
+      \\[ \\pi_{\\text{RLHF}}^{r}(y|x) \\propto \\exp\\left(\\frac{1}{\\beta} r(x,y)\\right) \\pi_0(y|x) \\]
+      <div class="formula-number">(2.4)</div>
+    </div>
+    <div class="translation-pair">
+      <div class="original">That is, the <span class="term">alignment procedures (alignment procedures)</span> target an <span class="term">exponential tilting (exponential tilting)</span> of the <span class="term">reference model (reference model)</span> by the reward function. Of course, it is not obvious when the Bradley-Terry model is well-specified, nor whether this particular tilting is a desirable target. Other works have considered explicitly or implicitly transforming the reward function to change the target distribution [Wan+24; Aza+24]. Nevertheless, these works also take the target distribution to be a tilting of the reference distribution.</div>
+      <div class="translation">也就是说，<span class="term">对齐程序 (alignment procedures)</span>的目标是通过奖励函数对<span class="term">参考模型 (reference model)</span>进行<span class="term">指数倾斜 (exponential tilting)</span>。当然，Bradley-Terry模型何时被良好指定并不明显，这种特定倾斜是否是理想目标也不明确。其他工作考虑了显式或隐式转换奖励函数以改变目标分布[Wan+24; Aza+24]。然而，这些工作也将目标分布视为参考分布的倾斜。</div>
+    </div>
+
+    <!-- 段落2 -->
+    <div class="translation-pair">
+      <div class="original"><span class="term">Best-of-n sampling (Best-of-n sampling)</span> The <span class="term">best-of-n procedure (best-of-n procedure)</span> is as follows. Given a prompt <em>x</em>, sample <em>y<sub>1</sub>, y<sub>2</sub>, . . . , y<sub>n</sub></em> independently from the reference model <em>π<sub>0</sub>(y|x)</em>. Then, select the response with the highest reward <em>r(x,y<sub>i</sub>)</em> as the final response. That is,</div>
+      <div class="translation"><span class="term">Best-of-n采样 (Best-of-n sampling)</span> <span class="term">best-of-n过程 (best-of-n procedure)</span>如下：给定提示<em>x</em>，从参考模型<em>π<sub>0</sub>(y|x)</em>中独立采样<em>y<sub>1</sub>, y<sub>2</sub>, …, y<sub>n</sub></em>。然后，选择具有最高奖励<em>r(x,y<sub>i</sub>)</em>的响应作为最终响应。即，</div>
+    </div>
+    <div class="formula">
+      \\[ y = y_i \\text{ such that } r(x,y_i) = \\max_{1 \\leq j \\leq n} r(x,y_j) \\]
+      <div class="formula-number">(2.5)</div>
+    </div>
+
+    <!-- 段落3 -->
+    <div class="translation-pair">
+      <div class="original">3 <span class="term">Best-of-n is Win-Rate vs KL Optimal (Best-of-n is Win-Rate vs KL Optimal)</span> The first question we address is: what is the relationship between the best-of-n distribution, and the distribution induced by training-based alignment methods?</div>
+      <div class="translation">3 <span class="term">Best-of-n 是胜率与KL最优 (Best-of-n is Win-Rate vs KL Optimal)</span> 我们解决的第一个问题是：best-of-n分布与基于训练的对齐方法所诱导的分布之间有什么关系？</div>
+    </div>
+
+    <!-- 段落4 -->
+    <div class="translation-pair">
+      <div class="original">3.1 A Common Setting for Alignment Policies We begin with the underlying distribution of best-of-n sampling. Let <span class="term">Q<sub>x</sub> (Qx)</span> denote the <span class="term">cumulative distribution function (cumulative distribution function)</span> of <em>r(x,Y<sub>0</sub>)</em>, where <em>Y<sub>0</sub> ∼ π<sub>0</sub>(·|x)</em>. Suppose <em>r(x,·): Y → R</em> is an one-to-one mapping and <em>π<sub>0</sub>(y|x)</em> is continuous<sup>2</sup>, then the <span class="term">conditional density (conditional density)</span> of the best-of-n policy is</div>
+      <div class="translation">3.1 对齐策略的通用设置 我们从best-of-n采样的基本分布开始。令<span class="term">Q<sub>x</sub> (Qx)</span>表示<em>r(x,Y<sub>0</sub>)</em>的<span class="term">累积分布函数 (cumulative distribution function)</span>，其中<em>Y<sub>0</sub> ∼ π<sub>0</sub>(·|x)</em>。假设<em>r(x,·): Y → R</em>是一个一对一映射，且<em>π<sub>0</sub>(y|x)</em>是连续的<sup>2</sup>，则best-of-n策略的<span class="term">条件密度 (conditional density)</span>为</div>
+    </div>
+    <div class="formula">
+      \\[ \\pi_r^{(n)}(y|x) := n Q_x(r(x,y))^{n-1} \\pi_0(y|x) \\]
+      <div class="formula-number">(3.1)</div>
+    </div>
+
+    <!-- 段落5 -->
+    <div class="translation-pair">
+      <div class="original">Compare this to the <span class="term">RLHF policy (RLHF policy)</span> <em>π<sub>RLHF</sub><sup>r</sup></em> in (2.4). In both cases, the sampling distribution is a re-weighted version

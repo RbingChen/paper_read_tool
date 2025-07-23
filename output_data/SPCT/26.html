@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>论文解析报告</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; line-height: 1.6; }
+        .section { margin-bottom: 30px; }
+        h2 { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 5px; }
+        .original {
+            background-color: #f0f0f0;
+            border: 1px solid #cccccc;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+        .translation {
+            background-color: #e0f7e0;
+            border: 1px solid #4CAF50;
+            padding: 15px;
+            border-radius: 5px;
+        }
+        .term {
+            color: red;
+            font-weight: bold;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .figure {
+            background-color: #fffde7;
+            border: 1px solid #ffd54f;
+            padding: 15px;
+            text-align: center;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        .formula-container {
+            text-align: center;
+            margin: 20px 0;
+        }
+        .formula {
+            display: inline-block;
+            padding: 10px;
+        }
+        .formula-number {
+            display: block;
+            font-style: italic;
+            margin-top: 5px;
+        }
+        .summary-box {
+            background-color: #e3f2fd;
+            border-left: 4px solid #2196F3;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        .terms-box {
+            background-color: #ffebee;
+            border-left: 4px solid #f44336;
+            padding: 15px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+
+<div class="section">
+    <h2>内容理解与解释</h2>
+    <p>该文本是机器学习论文的实验结果部分，主要包含：</p>
+    <ul>
+        <li>两个核心评估表格（Table 9 和 Table 10）比较不同模型在多个基准测试上的性能</li>
+        <li>Table 9 聚焦 <strong class="term">PPE Correctness（基于提示的编程评估正确性）</strong> 基准</li>
+        <li>Table 10 聚焦 <strong class="term">RMB（Reward Model Benchmark，奖励模型基准）</strong></li>
+        <li>三种解码策略对比：<strong class="term">Greedy Decoding（贪心解码）</strong>、<strong class="term">Inference-Time Scaling（推理时缩放）</strong>、<strong class="term">Further Inference-Time Scaling（进一步推理时缩放）</strong></li>
+        <li>作者提出的 <strong class="term">DeepSeek-GRM-27B</strong> 模型系列在不同配置下的表现</li>
+        <li>评估指标说明和实验配置细节</li>
+    </ul>
+</div>
+
+<div class="section">
+    <h2>内容翻译（英中对照）</h2>
+    
+    <div class="original">
+        <h3>Table 9: Detailed results of different methods on the PPE Correctness benchmark.</h3>
+        <table>
+            <tr><th>Method</th><th>MMLU-Pro</th><th>MATH</th><th>GPQA</th><th>MBPP-Plus</th><th>IFEval</th><th>PPE Correctness</th></tr>
+            <tr><td colspan="7"><strong>Results of Greedy Decoding</strong></td></tr>
+            <tr><td>LLM-as-a-Judge</td><td>66.0</td><td>68.0</td><td>52.8</td><td>50.2</td><td>56.8</td><td>58.8</td></tr>
+            <tr><td>DeepSeek-BTRM-27B</td><td>68.8</td><td>73.2</td><td>56.8</td><td>68.8</td><td>66.0</td><td>66.7</td></tr>
+            <tr><td>CLoud-Gemma-2-27B</td><td>68.7</td><td>68.8</td><td>53.5</td><td>59.0</td><td>62.0</td><td>62.4</td></tr>
+            <tr><td>DeepSeek-PairRM-27B</td><td>68.3</td><td>74.7</td><td>55.0</td><td>63.1</td><td>62.9</td><td>64.8</td></tr>
+            <tr><td>DeepSeek-GRM-27B-RFT (Ours)</td><td>64.8</td><td>68.7</td><td>55.5</td><td>49.0</td><td>60.2</td><td>59.6</td></tr>
+            <tr><td>DeepSeek-GRM-27B (Ours)</td><td>64.8</td><td>68.8</td><td>55.6</td><td>50.1</td><td>59.8</td><td>59.8</td></tr>
+            <tr><td>w/ Reference</td><td>98.2</td><td>97.5</td><td>99.8</td><td>86.6</td><td>75.9</td><td>91.6</td></tr>
+            <tr><td colspan="7"><strong>Results of Inference-Time Scaling (Voting@8)</strong></td></tr>
+            <tr><td>LLM-as-a-Judge</td><td>66.2</td><td>66.4</td><td>51.9</td><td>49.9</td><td>56.8</td><td>58.2</td></tr>
+            <tr><td>LLM-as-a-Judge w/TokenProb</td><td>66.4</td><td>68.1</td><td>53.0</td><td>49.5</td><td>57.0</td><td>58.8</td></tr>
+            <tr><td>CLoud-Gemma-2-27B</td><td>68.7</td><td>68.9</td><td>53.5</td><td>59.0</td><td>62.0</td><td>62.4</td></tr>
+            <tr><td>DeepSeek-GRM-27B-RFT (Ours)</td><td>64.8</td><td>68.7</td><td>55.5</td><td>49.5</td><td>60.2</td><td>59.7</td></tr>
+            <tr><td>DeepSeek-GRM-27B (Ours)</td><td>65.7</td><td>68.7</td><td>55.5</td><td>50.0</td><td>61.6</td><td>60.3</td></tr>
+            <tr><td>DeepSeek-GRM-27B (MetaRM) (Ours)</td><td>68.0</td><td>68.7</td><td>57.3</td><td>51.3</td><td>69.9</td><td>63.0</td></tr>
+            <tr><td colspan="7"><strong>Results of Further Inference-Time Scaling (Voting@32)</strong></td></tr>
+            <tr><td>DeepSeek-GRM-27B (Ours)</td><td>65.5</td><td>69.4</td><td>56.0</td><td>49.9</td><td>61.0</td><td>60.4</td></tr>
+            <tr><td>DeepSeek-GRM-27B (MetaRM) (Ours)</td><td>68.1</td><td>70.0</td><td>56.9</td><td>50.8</td><td>70.4</td><td>63.2</td></tr>
+        </table>
+    </div>
+    
+    <div class="translation">
+        <h3>表9：不同方法在<strong class="term">PPE Correctness（基于提示的编程评估正确性）</strong>基准测试上的详细结果</h3>
+        <table>
+            <tr><th>方法</th><th><strong class="term">MMLU-Pro</strong></th><th><strong class="term">MATH</strong></th><th><strong class="term">GPQA</strong></th><th><strong class="term">MBPP-Plus</strong></th><th><strong class="term">IFEval</strong></th><th><strong class="term">PPE Correctness</strong></th></tr>
+            <tr><td colspan="7"><strong>贪心解码结果</strong></td></tr>
+            <tr><td>LLM-as-a-Judge</td><td>66.0</td><td>68.0</td><td>52.8</td><td>50.2</td><td>56.8</td><td>58.8</td></tr>
+            <tr><td>DeepSeek-BTRM-27B</td><td>68.8</td><td>73.2</td><td>56.8</td><td>68.8</td><td>66.0</td><td>66.7</td></tr>
+            <tr><td>CLoud-Gemma-2-27B</td><td>68.7</td><td>68.8</td><td>53.5</td><td>59.0</td><td>62.0</td><td>62.4</td></tr>
+            <tr><td>DeepSeek-PairRM-27B</td><td>68.3</td><td>74.7</td><td>55.0</td><td>63.1</td><td>62.9</td><td>64.8</td></tr>
+            <tr><td>DeepSeek-GRM-27B-RFT (Ours)</td><td>64.8</td><td>68.7</td><td>55.5</td><td>49.0</td><td>60.2</td><td>59.6</td></tr>
+            <tr><td>DeepSeek-GRM-27B (Ours)</td><td>64.8</td><td>68.8</td><td>55.6</td><td>50.1</td><td>59.8</td><td>59.8</td></tr>
+            <tr><td>w/ Reference</td><td>98.2</td><td>97.5</td><td>99.8</td><td>86.6</td><td>75.9</td><td>91.6</td></tr>
+            <tr><td colspan="7"><strong>推理时缩放结果（Voting@8）</strong></td></tr>
+            <tr><td>LLM-as-a-Judge</td><td>66.2</td><td>66.4</td><td>51.9</td><td>49.9</td><td>56.8</td><td>58.2</td></tr>
+            <tr><td>LLM-as-a-Judge w/TokenProb</td><td>66.4</td><td>68.1</td><td>53.0</td><td>49.5</td><td>57.0</td><td>58.8</td></tr>
+            <tr><td>CLoud-Gemma-2-27B</td><td>68.7</td><td>68.9</td><td>53.5</td><td>59.0</td><td>62.0</td><td>62.4</td></tr>
+            <tr><td>DeepSeek-GRM-27B-RFT (Ours)</td><td>64.8</td><td>68.7</td><td>55.5</td><td>49.5</td><td>60.2</td><td>59.7</td></tr>
+            <tr><td>DeepSeek-GRM-27B (Ours)</td><td>65.7</td><td>68.7</td><td>55.5</td><td>50.0</td><td>61.6</td><td>60.3</td></tr>
+            <tr><td>DeepSeek-GRM-27B (MetaRM) (Ours)</td><td>68.0</td><td>68.7</td><td>57.3</td><td>51.3</td><td>69.9</td><td>63.0</td></tr>
+            <tr><td colspan="7"><strong>进一步推理时缩放结果（Voting@32）</strong></td></tr>
+            <tr><td>DeepSeek-GRM-27B (Ours)</td><td>65.5</td><td>69.4</td><td>56.0</td><td>49.9</td><td>61.0</td><td>60.4</td></tr>
+            <tr><td>DeepSeek-GRM-27B (MetaRM) (Ours)</td><td>68.1</td><td>70.0</td><td>56.9</td><td>50.8</td><td>70.4</td><td>63.2</td></tr>
+        </table>
+    </div>
+
+    <div class="original">
+        <h3>Table 10: Detailed results of different methods on the RMB benchmark.</h3>
+        <table>
+            <tr><th>Method</th><th>Helpfulness BoN</th><th>Helpfulness Pairwise</th><th>Harmlessness BoN</th><th>Harmlessness Pairwise</th><th>RMB</th></tr>
+            <tr><td colspan="6"><strong>Results of Greedy Decoding</strong></td></tr>
+            <tr><td>LLM-as-a-Judge</td><td>55.8</td><td>78.5</td><td>50.8</td><td>73.9</td><td>64.8</td></tr>
+            <tr><td>DeepSeek-BTRM-27B</td><td>64.0</td><td>83.0</td><td>33.6</td><td>51.0</td><td>57.9</td></tr>
+            <tr><td>CLoud-Gemma-2-27B</td><td>64.7</td><td>81.1</td><td>41.7</td><td>66.1</td><td>63.4</td></tr>
+            <tr><td>DeepSeek-PairRM-27B</td><td>59.9</td><td>83.3</td><td>34.1</td><td>55.5</td><td>58.2</td></tr>
+            <tr><td>DeepSeek-GRM-27B-RFT (Ours)</td><td>58.4</td><td>79.3</td><td>54.2</td><td>76.0</td><td>67.0</td></tr>
+            <tr><td>DeepSeek-GRM-27B (Ours)</td><td>62.3</td><td>80.5</td><td>57.0</td><td>76.1</td><td>69.0</td></tr>
+            <tr><td colspan="6"><strong>Results of Inference-Time Scaling (Voting@8)</strong></td></tr>
+            <tr><td>LLM-as-a-Judge</td><td>56.0</td><td>78.5</td

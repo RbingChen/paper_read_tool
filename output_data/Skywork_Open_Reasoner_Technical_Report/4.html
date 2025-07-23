@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>论文解析报告</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; line-height: 1.6; }
+        .original { background-color: #f0f0f0; border: 1px solid #ccc; padding: 15px; margin-bottom: 10px; }
+        .translation { background-color: #e8f5e9; border: 1px solid #4caf50; padding: 15px; margin-bottom: 20px; }
+        .figure { background-color: #fffde7; padding: 15px; margin: 15px 0; border-left: 4px solid #ffd600; }
+        .term { color: #d32f2f; font-weight: bold; }
+        .section-title { color: #1976d2; border-bottom: 2px solid #bbdefb; padding-bottom: 5px; }
+        .formula-container { text-align: center; margin: 20px 0; }
+        .formula-label { display: block; font-style: italic; margin-top: 5px; }
+    </style>
+</head>
+<body>
+
+<!-- 内容理解 -->
+<h2 class="section-title">内容理解</h2>
+<p>该文本节选自技术论文的结尾部分，主要说明：</p>
+<ol>
+    <li>论文后续章节（第6-7节）将详细描述<strong class="term">训练数据准备（training data preparation）</strong>和<strong class="term">基于规则的奖励机制（rule-based reward）</strong>的实现细节</li>
+    <li>第8节将完整阐述三个公开发布模型的<strong class="term">训练（training）</strong>与<strong class="term">评估（evaluation）</strong>细节</li>
+    <li>通过图2和图3展示了两个模型在<strong class="term">数学（mathematics）</strong>和<strong class="term">编程（coding）</strong>基准测试上的性能表现</li>
+</ol>
+
+<!-- 内容翻译 -->
+<h2 class="section-title">内容翻译</h2>
+
+<div class="original">
+    <p>implementation details of our training data preparation and rule-based reward are provided in Sections 6 and 7. Finally, Section 8 presents a comprehensive description of the training and evaluation details for our three released models: Skywork-OR1-Math-7B, Skywork-OR1-7B, and Skywork-OR1-32B.</p>
+</div>
+<div class="translation">
+    <p>关于<strong class="term">训练数据准备（training data preparation）</strong>和<strong class="term">基于规则的奖励（rule-based reward）</strong>的实现细节将在第6节和第7节提供。最后，第8节将全面阐述我们发布的三个模型：<strong class="term">Skywork-OR1-Math-7B</strong>、<strong class="term">Skywork-OR1-7B</strong>和<strong class="term">Skywork-OR1-32B</strong>的<strong class="term">训练（training）</strong>与<strong class="term">评估（evaluation）</strong>细节。</p>
+</div>
+
+<div class="figure">
+    <div class="original">Figure 2: Performance of Skywork-OR1-32B on challenging mathematics and coding benchmarks.</div>
+    <div class="translation">图2：<strong class="term">Skywork-OR1-32B</strong>在具有挑战性的<strong class="term">数学（mathematics）</strong>和<strong class="term">编程（coding）</strong>基准测试上的性能表现</div>
+</div>
+
+<div class="figure">
+    <div class="original">Figure 3: Performance of Skywork-OR1-7B on challenging mathematics and coding benchmarks.</div>
+    <div class="translation">图3：<strong class="term">Skywork-OR1-7B</strong>在具有挑战性的<strong class="term">数学（mathematics）</strong>和<strong class="term">编程（coding）</strong>基准测试上的性能表现</div>
+</div>
+
+<!-- 摘要总结 -->
+<h2 class="section-title">摘要总结</h2>
+<p>本段核心内容包含三个关键信息：</p>
+<ul>
+    <li><strong>技术细节分布</strong>：第6-7节将聚焦<strong class="term">训练数据准备（training data preparation）</strong>和<strong class="term">基于规则的奖励机制（rule-based reward）</strong>的实现</li>
+    <li><strong>模型发布信息</strong>：第8节将详细说明三个公开模型（Skywork-OR1-Math-7B/Skywork-OR1-7B/Skywork-OR1-32B）的<strong class="term">训练（training）</strong>与<strong class="term">评估（evaluation）</strong>方案</li>
+    <li><strong>性能可视化</strong>：通过图2和图3分别展示了32B和7B参数模型在<strong class="term">数学（mathematics）</strong>及<strong class="term">编程（coding）</strong>基准测试中的表现</li>
+</ul>
+
+<!-- 术语识别 -->
+<h2 class="section-title">术语识别</h2>
+<dl>
+    <dt><strong class="term">训练数据准备（Training Data Preparation）</strong></dt>
+    <dd>指为机器学习模型训练所进行的数据收集、清洗、标注和预处理流程。包括数据增强、噪声消除、格式标准化等关键技术，直接影响模型最终性能。</dd>
+    
+    <dt><strong class="term">基于规则的奖励（Rule-based Reward）</strong></dt>
+    <dd>在强化学习中，通过预定义的逻辑规则而非学习得到的奖励函数来指导模型优化。常用于约束模型行为或注入领域知识，数学表示为：
+        <div class="formula-container">
+            \( R(s,a) = \sum_{i=1}^{n} w_i \cdot \mathbb{1}_{\text{rule}_i}(s,a) \)
+            <span class="formula-label">(1) 规则奖励函数</span>
+        </div>
+        其中\( \mathbb{1}_{\text{rule}_i} \)是指示函数，当状态-动作对(s,a)满足第i条规则时值为1
+    </dd>
+    
+    <dt><strong class="term">基准测试（Benchmarks）</strong></dt>
+    <dd>标准化评估数据集和度量体系，用于量化模型在特定任务（如数学解题、代码生成）上的性能。常见数学基准包括MATH数据集，编程基准包括HumanEval等。</dd>
+    
+    <dt><strong class="term">Skywork-OR1 模型系列</strong></dt>
+    <dd>大型语言模型命名体系：后缀数字表示参数量（7B=70亿参数，32B=320亿参数），Math后缀表示数学能力优化版本，OR1可能指第一代优化版本（Optimized Release 1）</dd>
+</dl>
+
+</body>
+</html>

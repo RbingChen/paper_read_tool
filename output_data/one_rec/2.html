@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>OneRec技术报告解析</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        body { font-family: 'Segoe UI', Arial, sans-serif; line-height: 1.6; }
+        .original { 
+            background-color: #f8f9fa; 
+            border: 1px solid #dee2e6; 
+            padding: 15px; 
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+        .translation { 
+            background-color: #e8f5e9; 
+            border: 1px solid #c8e6c9; 
+            padding: 15px; 
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+        .term { 
+            color: #d32f2f; 
+            font-weight: bold; 
+        }
+        .section-title { 
+            color: #2c3e50; 
+            border-bottom: 2px solid #3498db; 
+            padding-bottom: 5px; 
+            margin-top: 30px;
+        }
+        .formula-container { 
+            text-align: center; 
+            margin: 20px 0; 
+            padding: 15px; 
+            background-color: #fffde7; 
+            border-radius: 5px;
+        }
+        .formula-label { 
+            display: block; 
+            font-style: italic; 
+            margin-top: 5px;
+        }
+        .summary-box { 
+            background-color: #e3f2fd; 
+            padding: 15px; 
+            border-left: 4px solid #2196f3;
+            margin: 20px 0;
+        }
+        .term-list { 
+            background-color: #f5f5f5; 
+            padding: 15px; 
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+
+<h1>OneRec技术报告解析</h1>
+
+<!-- 内容理解部分 -->
+<section>
+    <h2 class="section-title">内容理解</h2>
+    <p>该技术报告分析了传统推荐系统的三大核心问题：</p>
+    <ul>
+        <li><strong>碎片化计算</strong>：级联架构导致计算资源利用率低下（GPU利用率仅4.6%-11.2%），大量资源消耗在通信和存储上</li>
+        <li><strong>目标冲突</strong>：用户/创作者/平台的多目标优化存在内在矛盾，不同阶段模型结构差异加剧冲突</li>
+        <li><strong>滞后AI发展</strong>：级联架构阻碍了LLM/VLM等先进技术的集成，与主流AI进展脱节</li>
+    </ul>
+    <p>报告提出<b class="term">OneRec</b>解决方案，通过统一召回和排序流程构建端到端架构，突破传统级联系统的限制。</p>
+</section>
+
+<hr>
+
+<!-- 内容翻译部分 -->
+<section>
+    <h2 class="section-title">内容翻译</h2>
+    
+    <div class="original">
+        <h3>OneRec Technical Report</h3>
+        <h4>1. Introduction</h4>
+        <p>With the rapid advancement of online services, recommender systems (RS) have become essential infrastructure for mitigating information overload and delivering personalized content at scale (Ricci et al., 2010). During the past decades, recommender systems have achieved several breakthrough advancements - from early Factorization Machines (Rendle, 2010) to modern deep learning architectures (Cheng et al., 2016; Guo et al., 2017; Pi et al., 2020; Zhou et al., 2018). Despite the substantial progress made by the RS research community, traditional recommendation models still rely on multi-stage cascaded architectures (see the top part of Figure 2) rather than end-to-end approaches, which face several limitations that hinder their optimal performance:</p>
+    </div>
+    <div class="translation">
+        <h3>OneRec技术报告</h3>
+        <h4>1. 引言</h4>
+        <p>随着在线服务的快速发展，<b class="term">推荐系统（Recommender Systems, RS）</b>已成为缓解信息过载和提供大规模个性化内容的关键基础设施（Ricci等，2010）。过去几十年中，推荐系统取得了多项突破性进展——从早期的<b class="term">因子分解机（Factorization Machines）</b>（Rendle，2010）到现代<b class="term">深度学习架构（deep learning architectures）</b>（Cheng等，2016；Guo等，2017；Pi等，2020；Zhou等，2018）。尽管推荐系统研究社区取得了实质性进展，传统推荐模型仍依赖于<b class="term">多级级联架构（multi-stage cascaded architectures）</b>（见图2顶部）而非端到端方法，这面临若干限制其最佳性能的问题：</p>
+    </div>
+
+    <div class="original">
+        <h4>Fragmented Compute</h4>
+        <p>The cascaded architecture suffers from low computational efficiency. Our comprehensive analysis of resource distribution, using Kuaishou as a case study, reveals that over 50% of resources during serving are allocated to communication and storage rather than high-precision computation. This significant allocation to non-computational tasks highlights a fundamental inefficiency in the current architecture. Moreover, the resources dedicated to computation, particularly for the most computation-intensive ranking models, demonstrate markedly low utilization. Specifically, the model's training and inference MFU is only 4.6% and 11.2% on flagship GPUs, respectively, which is substantially lower than the efficiency observed in large language models (LLMs), where the MFU is approximately 40% on H100 (Grattafiori et al., 2024; Shoeybi et al., 2019). This discrepancy underscores the inefficiency in resource utilization for computational tasks in recommender systems. Additionally, due to the high QPS requirements ( greater than 400k ) and low latency demands ( less than 500ms ), recommender models are often constrained to operate at a low scale and are not computation-intensive. This operational constraint further limits the potential for high-precision computation, thereby affecting the overall performance and scalability of the recommender system.</p>
+    </div>
+    <div class="translation">
+        <h4>碎片化计算</h4>
+        <p>级联架构存在计算效率低下的问题。我们以快手为案例进行的资源分布综合分析表明，服务过程中超过50%的资源被分配给通信和存储，而非高精度计算。这种对非计算任务的大量分配凸显了当前架构的根本性低效。此外，专门用于计算的资源（尤其是计算最密集的排序模型）利用率明显偏低。具体而言，在旗舰GPU上，模型的训练和推理<b class="term">MFU（Model Flops Utilization，模型浮点运算利用率）</b>分别仅为4.6%和11.2%，远低于<b class="term">大语言模型（Large Language Models, LLMs）</b>约40%的H100利用率（Grattafiori等，2024；Shoeybi等，2019）。这种差异凸显了推荐系统中计算任务资源利用的低效性。此外，由于高<b class="term">QPS（Queries Per Second，每秒查询率）</b>要求（大于40万）和低<b class="term">延迟（latency）</b>需求（小于500毫秒），推荐模型通常被迫在低规模下运行且非计算密集型。这种操作限制进一步制约了高精度计算的潜力，从而影响推荐系统的整体性能和可扩展性。</p>
+    </div>
+
+    <div class="original">
+        <h4>Objective Collision</h4>
+        <p>What optimization objectives correspond to “good” recommendation results are not well-defined, which leads to the following conflict:</p>
+        <p>1) Conflicts from Diverse Objectives: Beyond common optimization goals like click-through rate and watch time, there are competing goals (hundreds of goals in Kuaishou) from users, creators, and platform ecosystems. These objectives intervene at various stages of the system, gradually undermining system consistency and increasing complexity and operational inefficiency.</p>
+        <p>2) Cross-Stage Modeling Conflicts: Even when modeling similar objectives, conflicts can arise due to different structures and sizes of models at various stages. For instance, the effectiveness of the retrieval stage might be constrained by the limitations of the ranking model, which, in turn, could be affected by suboptimal upstream results. This highlights the need for a more unified optimization goal and model structure across the recommendation system to ensure coherence and efficiency.</p>
+    </div>
+    <div class="translation">
+        <h4>目标冲突</h4>
+        <p>“良好”推荐结果对应的优化目标缺乏明确定义，导致以下冲突：</p>
+        <p>1) <b class="term">多目标冲突（Conflicts from Diverse Objectives）</b>：除点击率和观看时长等常见优化目标外，还存在来自用户、创作者和平台生态的竞争性目标（快手有数百个目标）。这些目标在系统不同阶段介入，逐渐破坏系统一致性，增加复杂性和操作低效。</p>
+        <p>2) <b class="term">跨阶段建模冲突（Cross-Stage Modeling Conflicts）</b>：即使建模相似目标，不同阶段模型结构和规模的差异也会引发冲突。例如，<b class="term">召回阶段（retrieval stage）</b>的效果可能受限于<b class="term">排序模型（ranking model）</b>的不足，而排序模型又可能受次优上游结果影响。这凸显了在推荐系统中建立更统一的优化目标和模型结构以确保一致性和效率的必要性。</p>
+    </div>
+
+    <div class="original">
+        <h4>Lag Behind AI Evolution</h4>
+        <p>While remarkable progress has been made in LLM and visual language model (VLM) domains (e.g., scaling laws (Henighan et al., 2020; Hoffmann et al., 2022; Kaplan et al., 2020), reinforcement learning (Ouyang et al., 2022; Rafailov et al., 2023; Shao et al., 2024; Ziegler et al., 2019)), the existing cascaded recommendation framework presents fundamental architectural barriers to adopting these proven techniques. This structural misalignment creates a widening gap between recommendation systems and mainstream AI advancements, limiting potential performance gains from state-of-the-art approaches.</p>
+    </div>
+    <div class="translation">
+        <h4>滞后AI发展</h4>
+        <p>尽管在<b class="term">LLM</b>和<b class="term">视觉语言模型（Visual Language Model, VLM）</b>领域取得显著进展（例如<b class="term">缩放定律（scaling laws）</b>（Henighan等，2020；Hoffmann等，2022；Kaplan等，2020）和<b class="term">强化学习（reinforcement learning）</b>（Ouyang等，2022；Rafailov等，2023；Shao等，2024；Ziegler等，2019）），现有级联推荐框架在采用这些成熟技术时存在根本性架构障碍。这种结构错位导致推荐系统与主流AI进展间的差距日益扩大，限制了从前沿方法中获得潜在性能提升。</p>
+    </div>
+
+    <div class="original">
+        <p>To address the challenges faced by traditional cascaded recommendation architectures, we propose OneRec (See the bottom part of Figure 2), a novel recommendation system designed to overcome the limitations of cascade ranking systems by integrating retrieval and ranking processes into a unified framework.</p>
+    </div>
+    <div class="translation">
+        <p>为应对传统级联推荐架构的挑战，我们提出<b class="term">OneRec</b>（见图2底部），这是一种通过将召回和排序流程整合到统一框架中来克服级联排序系统局限性的新型推荐系统。</p>
+    </div>
+</section>
+
+<hr>
+
+<!-- 摘要总结部分 -->
+<section>
+    <h2 class="section-title">摘要总结</h2>
+    <div class="summary-box">
+        <p><strong>核心内容概括：</strong></p>
+        <ol>
+            <li>传统推荐系统采用多级级联架构存在三大根本缺陷：<br>
+                - <b>计算碎片化</b>：50%+资源用于非计算任务，GPU利用率仅4.6-11.2%<br>
+                - <b>目标冲突</b>：用户/创作者/平台的多目标优化矛盾，跨阶段模型不一致<br>
+                - <b>技术脱节</b>：难以集成LLM/VLM等先进AI技术</li>
+            <li>性能瓶颈源于架构限制：<br>
+                - 高QPS（>400k）和低延迟（<500ms）约束计算强度<br>
+                - 召回/排序阶段割裂导致资源浪费和效果衰减</li>
+            <li>提出<b>OneRec</b>端到端解决方案：<br>
+                - 统一召回与排序流程，消除级联架构瓶颈<br>
+                - 为集成现代AI技术提供架构基础</li>
+        </ol>
+        <p><em>核心创新点：</em> 通过架构革新解决资源利用率低下、优化目标冲突、技术整合障碍三大行业痛点。</p>
+    </div>
+</section>
+
+<hr>
+
+<!-- 术语识别部分 -->
+<section>
+    <h2 class="section-title">关键术语解释</h2>
+    <div class="term-list">
+        <ul>
+            <li><span class="term">MFU (Model Flops Utilization)</span>：模型浮点运算利用率，衡量硬件计算效率的核心指标。计算公式：
+                <div class="formula-container">
+                    \[ \text{MFU} = \frac{\text{实际计算量}}{\text{硬件峰值算力}} \]
+                    <span class="formula-label">(式1) 模型浮点运算利用率</span>
+                </div>
+                报告中指出传统推荐系统GPU利用率（4.6%-11.2%）显著低于LLM（约40%）</li>
+            <li><span class="term">QPS (Queries Per Second)</span>：每秒查询率，推荐系统关键性能指标。快手案例中要求>400k，导致系统需牺牲计算精度满足实时性</li>
+            <li><span class="term">Cascaded Architecture</span>：级联架构，传统推荐系统典型设计，包含召回/粗排/精排等独立阶段。缺陷包括：<br>
+                - 阶段间数据传输开销大<br>
+                - 各阶段模型独立优化导致目标冲突<br>
+                - 难以全局优化</li>
+            <li><span class="term">End-to-End Approaches</span>：端到端方法，OneRec的核心创新，直接映射输入到最终推荐结果，消除中间阶段割裂</li>
+            <li><span class="term">Scaling Laws</span>：缩放定律，LLM领域核心发现，描述模型规模/数据量/计算量与性能的定量关系。传统推荐架构无法应用此规律</li>
+            <li><span class="term">OneRec</span>：本文提出的新型推荐框架，核心特征：<br>
+                - 统一召回与排序的联合建模<br>
+                - 支持高计算密度操作<br>
+                - 兼容LLM/VLM等先进模型</li>
+        </ul>
+    </div>
+</section>
+
+</body>
+</html>

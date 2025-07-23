@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>论文解析报告</title>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<style>
+  body { font-family: Arial, sans-serif; line-height: 1.6; }
+  .section { margin-bottom: 30px; }
+  h2 { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 5px; }
+  h3 { color: #2980b9; }
+  .original {
+    background-color: #f0f0f0;
+    border: 1px solid #cccccc;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+  }
+  .translation {
+    background-color: #e0f7e0;
+    border: 1px solid #4CAF50;
+    padding: 15px;
+    border-radius: 5px;
+  }
+  .highlight {
+    color: red;
+    font-weight: bold;
+  }
+  .formula-container {
+    text-align: center;
+    margin: 20px 0;
+    padding: 10px;
+    background-color: #fffde7;
+    border-radius: 5px;
+  }
+  .term-list dt {
+    font-weight: bold;
+    margin-top: 10px;
+  }
+  .term-list dd {
+    margin-bottom: 15px;
+    margin-left: 20px;
+  }
+</style>
+</head>
+<body>
+
+<div class="section">
+  <h2>内容理解</h2>
+  <p>本文主要描述两个核心技术模块：1) 数学答案验证流程：通过解析推理过程中的答案并与标准答案比对，强调使用boxed{}包装的重要性；2) 代码沙盒系统：基于Live-CodeBench实现的安全执行环境，包含语法验证、内存监控和并行优化三重防护机制。最后概述了Skywork系列模型的实验配置。</p>
+</div>
+
+<div class="section">
+  <h2>内容翻译</h2>
+  
+  <div class="original">
+    <p>• Extract the answer that appears after the reasoning process.<br>
+    • Use <span class="highlight">Math-Verify</span>'s parser to parse the answer and obtain its string representation.<br>
+    • If the string representation directly matches the <span class="highlight">gold answer</span>, return True; otherwise, fall back to<br>
+    <span class="highlight">Math-Verify</span>'s verify function.<br>
+    • Wrap the <span class="highlight">gold answer</span> in <span class="highlight">boxed{}</span> and run the verification to obtain the final result.</p>
+    <p>We find that wrapping the <span class="highlight">gold answer</span> with <span class="highlight">boxed{}</span> is a crucial step. Parsing the <span class="highlight">gold answer</span> directly can alter the mathematical expression.</p>
+  </div>
+  <div class="translation">
+    <p>• 提取推理过程后出现的答案<br>
+    • 使用<span class="highlight">Math-Verify的解析器</span>解析答案并获取其字符串表示<br>
+    • 若字符串表示直接匹配<span class="highlight">标准答案(gold answer)</span>，返回True；否则回退到<br>
+    <span class="highlight">Math-Verify</span>的验证函数<br>
+    • 将<span class="highlight">标准答案(gold answer)</span>包裹在<span class="highlight">boxed{}</span>中并执行验证以获取最终结果</p>
+    <p>我们发现用<span class="highlight">boxed{}</span>包装<span class="highlight">标准答案(gold answer)</span>是关键步骤。直接解析<span class="highlight">标准答案</span>可能改变数学表达式。</p>
+  </div>
+
+  <h3>7.2 Code Sandboxes</h3>
+  <div class="original">
+    <p>For unit test execution, we constructed a highly efficient and secure local <span class="highlight">code sandbox</span> based on Live-CodeBench's implementation, leveraging <span class="highlight">subprocess</span> processing. This <span class="highlight">sandbox</span> supports various testing methods, including standard input-output testing, solution function unit testing, and assertion-based tests.</p>
+    <p>To further enhance its security and robustness, we implemented the following measures:</p>
+    <p>• <span class="highlight">Syntax validation</span>: We first validate submitted solutions using <span class="highlight">Abstract Syntax Trees (AST)</span>. If syntax errors are detected, the <span class="highlight">sandbox</span> immediately terminates the test and returns False.<br>
+    • <span class="highlight">Memory monitoring</span>: During training, we identified potential <span class="highlight">memory leak</span> risks in some generated solutions. To mitigate this, we integrated a <span class="highlight">memory monitoring</span> mechanism for each test process. If a process exceeds 50GB of memory usage, the <span class="highlight">sandbox</span> proactively terminates the test and returns False, effectively preventing resource exhaustion.<br>
+    • <span class="highlight">Parallel stability optimization</span>: Initially, we used asynchronous testing combined with process pools for <span class="highlight">parallel execution</span>. However, we later discovered that the <span class="highlight">sandbox</span> could crash under this setup, leading to incorrect test results. To resolve this, we revised our approach to rely solely on <span class="highlight">multiprocessing</span>, ensuring stable and efficient <span class="highlight">parallel execution</span>.</p>
+    <p>Additionally, we conducted a performance comparison between our <span class="highlight">sandbox</span> and the <span class="highlight">PRIME sandbox</span>. The results demonstrate the superior effectiveness of our implementation on specific datasets. Notably, the <span class="highlight">PRIME sandbox</span> occasionally misclassified correct solutions as failures, whereas our <span class="highlight">sandbox</span> more accurately evaluated solution correctness.</p>
+    <p>It is also important to note a limitation of our <span class="highlight">sandbox</span> identified during practical usage: it does not currently handle cases where the same input can yield multiple valid outputs. Such cases are common in real-world code testing scenarios involving non-deterministic or open-ended problems.</p>
+  </div>
+  <div class="translation">
+    <p>对于单元测试执行，我们基于Live-CodeBench的实现构建了高效安全的本地<span class="highlight">代码沙盒(code sandbox)</span>，利用<span class="highlight">子进程(subprocess)</span>处理。该<span class="highlight">沙盒(sandbox)</span>支持多种测试方法，包括标准输入输出测试、解决方案函数单元测试和基于断言的测试。</p>
+    <p>为增强安全性和鲁棒性，我们实施了以下措施：</p>
+    <p>• <span class="highlight">语法验证(Syntax validation)</span>：首先使用<span class="highlight">抽象语法树(AST)</span>验证提交的解决方案。若检测到语法错误，<span class="highlight">沙盒</span>立即终止测试并返回False<br>
+    • <span class="highlight">内存监控(Memory monitoring)</span>：训练中发现某些生成方案存在<span class="highlight">内存泄漏(memory leak)</span>风险。为此我们为每个测试进程集成<span class="highlight">内存监控</span>机制。若进程内存使用超过50GB，<span class="highlight">沙盒</span>主动终止测试并返回False，有效防止资源耗尽<br>
+    • <span class="highlight">并行稳定性优化(Parallel stability optimization)</span>：最初采用异步测试结合进程池实现<span class="highlight">并行执行(parallel execution)</span>，但发现该设置会导致<span class="highlight">沙盒</span>崩溃。为此我们改用纯<span class="highlight">多进程(multiprocessing)</span>方案，确保稳定高效的<span class="highlight">并行执行</span></p>
+    <p>此外，我们将该<span class="highlight">沙盒</span>与<span class="highlight">PRIME沙盒</span>进行性能对比。结果表明在特定数据集上我们的实现效果更优。<span class="highlight">PRIME沙盒</span>偶尔会将正确方案误判为失败，而我们的<span class="highlight">沙盒</span>能更准确评估方案正确性。</p>
+    <p>需注意实际使用中发现的一个局限：当前<span class="highlight">沙盒</span>无法处理同一输入产生多个有效输出的情况，这在涉及非确定性或开放问题的真实代码测试中很常见。</p>
+  </div>
+
+  <h3>8 Experiments</h3>
+  <div class="original">
+    <p>In this section, we present the experimental results of our three models: <span class="highlight">Skywork-OR1-Math-7B</span>, <span class="highlight">Skywork-OR1-7B</span>, and <span class="highlight">Skywork-OR1-32B</span>. We begin with the details of the training configurations, followed by an analysis of the training results. Finally, we discuss the evaluation outcomes.</p>
+  </div>
+  <div class="translation">
+    <p>本节展示三个模型的实验结果：<span class="highlight">Skywork-OR1-Math-7B</span>、<span class="highlight">Skywork-OR1-7B</span>和<span class="highlight">Skywork-OR1-32B</span>。首先说明训练配置细节，接着分析训练结果，最后讨论评估结果。</p>
+  </div>
+
+  <h3>8.1 Training and Evaluation Details</h3>
+  <div class="original">
+    <p><span class="highlight">Training Configurations</span> Below, we describe the training configurations of our <span class="highlight">Skywork</span> models. The 7B and 32B models are fine-tuned based on <span class="highlight">DeepSeek-R1-Distill-Qwen-7B</span> and <span class="highlight">DeepSeek-R1-Distill-Qwen-32B</span>, respectively. We collect math and code problems from various sources and apply comprehensive preprocessing, difficulty filtering, and quality control. This ensures a problem mixture that is verifiable, valid, and challenging. See Section 6 for details. Based on this curated mixture, all three models are fine-tuned by optimizing the <span class="highlight">policy loss</span> 
+    <div class="formula-container">
+      (3.1)
+    </div>
+    with a constant <span class="highlight">learning rate</span> of 1e-6, <span class="highlight">clip ratio</span> of 0.2, <span class="highlight">target entropy</span> of 0.2, <span class="highlight">sampling temperature</span> of 1.0, and <span class="highlight">rejection sampling</span>. Notably, we do not apply any <span class="highlight">KL loss</span> in our training process, as 35</p>
+  </div>
+  <div class="translation">
+    <p><span class="highlight">训练配置(Training Configurations)</span> 下面描述<span class="highlight">Skywork</span>模型的训练配置。7B和32B模型分别基于<span class="highlight">DeepSeek-R1-Distill-Qwen-7B</span>和<span class="highlight">DeepSeek-R1-Distill-Qwen-32B</span>微调。我们从多源收集数学和编程问题，经过预处理、难度筛选和质量控制，确保问题集可验证、有效且具挑战性（详见第6节）。基于此定制问题集，所有模型通过优化<span class="highlight">策略损失(policy loss)</span>
+    <div class="formula-container">
+      (3.1)
+    </div>
+    进行微调，配置恒定<span class="highlight">学习率(learning rate)</span>1e-6、<span class="highlight">剪切比(clip ratio)</span>0.2、<span class="highlight">目标熵(target entropy)</span>0.2、<span class="highlight">采样温度(sampling temperature)</span>1.0，并采用<span class="highlight">拒绝采样(rejection sampling)</span>。值得注意的是，训练中未使用任何<span class="highlight">KL散度损失(KL loss)</span>，因为35</p>
+  </div>
+</div>
+
+<div class="section">
+  <h2>摘要总结</h2>
+  <p>本文核心内容分为三部分：</p>
+  <ol>
+    <li><strong>数学答案验证机制</strong>：提出四步验证流程，强调使用boxed{}包装标准答案以防止表达式解析错误</li>
+    <li><strong>代码沙盒系统</strong>：构建基于子进程的安全执行环境，集成AST语法验证、50GB内存监控和纯多进程并行优化三重防护，性能优于PRIME沙盒</li>
+    <li><strong>模型实验配置</strong>：Skywork系列模型基于DeepSeek蒸馏模型微调，使用定制数学编程问题集，配置特定策略损失(公式3.1)和拒绝采样，未使用KL损失</li>
+  </ol>
+  <p>关键技术突破包括：1) boxed{}包装解决数学表达式解析歧义 2) 内存监控防止资源耗尽 3) 多进程方案提升沙盒稳定性。</p>
+</div>
+
+<div class="section">
+  <h2>术语识别</h2>
+  <dl class="term-list">
+    <dt><span class="highlight">Math-Verify</span> (数学验证工具)</dt>
+    <dd>用于解析和验证数学答案的系统工具，包含解析器(parser)和验证函数(verify function)两个核心组件，能处理数学表达式的字符串表示和逻辑等价性验证</dd>
+    
+    <dt><span class="highlight">Gold Answer</span> (标准答案)</dt>
+    <dd>经过权威验证的正确答案基准，在验证流程中需用boxed{}包装以防止解析变形，如分数表达式1/2直接解析可能变为0.5</dd>
+    
+    <dt><span class="highlight">Code Sandbox</span> (代码沙盒)</dt>
+    <dd>基于subprocess的安全代码执行环境，支持输入输出测试、函数测试和断言测试。核心安全机制包括：<br>
+    - <span class="highlight">AST Validation</span>：通过抽象语法树进行语法错误检测<br>
+    - <span class="highlight">Memory Monitoring</span>：50GB内存阈值防护机制<br>
+    - <span class="highlight">Multiprocessing</span>：替代进程池的稳定并行方案</dd>
+    
+    <dt><span class="highlight">Policy Loss</span> (策略损失)</dt>
+    <dd>模型微调使用的损失函数(公式3.1)，配合以下超参数：<br>
+    - <span class="highlight">Clip Ratio</span> (剪切比)：0.2，限制策略更新幅度<br>
+    - <span class="highlight">Target Entropy</span> (目标熵)：0.2，控制策略随机性<br>
+    - <span class="highlight">Sampling Temperature</span> (采样温度)：1.0，调节输出多样性</dd>
+    
+    <dt><span class="highlight">Rejection Sampling</span> (拒绝采样)</dt>
+    <dd>模型训练中的采样策略，通过拒绝低质量样本提升数据质量，与KL损失形成对比方案</dd>
+    
+    <dt><span class="highlight">Skywork Models</span> (Skywork模型系列)</dt>
+    <dd>包括7B/32B参数规模的OR1系列：<br>
+    - <span class="highlight">Skywork-OR1-Math-7B</span>：专注数学能力的7B模型<br>
+    - <span class="highlight">DeepSeek-R1-Distill-Qwen</span>：基础模型，提供32B和7B两种蒸馏版本</dd>
+  </dl>
+</div>
+
+</body>
+</html>

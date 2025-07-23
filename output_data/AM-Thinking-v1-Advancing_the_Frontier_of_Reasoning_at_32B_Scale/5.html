@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>论文解析报告</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        body { font-family: 'Segoe UI', Arial, sans-serif; line-height: 1.6; }
+        .section-title { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 5px; }
+        .original { background-color: #f8f9fa; border: 1px solid #ced4da; padding: 15px; margin: 10px 0; border-radius: 5px; }
+        .translation { background-color: #e8f5e9; border: 1px solid #81c784; padding: 15px; margin: 10px 0; border-radius: 5px; }
+        .figure { background-color: #fffde7; padding: 15px; margin: 20px 0; border-radius: 5px; text-align: center; }
+        .term { color: #e53935; font-weight: bold; }
+        .formula-container { text-align: center; margin: 20px 0; }
+        .formula-label { font-style: italic; margin-top: 5px; }
+        .explanation { margin: 15px 0; padding: 10px; background: #f5f5f5; border-left: 4px solid #3498db; }
+        .term-list li { margin: 10px 0; }
+    </style>
+</head>
+<body>
+
+<!-- 内容理解 -->
+<section>
+    <h2 class="section-title">内容理解</h2>
+    <div class="explanation">
+        <p>该文本描述了AI模型训练中的两个关键技术：</p>
+        <ol>
+            <li><strong>奖励评分机制</strong>：针对两类查询采用不同评分策略
+                <ul>
+                    <li>可验证查询：二元奖励（0/1），需满足所有指令</li>
+                    <li>不可验证查询：基于奖励模型的三维评分（帮助性/正确性/连贯性）</li>
+                </ul>
+            </li>
+            <li><strong>监督微调(SFT)实施</strong>：
+                <ul>
+                    <li>使用284万样本覆盖5大领域（数学/代码/科学/指令遵循/通用聊天）</li>
+                    <li>采用数据平衡技术：低样本领域上采样</li>
+                    <li>关键训练配置：32k上下文长度，余弦学习率调度，仅优化最终响应</li>
+                </ul>
+            </li>
+            <li><strong>强化学习(RL)优化</strong>：通过查询通过率筛选训练数据（0 < 通过率 < 1），确保难度适宜</li>
+        </ol>
+    </div>
+</section>
+
+<!-- 内容翻译 -->
+<section>
+    <h2 class="section-title">内容翻译</h2>
+    
+    <!-- 3.2节翻译 -->
+    <div class="original">
+        <h3>3.2 Non-Verifiable Queries</h3>
+        <p>For queries lacking objective verification criteria, reward score is conducted using a reward model-based approach. We employ reward model, which provides three distinct scores for each generated response, measuring helpfulness, correctness, and coherence. Let \( S_{Help} \), \( S_{Corr} \), and \( S_{Coher} \) denote the scores for helpfulness, correctness, and coherence, respectively. The final reward score ( \( S_{final} \) ) for a response is then computed as the average of these three scores.</p>
+    </div>
+    <div class="translation">
+        <h3>3.2 不可验证查询</h3>
+        <p>对于缺乏客观验证标准的查询，采用基于<strong class="term">奖励模型（reward model）</strong>的方法进行奖励评分。我们使用的奖励模型为每个生成响应提供三个独立评分，分别衡量<strong class="term">帮助性（helpfulness）</strong>、<strong class="term">正确性（correctness）</strong>和<strong class="term">连贯性（coherence）</strong>。用 \( S_{Help} \)、\( S_{Corr} \) 和 \( S_{Coher} \) 分别表示帮助性、正确性和连贯性的分数，则响应的最终奖励分数 \( S_{final} \) 计算为这三个分数的平均值。</p>
+    </div>
+    
+    <!-- 公式 -->
+    <div class="formula-container">
+        \\[ S_{final} = \\frac{S_{Help} + S_{Corr} + S_{Coher}}{3} \\]
+        <div class="formula-label">公式1: 不可验证查询的最终奖励计算公式</div>
+    </div>
+    
+    <!-- 4.1节翻译 -->
+    <div class="original">
+        <h3>4 Approach</h3>
+        <h4>4.1 Supervised Fine-Tuning</h4>
+        <p>Data Our Supervised Fine-Tuning (SFT) training uses approximately 2.84 million samples, covering five major categories: math, code, science, instruction follow, and general chat. Figure 4 illustrates the distribution of SFT data at both the instance level and the token level. For some data with relatively fewer samples, such as Instruction Follow, we upsample them by repeating the data several times during training to ensure balanced learning across tasks. In the case of more challenging queries, we include multiple synthetic responses to enhance diversity and robustness in training.</p>
+    </div>
+    <div class="translation">
+        <h3>4 方法</h3>
+        <h4>4.1 监督微调</h4>
+        <p>数据：我们的<strong class="term">监督微调（Supervised Fine-Tuning, SFT）</strong>训练使用约284万个样本，涵盖五大类别：数学、代码、科学、指令遵循和通用聊天。图4展示了SFT数据在实例级别和词元级别的分布。对于样本量相对较少的类别（如指令遵循），我们在训练期间通过多次重复数据对其进行<strong class="term">上采样（upsampling）</strong>，以确保跨任务的平衡学习。针对更具挑战性的查询，我们包含多个合成响应以增强训练的多样性和鲁棒性。</p>
+    </div>
+    
+    <!-- 图示 -->
+    <div class="figure">
+        <p><strong>Figure 4: Instance Level Distribution (left) and Token Level Distribution (right) during SFT.</strong></p>
+        <p>图4：SFT期间的实例级别分布（左）与词元级别分布（右）</p>
+        <p>值得注意的是，比例是按响应而非查询计算的，因为单个查询在我们的训练集中可能对应多个响应。</p>
+    </div>
+    
+    <!-- 训练配置翻译 -->
+    <div class="original">
+        <p>Training Configuration We conduct SFT based on Qwen2.5-32B[6,7] base model. We observed supervised fine-tuning pattern shifts[50] (See section 5.3 for more details), which prompted us to adopt a larger learning rate and batch size to ensure stable convergence and effective learning. The training uses a learning rate of 8e-5, a maximum sequence length of 32k with sequence packing, and discards samples that exceed 32k tokens. The global batch size is set to 64, and the model is trained for 2 epochs. We employ a cosine warmup strategy, with warmup steps set to 5% of total training steps, and the learning rate decays to 0 thereafter. For multi-turn dialogue data, only the final response, which contains the reasoning process, is used as the training target and contributes to the loss, in order to focus learning on the reasoning component.</p>
+    </div>
+    <div class="translation">
+        <p>训练配置：我们在Qwen2.5-32B[6,7]基础模型上进行SFT。观察到<strong class="term">监督微调模式偏移（supervised fine-tuning pattern shifts）</strong>[50]（详见第5.3节），这促使我们采用更大的学习率和批量大小以确保稳定收敛和有效学习。训练使用8e-5的学习率，通过序列打包实现最大32k的序列长度，并丢弃超过32k词元的样本。全局批量大小设置为64，模型训练2个周期。采用<strong class="term">余弦预热策略（cosine warmup strategy）</strong>，预热步数设为总训练步数的5%，之后学习率衰减至0。对于多轮对话数据，仅将包含推理过程的最终响应作为训练目标并参与损失计算，以聚焦于推理组件的学习。</p>
+    </div>
+    
+    <!-- 4.2节翻译 -->
+    <div class="original">
+        <h4>4.2 Reinforcement Learning</h4>
+        <p>We observe that selecting training queries of appropriate difficulty plays a crucial role in ensuring stable performance improvements during the reinforcement learning (RL) stage[51]. To this end, prior to RL, we filter our math and code queries based on their pass rates obtained from the SFT model: we retain only those queries with pass rates strictly between 0 and 1. This ensures that the training data remains sufficiently challenging to drive learning, while avoiding instances that are...</p>
+    </div>
+    <div class="translation">
+        <h4>4.2 强化学习</h4>
+        <p>我们观察到，在<strong class="term">强化学习（Reinforcement Learning, RL）</strong>阶段，选择适当难度的训练查询对确保稳定的性能提升至关重要[51]。为此，在RL之前，我们根据SFT模型获得的<strong class="term">通过率（pass rates）</strong>筛选数学和代码查询：仅保留通过率严格介于0和1之间的查询。这确保训练数据具有足够的挑战性以驱动学习，同时避免...</p>
+    </div>
+</section>
+
+<!-- 摘要总结 -->
+<section>
+    <h2 class="section-title">摘要总结</h2>
+    <div class="explanation">
+        <p>本文核心内容聚焦AI模型训练的两大关键技术：</p>
+        <ul>
+            <li><strong>双轨奖励机制</strong>：
+                <ul>
+                    <li>可验证查询：采用二元奖励（0/1），需完全遵循指令</li>
+                    <li>不可验证查询：基于三维评分（帮助性/正确性/连贯性）的奖励模型，最终奖励为三者的算术平均</li>
+                </ul>
+            </li>
+            <li><strong>监督微调(SFT)实施</strong>：
+                <ul>
+                    <li>使用284万样本覆盖5大领域，通过上采样解决数据不平衡问题</li>
+                    <li>关键配置：32k上下文长度，余弦学习率调度（预热5%），仅优化最终推理响应</li>
+                </ul>
+            </li>
+            <li><strong>强化学习(RL)优化</strong>：基于通过率（0 < rate < 1）筛选数学/代码查询，确保训练难度适宜</li>
+        </ul>
+    </div>
+</section>
+
+<!-- 术语识别 -->
+<section>
+    <h2 class="section-title">术语解释</h2>
+    <ul class="term-list">
+        <li><span class="term">奖励模型（Reward Model）</span>：评估AI生成响应质量的机器学习模型，本文中输出帮助性、正确性、连贯性三个维度的评分</li>
+        <li><span class="term">监督微调（Supervised Fine-Tuning, SFT）</span>：在预训练模型基础上使用标注数据进行有监督训练，使模型适应特定任务</li>
+        <li><span class="term">上采样（Upsampling）</span>：通过重复少数类别样本解决数据不平衡的技术（如指令遵循类别）</li>
+        <li><span class="term">余弦预热策略（Cosine Warmup Strategy）</span>：学习率调度技术，初期线性增加学习率（预热阶段），后按余弦函数衰减至0</li>
+        <li><span class="term">通过率（Pass Rate）</span>：查询被成功解决的比例，用于筛选0-100%成功率的中间难度样本</li>
+        <li><span class="term">序列打包（Sequence Packing）</span>：将多个短样本拼接至最大长度（32k）以提高计算效率的技术</li>
+        <li><span class="term">模式偏移（Pattern Shifts）</span>：微调过程中出现的训练动态异常现象，需调整超参数应对</li>
+    </ul>
+</section>
+
+</body>
+</html>

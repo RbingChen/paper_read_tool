@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>OneRec技术报告解析</title>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<style>
+  body { font-family: 'Segoe UI', Arial, sans-serif; line-height: 1.6; }
+  .original { background-color: #f0f0f0; border: 1px solid #ccc; padding: 15px; margin-bottom: 5px; border-radius: 5px; }
+  .translation { background-color: #e0ffe0; border: 1px solid #0a0; padding: 15px; margin-bottom: 20px; border-radius: 5px; }
+  .formula-container { background-color: #ffffe0; padding: 15px; margin: 20px 0; text-align: center; border-radius: 5px; }
+  .formula { display: inline-block; margin: 10px auto; }
+  .term { color: red; font-weight: bold; }
+  h1, h2, h3 { color: #2c3e50; }
+  section { margin-bottom: 30px; }
+  dt { font-weight: bold; margin-top: 10px; }
+</style>
+</head>
+<body>
+
+<h1>OneRec技术报告解析</h1>
+
+<!-- 内容理解 -->
+<section>
+  <h2>内容理解</h2>
+  <p>该技术报告详细描述了OneRec推荐系统的四大核心交互路径架构：<strong class="term">用户静态路径（User Static Pathway）</strong>、<strong class="term">短期路径（Short-term Pathway）</strong>、<strong class="term">正反馈路径（Positive-feedback Pathway）</strong>和<strong class="term">终身路径（Lifelong Pathway）</strong>。每个路径通过特定的神经网络结构处理不同类型的用户数据：</p>
+  <ul>
+    <li><strong>用户静态路径</strong>：提取用户固有特征（如年龄、性别）生成核心表征</li>
+    <li><strong>短期路径</strong>：处理近期交互行为（20条记录），捕捉即时偏好</li>
+    <li><strong>正反馈路径</strong>：分析高参与度行为（256条记录），强化正向信号</li>
+    <li><strong>终身路径</strong>：通过分层聚类压缩超长历史记录（10万条），解决计算瓶颈</li>
+  </ul>
+  <p>关键技术亮点包括：使用<strong class="term">LeakyReLU激活函数</strong>的全连接层进行特征变换，对视频交互特征进行维度优化设计，以及采用动态<strong class="term">分层K-means聚类（hierarchical K-means clustering）</strong>算法实现行为压缩。</p>
+</section>
+
+<!-- 内容翻译 -->
+<section>
+  <h2>内容翻译</h2>
+  
+  <div class="original">OneRec Technical Report</div>
+  <div class="translation">OneRec技术报告</div>
+  
+  <div class="original">interaction patterns: <strong class="term">user static pathway</strong>, <strong class="term">short-term pathway</strong>, <strong class="term">positive-feedback pathway</strong>, and <strong class="term">lifelong pathway</strong>.</div>
+  <div class="translation">交互模式：<strong class="term">用户静态路径（user static pathway）</strong>、<strong class="term">短期路径（short-term pathway）</strong>、<strong class="term">正反馈路径（positive-feedback pathway）</strong>和<strong class="term">终身路径（lifelong pathway）</strong>。</div>
+  
+  <div class="original"><strong class="term">User Static Pathway</strong> The <strong class="term">user static pathway</strong> generates a compact representation of core user characteristics, incorporating <strong class="term">user identifier (uid)</strong>, <strong class="term">age (age)</strong>, <strong class="term">gender (gender)</strong>, etc., which is then transformed into the model’s hidden dimension:</div>
+  <div class="translation"><strong class="term">用户静态路径（User Static Pathway）</strong>：该路径生成核心用户特征的紧凑表示，包含<strong class="term">用户标识符（user identifier, uid）</strong>、<strong class="term">年龄（age）</strong>、<strong class="term">性别（gender）</strong>等，并通过以下方式转换到模型隐藏维度：</div>
+  
+  <div class="formula-container">
+    <div class="formula">\\( f_\\mathbf{u} = [e_{uid}; e_{gender}; e_{age}; \\cdots] \\) (9)</div>
+    <div class="formula">\\( \\mathbf{h}_\\mathbf{u} = \\text{Dense}(\\text{LeakyReLU}(\\text{Dense}(f_\\mathbf{u}))) \\) (10)</div>
+  </div>
+  <div class="translation">其中 \\( e_{uid}, e_{gender}, e_{age} \\in \\mathbb{R}^{64} \\) 且 \\( \\mathbf{h}_\\mathbf{u} \\in \\mathbb{R}^{1 \\times d_{\\text{model}}} \\)</div>
+  
+  <div class="original"><strong class="term">Short-term Pathway</strong> The <strong class="term">short-term behavior pathway</strong> processes the most recent (\\( L_s = 20 \\)) user interactions, incorporating <strong class="term">video identifier</strong> (which can be represented as <strong class="term">video identifiers vid</strong> or <strong class="term">semantic identifiers sid</strong> as described in Section 2.1.2), <strong class="term">author identifiers (aid)</strong>, <strong class="term">tags (tag)</strong>, <strong class="term">timestamps (ts)</strong>, <strong class="term">playtime (playtime)</strong>, <strong class="term">duration (dur)</strong>, <strong class="term">labels (label)</strong>, user interactions with each video, including like, follow, forward, dislike, comment, profile entry, etc.) This pathway produces representations that capture immediate user preferences and contextual factors influencing current behavior patterns:</div>
+  <div class="translation"><strong class="term">短期路径（Short-term Pathway）</strong>：该路径处理最近的（\\( L_s = 20 \\)）用户交互行为，包含<strong class="term">视频标识符（video identifier）</strong>（可表示为<strong class="term">视频ID（vid）</strong>或<strong class="term">语义ID（sid）</strong>，见2.1.2节）、<strong class="term">作者标识符（author identifiers, aid）</strong>、<strong class="term">标签（tags, tag）</strong>、<strong class="term">时间戳（timestamps, ts）</strong>、<strong class="term">播放时长（playtime）</strong>、<strong class="term">视频时长（duration, dur）</strong>、<strong class="term">交互标签（label）</strong>（包括点赞、关注、转发、不喜欢、评论、个人主页访问等）。该路径生成的表征能捕捉即时用户偏好和影响当前行为模式的上下文因素：</div>
+  
+  <div class="formula-container">
+    <div class="formula">\\( f_\\mathbf{s} = [e^\\mathbf{s}_{vid}; e^\\mathbf{s}_{aid}; e^\\mathbf{s}_{tag}; e^\\mathbf{s}_{ts}; e^\\mathbf{s}_{playtime}; e^\\mathbf{s}_{dur}; e^\\mathbf{s}_{label}] \\) (11)</div>
+    <div class="formula">\\( \\mathbf{h}_\\mathbf{s} = \\text{Dense}(\\text{LeakyReLU}(\\text{Dense}(f_\\mathbf{s}))) \\) (12)</div>
+  </div>
+  <div class="original">The feature dimensions are organized as follows: <strong class="term">video embeddings</strong> \\( e^\\mathbf{s}_{vid} \\) match the model dimension \\( d_{\\text{model}} \\), <strong class="term">author embeddings</strong> \\( e^\\mathbf{s}_{aid} \\) use 512 dimensions, while all remaining features employ 128 dimensions. All features span \\( L_s \\) sequence positions, yielding the final representation \\( \\mathbf{h}_\\mathbf{s} \\in \\mathbb{R}^{L_s \\times d_{\\text{model}}} \\).</div>
+  <div class="translation">特征维度配置如下：<strong class="term">视频嵌入向量（video embeddings）</strong> \\( e^\\mathbf{s}_{vid} \\) 匹配模型维度 \\( d_{\\text{model}} \\)，<strong class="term">作者嵌入向量（author embeddings）</strong> \\( e^\\mathbf{s}_{aid} \\) 使用512维，其余特征均采用128维。所有特征跨越 \\( L_s \\) 个序列位置，最终生成表征 \\( \\mathbf{h}_\\mathbf{s} \\in \\mathbb{R}^{L_s \\times d_{\\text{model}}} \\)。</div>
+  
+  <div class="original"><strong class="term">Positive-feedback Pathway</strong> The <strong class="term">positive-feedback behavior pathway</strong> operates on a sequence of high-engagement interactions (\\( L_p = 256 \\)). The pathway maintains the established dimensional structure:</div>
+  <div class="translation"><strong class="term">正反馈路径（Positive-feedback Pathway）</strong>：该路径处理高参与度交互序列（\\( L_p = 256 \\)），保持既定维度结构：</div>
+  
+  <div class="formula-container">
+    <div class="formula">\\( f_\\mathbf{p} = [e^\\mathbf{p}_{vid}; e^\\mathbf{p}_{aid}; e^\\mathbf{p}_{tag}; e^\\mathbf{p}_{ts}; e^\\mathbf{p}_{playtime}; e^\\mathbf{p}_{dur}; e^\\mathbf{p}_{label}] \\) (13)</div>
+    <div class="formula">\\( \\mathbf{h}_\\mathbf{p} = \\text{Dense}(\\text{LeakyReLU}(\\text{Dense}(f_\\mathbf{p}))) \\) (14)</div>
+  </div>
+  <div class="original">All features span \\( L_p \\) sequence positions, yielding the final representation \\( \\mathbf{h}_\\mathbf{p} \\in \\mathbb{R}^{L \\times d_{\\text{model}}} \\).</div>
+  <div class="translation">所有特征跨越 \\( L_p \\) 个序列位置，生成最终表征 \\( \\mathbf{h}_\\mathbf{p} \\in \\mathbb{R}^{L \\times d_{\\text{model}}} \\)。</div>
+  
+  <div class="original"><strong class="term">Lifelong Pathway</strong> The <strong class="term">lifelong behavior pathway</strong> is designed to process ultra-long user interaction histories with sequences of up to 100,000 videos. Directly applying <strong class="term">attention mechanisms</strong> to such sequences is computationally prohibitive. This pathway employs a two-stage <strong class="term">hierarchical compression strategy</strong> inspired by our previous work (Si et al., 2024).</div>
+  <div class="translation"><strong class="term">终身路径（Lifelong Pathway）</strong>：该路径设计用于处理超长用户交互历史（最高10万条视频序列）。直接应用<strong class="term">注意力机制（attention mechanisms）</strong>计算不可行，因此采用受先前工作（Si等人，2024）启发的两阶段<strong class="term">分层压缩策略（hierarchical compression strategy）</strong>。</div>
+  
+  <div class="original"><strong class="term">Behavior Compression</strong> Using the <strong class="term">multimodal content representations</strong> described in Section 2.1.1, we perform <strong class="term">hierarchical K-means clustering</strong> on each user’s interaction sequence. To balance computational efficiency and model effectiveness, we dynamically adjust the number of clusters by setting the cluster count for each step to \\( \\lfloor 3 \\sqrt{|D|} \\rfloor \\), where \\( |D| \\) is the number of items in the current data. This is an empirically determined setting. The clustering process terminates when the number of items in the current cluster does not exceed a preset threshold \\( M \\). Upon termination, we select the item closest to each <strong class="term">cluster center</strong> as the representative of that cluster.</div>
+  <div class="translation"><strong class="term">行为压缩（Behavior Compression）</strong>：利用2.1.1节描述的<strong class="term">多模态内容表征（multimodal content representations）</strong>，对每个用户的交互序列执行<strong class="term">分层K均值聚类（hierarchical K-means clustering）</strong>。为平衡计算效率和模型效果，动态调整聚类数量：每一步聚类数设为 \\( \\lfloor 3 \\sqrt{|D|} \\rfloor \\)，其中 \\( |D| \\) 是当前数据项数量（此为经验设定）。当当前聚类中的项目数不超过预设阈值 \\( M \\) 时终止聚类过程，并选择最接近<strong class="term">聚类中心（cluster center）</strong>的项目作为该聚类的代表。</div>
+</section>
+
+<!-- 摘要总结 -->
+<section>
+  <h2>摘要总结</h2>
+  <p>OneRec系统通过四类专业化路径处理用户行为数据：</p>
+  <ol>
+    <li><strong>用户静态路径</strong>：整合用户固有属性（UID/年龄/性别），通过全连接层生成64维嵌入，输出维度为 \\( \\mathbb{R}^{1 \\times d_{\\text{model}}} \\)</li>
+    <li><strong>短期路径</strong>：处理最近20次交互，融合视频/作者/标签/时长等128-512维特征，输出 \\( \\mathbb{R}^{20 \\times d_{\\text{model}}} \\) 序列表征</li>
+    <li><strong>正反馈路径</strong>：分析256条高参与度记录，保持与短期路径相同的特征结构</li>
+    <li><strong>终身路径</strong>：创新性采用分层K-means聚类（动态聚类数 \\( \\lfloor 3\\sqrt{|D|} \\rfloor \\))，压缩10万级历史行为，解决注意力机制计算瓶颈</li>
+  </ol>
+  <p>关键技术共性：所有路径均采用<strong class="term">Dense-LeakyReLU-Dense</strong>结构进行特征变换，通过维度优化（视频嵌入匹配模型维、作者嵌入512维、其他128维）平衡表达力与计算效率。</p>
+</section>
+
+<!-- 术语识别 -->
+<section>
+  <h2>术语解释</h2>
+  <dl>
+    <dt><strong class="term">用户静态路径（User Static Pathway）</strong></dt>
+    <dd>处理用户固有静态特征的神经网络路径，输入包括用户ID、年龄、性别等，通过嵌入层和全连接网络生成用户核心表征。数学表达见公式(9)-(10)。</dd>
+    
+    <dt><strong class="term">短期路径（Short-term Pathway）</strong></dt>
+    <dd>处理近期交互行为（默认20条）的模块，整合视频ID、作者、标签、播放时长等多模态特征，捕捉即时用户偏好。特征维度差异化设计见公式(11)-(12)。</dd>
+    
+    <dt><strong class="term">正反馈路径（Positive-feedback Pathway）</strong></dt>
+    <dd>专注分析高参与度行为（默认256条）的路径，结构同短期路径但处理数据不同，用于强化用户显性偏好信号。</dd>
+    
+    <dt><strong class="term">终身路径（Lifelong Pathway）</strong></dt>
+    <dd>处理超长历史行为（10万条级）的压缩架构，采用分层聚类替代直接注意力计算，解决计算复杂度问题。</dd>
+    
+    <dt><strong class="term">分层K均值聚类（Hierarchical K-means Clustering）</strong></dt>

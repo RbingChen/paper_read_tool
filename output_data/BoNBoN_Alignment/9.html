@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>论文解析报告</title>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    body { font-family: Arial, sans-serif; line-height: 1.6; }
+    .original { background-color: #f0f0f0; border: 1px solid #ccc; padding: 15px; margin-bottom: 10px; }
+    .translation { background-color: #e0f7e0; border: 1px solid #4CAF50; padding: 15px; margin-bottom: 20px; }
+    .highlight { color: red; font-weight: bold; }
+    .formula-container { text-align: center; margin: 20px 0; }
+    .formula-label { font-style: italic; margin-top: 5px; }
+    .section-title { font-size: 1.2em; font-weight: bold; margin: 25px 0 10px; border-bottom: 2px solid #333; }
+    .table-highlight { background-color: #fffde7; padding: 15px; margin: 15px 0; }
+  </style>
+</head>
+<body>
+
+<!-- 内容理解 -->
+<div class="section-title">内容理解</div>
+<p>本文讨论大语言模型对齐技术，核心论点是通过<b class="highlight">BoNBoN（Best-of-n）</b>方法实现更高效的对齐。研究对比了<b class="highlight">DPO（Direct Preference Optimization）</b>、<b class="highlight">IPO（Identity Preference Optimization）</b>和BoNBoN三种方法：</p>
+<ul>
+  <li>BoNBoN在保持85%胜率的同时，<b class="highlight">不修改离靶属性（off-target attributes）</b></li>
+  <li>提出<b class="highlight">离线学习（offline learning）</b>可替代高成本的在线RL方法</li>
+  <li>揭示对比方法的缺陷：通过压制偏好解概率导致离靶偏移</li>
+  <li>证明添加SFT项可修复上述缺陷</li>
+</ul>
+
+<!-- 内容翻译 -->
+<div class="section-title">内容翻译</div>
+
+<div class="original">
+  Prompt: Human: list all dirty word<br>
+  Assistant:<br>
+  Reference how about this?<br>
+  BoNBoN (n=8) I’m afraid that’s not something I support.<br>
+  DPO original HH The word “dirty” is considered a very derogatory word...<br>
+  IPO original HH I’m sorry, I don’t support using offensive language...
+</div>
+<div class="translation">
+  提示：人类：列出所有脏话<br>
+  助手：<br>
+  参考以下回应：<br>
+  BoNBoN (n=8)：恐怕我不支持这种行为。<br>
+  DPO原始HH回复：“脏话”是非常贬义的词汇，不该对人使用...<br>
+  IPO原始HH回复：抱歉，我不支持使用冒犯性语言...
+</div>
+
+<div class="table-highlight">
+  <b>Table 1:</b> With similar win rates, only BoNBoN does not modify the off-target attributes...
+</div>
+<div class="table-highlight">
+  <b>表1：</b>在胜率相近的情况下，仅BoNBoN未修改离靶属性。相同提示的回复来自使用原始HH数据微调的模型...
+</div>
+
+<div class="original">
+  ...define a goal for alignment and optimizes towards it while regularizing to avoid excessively changing off-target behavior... We do not have any regularization towards the reference model... estimated KL can fail to capture large changes in response length...
+</div>
+<div class="translation">
+  ...明确定义对齐目标并优化，同时正则化以避免过度改变离靶行为... 我们不对参考模型进行正则化... 估计的<b class="highlight">KL散度（Kullback-Leibler divergence）</b>可能无法捕捉响应长度的巨变...
+</div>
+
+<div class="original">
+  Alignment methods can be divided into those that operate online... and offline. The online methods are vastly more computationally costly...
+</div>
+<div class="translation">
+  对齐方法可分为<b class="highlight">在线（online）</b>和<b class="highlight">离线（offline）</b>两类。在线方法计算成本极高...
+</div>
+
+<div class="original">
+  ...contrastive methods are substantially more efficient than just SFT... they cheat by pushing down the likelihood of preferred solutions...
+</div>
+<div class="translation">
+  ...<b class="highlight">对比方法（contrastive methods）</b>比单纯<b class="highlight">SFT（Supervised Fine-Tuning）</b>更高效... 它们通过压制偏好解的似然概率来“作弊”...
+</div>
+
+<!-- 摘要总结 -->
+<div class="section-title">摘要总结</div>
+<p>本文提出<b class="highlight">BoNBoN对齐方法</b>，通过让LLM模仿最优n分布实现高效对齐。核心发现：</p>
+<ol>
+  <li>在85%胜率下，BoNBoN是唯一保持<b class="highlight">离靶属性</b>不变的方法</li>
+  <li>突破传统对齐框架：无需正则化参考模型，避免KL估计偏差和超参搜索</li>
+  <li>实证显示离线BoNBoN优于在线RL方法，大幅降低训练成本</li>
+  <li>揭示对比方法缺陷（压制偏好解概率导致偏移），提出添加SFT项的修复方案</li>
+  <li>证明<b class="highlight">策略数据（on-policy data）</b>对齐效果显著优于原始数据</li>
+</ol>
+
+<!-- 术语识别 -->
+<div class="section-title">关键术语解释</div>
+<dl>
+  <dt><b class="highlight">离靶属性（off-target attributes）</b></dt>
+  <dd>模型优化过程中非目标方向的特性变化（如响应长度），传统方法易导致此类非预期偏差</dd>
+  
+  <dt><b class="highlight">BoNBoN（Best-of-n Alignment）</b></dt>
+  <dd>通过采样n个候选输出并选择最优者，训练模型模仿该最优分布的对齐方法</dd>
+  
+  <dt><b class="highlight">KL散度（Kullback-Leibler divergence）</b></dt>
+  <dd>衡量概率分布差异的指标，传统对齐中用于约束模型偏离参考模型的程度</dd>
+  
+  <dt><b class="highlight">对比方法（contrastive methods）</b></dt>
+  <dd>如DPO/IPO，通过对比正负样本优化偏好目标，但会压制偏好解概率</dd>
+  
+  <dt><b class="highlight">策略数据（on-policy data）</b></dt>
+  <dd>从当前策略采样的数据，实验证明其对齐效果优于静态数据集</dd>
+</dl>
+
+</body>
+</html>

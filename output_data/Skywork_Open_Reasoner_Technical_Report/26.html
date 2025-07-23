@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>论文解析报告</title>
+  <style>
+    body { font-family: Arial, sans-serif; line-height: 1.6; margin: 20px; }
+    h1 { color: #2c3e50; text-align: center; }
+    h2 { color: #3498db; border-bottom: 2px solid #3498db; padding-bottom: 5px; }
+    .original { background-color: lightgrey; border: 1px solid grey; padding: 15px; margin: 15px 0; border-radius: 5px; }
+    .translation { background-color: lightgreen; border: 1px solid green; padding: 15px; margin: 15px 0; border-radius: 5px; }
+    .figure { background-color: yellow; padding: 15px; margin: 15px 0; border-radius: 5px; }
+    .term { font-weight: bold; color: red; }
+    .formula { text-align: center; margin: 20px 0; padding: 10px; background-color: #f8f9fa; border: 1px dashed #ccc; }
+    .formula-number { display: block; text-align: center; font-style: italic; margin-top: 5px; }
+    section { margin-bottom: 30px; }
+    ul { list-style-type: none; padding-left: 0; }
+    li { margin-bottom: 10px; }
+  </style>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <h1>论文解析报告</h1>
+  
+  <!-- 内容理解部分 -->
+  <section>
+    <h2>内容理解</h2>
+    <p>该文本主要分为两部分：第一部分聚焦于<strong class="term">消融实验10 (Ablation Experiments 10)</strong>，研究不同<strong class="term">高剪切比率 (higher-clip ratio)</strong>对强化学习训练的影响；第二部分探讨<strong class="term">训练资源分配 (Training Resource Allocation)</strong>的实证研究。</p>
+    <p>在消融实验10中，基于一个<strong class="term">离策略实验 (off-policy experiment)</strong>（参数：<strong class="term">NSGD</strong>、<strong class="term">DR</strong>、<strong class="term">DT</strong>、<strong class="term">Nreuse</strong> = (4,64,16,1)），初始<strong class="term">剪切比率 (clip ratio)</strong> ε=0.2。实验通过提高高剪切比率（从0.20到0.25、0.265和0.28），同时保持低剪切比率固定，观察对<strong class="term">熵 (entropy)</strong>和<strong class="term">测试性能 (test performance)</strong>的影响。图22结果显示：适当的高剪切比率（如0.25或0.265）能防止<strong class="term">熵崩溃 (entropy collapse)</strong>并提升测试性能；但比率过高（如0.28）会导致熵急剧增加和性能下降，表明最优高剪切比率是任务相关的。</p>
+    <p>第二部分针对<strong class="term">强化学习训练 (RL training)</strong>的资源分配，提出两个核心问题：在固定计算资源下如何提高效率，以及如何分配额外资源以优化性能或效率。训练过程分为<strong class="term">数据rollout (data rollout)</strong>和<strong class="term">策略更新 (policy update)</strong>（含<strong class="term">前向和后向传递 (forward and backward passes)</strong>），总时间公式为 \( t_{\\text{total}} = t_R + t_T + t_O \)。该研究在<strong class="term">长CoT场景 (long CoT scenarios)</strong>中展开，使用消融实验作为证据。</p>
+  </section>
+  
+  <!-- 内容翻译部分 -->
+  <section>
+    <h2>内容翻译</h2>
+    
+    <!-- 段落1 -->
+    <div class="original">
+      <p>Ablation Experiments 10: The Impact of Different Higher-clip Ratios</p>
+      <p>Consider the <strong class="term">off-policy experiment (离策略实验)</strong> in Ablation Experiments 6 with the quadruple (<strong class="term">NSGD</strong>, <strong class="term">DR</strong>, <strong class="term">DT</strong>, <strong class="term">Nreuse</strong>) = (4,64,16,1), which exhibits fast <strong class="term">entropy collapse (熵崩溃)</strong> and poor <strong class="term">test performance (测试性能)</strong>. Note that the <strong class="term">clip ratio (剪切比率)</strong> ε=0.2 was applied in this experiment. We raised the <strong class="term">higher-clip ratio (高剪切比率)</strong> from 0.20 to 0.25, 0.265, and 0.28 while keeping the lower-clip ratio fixed at 0.2. We report the results in Figure 22.</p>
+    </div>
+    <div class="translation">
+      <p>消融实验10：不同高剪切比率的影响</p>
+      <p>考虑消融实验6中的<strong class="term">离策略实验 (off-policy experiment)</strong>，参数四元组(<strong class="term">NSGD</strong>、<strong class="term">DR</strong>、<strong class="term">DT</strong>、<strong class="term">Nreuse</strong>) = (4,64,16,1)，该实验表现出快速的<strong class="term">熵崩溃 (entropy collapse)</strong>和较差的<strong class="term">测试性能 (test performance)</strong>。注意，本实验中<strong class="term">剪切比率 (clip ratio)</strong> ε=0.2。我们将<strong class="term">高剪切比率 (higher-clip ratio)</strong>从0.20提高到0.25、0.265和0.28，同时保持低剪切比率固定在0.2。我们在图22中报告结果。</p>
+    </div>
+    
+    <!-- 段落2 -->
+    <div class="original">
+      <p>Our results, shown in Figure 22, indicate that using a properly chosen <strong class="term">higher-clip ratio (高剪切比率)</strong> – e.g., 0.25 or 0.265 – can prevent premature <strong class="term">entropy collapse (熵崩溃)</strong> and lead to better <strong class="term">test performance (测试性能)</strong>. However, it is worth noting that when the higher-clip ratio is set to 0.28, as suggested in [34], entropy increases sharply, resulting in poor test performance. This suggests that the optimal higher-clip ratio is task-dependent.</p>
+    </div>
+    <div class="translation">
+      <p>我们的结果如图22所示，表明使用适当选择的<strong class="term">高剪切比率 (higher-clip ratio)</strong>——例如0.25或0.265——可以防止过早的<strong class="term">熵崩溃 (entropy collapse)</strong>并带来更好的<strong class="term">测试性能 (test performance)</strong>。然而，值得注意的是，当高剪切比率设置为0.28时，如[34]所建议，熵急剧增加，导致测试性能变差。这表明最优高剪切比率是任务相关的。</p>
+    </div>
+    
+    <!-- 图22描述（作为图示部分） -->
+    <div class="figure">
+      <div class="original">
+        <p>Figure 22: The results of Ablation Experiments 10. Increasing the <strong class="term">higher-clip ratio (高剪切比率)</strong> to an adequate value (e.g., 0.25 and 0.265) yields slower convergence and better <strong class="term">test performance (测试性能)</strong>. However, we find that when the higher-clip ratio is set to 0.28 as recommended in [34], then entropy rises sharply and test performance is not improved. Left: Entropy of generated responses during <strong class="term">RL training (强化学习训练)</strong>. Right: Test performance during RL training.</p>
+      </div>
+      <div class="translation">
+        <p>图22：消融实验10的结果。将<strong class="term">高剪切比率 (higher-clip ratio)</strong>增加到适当值（例如0.25和0.265）会产生较慢的收敛和更好的<strong class="term">测试性能 (test performance)</strong>。然而，我们发现当高剪切比率设置为0.28时，如[34]所推荐，熵急剧上升，测试性能没有改善。左图：<strong class="term">强化学习训练 (RL training)</strong>期间生成响应的熵。右图：强化学习训练期间的测试性能。</p>
+      </div>
+    </div>
+    
+    <!-- 段落3 -->
+    <div class="original">
+      <p>5 Empirical Studies on Training Resource Allocation</p>
+      <p>During the <strong class="term">RL training (强化学习训练)</strong> process, our goal is to select hyperparameters that make training both efficient and effective. This objective gives rise to two practical questions:</p>
+      <p>• Given fixed computational resources, how can we improve training efficiency?</p>
+      <p>• Given additional computational resources, how should we allocate them to achieve better test performance or improved training efficiency?</p>
+    </div>
+    <div class="translation">
+      <p>5 训练资源分配的实证研究</p>
+      <p>在<strong class="term">强化学习训练 (RL training)</strong>过程中，我们的目标是选择使训练既高效又有效的超参数。这一目标引出了两个实际问题：</p>
+      <p>• 给定固定的计算资源，我们如何提高训练效率？</p>
+      <p>• 给定额外的计算资源，我们应如何分配它们以实现更好的测试性能或改进的训练效率？</p>
+    </div>
+    
+    <!-- 段落4 -->
+    <div class="original">
+      <p>In this section, we address these questions in the context of long <strong class="term">CoT (Chain of Thought)</strong> scenarios, using results from exhaustive ablation experiments as supporting evidence. The training process of online RL algorithms can generally be divided into two distinct phases: <strong class="term">data rollout (数据rollout)</strong> and <strong class="term">policy update (策略更新)</strong> (which includes both <strong class="term">forward and backward passes (前向和后向传递)</strong>). Let \( t_R \), \( t_T \), and \( t_O \) denote the time spent on rollout, policy update, and other operations (e.g., reward computation, experience generation), respectively. The total time consumption under a <strong class="term">synchronous training framework (同步训练框架)</strong> is:</p>
+      <div class="formula">
+        \\[ t_{\\text{total}} = t_R + t_T + t_O \\]
+        <span class="formula-number">公式 (1)</span>
+      </div>
+    </div>
+    <div class="translation">
+      <p>在本节中，我们在长<strong class="term">CoT (Chain of Thought)</strong>场景的背景下解决这些问题，使用详尽的消融实验结果作为支持证据。在线RL算法的训练过程通常可以分为两个不同阶段：<strong class="term">数据rollout (data rollout)</strong>和<strong class="term">策略更新 (policy update)</strong>（包括<strong class="term">前向和后向传递 (forward and backward passes)</strong>）。让 \( t_R \)、\( t_T \) 和 \( t_O \) 分别表示在rollout、策略更新和其他操作（例如奖励计算、经验生成）上花费的时间。在<strong class="term">同步训练框架 (synchronous training framework)</strong>下，总时间消耗为：</p>
+      <div class="formula">
+        \\[ t_{\\text{total}} = t_R + t_T + t_O \\]
+        <span class="formula-number">公式 (1)</span>
+      </div>
+    </div>
+  </section>
+  
+  <!-- 摘要总结部分 -->
+  <section>
+    <h2>摘要总结</h2>
+    <p>文本核心内容分为两部分：</p>
+    <ul>
+      <li><strong>消融实验10</strong>：研究不同<strong class="term">高剪切比率 (higher-clip ratio)</strong>对强化学习训练的影响。实验基于参数(NSGD, DR, DT, Nreuse) = (4,64,16,1)，初始剪切比率ε=0.2。提高高剪切比率到0.25、0.265和0.28后，结果显示：比率0.25或0.265能防止<strong class="term">熵崩溃 (entropy collapse)</strong>并提升<strong class="term">测试性能 (test performance)</strong>；但比率0.28会导致熵急剧增加和性能下降，证明最优比率是任务相关的（图22展示细节）。</li>
+      <li><strong>训练资源分配</strong>：探讨在<strong class="term">强化学习训练 (RL training)</strong>中优化资源分配的策略。提出两个问题：固定资源下提高效率，以及额外资源下优化性能或效率。训练过程分为<strong class="term">数据rollout (data rollout)</strong>和<strong class="term">策略更新 (policy update)</strong>阶段，总时间公式为 \( t_{\\text{total}} = t_R + t_T + t_O \)，在<strong class="term">长CoT场景 (long CoT scenarios)</strong>中通过消融实验支持分析。</li>
+    </ul>
+    <p>整体上，文本强调超参数选择（如剪切比率）和资源分配对训练效果的关键作用。</p>
+  </section>
+  
+  <!-- 术语识别部分 -->
+  <section>
+    <h2>术语识别</h2>
+    <ul>
+      <li><strong class="term">Ablation Experiments (消融实验)</strong>: 一种实验方法，通过系统性地移除或修改模型组件（如超参数），以研究其对性能的影响。常用于分析算法的鲁棒性和关键因素。</li>
+      <li><strong class="term">Higher-clip ratio (高剪切比率)</strong>: 在强化学习（如PPO算法）中，剪切比率（clip ratio）用于限制策略更新幅度以避免过大变化；高剪切比率特指剪切操作的上限值，影响策略探索和收敛。</li>
+      <li><strong class="term">Entropy collapse (熵崩溃)</strong>: 策略熵（entropy）快速下降的现象，导致探索不足、过早收敛和性能恶化；常发生于强化学习训练中，需通过超参数调整来缓解。</li>
+      <li><strong class="term">Test performance (测试性能)</strong>: 模型在独立测试集上的评估指标（如准确率或奖励值），反映泛化能力。</li>
+      <li><strong class="term">Off-policy experiment (离策略实验)</strong>: 强化学习实验设置，其中行为策略（收集数据）与目标策略（优化策略）不同，用于提高数据效率和探索性。</li>
+      <li><strong class="term">NSGD, DR, DT, Nreuse (参数缩写)</strong>: 实验中的关键参数，可能含义：NSGD（Natural Stochastic Gradient Descent，自然随机梯度下降优化器）、DR（Data Replay，数据重放缓冲区大小）、DT（Decision Time，决策时间步长）、Nreuse（Number of reuse，数据重用次数）。需结合上下文确认具体定义。</li>
+      <li><strong class="term">RL training (强化学习训练)</strong>: 通过交互环境训练智能体策略的过程，涉及奖励最大化。</li>
+      <li><strong class="term">Data rollout (数据rollout)</strong>: 强化学习阶段，智能体在环境中执行策略以收集经验数据（状态、动作、奖励）。</li>
+      <li><strong class="term">Policy update (策略更新)</strong>: 使用收集的数据更新策略参数的过程，通常包括梯度计算和参数优化。</li>
+      <li><strong class="term">Forward and backward passes (前向和后向传递)</strong>: 神经网络计算过程：前向传递计算输出和损失，后向传递通过反向传播计算梯度。</li>
+      <li><strong class="term">Synchronous training framework (同步训练框架)</strong>: 一种训练架构，其中所有操作（如数据收集和更新）按顺序同步执行，确保一致性。</li>
+      <li><strong class="term">CoT (Chain of Thought)</strong>: 思维链（Chain of Thought），一种推理方法，通过逐步逻辑推理生成输出；文本中指“长CoT场景”，即复杂推理任务。</li>
+    </ul>
+  </section>
+</body>
+</html>

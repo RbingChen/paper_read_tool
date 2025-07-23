@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>论文引用分析报告</title>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; margin: 20px; background-color: #f8f9fa; }
+        h1 { text-align: center; color: #2c3e50; }
+        h2 { color: #3498db; border-bottom: 2px solid #3498db; padding-bottom: 5px; }
+        .original { background-color: #f0f0f0; border: 1px solid #cccccc; padding: 15px; margin-bottom: 10px; border-radius: 5px; }
+        .translation { background-color: #e0f7e0; border: 1px solid #4caf50; padding: 15px; margin-bottom: 20px; border-radius: 5px; }
+        .term-highlight { color: red; font-weight: bold; }
+        section { margin-bottom: 30px; }
+        ul { list-style-type: none; padding-left: 0; }
+        li { margin-bottom: 10px; padding: 10px; background-color: #fff; border-left: 4px solid #3498db; }
+        .reference-item { margin-bottom: 30px; }
+        .formula-container { text-align: center; margin: 20px 0; background-color: #fffde7; padding: 15px; border-radius: 5px; } /* Not used, but defined for future formulas */
+        .formula-number { display: block; font-style: italic; margin-top: 5px; } /* Not used, but defined for future formulas */
+    </style>
+    <!-- MathJax script for LaTeX formula rendering (not needed in this text, but included for completeness) -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+    <div id="container">
+        <h1>学术论文引用分析报告</h1>
+        
+        <section id="understanding">
+            <h2>内容理解</h2>
+            <p>输入文本是一系列学术论文的引用列表，主要聚焦于深度学习、人工智能和自然语言处理领域的最新研究。这些引用涵盖了多个前沿主题，包括：<strong class="term-highlight">频率原理（Frequency Principle）</strong>/<strong class="term-highlight">谱偏置（Spectral Bias）</strong>在深度学习中的理论基础、<strong class="term-highlight">凝结现象（Condensation Phenomenon）</strong>的分析、大型语言模型（如Qwen2.5）的技术报告、多跳问答数据集（如HotpotQA）、推理模型（如ReAct和LIMO）的设计、强化学习在语言模型中的应用（如DAPO系统）、以及模型在真实环境中的网页浏览能力评估（如BrowseComp-ZH基准）。这些论文反映了AI研究的多样性，强调理论探索（如训练动态和泛化行为）、实验方法（如数据集构建和模型蒸馏）和应用创新（如工具使用和搜索代理）。整体上，文本展示了2023-2025年间AI领域的关键进展，突出了推理能力、学习效率和可扩展性等核心挑战。</p>
+        </section>
+        
+        <section id="translation">
+            <h2>内容翻译</h2>
+            <p>以下为英文原文与中文翻译的对照输出，按引用条目分段呈现。关键技术术语已用<strong class="term-highlight">红色粗体</strong>高亮，并标注英文原文。</p>
+            
+            <div class="reference-item">
+                <div class="original">Zhi-Qin John Xu, Yaoyu Zhang, and Tao Luo. Overview <strong class="term-highlight">frequency principle/spectral bias</strong> in deep learning. Communications on Applied Mathematics and Computation, pp. 1–38, 2024.</div>
+                <div class="translation">徐志勤、张耀宇和罗涛。《深度学习中的<strong class="term-highlight">频率原理/谱偏置（Frequency Principle/Spectral Bias）</strong>概述》。应用数学与计算通讯，第1-38页，2024年。</div>
+            </div>
+            
+            <div class="reference-item">
+                <div class="original">Zhi-Qin John Xu, Yaoyu Zhang, and Zhangchen Zhou. An overview of <strong class="term-highlight">condensation phenomenon</strong> in deep learning. arXiv preprint arXiv:2504.09484, 2025.</div>
+                <div class="translation">徐志勤、张耀宇和周章辰。《深度学习中的<strong class="term-highlight">凝结现象（Condensation Phenomenon）</strong>概述》。arXiv预印本 arXiv:2504.09484，2025年。</div>
+            </div>
+            
+            <div class="reference-item">
+                <div class="original">An Yang, Baosong Yang, Beichen Zhang, Binyuan Hui, Bo Zheng, Bowen Yu, Chengyuan Li, Dayiheng Liu, Fei Huang, Haoran Wei, et al. Qwen2.5 technical report. arXiv preprint arXiv:2412.15115, 2024.</div>
+                <div class="translation">杨安、杨宝松、张北辰、惠彬源、郑博、于博文、李成远、刘大一横、黄飞、魏浩然等。《Qwen2.5技术报告》。arXiv预印本 arXiv:2412.15115，2024年。</div>
+            </div>
+            
+            <div class="reference-item">
+                <div class="original">Zhilin Yang, Peng Qi, Saizheng Zhang, Yoshua Bengio, William W Cohen, Ruslan Salakhutdinov, and Christopher D Manning. Hotpotqa: A dataset for diverse, explainable <strong class="term-highlight">multi-hop question answering</strong>. arXiv preprint arXiv:1809.09600, 2018.</div>
+                <div class="translation">杨志林、齐鹏、张赛征、Yoshua Bengio、William W Cohen、Ruslan Salakhutdinov和Christopher D Manning。《HotpotQA：一个用于多样可解释<strong class="term-highlight">多跳问答（Multi-hop Question Answering）</strong>的数据集》。arXiv预印本 arXiv:1809.09600，2018年。</div>
+            </div>
+            
+            <div class="reference-item">
+                <div class="original">Shunyu Yao, Jeffrey Zhao, Dian Yu, Nan Du, Izhak Shafran, Karthik Narasimhan, and Yuan Cao. ReAct: Synergizing <strong class="term-highlight">reasoning</strong> and acting in <strong class="term-highlight">language models</strong>. In International Conference on Learning Representations (ICLR), 2023.</div>
+                <div class="translation">姚舜宇、Jeffrey Zhao、余典、杜楠、Izhak Shafran、Karthik Narasimhan和曹源。《ReAct：在<strong class="term-highlight">语言模型（Language Models）</strong>中协同<strong class="term-highlight">推理（Reasoning）</strong>与行动》。发表于国际学习表征会议（ICLR），2023年。</div>
+            </div>
+            
+            <div class="reference-item">
+                <div class="original">Yixin Ye, Zhen Huang, Yang Xiao, Ethan Chern, Shijie Xia, and Pengfei Liu. LIMO: Less is more for <strong class="term-highlight">reasoning</strong>. arXiv preprint arXiv:2502.03387, 2025.</div>
+                <div class="translation">叶一心、黄震、肖阳、Ethan Chern、夏世杰和刘鹏飞。《LIMO：少即是多用于<strong class="term-highlight">推理（Reasoning）</strong>》。arXiv预印本 arXiv:2502.03387，2025年。</div>
+            </div>
+            
+            <div class="reference-item">
+                <div class="original">Huifeng Yin, Yu Zhao, Minghao Wu, Xuanfan Ni, Bo Zeng, Hao Wang, Tianqi Shi, Liangying Shao, Chenyang Lyu, Longyue Wang, et al. Towards widening the <strong class="term-highlight">distillation bottleneck</strong> for <strong class="term-highlight">reasoning models</strong>. arXiv e-prints, pp. arXiv–2503, 2025.</div>
+                <div class="translation">尹慧峰、赵宇、吴明浩、倪宣凡、曾波、王浩、石天琦、邵良英、吕晨阳、王龙跃等。《拓宽<strong class="term-highlight">推理模型（Reasoning Models）</strong>的<strong class="term-highlight">蒸馏瓶颈（Distillation Bottleneck）</strong>》。arXiv电子版，第arXiv–2503页，2025年。</div>
+            </div>
+            
+            <div class="reference-item">
+                <div class="original">Qiying Yu, Zheng Zhang, Ruofei Zhu, Yufeng Yuan, Xiaochen Zuo, Yu Yue, Tiantian Fan, Gaohong Liu, Lingjun Liu, Xin Liu, et al. DAPO: An open-source <strong class="term-highlight">LLM reinforcement learning</strong> system at scale. arXiv preprint arXiv:2503.14476, 2025.</div>
+                <div class="translation">于启英、张政、朱若飞、袁宇峰、左晓晨、岳宇、范甜甜、刘高鸿、刘玲君、刘欣等。《DAPO：一个开源的规模化<strong class="term-highlight">大型语言模型强化学习（LLM Reinforcement Learning）</strong>系统》。arXiv预印本 arXiv:2503.14476，2025年。</div>
+            </div>
+            
+            <div class="reference-item">
+                <div class="original">Yang Yue, Zhiqi Chen, Rui

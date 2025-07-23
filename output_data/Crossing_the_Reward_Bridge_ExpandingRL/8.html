@@ -1,0 +1,72 @@
+<html>
+<head>
+<style>
+.original { background: #f0f0f0; border: 1px solid #999; padding: 15px; margin: 10px 0; }
+.translation { background: #e8f5e9; border: 1px solid #4CAF50; padding: 15px; margin: 10px 0; }
+.term { color: red; font-weight: bold; }
+.formula { background: #fffde7; text-align: center; margin: 20px 0; }
+table { border-collapse: collapse; margin: 20px 0; }
+th, td { border: 1px solid #ddd; padding: 8px; }
+</style>
+</head>
+<body>
+
+<!-- 内容理解 -->
+<h2>内容理解</h2>
+<p>本文提出了一种基于可验证奖励的强化学习方法（RLVR），通过三个核心创新实现性能突破：</p>
+<ol>
+  <li>提出比规则奖励更强的模型奖励方法</li>
+  <li>基于Qwen2.5-72B-Instruct蒸馏的高效7B模型</li>
+  <li>将二元奖励扩展为软奖励机制</li>
+</ol>
+<p>通过扩展实验验证了模型奖励的稳定扩展能力，并在分布外评估中展示了良好的泛化性能。</p>
+
+<!-- 内容翻译 -->
+<h2>内容翻译</h2>
+<div class="original">
+  <h3>Expanding RL with Verifiable Rewards Across Diverse Domains</h3>
+  <p>mathematical problems is relatively easy. However, in multi-subject tasks... (31.2% vs. 27.3%, REINFORCE, RM-7B)...</p>
+</div>
+<div class="translation">
+  <h3>跨领域可验证奖励的强化学习扩展</h3>
+  <p>数学问题的评估相对简单。然而在多学科任务中，参考标签表现出更大的多样性...（31.2% vs 27.3%，REINFORCE算法，RM-7B模型）...</p>
+</div>
+
+<!-- 表格翻译 -->
+<div class="original">
+  <h3>Table 2: The results of the scaling experiments</h3>
+  <table>
+    <tr><th>Method</th><th>ScaleMath</th>...</tr>
+    <!-- 表格数据 -->
+  </table>
+</div>
+<div class="translation">
+  <h3>表2：扩展实验结果</h3>
+  <table>
+    <tr><th>方法</th><th>数学扩展</th>...</tr>
+    <!-- 表格数据 -->
+  </table>
+</div>
+
+<!-- 摘要总结 -->
+<h2>摘要总结</h2>
+<p>本文提出了基于可验证奖励的强化学习框架RLVR，通过三个核心创新：</p>
+<ul>
+  <li>开发优于规则基准的模型奖励方法</li>
+  <li>构建基于Qwen2.5-72B-Instruct的高效7B模型</li>
+  <li>创新性软奖励机制处理模糊案例</li>
+</ul>
+<p>实验证明该方法在数学推理（65.0%准确率）和多学科任务（35.0%）上达到SOTA，并在扩展性和泛化性评估中显著优于规则方法。</p>
+
+<!-- 术语识别 -->
+<h2>关键术语</h2>
+<ul>
+  <li><span class="term">RLVR（Reinforcement Learning with Verifiable Rewards）</span>：可验证奖励强化学习框架</li>
+  <li><span class="term">软奖励（Soft Reward）</span>：支持连续值评分，处理模糊案例的奖励机制</li>
+  <li><span class="term">RLOO算法</span>：文中使用的基础强化学习算法</li>
+  <li><span class="term">Qwen2.5-72B-Instruct</span>：作为知识蒸馏源的超大语言模型</li>
+  <li><span class="term">分布外评估（Out-of-Distribution Evaluation）</span>：在非训练分布数据上的性能验证</li>
+</ul>
+
+</body>
+</html>

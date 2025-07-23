@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>算法专家报告：熵崩溃研究分析</title>
+  <style>
+    body { font-family: Arial, sans-serif; line-height: 1.6; margin: 20px; }
+    h1 { color: #2c3e50; text-align: center; }
+    h2 { color: #34495e; border-bottom: 2px solid #3498db; padding-bottom: 5px; }
+    .paragraph { margin-bottom: 20px; }
+    .original { background-color: #f0f0f0; border: 1px solid #b0b0b0; padding: 15px; border-radius: 5px; margin-bottom: 10px; }
+    .translation { background-color: #e0f7e0; border: 1px solid #4caf50; padding: 15px; border-radius: 5px; margin-bottom: 20px; }
+    .figure { background-color: #fffde7; padding: 15px; border-radius: 5px; margin: 20px 0; text-align: center; }
+    .term { color: red; font-weight: bold; }
+    table { width: 100%; border-collapse: collapse; margin: 10px 0; }
+    th, td { border: 1px solid #ddd; padding: 8px; text-align: center; }
+    th { background-color: #f2f2f2; }
+    ul { list-style-type: none; padding: 0; }
+    li { margin-bottom: 10px; }
+  </style>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <h1>算法专家报告：熵崩溃研究分析</h1>
+  
+  <h2>内容理解</h2>
+  <p>该文本总结了关于<span class="term">熵崩溃（Entropy Collapse）</span>的消融实验核心发现。熵崩溃指在强化学习训练中策略熵值快速下降的现象，可能导致策略过早收敛，从而损害模型泛化性能。文本分为两部分：第一部分（实证结果）列出四个关键结论：1) 熵崩溃速度与测试性能负相关，适当控制熵可提升性能；2) 增加rollout多样性（如批量大小）对熵动态影响小，但采样温度显著影响初始熵；3) 增加SGD步数（通过更多小批量或数据重用）会加速熵崩溃并引入<span class="term">off-policy数据（Off-Policy Data）</span>，导致性能下降；4) 熵损失对训练数据和损失系数高度敏感，自适应调整或应用技巧（如clip-higher）可稳定熵动态。第二部分（消融设置）描述实验基线：使用DeepSeek-R1-Distill-Qwen-7B模型，超参数在Table 5中定义，并在AIME24/25和LiveCodeBench数据集上评估性能（avg@8和pass@1指标）。基线性能接近最终模型Skywork-OR1-7B，为分析熵崩溃因素提供了可靠基础。整体上，文本强调熵控制的重要性，并量化了超参数（如批量大小、温度）对训练动态的影响。</p>
+  
+  <h2>内容翻译</h2>
+  <div class="paragraph">
+    <div class="original">After conducting exhaustive ablation experiments, we present our main results below.</div>
+    <div class="translation">在进行了详尽的消融实验后，我们在下面展示我们的主要结果。</div>
+  </div>
+  
+  <div class="paragraph">
+    <h3 class="original">Empirical Results of Our Entropy Collapse Study</h3>
+    <h3 class="translation">我们的熵崩溃研究的实证结果</h3>
+  </div>
+  
+  <div class="paragraph">
+    <div class="original">1. Faster <span class="term">entropy collapse (熵崩溃)</span> generally leads to worse test performance. In Section 4.2 and Section 4.5, we show that appropriate <span class="term">entropy control (熵控制)</span>, which prevents premature policy convergence, can yield improved test performance.</div>
+    <div class="translation">1. 更快的<span class="term">熵崩溃（Entropy Collapse）</span>通常导致更差的测试性能。在第4.2节和第4.5节中，我们展示了适当的<span class="term">熵控制（Entropy Control）</span>可以防止策略过早收敛，从而改善测试性能。</div>
+  </div>
+  
+  <div class="paragraph">
+    <div class="original">2. Increasing rollout diversity by enlarging the <span class="term">batch size (批量大小)</span> and <span class="term">group size (组大小)</span> has only a minor effect on <span class="term">entropy dynamics (熵动态)</span>, whereas using a higher <span class="term">sampling temperature (采样温度)</span> significantly impacts initial entropy. See Section 4.3 for details.</div>
+    <div class="translation">2. 通过增大<span class="term">批量大小（Batch Size）</span>和<span class="term">组大小（Group Size）</span>来增加rollout多样性对<span class="term">熵动态（Entropy Dynamics）</span>只有轻微影响，而使用更高的<span class="term">采样温度（Sampling Temperature）</span>显著影响初始熵。详见第4.3节。</div>
+  </div>
+  
+  <div class="paragraph">
+    <div class="original">3. Increasing the number of <span class="term">SGD steps (SGD步数)</span> per training step – whether by using more <span class="term">mini-batches (小批量)</span> or increasing <span class="term">data reuse (数据重用)</span> – significantly accelerates entropy collapse and generally results in degraded test performance due to the introduction of <span class="term">off-policy data (off-policy数据)</span>. See Section 4.4 for more information.</div>
+    <div class="translation">3. 增加每个训练步骤的<span class="term">SGD步数（SGD Steps）</span>——无论是通过使用更多<span class="term">小批量（Mini-Batches）</span>还是增加<span class="term">数据重用（Data Reuse）</span>——都显著加速熵崩溃，并通常由于引入<span class="term">off-policy数据（Off-Policy Data）</span>而导致测试性能下降。更多信息见第4.4节。</div>
+  </div>
+  
+  <div class="paragraph">
+    <div class="original">4. Our ablation experiments in Section 4.5 show that the <span class="term">entropy loss (熵损失)</span> is highly sensitive to both the training data and the loss coefficient. By either adaptively adjusting the entropy loss coefficient or appropriately applying the <span class="term">clip-higher trick (clip-higher技巧)</span> [34], <span class="term">entropy dynamics (熵动态)</span> can be stabilized and lower-bounded, leading to improved test performance.</div>
+    <div class="translation">4. 我们在第4.5节的消融实验表明，<span class="term">熵损失（Entropy Loss）</span>对训练数据和损失系数高度敏感。通过自适应调整熵损失系数或适当应用<span class="term">clip-higher技巧（Clip-Higher Trick）</span> [34]，<span class="term">熵动态（Entropy Dynamics）</span>可以被稳定并下界化，从而改善测试性能。</div>
+  </div>
+  
+  <div class="paragraph">
+    <h3 class="original">4.1 Ablation Setup</h3>
+    <h3 class="translation">4.1 消融设置</h3>
+  </div>
+  
+  <div class="paragraph">
+    <div class="original">All ablation experiments presented in Section 4 are conducted using the training pipeline described in Section 3.1. We start from the following baseline experiment based on <span class="term">DeepSeek-R1-Distill-Qwen-7B</span> with its hyperparameters reported in Table 5, the key symbols used are defined as follows:</div>
+    <div class="translation">第4节中展示的所有消融实验均使用第3.1节描述的训练流程进行。我们从以下基线实验开始，该实验基于<span class="term">DeepSeek-R1-Distill-Qwen-7B</span>，其超参数在表5中报告，使用的关键符号定义如下：</div>
+  </div>
+  
+  <div class="paragraph">
+    <div class="original">• <span class="term">DR</span> is the <span class="term">rollout batch size (rollout批量大小)</span> (the number of prompts used to generate responses in one training step).</div>
+    <div class="translation">• <span class="term">DR</span> 是<span class="term">rollout批量大小（Rollout Batch Size）</span>（在一个训练步骤中用于生成响应的提示数量）。</div>
+  </div>
+  
+  <div class="paragraph">
+    <div class="original">• <span class="term">DT</span> is the <span class="term">mini-batch size (小批量大小)</span> (the number of prompts corresponding to the responses used per policy update step).</div>
+    <div class="translation">• <span class="term">DT</span> 是<span class="term">小批量大小（Mini-Batch Size）</span>（每个策略更新步骤中使用的响应对应的提示数量）。</div>
+  </div>
+  
+  <div class="paragraph">
+    <div class="original">• <span class="term">Nreuse</span> is the number of times the rollout buffer is traversed.</div>
+    <div class="translation">• <span class="term">Nreuse</span> 是rollout缓冲区遍历的次数。</div>
+  </div>
+  
+  <div class="paragraph">
+    <div class="original">• <span class="term">gs</span> is the <span class="term">group size (组大小)</span> (the number of responses generated for each prompt).</div>
+    <div class="translation">• <span class="term">gs</span> 是<span class="term">组大小（Group Size）</span>（每个提示生成的响应数量）。</div>
+  </div>
+  
+  <div class="paragraph">
+    <div class="original">• <span class="term">T</span> is the <span class="term">context length (上下文长度)</span>.</div>
+    <div class="translation">• <span class="term">T</span> 是<span class="term">上下文长度（Context Length）</span>。</div>
+  </div>
+  
+  <div class="paragraph">
+    <div class="original">• <span class="term">τ</span> is the <span class="term">sampling temperature (采样温度)</span>.</div>
+    <div class="translation">• <span class="term">τ</span> 是<span class="term">采样温度（Sampling Temperature）</span>。</div>
+  </div>
+  
+  <div class="figure">
+    <p><strong>Table 5: Hyperparameters of our baseline experiment in the ablation study presented in Section 4.</strong></p>
+    <p><strong>表5: 第4节消融研究中基线实验的超参数。</strong></p>
+    <table>
+      <tr>
+        <th><span class="term">DR</span></th>
+        <th><span class="term">DT</span></th>
+        <th><span class="term">Nreuse</span></th>
+        <th><span class="term">gs</span></th>
+        <th><span class="term">T</span></th>
+        <th><span class="term">τ</span></th>
+        <th>Learning Rate</th>
+        <th><span class="term">Entropy Control</span></th>
+        <th><span class="term">KL loss</span></th>
+      </tr>
+      <tr>
+        <td>64</td>
+        <td>64</td>
+        <td>1</td>
+        <td>16</td>
+        <td>16K</td>
+        <td>1.0</td>
+        <td>1e-6</td>
+        <td>No</td>
+        <td>No</td>
+      </tr>
+    </table>
+  </div>
+  
+  <div class="paragraph">
+    <div class="original">Unless otherwise specified, the default training configurations for all ablation experiments in this section are aligned with those of the baseline experiment presented above. We use <span class="term">AIME24</span>, <span class="term">AIME25</span>, and <span class="term">LiveCodeBench</span> [10] (2024.08–2025.02) as evaluation sets. The test performance reported in our ablation study is computed as the empirical mean of <span class="term">avg@8</span> performance on AIME24/25 and <span class="term">pass@1</span> performance on LiveCodeBench. Notably, the baseline experiment achieves 69.2% avg@8 on AIME24, 53.3% avg@8 on AIME25, and 50.5% pass@1 on LiveCodeBench after 2,700 training steps using 32 H800 GPUs. These results, which closely approximate the performance of our final <span class="term">Skywork-OR1-7B</span> release, establish a strong baseline for analyzing key factors that affect test performance and contribute to <span class="term">entropy collapse (熵崩溃)</span>.</div>
+    <div class="translation">除非另有说明，本节中所有消融实验的默认训练配置均与上述基线实验一致。我们使用<span class="term">AIME24</span>、<span class="term">AIME25</span>和<span class="term">LiveCodeBench</span> [10] (2024.08–2025.02) 作为评估集。在我们的消融研究中报告的测试性能计算为AIME24/25上的<span class="term">avg@8</span>性能和LiveCodeBench上的<span class="term">pass@1</span>性能的经验平均值。值得注意的是，基线实验在使用32个H800 GPU进行2700个训练步骤后，在AIME24上达到69.2% avg@8，在AIME25上达到53.3% avg@8，在LiveCodeBench上达到50.5% pass@1。这些结果非常接近我们最终<span class="term">Skywork-OR1-7B</span>发布的性能，为分析影响测试性能和导致<span class="term">熵崩溃（Entropy Collapse）</span>的关键因素建立了强大的基线。</div>
+  </div>
+  
+  <h2>摘要总结</h2>
+  <p>文本总结了熵崩溃消融实验的核心发现：1) <span class="term">熵崩溃（Entropy Collapse）</span>速度过快会降低测试性能，而适当的<span class="term">熵控制（Entropy Control）</span>可防止策略过早收敛，提升性能；2) 增加rollout多样性（如增大<span class="term">批量大小（Batch Size）</span>或<span class="term">组大小（Group Size）</span>）对熵动态影响小，但提高<span class="term">采样温度（Sampling Temperature）</span>显著影响初始熵；3) 增加<span class="term">SGD步数（SGD Steps）</span>（通过更多<span class="term">小批量（Mini-Batches）</span>或<span class="term">数据重用（Data Reuse）</span>）会加速熵崩溃并引入<span class="term">off-policy数据（Off-Policy Data）</span>，导致性能下降；4) <span class="term">熵损失（Entropy Loss）</span>对训练数据和损失系数敏感，自适应调整或应用<span class="term">clip-higher技巧（Clip-Higher Trick）</span>可稳定熵动态。实验基于DeepSeek-R1-Distill-Qwen-7B模型，使用特定超参数（如<span class="term">DR</span>、<span class="term">DT</span>）在AIME24/25和LiveCodeBench数据集上评估，基线性能接近Skywork-OR1-7B，为熵崩溃分析提供了可靠基准。</p>
+  
+  <h2>术语识别</h2>
+  <ul>
+    <li><span class="term">Entropy Collapse (熵崩溃)</span>: 在强化学习训练中，策略熵值快速下降的现象，可能导致策略过早收敛到次优解，损害模型泛化性能。</li>
+    <li><span class="term">Entropy Control (熵控制)</span>: 技术方法，用于防止熵崩溃，例如通过调整损失系数或应用正则化，以维持策略探索能力。</li>
+    <li><span class="term">Rollout Batch Size (DR)</span>: rollout批量大小，指在一个训练步骤中用于生成模型响应的提示数量，影响数据多样性。</li>
+    <li><span class="term">Mini-Batch Size (DT)</span>: 小批量大小，指每个策略更新步骤中使用的响应对应的提示数量，涉及梯度计算效率。</li>
+    <li><span class="term">Group Size (gs)</span>: 组大小，指每个输入提示生成的响应数量，用于增加rollout多样性。</li>
+    <li><span class="term">Sampling Temperature (τ)</span>: 采样温度，超参数，控制生成响应的随机性；值越高，输出越多样，但可能降低相关性。</li>
+    <li><span class="term">Entropy Dynamics (熵动态)</span>: 训练过程中熵值的变化趋势，反映策略收敛速度和稳定性。</li>
+    <li><span class="term">SGD Steps (SGD步数)</span>: 随机梯度下降的迭代次数，每个训练步骤中的优化更新次数；增加步数可能加速训练但引入噪声。</li>
+    <li><span class="term">Data Reuse (数据重用)</span>: 重复使用rollout缓冲区中的数据（通过Nreuse参数），可能提高数据效率但导致过拟合。</li>
+    <li><span class="term">Off-Policy Data (off-policy数据)</span>: 策略更新时使用的数据并非

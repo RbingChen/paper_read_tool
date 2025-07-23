@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>算法论文分析</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+        }
+        section {
+            margin-bottom: 30px;
+        }
+        h2 {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 5px;
+        }
+        .original {
+            background-color: #f0f0f0; /* 浅灰色背景 */
+            border: 1px solid #808080; /* 灰色边框 */
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+        .translation {
+            background-color: #e0f7e0; /* 浅绿色背景 */
+            border: 1px solid #2ecc71; /* 绿色边框 */
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+        .term {
+            color: red;
+            font-weight: bold;
+        }
+        .formula {
+            text-align: center;
+            margin: 15px 0;
+        }
+        .formula-number {
+            display: block;
+            text-align: right;
+            font-style: italic;
+            margin-top: 5px;
+        }
+        ul {
+            padding-left: 20px;
+        }
+        li {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <section id="understanding">
+        <h2>内容理解</h2>
+        <p>该文本描述了机器学习实验中使用的超参数配置，特别是针对 <span class="term">IPO (Inverse Preference Optimization)</span> 和 <span class="term">DPO (Direct Preference Optimization)</span> 算法及其变体 <span class="term">BoN (Bag of Networks)</span>。核心内容包括：</p>
+        <ul>
+            <li>在 <span class="term">TL;DR 文本摘要数据集</span> 和 <span class="term">Antrophic HH</span> 数据集上，指定了 IPO 和 DPO 的 β 超参数值列表。</li>
+            <li>针对 IPO BoN 和 DPO BoN 方法，提供了详细的 β 值设置，并根据数据集进行了分组。</li>
+            <li>进行了额外实验：固定默认 α 和 β*8 值后，调整其他超参数（如 α 或 β），以优化参考模型的组合损失函数。</li>
+            <li>训练细节包括使用 <span class="term">RMSprop 优化器</span> 和特定学习率（5e-7），在 <span class="term">A100 GPU</span> 硬件上运行，并基于 20k 检查点采样和评估样本（以 <span class="term">SFT (Supervised Fine-Tuning)</span> 为基线，<span class="term">Reward model</span> 作为评判）。</li>
+        </ul>
+        <p>整体上，文本聚焦于超参数调优的实验设计，目的是比较不同算法在偏好优化任务中的性能。β 和 α 是关键超参数，控制正则化强度或学习行为，而 BoN 表示一种模型集成方法。</p>
+    </section>
+
+    <section id="translation">
+        <h2>内容翻译</h2>
+        <div class="original">
+            <p>–IPO:β={0.00183654729, 0.00550964188, 0.0275482094, 0.1401869 }</p>
+            <p>• TL;DR text summarization dataset</p>
+            <p>–DPO:β={0.01, 0.05, 0.1, 1, 5 }</p>
+            <p>–IPO:β={0.00183654729, 0.00550964188, 0.0275482094, 0.137741047 }</p>
+        </div>
+        <div class="translation">
+            <p>–IPO: β={0.00183654729, 0.00550964188, 0.0275482094, 0.1401869}</p>
+            <p>• TL;DR 文本摘要数据集</p>
+            <p>–DPO: β={0.01, 0.05, 0.1, 1, 5}</p>
+            <p>–IPO: β={0.00183654729, 0.00550964188, 0.0275482094, 0.137741047}</p>
+        </div>
+
+        <div class="original">
+            <p>2. We use the following hyper-parameter βs for IPO BoN and DPO BoN:</p>
+            <p>• Antrophic HH:</p>
+            <p>–IPO BoN:β={0.00550964188 ,0.00918273647 ,0.0275482094 ,0.0826446282 ,0.137741047}</p>
+            <p>–DPO BoN:β={0.05, 0.1, 0.3, 0.5, 0.7, 1, 5 }</p>
+            <p>• TL;DR:</p>
+            <p>–IPO BoN:β={0.00550964188 ,0.0137741047 ,0.0275482094 ,0.0550964188 ,0.137741047}</p>
+            <p>–DPO BoN:β={0.05, 0.1, 0.5, 1, 5}</p>
+        </div>
+        <div class="translation">
+            <p>2. 我们为 IPO BoN 和 DPO BoN 使用以下超参数 β：</p>
+            <p>• Antrophic HH：</p>
+            <p>–IPO BoN: β={0.00550964188, 0.00918273647, 0.0275482094, 0.0826446282, 0.137741047}</p>
+            <p>–DPO BoN: β={0.05, 0.1, 0.3, 0.5, 0.7, 1, 5}</p>
+            <p>• TL;DR：</p>
+            <p>–IPO BoN: β={0.00550964188, 0.0137741047, 0.0275482094, 0.0550964188, 0.137741047}</p>
+            <p>–DPO BoN: β={0.05, 0.1, 0.5, 1, 5}</p>
+        </div>
+
+        <div class="original">
+            <p>3. In addition to default α=0.005andβ∗8=0.0275482094 , we also optimize the reference model with the combined loss of BoNBoN with other hyper-parameters:</p>
+            <p>• fixedβ∗8=0.0275482094, different α’s:</p>
+            <p>–Antrophic HH: α={0.05, 0.2}</p>
+            <p>–TL;DR:α={0.05, 0.02}</p>
+            <p>• fixedα=0.005, and a smaller β=β∗8/5 or a largerβ=β∗8×5</p>
+            <p>–β={0.0275482094, 0.00550964188, 0.137741047 }for both tasks</p>
+            <p>We train each of these models using RMSprop optimizer with a learning rate 5e−77. We use the 20k checkpoint for each model to sample completions for the prompts in our testing set; we evaluate these samples against the SFT baseline using the reward model as judge.</p>
+            <p>7We train each model using 3 A100s with 140 GB of memory. It takes ≈3 hours for the model to reach 20k timesteps.</p>
+            <p>22</p>
+        </div>
+        <div class="translation">
+            <p>3. 除了默认的 α=0.005 和 β*8=0.0275482094 外，我们还使用 BoNBoN 的组合损失优化参考模型，并尝试其他超参数：</p>
+            <p>• 固定 β*8=0.0275482094，不同的 α：</p>
+            <p>–Antrophic HH: α={0.05, 0.2}</p>
+            <p>–TL;DR: α={0.05, 0.02}</p>
+            <p>• 固定 α=0.005，使用较小的 β=β*8/5 或较大的 β=β*8×5</p>
+            <p>–β={0.0275482094, 0.00550964188, 0.137741047} 用于两个任务</p>
+            <p>我们使用 RMSprop 优化器训练每个模型，学习率为 5e-7。我们使用每个模型的 20k 检查点来为测试集中的提示采样补全；我们使用奖励模型作为评判，评估这些样本与 SFT 基线的对比。</p>
+            <p>7我们使用 3 个具有 140 GB 内存的 A100 GPU 训练每个模型。模型达到 20k 时间步需要约 3 小时。</p>
+            <p>22</p>
+        </div>
+
+        <!-- 数学公式渲染，使用 MathJax -->
+        <div class="formula">
+            \[
+            \beta = \{0.00183654729, 0.00550964188, 0.0275482094, 0.1401869\}
+            \]
+            <span class="formula-number">(公式 1: IPO 的 β 值示例)</span>
+        </div>
+        <div class="formula">
+            \[
+            \alpha = 0.005, \quad \beta^{*}_{8} = 0.0275482094
+            \]
+            <span class="formula-number">(公式 2: 默认超参数设置)</span>
+        </div>
+        <div class="formula">
+            \[
+            \beta = \beta^{*}_{8} / 5 \quad \text{或} \quad \beta = \beta^{*}_{8} \times 5
+            \]
+            <span class="formula-number">(公式 3: β 调整示例)</span>
+        </div>
+    </section>
+
+    <section id="summary">
+        <h2>摘要总结</h2>
+        <p>本文档概述了在机器学习实验中使用的超参数配置，核心内容如下：</p>
+        <ul>
+            <li><strong>超参数设置</strong>：针对 <span class="term">IPO (Inverse Preference Optimization)</span>、<span class="term">DPO (Direct Preference Optimization)</span> 及其 <span class="term">BoN (Bag of Networks)</span> 变体，在 TL;DR 文本摘要和 Antrophic HH 数据集上指定了详细的 β 值列表。β 作为关键超参数，控制算法的正则化强度。</li>
+            <li><strong>额外实验</strong>：在默认 α=0.005 和 β*8=0.0275482094 基础上，进行了参数调优实验，包括固定 β*8 调整 α，或固定 α 调整 β（如 β=β*8/5 或 β=β*8×5）。</li>
+            <li><strong>训练与评估</strong>：使用 RMSprop 优化器（学习率 5e-7）在 3 个 A100 GPU 上训练模型，耗时约 3 小时至 20k 时间步。评估基于 20k 检查点的采样样本，以 SFT 为基线，Reward model 作为评判标准。</li>
+        </ul>
+        <p>整体上，文档提供了完整的实验框架，用于比较不同偏好优化算法在特定任务上的性能。</p>
+    </section>
+
+    <section id="terminology">
+        <h2>术语识别</h2>
+        <ul>
+            <li><span class="term">IPO (Inverse Preference Optimization)</span>: 一种偏好优化算法，用于从人类偏好数据中学习模型策略。它通过逆优化问题调整模型输出以匹配偏好分布，β 是其关键超参数，控制正则化强度以避免过拟合。</li>
+            <li><span class="term">DPO (Direct Preference Optimization)</span>: 直接偏好优化算法，简化了偏好学习过程，通过直接优化策略来匹配偏好对。β 同样作为超参数，影响学习率和稳定性。</li>
+            <li><span class="term">BoN (Bag of Networks)</span>: 一种模型集成方法，通过组合多个网络（或子模型）的预测来提高鲁棒性和性能。在上下文中，IPO BoN 和 DPO BoN 表示将 BoN 应用于 IPO 或 DPO 算法的变体。</li>
+            <li><span class="term">β (Beta)</span>: 超参数，在 IPO/DPO 中控制偏好强度或正则化项的权重。值越大表示偏好信号越强，但可能导致过拟合；文本中列出了具体数值（如 β={0.01, 0.05}）。</li>
+            <li><span class="term">α (Alpha)</span>: 另一个超参数，可能与学习率或损失函数中的权重相关。在实验中，它与 β 结合使用进行调优（如 α={0.05, 0.2}）。</li>
+            <li><span class="term">RMSprop</span>: 一种自适应学习率优化算法，通过调整梯度更新步长来加速收敛。文本中指定学习率为 5e-7，用于模型训练。</li>
+            <li><span class="term">A100</span>: NVIDIA 的高性能 GPU 型号，具有 140 GB 内存。用于加速训练过程，3 个 GPU 并行处理耗时约 3 小时至 20k 时间步。</li>
+            <li><span class="term">SFT (Supervised Fine-Tuning)</span>: 监督微调基线方法，使用标注数据直接微调模型。在评估中作为比较基准。</li>
+            <li><span class="term">Reward model</span>: 奖励模型，用于评估生成样本的质量。在实验中作为“评判”工具，比较不同算法的输出。</li>
+            <li><span class="term">TL;DR</span>: 文本摘要数据集，常用于评估生成模型的摘要能力。</li>
+            <li><span class="term">Antrophic HH</span>: 对话任务数据集，可能涉及人类偏好数据，用于训练和评估对话模型。</li>
+        </ul>
+    </section>
+</body>
+</html>

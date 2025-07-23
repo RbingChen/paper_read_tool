@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>论文解析 - DeepSeek-GRM 模型训练</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; }
+        .original { background-color: #f0f0f0; border: 1px solid #ccc; padding: 15px; margin: 10px 0; }
+        .translation { background-color: #e0f7e0; border: 1px solid #4CAF50; padding: 15px; margin: 10px 0; }
+        .formula-container { text-align: center; margin: 20px 0; background-color: #fffde7; padding: 15px; }
+        .term { color: red; font-weight: bold; }
+        .section-title { font-size: 1.2em; font-weight: bold; margin-top: 25px; color: #2c3e50; }
+        table { border-collapse: collapse; width: 100%; margin: 15px 0; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        .figure { background-color: #fff9c4; padding: 15px; margin: 15px 0; text-align: center; font-style: italic; }
+    </style>
+</head>
+<body>
+
+<!-- 内容理解 -->
+<div class="section-title">1. 内容理解</div>
+<p>该文本详细描述了 DeepSeek-GRM 模型的训练过程和技术细节：</p>
+<ul>
+    <li>提出标准化公式 \( \\hat{A}_{i,t} = \\frac{\\hat{r}_i - \\text{mean}(\\hat{r})}{\\text{std}(\\hat{r})} \) 用于奖励计算</li>
+    <li>通过网格搜索确定 KL 惩罚系数 \( \\beta = 0.08 \) 为最优值，防止模型在特定基准（如 Reward Bench）上崩溃</li>
+    <li>使用 <span class="term">拒绝采样（rejective sampling）</span>技术构建训练数据，包含 1250K RFT 数据和 237K RL 数据</li>
+    <li>数据集整合了 MATH、UltraFeedback 等开源数据集，并对部分数据进行了重标记和质量过滤</li>
+    <li>训练耗时：RFT 阶段 19.2 小时，RL 阶段 15.6 小时（基于 128 张 A100 GPU）</li>
+    <li>因资源限制，大于 27B 参数的模型未进行基于规则的强化学习</li>
+</ul>
+
+<!-- 内容翻译 -->
+<div class="section-title">2. 内容翻译</div>
+
+<div class="original">
+    where \( \\hat{A}_{i,t} = \\frac{\\hat{r}_i - \\text{mean}(\\hat{r})}{\\text{std}(\\hat{r})} \), G is the group size, β is the coefficient of KL penalty, and q = (x, {y_i}_{i=1}^n) with prompts. We performed grid search on hyper-parameter β ∈ {0.00, 0.01, 0.04, 0.08} and found that β=0.08 is the most stable configuration. And with too small KL coefficient, the GRM tends to collapse on a few subsets in benchmarks, e.g., Chat in the Reward Bench benchmark and Harmlessness in the RMB benchmark, and shows biases towards some other domains. We set G=4 for a better trade-off between efficiency and performance.
+</div>
+<div class="translation">
+    其中 \( \\hat{A}_{i,t} = \\frac{\\hat{r}_i - \\text{mean}(\\hat{r})}{\\text{std}(\\hat{r})} \)，G 表示组大小，β 是 KL 惩罚系数，q = (x, {y_i}_{i=1}^n) 为带提示的输入。我们对超参数 β ∈ {0.00, 0.01, 0.04, 0.08} 进行网格搜索，发现 β=0.08 是最稳定的配置。当 KL 系数过小时，GRM 在部分基准子集（如 Reward Bench 中的 Chat 和 RMB 中的 Harmlessness）上易崩溃，并在其他领域表现出偏见。设定 G=4 以实现效率与性能的最佳平衡。
+</div>
+
+<div class="original">
+    Stage Time (h)
+    RFT 19.2
+    Rule-Based RL 15.6
+    Table 5: Training times of RFT and RL stages for DeepSeek-GRM-27B in hours.
+</div>
+<div class="translation">
+    <table>
+        <caption>表 5：DeepSeek-GRM-27B 的 RFT 和 RL 阶段训练时间（单位：小时）</caption>
+        <tr><th>阶段</th><th>时间（小时）</th></tr>
+        <tr><td>RFT</td><td>19.2</td></tr>
+        <tr><td>基于规则的 RL</td><td>15.6</td></tr>
+    </table>
+</div>
+
+<div class="original">
+    The training set comprises of 1250K RFT data, including 1070K general instruction data and 186K rejective sampled data, and 237K RL data. General instruction data is from in-house datasets. Rejective sampled data and RL data are from the same RM datasets, containing the preference for single, paired, and multiple responses, constructed from internal data and open-source datasets, including the training sets from MATH (Hendrycks et al., 2021), UltraFeedback (Cui et al., 2024), OffsetBias (Park et al., 2024), Skywork-Reward-Preference-80K-v0.2 (Liu et al., 2024), and HelpSteer2-Preference (Wang et al., 2025).
+</div>
+<div class="translation">
+    训练集包含 1250K RFT 数据（含 1070K 通用指令数据和 186K 拒绝采样数据）和 237K RL 数据。通用指令数据来自内部数据集；拒绝采样数据和 RL 数据源自相同的 RM 数据集，包含对单响应、配对响应和多响应的偏好标注，数据整合自内部及开源数据集：MATH (Hendrycks et al., 2021)、UltraFeedback (Cui et al., 2024)、OffsetBias (Park et al., 2024)、Skywork-Reward-Preference-80K-v0.2 (Liu et al., 2024) 和 HelpSteer2-Preference (Wang et al., 2025)。
+</div>
+
+<div class="original">
+    Specifically, we re-tagged the preference label of a part of UltraFeedback due to its quality issues; we sampled and filtered trajectories on MATH by rule-based ground truth matching, resulting in pairwise preference data; for rating single responses, we set the ground truth reward to 1 for correct responses and 0 for incorrect ones, only incorporating verifiable questions. For rejective sampling, we use DeepSeek-v2.5-0906 to generate the trajectories with principles and critiques. The sampling time N<sub>RFT</sub> is set to 3.
+</div>
+<div class="translation">
+    具体处理包括：因质量问题重标记部分 UltraFeedback 的偏好标签；通过基于规则的 ground truth 匹配在 MATH 上采样过滤轨迹，生成成对偏好数据；对单响应评分时，设定正确响应奖励为 1，错误响应为 0，且仅包含可验证问题。拒绝采样使用 DeepSeek-v2.5-0906 生成带原则和批判的轨迹，采样次数 N<sub>RFT</sub> 设为 3。
+</div>
+
+<div class="original">
+    During hinted sampling on HelpSteer2, we add the preference strengths labeled in the original dataset as the hint. We also remove the samples that are viewed too easy for DeepSeek-V2-Lite-Chat, i.e. all generated rewards are correct for three times according to Equation 4, from the RL data.
+</div>
+<div class="translation">
+    在 HelpSteer2 的提示采样中，将原始数据集标注的偏好强度作为提示加入。同时从 RL 数据中移除对 DeepSeek-V2-Lite-Chat 过于简单的样本（即根据公式 4 连续三次奖励预测均正确的样本）。
+</div>
+
+<div class="original">
+    The derivation of DeepSeek-GRM models and the meta RM is illustrated in Figure 5. All DeepSeek-GRM models are trained from the pretrained version of LLMs. For the training of the meta RM, we reuse the rejective sampled data from the RFT stage, and use DeepSeek-GRM-27B to perform rejective sampling with N<sub>RFT</sub>=3, in order to avoid potential bias (Chow et al., 2025) in the meta RM guided voting.
+</div>
+<div class="translation">
+    DeepSeek-GRM 模型和元 RM 的推导如图 5 所示。所有 DeepSeek-GRM 模型均基于预训练 LLM 微调。元 RM 训练复用 RFT 阶段的拒绝采样数据，并使用 DeepSeek-GRM-27B 执行 N<sub>RFT</sub>=3 的拒绝采样，以避免元 RM 引导投票中的潜在偏差 (Chow et al., 2025)。
+</div>
+
+<div class="original">
+    The learning rate is 1×10<sup>−5</sup> and the batch size is 512 for the meta RM training. The training time of RFT and RL for DeepSeek-GRM-27B is depicted in Table 5, Gemma-2-27B based models are trained with 128 A100 GPUs on the Fire-Flyer platform (An et al., 2024). The learning rate is 5×10<sup>−6</sup> for the RFT stage and 4×10<sup>−7</sup> for the RL stage, and the batch size is 1024 for the RFT stage and 512 for the RL stage. Both stages are trained for 900 steps. Due to resource constraints, DeepSeek-GRM models larger than 27B does not undergo the rule-based RL and only trained with 50K rejective sampled data.
+</div>
+<div class="translation">
+    元 RM 训练的学习率为 1×10<sup>−5</sup>，批量大小为 512。DeepSeek-GRM-27B 的 RFT 和 RL 训练时间见表 5。基于 Gemma-2-27B 的模型在 Fire-Flyer 平台 (An et al., 2024) 使用 128 张 A100 GPU 训练：RFT 阶段学习率 5×10<sup>−6</sup>，批量大小 1024；RL 阶段学习率 4×10<sup>−7</sup>，批量大小 512。两阶段均训练 900 步。因资源限制，大于 27B 的 DeepSeek-GRM 模型未进行基于规则的 RL，仅使用 50K 拒绝采样数据训练。
+</div>
+
+<div class="original">
+    C.3 Baseline Implementation
+    For the baseline methods, we re-implement LLM-as-a-Judge (Zheng et al., 2023), DeepSeek-BTRM-27B (Kendall & Smith, 1940), CLoud-Gemma-2-27B (Ankner et al., 2024), and DeepSeek-PairRM-27B (Jiang et al., 2023) based on Gemma-2-27B (Team, 2024) and with all compatible training data and settings as DeepSeek-GRM.
+</div>
+<div class="translation">
+    <strong>C.3 基准实现</strong>
+    基于 Gemma-2-27B (Team, 2024)，我们复现了以下基准方法：LLM-as-a-Judge (Zheng et al., 2023)、DeepSeek-BTRM-27B (Kendall & Smith, 1940)、CLoud-Gemma-2-27B (Ankner et al., 2024) 和 DeepSeek-PairRM-27B (Jiang et al., 2023)，并采用与 DeepSeek-GRM 兼容的训练数据和设置。
+</div>
+
+<!-- 摘要总结 -->
+<div class="section-title">3. 摘要总结</div>
+<p>本文详细阐述了 DeepSeek-GRM 模型的训练框架：</p>
+<ol>
+    <li>通过标准化公式 \( \\hat{A}_{i,t} \) 和 KL 惩罚系数（β=0.08）优化奖励计算</li>
+    <li>构建混合数据集（1250K RFT + 237K RL），整合多个开源偏好数据集并进行质量修正</li>
+    <li>采用<span class="term">拒绝采样（rejective sampling）</span>技术生成高质量训练轨迹（N<sub>RFT</sub>=3）</li>
+    <li>27B 模型在 128 A100 GPU 上完成训练（RFT:19.2h, RL:15.6h），学习率分阶段设置</li>
+    <li>因算力限制，大于 27B 的模型仅使用 50K 数据简化训练</li>
+    <li>复现四种基线模型（LLM-as-a-Judge 等）进行对比实验</li>
+</ol>
+
+<!-- 术语识别 -->
+<div class="section-title">4. 术语识别</div>
+<dl>
+    <dt><span class="term">GRM (General Reward Model)</span></dt>
+    <dd>通用奖励模型，通过整合多领域偏好数据训练的强化学习奖励函数，支持单响应/多响应评分</dd>
+    
+    <dt><span class="term">RFT (Reinforcement Fine-Tuning)</span></dt>
+    <dd>强化微调阶段，使用 1250K 数据（含通用指令和拒绝采样数据）初始化策略模型</dd>
+    
+    <dt><span class="term">Rejective Sampling</span></dt>
+    <dd>拒绝采样：通过预训练模型生成候选响应，根据奖励模型筛选高质量样本（N<sub>RFT</sub>=3 表示采样3次）</dd>
+    
+    <dt><span class="term">KL Penalty (β)</span></dt>
+    <dd>KL 散度惩罚项：防止强化学习过度偏离初始策略（β=0.08 为最优值，避免模型崩溃）</dd>
+    
+    <dt><span class="term">Rule-Based RL</span></dt>
+    <dd>基于规则的强化学习：使用预定义规则（如 MATH 的 ground truth 匹配）生成偏好数据</dd>
+    
+    <dt><span class="term">Meta RM</span></dt>
+    <dd>元奖励模型：通过复用 RFT 数据和 DeepSeek-GRM-27B 采样，避免投票偏差的集成奖励模型</dd>
+</dl>
+
+<!-- 数学公式 -->
+<div class="section-title">关键公式</div>
+<div class="formula-container">
+    \[ \\hat{A}_{i,t} = \\frac{\\hat{r}_i - \\text{mean}(\\hat{r})}{\\text{std}(\\hat{r})} \\quad (1) \]
+    <p>公式说明：(1) 标准化优势函数，其中 \( \\hat{r}_i \) 为原始奖励，mean 和 std 分别计算批次奖励的均值和标准差</p>
+</div>
+
+<!-- 图示占位 -->
+<div class="figure">
+    [图示] Figure 5: DeepSeek-GRM 与元 RM 的推导架构
+</div>
+
+</body>
+</html>

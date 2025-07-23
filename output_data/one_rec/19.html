@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>OneRec技术报告分析</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; }
+        .original { background-color: #f0f0f0; border: 1px solid #ccc; padding: 15px; margin-bottom: 10px; }
+        .translation { background-color: #e0f7e0; border: 1px solid #4CAF50; padding: 15px; margin-bottom: 20px; }
+        .table-container { background-color: #fffde7; padding: 15px; margin: 20px 0; border: 1px solid #ffd54f; }
+        table { width: 100%; border-collapse: collapse; margin: 10px 0; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: center; }
+        th { background-color: #f5f5f5; }
+        .term { color: red; font-weight: bold; }
+        h2 { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 5px; }
+        .section { margin-bottom: 30px; }
+    </style>
+</head>
+<body>
+
+<div class="section">
+    <h2>1. 内容理解</h2>
+    <p>该技术报告探讨了OneRec系统中强化学习优化的三个核心维度：</p>
+    <ul>
+        <li><span class="term">搜索空间（Search Space）</span>：实验表明扩大动作搜索空间（组大小）可提升最优项发现概率，但存在计算成本权衡。组大小增至512时性能显著提升，但2048时收益递减，建议设为推理输出量的4倍</li>
+        <li><span class="term">搜索策略（Search Strategy）</span>：比较top-k/top-p采样与束搜索（Beam Search）。因语义ID的<strong>前缀树结构</strong>特性，束搜索系统性探索更有效，各项指标提升0.36%-1.45%</li>
+        <li><span class="term">参考模型（Reference Model）</span>：在线策略（on-policy）优于离线策略（off-policy），尤其在离线奖励评估中。但在线奖励定义缺陷导致轻微<span class="term">奖励黑客（Reward Hacking）</span>问题</li>
+    </ul>
+    <p>核心实验指标：观看完成率（vtr）、观看时长（Watch time）、应用停留时间（App Stay Time）、视频观看量（Video View）</p>
+</div>
+
+<div class="section">
+    <h2>2. 内容翻译</h2>
+    
+    <div class="original">
+        <p>OneRec Technical Report</p>
+        <p>Search Space In ECPO training, expanding the action search space increases the likelihood of discovering the optimal item with maximum reward, albeit at higher computational costs. To investigate this trade-off, we examine how the search space size (i.e., group size) affects performance. The results for pass@128 are summarized in Table 7. From Table 7, we observe a significant improvement in performance when the group size is increased from 128 to 512. This clearly demonstrates the positive impact of expanding the search space. It is somewhat disappointing that increasing the search space to 2048 does not yield much additional benefit, which might be due to the current reference model’s diversity not being sufficient to discover more and better items. Nonetheless, this finding is promising, and we empirically suggest setting the ECPO training group size to approximately four times the inference output quantity for optimal results.</p>
+    </div>
+    <div class="translation">
+        <p>OneRec技术报告</p>
+        <p><strong>搜索空间</strong> 在ECPO训练中，扩大动作搜索空间虽会增加计算成本，但能提高发现具有最大奖励的最优项的可能性。为研究此权衡关系，我们检验了搜索空间大小（即组大小）如何影响性能。pass@128的结果总结于表7中。从表7可见，当组大小从128增至512时性能显著提升，这明确证明了扩大搜索空间的积极影响。令人失望的是，将搜索空间扩大至2048并未带来明显额外收益，可能源于当前参考模型的多样性不足以发现更多更优的项。尽管如此，该发现具有前景，我们根据经验建议将ECPO训练组大小设为推理输出量的约四倍以获得最优结果。</p>
+    </div>
+    
+    <div class="table-container">
+        <p>Table 7 | Performance of different group sizes when calculating ECPO loss on Pass@128.</p>
+        <table>
+            <tr>
+                <th>组大小</th>
+                <th>vtr</th>
+                <th>观看时长</th>
+                <th>应用停留时间</th>
+                <th>视频观看量</th>
+            </tr>
+            <tr>
+                <td>0(无强化学习)</td>
+                <td>0.2198</td>
+                <td>+4.61%</td>
+                <td>+1.11%</td>
+                <td>-12.75%</td>
+            </tr>
+            <tr>
+                <td>128</td>
+                <td>0.2303</td>
+                <td>+5.22%</td>
+                <td>+1.49%</td>
+                <td>-15.06%</td>
+            </tr>
+            <tr>
+                <td>512</td>
+                <td>0.2350</td>
+                <td>+5.73%</td>
+                <td>+1.82%</td>
+                <td>-15.49%</td>
+            </tr>
+            <tr>
+                <td>2048</td>
+                <td>0.2352</td>
+                <td>+5.84%</td>
+                <td>+1.78%</td>
+                <td>-15.49%</td>
+            </tr>
+        </table>
+        <p>表7 | 在Pass@128上计算ECPO损失时不同组大小的性能对比</p>
+    </div>
+    
+    <div class="original">
+        <p>Search Strategy Reinforcement learning for large language models typically employs top-𝑘 and top-𝑝 sampling for sample generation. In OneRec, we also explore beam search as an alternative strategy. Table 8 compares the results of these two approaches, revealing that beam search significantly outperforms top-𝑘 and top-𝑝 sampling in OneRec’s reinforcement learning framework. This improvement stems from the inherent regularity of semantic ID structures, which follow a prefix tree encoding scheme and thus align well with the systematic exploration of beam search.</p>
+    </div>
+    <div class="translation">
+        <p><strong>搜索策略</strong> 大语言模型的强化学习通常采用top-k和top-p采样进行样本生成。在OneRec中，我们还探索了束搜索（Beam Search）作为替代策略。表8比较了两种方法的结果，表明在OneRec的强化学习框架中，束搜索显著优于top-k和top-p采样。此改进源于语义ID结构固有的规律性——其遵循前缀树编码方案，因此与束搜索的系统性探索高度契合。</p>
+    </div>
+    
+    <div class="table-container">
+        <p>Table 8 | Performance of reinforcement learning with different search strategies.</p>
+        <table>
+            <tr>
+                <th>策略</th>
+                <th>vtr</th>
+                <th>观看时长</th>
+                <th>应用停留时间</th>
+                <th>视频观看量</th>
+            </tr>
+            <tr>
+                <td>Top-k+Top-p</td>
+                <td>0.2131</td>
+                <td>+4.45%</td>
+                <td>+1.16%</td>
+                <td>-13.61%</td>
+            </tr>
+            <tr>
+                <td>束搜索</td>
+                <td>0.2162</td>
+                <td>+5.35%</td>
+                <td>+1.76%</td>
+                <td>-13.30%</td>
+            </tr>
+            <tr>
+                <td>相对提升</td>
+                <td>+1.45%</td>
+                <td>+0.87%</td>
+                <td>+0.60%</td>
+                <td>+0.36%</td>
+            </tr>
+        </table>
+        <p>表8 | 不同搜索策略的强化学习性能对比</p>
+    </div>
+    
+    <div class="original">
+        <p>Reference Model In this section, we compare two reference models for strategy generation in ECPO: (1) the pre-trained model (off-policy) and (2) the current policy model (on-policy). The experimental results are summarized in Table 9. From the table, it is evident that using the current policy model yields better results, especially in offline reward evaluation. This indicates that the on-policy approach allows the model to continuously teach itself, breaking through the limitations of the reference model and achieving a higher upper limit. However, in terms of online performance, the improvement with the on-policy approach is not very significant. This is due to the suboptimal definition of the reward, leading to slight reward hacking. We will focus on this aspect as a key direction for future work.</p>
+    </div>
+    <div class="translation">
+        <p><strong>参考模型</strong> 本节比较ECPO策略生成的两种参考模型：(1)预训练模型（离线策略）和(2)当前策略模型（在线策略）。实验结果总结于表9。从表中可见，使用当前策略模型效果更优，尤其在离线奖励评估中。这表明在线策略方法使模型能持续自我学习，突破参考模型的限制实现更高上限。但在在线性能方面，在线策略的改进不显著，这源于奖励定义欠佳导致的轻微奖励黑客问题。我们将以此作为未来工作的重点方向。</p>
+    </div>
+</div>
+
+<div class="section">
+    <h2>3. 摘要总结</h2>
+    <p>本报告通过三组实验优化OneRec系统的强化学习组件：</p>
+    <ol>
+        <li><strong>搜索空间</strong>：组大小增至512时关键指标提升显著（如vtr从0.2303→0.2350），但2048时边际收益递减</li>
+        <li><strong>搜索策略</strong>：束搜索因匹配语义ID的前缀树结构，相比top-k/top-p采样全面领先（最高相对提升1.45%）</li>
+        <li><strong>参考模型</strong>：在线策略模型突破离线策略限制，但受限于奖励函数设计，在线场景存在奖励黑客风险</li>
+    </ol>
+    <p>核心结论：ECPO训练组大小建议设为推理输出量的4倍，束搜索作为首选策略，需优化奖励函数解决在线策略瓶颈。</p>
+</div>
+
+<div class="section">
+    <h2>4. 术语解释</h2>
+    <dl>
+        <dt><span class="term">ECPO（Enhanced Collaborative Policy Optimization）</span></dt>
+        <dd>增强式协作策略优化，一种结合多目标优化的强化学习框架，用于推荐系统策略训练</dd>
+        
+        <dt><span class="term">搜索空间/组大小（Search Space/Group Size）</span></dt>
+        <dd>训练时单次策略优化考虑的候选动作数量，扩大空间提升最优项发现概率但增加计算开销</dd>
+        
+        <dt><span class="term">束搜索（Beam Search）</span></dt>
+        <dd>启发式图搜索算法，每步保留Top-B个最优路径，适合结构化输出（如语义ID的前缀树）</dd>
+        
+        <dt><span class="term">Top-k/Top-p采样</span></dt>
+        <dd>
+            <ul>
+                <li>Top-k：仅从概率最高的k个候选中采样</li>
+                <li>Top-p：从累积概率≥p的最小候选集中采样</li>
+            </ul>
+        </dd>
+        
+        <dt><span class="term">在线策略（On-policy）</span></dt>
+        <dd>使用当前策略生成的数据进行训练，实现持续自我优化，公式：\( \
+abla J(\\theta) = \\mathbb{E}_{\\tau\\sim\\pi_\\theta}[\
+abla_\\theta\\log\\pi_\\theta(\\tau)r(\\tau)] \)</dd>
+        
+        <dt><span class="term">奖励黑客（Reward Hacking）</span></dt>
+        <dd>模型利用奖励函数缺陷获取高回报却未实现真实目标，如过度优化单一指标损害整体体验</dd>
+        
+        <dt><span class="term">语义ID（Semantic ID）</span></dt>
+        <dd>物品的结构化向量表示，通过前缀树编码保持语义层次关系</dd>
+    </dl>
+</div>
+
+</body>
+</html>

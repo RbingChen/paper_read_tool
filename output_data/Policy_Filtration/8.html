@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>算法专家论文分析报告</title>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    body { font-family: Arial, sans-serif; line-height: 1.6; margin: 20px; }
+    h1 { color: #2c3e50; text-align: center; }
+    h2 { color: #3498db; border-bottom: 2px solid #3498db; padding-bottom: 5px; }
+    .original { background-color: #f0f0f0; border: 1px solid #cccccc; padding: 15px; margin-bottom: 10px; border-radius: 5px; }
+    .translation { background-color: #e0ffe0; border: 1px solid #00cc00; padding: 15px; margin-bottom: 20px; border-radius: 5px; }
+    .term { color: red; font-weight: bold; } /* 术语高亮样式 */
+    table { width: 100%; border-collapse: collapse; margin: 15px 0; }
+    th, td { border: 1px solid #ddd; padding: 8px; text-align: center; }
+    th { background-color: #f2f2f2; }
+    .formula { text-align: center; margin: 20px 0; font-size: 1.1em; } /* 公式样式 */
+    .formula-number { display: block; font-style: italic; margin-top: 5px; } /* 公式编号 */
+    .section { margin-bottom: 30px; }
+    ul { list-style-type: none; padding-left: 0; }
+    li { margin-bottom: 10px; }
+  </style>
+</head>
+<body>
+  <h1>论文分析报告：Policy Filtration for RLHF to Mitigate Noise in Reward Models</h1>
+  
+  <!-- 内容理解部分 -->
+  <div class="section">
+    <h2>内容理解</h2>
+    <p>本文提出了一种名为 <strong class="term">PF-PPO (Policy Filtration for Proximal Policy Optimization)</strong> 的新方法，旨在解决强化学习人类反馈（<strong class="term">RLHF</strong>）中奖励模型的噪声问题。核心思想是：在使用 Bradley-Terry 方法训练奖励模型时，高奖励和低奖励区域的信号更可靠，而中等奖励区域的信号噪声较大。因此，PF-PPO 采用基于排名的策略，在 <strong class="term">PPO (Proximal Policy Optimization)</strong> 训练中优先选择可靠区域的样本，以提升奖励信号质量。实验部分验证了方法的有效性：在多个任务（如逻辑推理、数学、代码生成等）上，PF-PPO 相比基线 PPO-S 在准确率（如 <strong class="term">BO1 (Best-of-1)</strong> 和 <strong class="term">BO5 (Best-of-5)</strong>）上有显著提升，且分析表明过滤不可靠奖励样本能改善策略性能。结论强调，该方法能一致超越现有基线，并讨论了其机器学习领域的贡献。</p>
+  </div>
+  
+  <!-- 内容翻译部分 -->
+  <div class="section">
+    <h2>内容翻译</h2>
+    
+    <!-- 标题块 -->
+    <div class="original">
+      <p>Policy Filtration for <strong class="term">RLHF</strong> to Mitigate Noise in Reward Models</p>
+    </div>
+    <div class="translation">
+      <p>用于减轻奖励模型中噪声的 <strong class="term">RLHF (Reinforcement Learning from Human Feedback)</strong> 策略过滤</p>
+    </div>
+    
+    <!-- 表格描述块 -->
+    <div class="original">
+      <p>Task Evaluation Set Size BO1 Accuracy (%) BO5 Accuracy (%)
+Logic Reasoning 1,203 48.9 (+2.3) 63.8 (+2.8)
+Math 1,759 69.7 (+1.1) 79.9 (+2.3)
+Code 3,933 55.8 (-0.2) 67.4 (+0.1)
+STEM 4,466 54.7 (-0.1) 63.1 (+0.1)
+Complex Tasks 2,990 9.5 (+1.0) 14.9 (+0.6)
+Instruction Following 1,525 49.6 (+1.7) 59.8 (+1.8)
+Knowledge 775 47.3 (+1.9) 58.3 (+1.8)
+Language Understanding 680 63.8 (+1.6) 68.4 (+3.8)
+Table 5. Improvement of <strong class="term">PF-PPO</strong> compared with PPO-S on a wide range of tasks. We present the best-of-1 (<strong class="term">BO1</strong>) and best-of-5 (<strong class="term">BO5</strong>) accuracies for PF-PPO and the accuracy improvement of PF-PPO compared to PPO-S. The results with significant improvement are highlighted in bold.</p>
+    </div>
+    <div class="translation">
+      <p>任务 评估集大小 BO1准确率 (%) BO5准确率 (%)
+逻辑推理 1,203 48.9 (+2.3) 63.8 (+2.8)
+数学 1,759 69.7 (+1.1) 79.9 (+2.3)
+代码 3,933 55.8 (-0.2) 67.4 (+0.1)
+STEM 4,466 54.7 (-0.1) 63.1 (+0.1)
+复杂任务 2,990 9.5 (+1.0) 14.9 (+0.6)
+指令遵循 1,525 49.6 (+1.7) 59.8 (+1.8)
+知识 775 47.3 (+1.9) 58.3 (+1.8)
+语言理解 680 63.8 (+1.6) 68.4 (+3.8)
+表5. <strong class="term">PF-PPO (Policy Filtration for Proximal Policy Optimization)</strong> 与 PPO-S 在广泛任务上的改进比较。我们展示了 PF-PPO 的最佳单次（<strong class="term">BO1 (Best-of-1)</strong>）和最佳五次（<strong class="term">BO5 (Best-of-5)</strong>）准确率，以及 PF-PPO 相比 PPO-S 的准确率提升。显著改进的结果以粗体显示。</p>
+    </div>
+    
+    <!-- 实验段落块 -->
+    <div class="original">
+      <p><strong class="term">PPO</strong> algorithm on these two benchmarks across different reward models. In addition, the experiment results indicate that even if we can have access to the ground truth, using the oracle as the reward function does not perform as well as using a reward model (either the original reward model or the combined model). This finding is consistent with experiment results in Qwen-Math (Yang et al., 2024) and Deepseek-Math (Shao et al., 2024).</p>
+    </div>
+    <div class="translation">
+      <p>在不同奖励模型上，基于这两个基准的 <strong class="term">PPO (Proximal Policy Optimization)</strong> 算法。此外，实验结果表明，即使我们能访问真实值，使用 Oracle 作为奖励函数的表现也不如使用奖励模型（原始奖励模型或组合模型）。这一发现与 Qwen-Math (Yang et al., 2024) 和 Deepseek-Math (Shao et al., 2024) 的实验结果一致。</p>
+    </div>
+    
+    <!-- 小节标题块 -->
+    <div class="original">
+      <p>5.6. Experiment Results on Wider Range of Tasks</p>
+    </div>
+    <div class="translation">
+      <p>5.6. 在更广泛任务上的实验结果</p>
+    </div>
+    
+    <!-- 实验描述块 -->
+    <div class="original">
+      <p>To further validate the broader effectiveness of our method, we conducted experiments across diverse domains using Doubao-25k (policy and reward model backbone). Tasks included logic reasoning, math, code generation, STEM problems, complex tasks, instruction following, knowledge QA, and language understanding. Each task has distinct evaluation sets and verifiers to assess response correctness. We consider the multi-task scenario where one model is trained to complete various tasks. We present the results (accuracy improvement over vanilla <strong class="term">PPO</strong>) in Table 5. We highlight statistically significant changes (exceeding ±0.5%, based on test case counts) in bold. These results demonstrate <strong class="term">PF-PPO</strong>’s consistent effectiveness across tasks.</p>
+    </div>
+    <div class="translation">
+      <p>为进一步验证我们方法的广泛有效性，我们使用 Doubao-25k（策略和奖励模型主干）在多个领域进行了实验。任务包括逻辑推理、数学、代码生成、STEM问题、复杂任务、指令遵循、知识问答和语言理解。每个任务都有不同的评估集和验证器来评估响应正确性。我们考虑多任务场景，其中一个模型被训练以完成各种任务。我们在表5中展示了结果（相比原始 <strong class="term">PPO (Proximal Policy Optimization)</strong> 的准确率提升）。我们以粗体突出统计显著变化（基于测试案例计数，超过 ±0.5%）。这些结果证明了 <strong class="term">PF-PPO (Policy Filtration for Proximal Policy Optimization)</strong> 在任务间的一致有效性。</p>
+    </div>
+    
+    <!-- 结论标题块 -->
+    <div class="original">
+      <p>6. Conclusion</p>
+    </div>
+    <div class="translation">
+      <p>6. 结论</p>
+    </div>
+    
+    <!-- 结论段落块 -->
+    <div class="original">
+      <p>In this paper, we propose a new reinforcement learning with human feedback (<strong class="term">RLHF</strong>) method, Policy Filtration for Proximal Policy Optimization (<strong class="term">PF-PPO</strong>), aimed at mitigating the adverse effects of reward noise. When training the reward model using the Bradley-Terry approach, the reward signal is generally more reliable in the high or low reward regions but less reliable in the moderate reward regions. Motivated by this observation, we adopt a rank-based method to selectively use sample from these reliable regions more in <strong class="term">PPO</strong> to improve the quality of the signal provided by the reward model. We conduct comprehensive experiments to demonstrate that <strong class="term">PF-PPO</strong> consistently outperforms existing baselines. Additionally, we analyze <strong class="term">PF-PPO</strong>, standard <strong class="term">PPO</strong>, and <strong class="term">PPO</strong> with multiple responses in details and show that filtering samples with unreliable rewards can improve the performance of the outcome policy.</p>
+    </div>
+    <div class="translation">
+      <p>在本文中，我们提出了一种新的基于人类反馈的强化学习（<strong class="term">RLHF (Reinforcement Learning from Human Feedback)</strong>）方法——近端策略优化的策略过滤（<strong class="term">PF-PPO (Policy Filtration for Proximal Policy Optimization)</strong>），旨在减轻奖励噪声的不利影响。当使用 Bradley-Terry 方法训练奖励模型时，奖励信号在高奖励或低奖励区域通常更可靠，而在中等奖励区域可靠性较低。基于这一观察，我们采用基于排名的方法，在 <strong class="term">PPO (Proximal Policy Optimization)</strong> 中更有选择性地使用这些可靠区域的样本，以提升奖励模型提供的信号质量。我们进行了全面实验，证明 <strong class="term">PF-PPO</strong> 一致优于现有基线。此外，我们详细分析了 <strong class="term">PF-PPO</strong>、标准 <strong class="term">PPO</strong> 及多响应 PPO，并表明过滤不可靠奖励样本能改善结果策略的性能。</p>
+    </div>
+    
+    <!-- 致谢块 -->
+    <div class="original">
+      <p>Acknowledgment</p>
+      <p>The work was partially supported by The State Key Laboratory of Novel Software Technology (KFKT2024A03).</p>
+    </div>
+    <div class="translation">
+      <p>致谢</p>
+      <p>本工作部分由国家重点实验室新型软件技术（KFKT2024A03）支持。</p>
+    </div>
+    
+    <!-- 影响声明块 -->
+    <div class="original">
+      <p>Impact Statement</p>
+      <p>This paper presents work whose goal is to advance the field of Machine Learning. There are many potential societal consequences of our work, none which we feel must be specifically highlighted here.</p>
+    </div>
+    <div class="translation">
+      <p>影响声明</p>
+      <p>本文展示的工作旨在推动机器学习领域的发展。我们的工作有许多潜在的社会影响，但我们认为此处无需特别强调。</p>
+    </div>
+    
+    <!-- 参考文献块（不翻译，仅列出） -->
+    <div class="original">
+      <p>References</p>
+      <p>Amini, A., Vieira, T., and Cotterell, R. Variational best-of-n alignment. arXiv preprint arXiv:2407.06057, 2024.</p>
+      <p>Anthropic, A. Introducing claude, 2023. URL https://www.anthropic.com/news/introducing-claude.</p>
+      <p>Austin, J., Odena, A., Nye, M., Bosma, M., Michalewski, H., Dohan, D., Jiang, E., Cai, C., Terry, M., Le, Q., et al. Program synthesis with large language models. arXiv preprint arXiv:2108.07732, 2021.</p>
+      <p>Azar, M. G., Guo, Z. D., Piot, B., Munos, R., Rowland, M., Valko, M., and Calandriello, D. A general theoretical paradigm to understand learning from human preferences. In International Conference on Artificial Intelligence and Statistics, pp. 4447–4455. PMLR, 2024.</p>
+      <p>Bai, Y., Jones, A., Ndousse, K., Askell, A., Chen, A., Das-Sarma, N., Drain, D., Fort, S., Ganguli, D., Henighan, T., et al. Training a helpful and harmless assistant with reinforcement learning.</p>
+    </div>
+    <div class="translation">
+      <p>参考文献</p>
+      <p>Amini, A., Vieira, T., and Cotterell, R. Variational best-of-n alignment. arXiv preprint arXiv:2407.06057, 2024.</p>
+      <p>Anthropic, A. Introducing claude, 2023. URL https://www.anthropic.com/news/introducing-claude.</p>
+      <p>Austin, J., Odena, A., Nye, M., Bosma, M., Michalewski, H., Dohan, D., Jiang, E., Cai, C., Terry, M., Le, Q., et al. Program synthesis with large language models. arXiv preprint arXiv:2108.07732, 2021.</p>
+      <p>Azar, M. G., Guo, Z. D., Piot, B., Munos, R., Rowland, M., Valko, M., and Calandriello, D. A general theoretical paradigm to understand learning from human preferences. In International Conference on Artificial Intelligence and Statistics, pp. 4447–4455. PMLR, 2024.</p>
+      <p>Bai, Y., Jones, A., Ndousse, K., Askell, A., Chen, A., Das-Sarma, N., Drain, D., Fort, S., Ganguli, D., Henighan, T., et al. Training a helpful and harmless assistant with reinforcement learning.</p>
+    </div>
+  </div>
+  
+  <!-- 摘要总结部分 -->
+  <div class="section">
+    <h2>摘要总结</h2>
+    <p>本文核心内容为提出一种名为 <strong class="term">PF-PPO (Policy Filtration for Proximal Policy Optimization)</strong> 的新方法，用于解决强化学习人类反馈（<strong class="term">RLHF</strong>）中奖励模型的噪声问题。该方法基于观察：在 Bradley-Terry 奖励模型中，高/低奖励区域的信号可靠，而中等区域噪声大。因此，PF-PPO 采用排名策略，在 <strong class="term">PPO (Proximal Policy Optimization)</strong> 训练中过滤不可靠样本，提升信号质量。实验在多个任务（如逻辑推理、数学、代码生成）上验证，使用指标如 <strong class="term">BO1 (Best-of-1)</strong> 和 <strong class="term">BO5 (Best-of-5)</strong> 准确率，结果显示 PF-PPO 一致优于基线 PPO-S，平均提升达 1-3%。结论强调，该方法能有效减少噪声影响，推动 RLHF 领域发展。</p>
+  </div>
+  
+  <!-- 术语识别部分 -->
+  <div class="section">
+    <h2>术语识别</h2>
+    <ul>
+      <li><strong class="term">RLHF (Reinforcement Learning from Human Feedback)</strong>: 从人类反馈中强化学习，一种训练AI模型的技术，其中人类偏好用于指导强化学习过程，常用于对齐模型行为。</li>
+      <li><strong class="term">PPO (Proximal Policy Optimization)</strong>: 近端策略优化，一种强化学习算法，通过约束策略更新步长来稳定训练，避免大波动。</li>
+      <li><strong class="term">PF-PPO (Policy Filtration for Proximal Policy Optimization)</strong>: 本文提出的方法，策略过滤的PPO。基于奖励值可靠性（高/低区域）过滤样本，减少噪声，提升PPO训练效率。</li>
+      <li><strong class="term">BO1 (Best-of-1 Accuracy)</strong>: 最佳单次准确率，评估指标，指模型单次生成响应的正确率。</li>
+      <li><strong class="term">BO5 (Best-of-5 Accuracy)</strong>: 最佳五次准确率，评估指标，指模型生成5个响应中最佳响应的正确率，更全面反映模型性能。</li>
+      <li><strong class="term">Bradley-Terry Approach</strong>: 一种统计模型，用于成对比较（如人类偏好），通过估计项目间的相对强度来建模奖励，常用于RLHF奖励训练。</li>
+      <li><strong class="term">Reward Model</strong>: 奖励模型，预测动作或响应的奖励值函数，在RLHF中基于人类偏好训练。</li>
+      <li><strong class="term">Oracle</strong>: 真实奖励函数，指理想化的、无噪声的奖励信号，实验中用作基准但实际不可用。</li>
+      <li><strong class="term">Policy Filtration</strong>: 策略过滤，本方法核心机制，基于奖励排名选择可靠样本，忽略中等奖励区域的噪声数据。</li>
+      <li><strong class="term">Doubao-25k</strong>: 实验中使用的基础模型架构，包含策略和奖励模型主干，用于多任务评估。</li>
+    </ul>
+  </div>
+</body>
+</html>

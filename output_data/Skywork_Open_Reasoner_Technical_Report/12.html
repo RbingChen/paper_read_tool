@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>算法专家论文解析</title>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    body { font-family: Arial, sans-serif; line-height: 1.6; }
+    .original { background-color: lightgrey; border: 1px solid grey; padding: 10px; margin-bottom: 10px; }
+    .translation { background-color: lightgreen; border: 1px solid green; padding: 10px; margin-bottom: 20px; }
+    .figure { background-color: yellow; padding: 10px; text-align: center; margin: 20px 0; }
+    .term { color: red; font-weight: bold; }
+    .formula-container { background-color: yellow; padding: 20px; text-align: center; margin: 20px 0; }
+    .formula-number { font-style: italic; margin-top: 10px; }
+    table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+    th, td { border: 1px solid black; padding: 8px; text-align: center; }
+    th { background-color: #f2f2f2; }
+  </style>
+</head>
+<body>
+
+<h1>论文内容解析</h1>
+
+<section>
+  <h2>内容理解</h2>
+  <p>该文本描述了在强化学习训练中进行的一系列消融实验（Ablation Experiments），重点研究不同优势掩码（Advantage Mask）策略对模型响应的影响。核心内容包括：图7展示了在消融实验2中，应用不同优势掩码策略后生成响应的剪辑比率（Clip Ratio）、训练准确率（Training Accuracy）和非截断响应（Non-truncated Responses）准确率的变化趋势。结果表明，使用<strong class="term">Adv-Mask-Before</strong>策略能有效缓解响应长度衰减，并提升非截断响应的准确率，而<strong class="term">Adv-Mask-After</strong>和<strong class="term">No-Adv-Mask</strong>策略在早期训练步骤中可能导致准确率急剧下降。消融实验3详细定义了三种优势掩码策略（No-Adv-Mask、Adv-Mask-Before、Adv-Mask-After），并通过数学公式形式化其计算逻辑。公式中，优势（Advantage）的计算依赖于奖励组（Rewards Group）的统计量（如均值和标准差），并设置截断响应的优势为0以避免其对策略损失（Policy Loss）的贡献。表2列出了共享超参数（Hyperparameters），如批大小（Batch Size）和熵控制（Entropy Control），这些参数基于Deepseek-R1-Distill-Qwen-7B模型。整体上，文本强调了优势掩码策略在优化强化学习训练中的关键作用，特别是在处理响应截断问题时的效果差异。</p>
+</section>
+
+<section>
+  <h2>内容翻译</h2>
+  
+  <div class="original">
+    <p>Figure 7:Left:The clip ratio of generated responses during reinforcement learning training was analyzed after applying various advantage mask strategies in Ablation Experiments 2. Using an advantage mask mitigates the decay in response length. The clip ratio even increased after applying Adv-Mask-Before. Middle: Training accuracy of responses influenced by different advantage mask strategies in Ablation Experiment 2 shows distinct patterns. After applying the Adv-Mask-Before, training accuracy decreases. In contrast, it continues to increase when using the Adv-Mask-After or No-Adv-Mask strategies. Right:Training accuracy of non-truncated responses induced by different advantage mask strategies in Ablation Experiment 2 showed distinct outcomes. After applying the Adv-Mask-Before strategy, the training accuracy of non-truncated responses continued to rise. In contrast, both the Adv-Mask-After and No-Adv-Mask strategies resulted in a sharp decrease during the early steps.</p>
+  </div>
+  <div class="translation">
+    <p>图7：左图：在消融实验2中应用不同优势掩码策略后，分析了强化学习训练期间生成响应的剪辑比率。使用优势掩码减轻了响应长度的衰减。应用<strong class="term">Adv-Mask-Before</strong>后，剪辑比率甚至增加。中图：消融实验2中受不同优势掩码策略影响的响应训练准确率显示出不同模式。应用<strong class="term">Adv-Mask-Before</strong>后，训练准确率下降。相反，当使用<strong class="term">Adv-Mask-After</strong>或<strong class="term">No-Adv-Mask</strong>策略时，它继续增加。右图：消融实验2中由不同优势掩码策略引起的非截断响应训练准确率显示出不同结果。应用<strong class="term">Adv-Mask-Before</strong>策略后，非截断响应的训练准确率继续上升。相反，<strong class="term">Adv-Mask-After</strong>和<strong class="term">No-Adv-Mask</strong>策略在早期步骤中导致急剧下降。</p>
+  </div>
+  
+  <div class="original">
+    <h3>Ablation Experiments 3: Different Advantage Mask Strategies</h3>
+    <p>1. No-Adv-Mask: We do not employ any advantage mask strategy.</p>
+    <p>2.Adv-Mask-Before: The truncated responses are not involved in the group advantage calculation for non-truncated responses, and the advantage of these truncated responses are set to 0 (thus not contributing to the policy loss):</p>
+  </div>
+  <div class="translation">
+    <h3>消融实验3：不同优势掩码策略</h3>
+    <p>1. <strong class="term">No-Adv-Mask</strong>：我们不使用任何优势掩码策略。</p>
+    <p>2. <strong class="term">Adv-Mask-Before</strong>：截断响应不参与非截断响应的组优势计算，这些截断响应的优势设为0（因此不贡献于策略损失）：</p>
+  </div>
+  
+  <div class="formula-container">
+    <p>\[ \forall t: A_{t}^{ij} = \begin{cases} \frac{r(x_i, y_{ij}) - \text{mean}(\hat{R}_i)}{\text{std}(\hat{R}_i)} & \text{if } |y| \leq T \\ 0 & \text{if } |y| > T \end{cases} \]</p>
+    <p class="formula-number">公式1: Adv-Mask-Before策略的优势计算公式。其中，\( \hat{R}_i \) 是提示 \( x_i \) 的非截断响应的准确奖励组。</p>
+  </div>
+  
+  <div class="original">
+    <p>Here \( \hat{R}_i \) is the accuracy rewards group of non-truncated responses of prompt \( x_i \).</p>
+    <p>3.Adv-Mask-After: The truncated responses are still involved in the group advantage calculation for non-truncated responses, and the advantage of these truncated responses are set to 0 (thus not contributing to the policy loss):</p>
+  </div>
+  <div class="translation">
+    <p>这里 \( \hat{R}_i \) 是提示 \( x_i \) 的非截断响应的准确奖励组。</p>
+    <p>3. <strong class="term">Adv-Mask-After</strong>：截断响应仍然参与非截断响应的组优势计算，这些截断响应的优势设为0（因此不贡献于策略损失）：</p>
+  </div>
+  
+  <div class="formula-container">
+    <p>\[ \forall t: A_{t}^{ij} = \begin{cases} \frac{r(x_i, y_{ij}) - \text{mean}(R_i)}{\text{std}(R_i)} & \text{if } |y| \leq T \\ 0 & \text{if } |y| > T \end{cases} \]</p>
+    <p class="formula-number">公式2: Adv-Mask-After策略的优势计算公式。其中，\( R_i \) 是提示 \( x_i \) 的所有响应的准确奖励组。</p>
+  </div>
+  
+  <div class="original">
+    <p>Here \( R_i \) is the accuracy rewards group of all responses of prompt \( x_i \).</p>
+    <p>The other hyperparameters remain the same for both experiments and are reported in Table 2. The results can be found in Figure 7(a), Figure 7(c) and Figure 8.</p>
+  </div>
+  <div class="translation">
+    <p>这里 \( R_i \) 是提示 \( x_i \) 的所有响应的准确奖励组。</p>
+    <p>其他超参数在两项实验中保持相同，并在表2中报告。结果可见图7(a)、图7(c)和图8。</p>
+  </div>
+  
+  <div class="figure">
+    <table>
+      <caption>Table 2: Shared hyperparameters in Ablation Experiments 2 based on Deepseek-R1-Distill-Qwen-7B.</caption>
+      <tr>
+        <th>Batch Size</th>
+        <th>Mini-batch Size</th>
+        <th>Group Size</th>
+        <th>Context Length T</th>
+        <th>Entropy Control</th>
+        <th>KL Loss</th>
+      </tr>
+      <tr>
+        <td>256</td>
+        <td>128</td>
+        <td>16</td>
+        <td>Stage I 8K</td>
+        <td>target-entropy 0.2</td>
+        <td>No</td>
+      </tr>
+    </table>
+    <p>表2: 基于Deepseek-R1-Distill-Qwen-7B的消融实验2中的共享超参数。</p>
+  </div>
+</section>
+
+<section>
+  <h2>摘要总结</h2>
+  <p>文本的核心内容是对强化学习训练中不同优势掩码（Advantage Mask）策略的消融实验分析。关键点包括：图7显示，在消融实验2中，应用<strong class="term">Adv-Mask-Before</strong>策略能有效减轻响应长度衰减并提升非截断响应（Non-truncated Responses）的训练准确率（Training Accuracy），而<strong class="term">Adv-Mask-After</strong>和<strong class="term">No-Adv-Mask</strong>策略在早期训练步骤中导致准确率急剧下降。消融实验3定义了三种策略：<strong class="term">No-Adv-Mask</strong>（无掩码）、<strong class="term">Adv-Mask-Before</strong>（截断响应不参与组优势计算）和<strong class="term">Adv-Mask-After</strong>（截断响应参与计算但优势设为0），并通过数学公式形式化其优势（Advantage）计算，强调策略损失（Policy Loss）的优化机制。表2总结了共享超参数（Hyperparameters），如批大小（Batch Size）为256和熵控制（Entropy Control）为target-entropy 0.2，这些参数基于Deepseek-R1-Distill-Qwen-7B模型。整体上，实验突显了优势掩码策略在处理响应截断问题中的重要性，尤其<strong class="term">Adv-Mask-Before</strong>在维持响应长度和准确率方面的优势。</p>
+</section>
+
+<section>
+  <h2>术语识别</h2>
+  <ul>
+    <li><strong class="term">Advantage Mask (优势掩码)</strong>: 在强化学习中用于处理截断响应的策略，通过设置截断响应的优势（Advantage）为0，避免其对策略损失（Policy Loss）的影响。这有助于优化训练稳定性。</li>
+    <li><strong class="term">Clip Ratio (剪辑比率)</strong>: 指在生成响应中被截断的比例或相关度量，用于评估响应长度衰减情况。在实验中，它反映策略对响应完整性的影响。</li>
+    <li><strong class="term">Training Accuracy (训练准确率)</strong>: 模型在训练数据集上的预测准确率，用于衡量策略效果。文本中分析了不同优势掩码策略对整体响应和非截断响应准确率的影响。</li>
+    <li><strong class="term">Non-truncated Responses (非截断响应)</strong>: 指响应长度未超过预设阈值（Context Length T）的完整响应。实验中，其训练准确率是评估策略性能的关键指标。</li>
+    <li><strong class="term">Ablation Experiments (消融实验)</strong>: 通过移除或修改模型组件（如优势掩码策略）来研究其影响的实验方法。文本中的实验2和3用于分析不同策略的效果。</li>
+    <li><strong class="term">Policy Loss (策略损失)</strong>: 强化学习中策略梯度方法的损失函数，用于更新模型策略。优势掩码通过设置优势为0来减少截断响应对此损失的贡献。</li>
+    <li><strong class="term">Group Advantage (组优势)</strong>: 指一组响应（如针对同一提示的所有响应）的优势计算，基于奖励组的统计量（均值和标准差）进行归一化。</li>
+    <li><strong class="term">Accuracy Rewards (准确奖励)</strong>: 基于响应准确性计算的奖励信号，用于优势计算。公式中的 \( r(x_i, y_{ij}) \) 表示提示 \( x_i \) 和响应 \( y_{ij} \) 的奖励。</li>
+    <li><strong class="term">Hyperparameters (超参数)</strong>: 训练过程中固定的配置参数，如批大小（Batch Size）、小批量大小（Mini-batch Size）、组大小（Group Size）、上下文长度T（Context Length T）、熵控制（Entropy Control）等。表2列出了这些共享参数。</li>
+    <li><strong class="term">Reinforcement Learning Training (强化学习训练)</strong>: 使用奖励信号优化模型策略的训练方法。文本中在生成响应场景下应用此方法。</li>
+  </ul>
+</section>
+
+</body>
+</html>

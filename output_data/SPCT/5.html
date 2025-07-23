@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset='UTF-8'>
+<title>论文解析报告</title>
+<script src='https://polyfill.io/v3/polyfill.min.js?features=es6'></script>
+<script id='MathJax-script' async src='https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'></script>
+<style>
+  body { font-family: Arial, sans-serif; line-height: 1.6; }
+  .original { 
+    background-color: #f8f8f8; 
+    border: 1px solid #cccccc; 
+    padding: 15px; 
+    margin-bottom: 10px;
+    border-radius: 5px;
+  }
+  .translation { 
+    background-color: #e8f5e9; 
+    border: 1px solid #4caf50; 
+    padding: 15px; 
+    margin-bottom: 20px;
+    border-radius: 5px;
+  }
+  .formula-container { 
+    background-color: #fffde7; 
+    padding: 15px; 
+    text-align: center; 
+    margin: 20px 0;
+    border-radius: 5px;
+  }
+  .formula-label { 
+    display: block; 
+    font-weight: bold; 
+    margin-top: 10px;
+  }
+  .term { 
+    color: red; 
+    font-weight: bold;
+  }
+  .section-title { 
+    color: #2c3e50; 
+    border-bottom: 2px solid #3498db; 
+    padding-bottom: 5px; 
+    margin-top: 30px;
+  }
+  .explanation { 
+    background-color: #e3f2fd; 
+    padding: 15px; 
+    margin: 15px 0; 
+    border-left: 4px solid #2196f3;
+    border-radius: 0 5px 5px 0;
+  }
+  .summary-box { 
+    background-color: #fff3e0; 
+    padding: 20px; 
+    margin: 20px 0; 
+    border-radius: 5px;
+  }
+  .terms-container { 
+    background-color: #f5f5f5; 
+    padding: 20px; 
+    margin: 20px 0; 
+    border-radius: 5px;
+  }
+</style>
+</head>
+<body>
+
+<h1>论文解析报告</h1>
+
+<!-- 翻译与理解部分 -->
+<div class='section'>
+  <h2 class='section-title'>内容翻译与理解</h2>
+  
+  <div class='original'>
+    Preprint. Under review. predicted pointwise rewards \\(\\{S_i\\}_{i=1}^n\\) are correct if
+  </div>
+  <div class='translation'>
+    预印本，正在审稿中。预测的点奖励 \\(\\{S_i\\}_{i=1}^n\\) 是正确的当且仅当：
+  </div>
+  <div class='explanation'>
+    该部分说明论文状态为预印本，并定义了预测点奖励的正确性条件。
+  </div>
+
+  <div class='formula-container'>
+    $$
+    \\forall i \
+eq j, S_j > S_i, j = \\arg\\max_l \\{r_l\\}_{l=1}^n, \\text{ if } n \\geq 2,
+    $$
+    $$
+    S_1 = r_1, \\text{ if } n=1.
+    $$
+    <span class='formula-label'>(4)</span>
+  </div>
+  <div class='explanation'>
+    公式(4)定义了点奖励的正确性条件：当响应数≥2时，最大真实奖励对应的预测奖励必须严格大于其他所有响应；当仅有一个响应时，预测奖励必须等于真实奖励。
+  </div>
+
+  <div class='original'>
+    with guaranteed that the ground truth rewards only contain one maximum. However, similar to previous works (Zhang et al., 2025a), we found pretrained <span class='term'>GRMs (Generalist Reward Models)</span> could hardly generate correct rewards for a portion of queries and corresponding responses within limited sampling quota. Thus, we optionally append \\(\\arg\\max_l \\{r_l\\}_{l=1}^n\\) to the prompt of the <span class='term'>GRM</span>, termed <span class='term'>hinted sampling</span>, expecting the predicted rewards to align with the ground truth, besides <span class='term'>non-hinted sampling</span>. For <span class='term'>hinted sampling</span>, each query and the corresponding responses are sampled once, and trajectories are only rejected when incorrect. Beyond previous studies (Li et al., 2024a; Mahan et al., 2024), we observed that hinted sampled trajectories sometimes shortcut the generated critique, especially for reasoning tasks, indicating the necessity and potential benefits of <span class='term'>online RL (Reinforcement Learning)</span> for the <span class='term'>GRM</span>.
+  </div>
+  <div class='translation'>
+    同时保证真实奖励仅包含一个最大值。然而，与之前工作(Zhang et al., 2025a)类似，我们发现预训练的<span class='term'>GRM（通用奖励模型）</span>在有限采样配额下很难为部分查询和响应生成正确奖励。因此，我们可选地在<span class='term'>GRM</span>提示中添加\\(\\arg\\max_l \\{r_l\\}_{l=1}^n\\)，称为<span class='term'>提示采样(hinted sampling)</span>，期望预测奖励与真实值对齐，此外还有<span class='term'>非提示采样(non-hinted sampling)</span>。对于<span class='term'>提示采样</span>，每个查询和响应仅采样一次，轨迹仅在错误时被拒绝。超越先前研究(Li et al., 2024a; Mahan et al., 2024)，我们观察到提示采样的轨迹有时会绕过生成的评论，尤其在推理任务中，这表明对<span class='term'>GRM</span>实施<span class='term'>在线强化学习(online RL)</span>的必要性和潜在优势。
+  </div>
+  <div class='explanation'>
+    指出预训练GRM的局限性，并提出两种采样策略：提示采样（在输入中提供正确答案线索）和非提示采样。发现提示采样可能导致评论生成"捷径"，建议使用在线强化学习优化GRM。
+  </div>
+
+  <div class='original'>
+    <span class='term'>Rule-Based RL (Reinforcement Learning)</span> The <span class='term'>GRM</span> is further fine-tuned with rule-based online <span class='term'>RL</span>. Specifically, we use the original setting of <span class='term'>GRPO (Generalized Reward Policy Optimization)</span> (Shao et al., 2024) with rule-based outcome rewards. During rolling out, the <span class='term'>GRM</span> generates principles and critiques based on the input query and responses, and then the predicted reward is extracted and compared to the ground truth with accuracy rules. Unlike DeepSeek-AI (2025), no format rewards are used. Instead, a larger coefficient for <span class='term'>KL penalty (Kullback-Leibler Divergence Penalty)</span> is applied to ensure the format and avoid severe biases. Formally, the reward for the i-th output \\(o_i\\) to the given query \\(x\\) and responses \\(\\{y_i\\}_{i=1}^n\\) is
+  </div>
+  <div class='translation'>
+    <span class='term'>基于规则的强化学习(Rule-Based RL)</span>：<span class='term'>GRM</span>通过基于规则的在线<span class='term'>RL</span>进一步微调。具体而言，我们采用<span class='term'>GRPO（广义奖励策略优化）</span>(Shao et al., 2024)的原始设置，使用基于规则的结果奖励。在展开过程中，<span class='term'>GRM</span>基于输入查询和响应生成原则和评论，然后提取预测奖励并通过准确性规则与真实值比较。与DeepSeek-AI(2025)不同，我们不使用格式奖励，而是采用更大的<span class='term'>KL惩罚（Kullback-Leibler散度惩罚）</span>系数来确保格式并避免严重偏差。形式化地，给定查询\\(x\\)和响应\\(\\{y_i\\}_{i=1}^n\\)，第i个输出\\(o_i\\)的奖励为：
+  </div>
+  <div class='explanation'>
+    介绍基于规则的强化学习方法：使用GRPO框架，通过规则化奖励和KL惩罚微调GRM，强调与DeepSeek-AI方法的区别（不使用格式奖励）。
+  </div>
+
+  <div class='formula-container'>
+    $$
+    \\hat{r}_i = 
+    \\begin{cases} 
+    1, & \\text{if } n \\geq 2 \\text{ and } \\forall i' \
+eq j', S_{j'} > S_{i'}, j' = \\arg\\max_l \\{r_l\\}_{l=1}^n \\\\
+    1, & \\text{if } n=1 \\text{ and } S_1 = r_1 \\\\
+    -1, & \\text{otherwise}
+    \\end{cases}
+    $$
+    <span class='formula-label'>(5)</span>
+  </div>
+  <div class='explanation'>
+    公式(5)定义了规则化奖励函数：当预测正确时奖励+1，错误时惩罚-1。该函数激励GRM区分最佳响应，支持推理时扩展。
+  </div>
+
+  <div class='original'>
+    where the pointwise rewards \\(\\{S_i\\}_{i=1}^n\\) are extracted from \\(o_i\\). The reward function encourages <span class='term'>GRMs</span> to distinguish the best responses with online optimized principles and critiques, in favor of effective <span class='term'>inference-time scaling</span>. The reward signal could be obtained seamlessly from any preference dataset and labeled <span class='term'>LLM (Large Language Model)</span> responses.
+  </div>
+  <div class='translation'>
+    其中点奖励\\(\\{S_i\\}_{i=1}^n\\)从\\(o_i\\)中提取。该奖励函数鼓励<span class='term'>GRM</span>通过在线优化的原则和评论区分最佳响应，支持有效的<span class='term'>推理时扩展(inference-time scaling)</span>。奖励信号可无缝从任何偏好数据集

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>算法专家分析报告</title>
+  <style>
+    body { font-family: Arial, sans-serif; line-height: 1.6; margin: 20px; }
+    h1 { color: #2c3e50; text-align: center; }
+    h2 { color: #3498db; border-bottom: 2px solid #3498db; padding-bottom: 5px; }
+    .section { margin-bottom: 30px; }
+    .original { background-color: #f0f0f0; border: 1px solid grey; padding: 15px; margin-bottom: 10px; }
+    .translation { background-color: #e0ffe0; border: 1px solid green; padding: 15px; margin-bottom: 20px; }
+    .figure { background-color: yellow; padding: 15px; margin: 15px 0; text-align: center; font-weight: bold; }
+    .formula { text-align: center; margin: 15px 0; }
+    .term { color: red; font-weight: bold; }
+    .term-list { list-style-type: none; padding-left: 0; }
+    .term-list li { margin-bottom: 10px; }
+    .summary { background-color: #f9f9f9; padding: 15px; border-left: 4px solid #3498db; }
+  </style>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <h1>算法专家分析报告：模型性能与监督微调研究</h1>
+  
+  <!-- 内容理解部分 -->
+  <div class="section">
+    <h2>内容理解</h2>
+    <p>文本主要分析了 <span class="term">AM-Thinking-v1</span> 模型在多个基准测试中的性能表现，并探讨了监督微调（SFT）的模式变化。图6展示了模型大小（参数数量）与性能（基准分数）的关系：在 <span class="term">AIME2024</span> 和 <span class="term">LiveCodeBench</span> 基准上，模型越小且性能越高（靠近左上角）表示效率更优。AM-Thinking-v1 在 <span class="term">LiveCodeBench</span>（专注于代码推理）上以70.3分超越多个模型（如 DeepSeek-R1 和 Qwen3-32B），证明其在代码理解和生成方面的优势；在 <span class="term">Arena-Hard</span>（一般聊天基准）上，92.5分与专有模型竞争，但落后于 Qwen3-235B-A22B，表明一般对话能力有待提升。图6还强调 AM-Thinking-v1 在密集模型中性能最强，接近更大 <span class="term">MoE 模型 (Mixture of Experts)</span>，平衡了效率与性能。第5.3节讨论了 <span class="term">监督微调 (Supervised Fine-Tuning, SFT)</span> 的模式变化：针对长形式推理任务，SFT 需要更大的学习率和批大小（如学习率 \( 8 \\times 10^{-5} \) vs 传统 \( 8 \\times 10^{-6} \)，批大小 2M tokens vs 0.5M tokens）以实现稳定收敛，否则模型难以拟合数据。图7展示了 SFT 训练损失曲线，验证了这一现象。</p>
+  </div>
+  
+  <!-- 内容翻译部分 -->
+  <div class="section">
+    <h2>内容翻译</h2>
+    
+    <!-- 段落1: Figure 6 描述 -->
+    <div class="original">Figure 6: Performance versus model size on AIME2024 (left) and LiveCodeBench (right). Each point represents a model, with the x-axis indicating model size (in number of parameters) and the y-axis indicating benchmark score. Models closer to the top-left corner achieve better performance with smaller size.</div>
+    <div class="translation">图6：在 <span class="term">AIME2024</span>（左）和 <span class="term">LiveCodeBench</span>（右）上的性能与模型大小对比。每个点代表一个模型，x轴表示模型大小（参数数量），y轴表示基准分数。模型越靠近左上角，表示在更小尺寸下实现更好的性能。</div>
+    
+    <!-- 段落2: LiveCodeBench 表现 -->
+    <div class="original">On the LiveCodeBench benchmark, which focuses on code reasoning, AM-Thinking-v1 attains a score of 70.3, substantially surpassing DeepSeek-R1 (64.3), Qwen3-32B (65.7), and Nemotron-Ultra-253B (68.1), demonstrating strong capabilities in code understanding and generation.</div>
+    <div class="translation">在专注于代码推理的 <span class="term">LiveCodeBench 基准 (LiveCodeBench benchmark)</span> 上，<span class="term">AM-Thinking-v1</span> 获得了70.3的分数，显著超过了 DeepSeek-R1（64.3）、Qwen3-32B（65.7）和 Nemotron-Ultra-253B（68.1），展示了在代码理解和生成方面的强大能力。</div>
+    
+    <!-- 段落3: Arena-Hard 表现 -->
+    <div class="original">On the general chat benchmark Arena-Hard, AM-Thinking-v1 obtains a score of 92.5, which is competitive with several proprietary models such as OpenAI-o1 (92.1) and o3-mini (89.0). However, its performance still lags behind Qwen3-235B-A22B (95.6), indicating that there remains room for improvement in general conversational capabilities.</div>
+    <div class="translation">在一般聊天基准 <span class="term">Arena-Hard</span> 上，<span class="term">AM-Thinking-v1</span> 获得了92.5的分数，与一些专有模型如 OpenAI-o1（92.1）和 o3-mini（89.0）竞争性强。然而，其性能仍落后于 Qwen3-235B-A22B（95.6），表明在一般对话能力方面还有改进空间。</div>
+    
+    <!-- 段落4: Figure 6 总结 -->
+    <div class="original">Figure 6 illustrates the relationship between model size and performance on AIME2024 (left) and LiveCodeBench (right). AM-Thinking-v1 achieves the strongest performance among dense models of similar scale, and comes close to the performance of much larger MoE models, striking an effective balance between efficiency and performance.</div>
+    <div class="translation">图6展示了在 <span class="term">AIME2024</span>（左）和 <span class="term">LiveCodeBench</span>（右）上模型大小与性能的关系。<span class="term">AM-Thinking-v1</span> 在相似规模的 <span class="term">密集模型 (dense models)</span> 中实现了最强的性能，并接近了更大 <span class="term">MoE 模型 (Mixture of Experts models)</span> 的性能，在效率和性能之间取得了有效平衡。</div>
+    
+    <!-- 段落5: 5.3 标题 -->
+    <div class="original">5.3 Supervised Fine-Tuning Pattern Shift</div>
+    <div class="translation">5.3 <span class="term">监督微调模式变化 (Supervised Fine-Tuning Pattern Shift)</span></div>
+    
+    <!-- 段落6: Figure 7 描述 -->
+    <div class="figure">Figure 7: Supervised Fine-Tuning (SFT) training loss curves.</div>
+    <div class="figure">图7：<span class="term">监督微调 (Supervised Fine-Tuning, SFT)</span> 训练损失曲线。</div>
+    
+    <!-- 段落7: SFT 模式变化描述 -->
+    <div class="original">Compared to traditional SFT, we find that supervised fine-tuning on long-form reasoning tasks leads to a pattern shift. To achieve stable convergence, this stage requires a larger learning rate and batch size; otherwise, the model struggles to fit the data effectively. For example, while traditional SFT might use a learning rate around \( 8 \\times 10^{-6} \) with a batch size of approximately 0.5M tokens, supervised fine-tuning on long-form reasoning often requires a learning rate as high as \( 8 \\times 10^{-5} \) and a batch size of around 2M tokens. Figure 7 shows training loss during SFT.</div>
+    <div class="translation">与传统 <span class="term">SFT (Supervised Fine-Tuning)</span> 相比，我们发现对长形式推理任务进行监督微调会导致模式变化。为实现稳定 <span class="term">收敛 (convergence)</span>，此阶段需要更大的 <span class="term">学习率 (learning rate)</span> 和 <span class="term">批大小 (batch size)</span>；否则，模型难以有效拟合数据。例如，传统 SFT 可能使用约 <div class="formula">\\( 8 \\times 10^{-6} \\) (公式1)</div> 的学习率和约 0.5M token 的批大小，而长形式推理的监督微调通常需要高达 <div class="formula">\\( 8 \\times 10^{-5} \\) (公式2)</div> 的学习率和约 2M token 的批大小。图7显示了 SFT 期间的训练损失。</div>
+    
+    <!-- 段落8: Figure 7 重复描述（合并处理） -->
+    <div class="original">Figure 7 shows training loss during SFT.</div>
+    <div class="translation">图7显示了 SFT 期间的训练损失。</div>
+  </div>
+  
+  <!-- 摘要总结部分 -->
+  <div class="section">
+    <h2>摘要总结</h2>
+    <div class="summary">
+      <p>文本核心内容总结：</p>
+      <ul>
+        <li><strong>模型性能分析</strong>：<span class="term">AM-Thinking-v1</span> 在代码推理基准 <span class="term">LiveCodeBench</span> 上以70.3分领先多个模型（如 DeepSeek-R1 和 Qwen3-32B），证明其代码能力优势；在一般聊天基准 <span class="term">Arena-Hard</span> 上得92.5分，与专有模型竞争但落后于 Qwen3-235B-A22B，需提升对话能力。</li>
+        <li><strong>效率与性能平衡</strong>：图6显示模型大小与性能关系，AM-Thinking-v1 在相似规模密集模型中表现最强，接近更大 MoE 模型，实现高效平衡。</li>
+        <li><strong>监督微调模式变化</strong>：第5.3节指出，长形式推理任务的 SFT 需更大学习率（如 \( 8 \\times 10^{-5} \) vs 传统 \( 8 \\times 10^{-6} \)）和批大小（2M vs 0.5M tokens）以确保稳定收敛，否则模型拟合困难（图7展示损失曲线）。</li>
+      </ul>
+    </div>
+  </div>
+  
+  <!-- 术语识别部分 -->
+  <div class="section">
+    <h2>术语识别</h2>
+    <ul class="term-list">
+      <li><span class="term">AM-Thinking-v1</span>：一种AI模型名称，在文本中作为评估对象，在代码推理基准上表现优异，展示了高效的性能平衡。</li>
+      <li><span class="term">LiveCodeBench benchmark</span>：专注于代码推理的基准测试，用于评估模型在代码理解和生成任务上的能力。得分越高表示性能越好。</li>
+      <li><span class="term">Arena-Hard benchmark</span>：一般聊天对话基准测试，评估模型在开放域对话中的表现，分数反映对话流畅性和相关性。</li>
+      <li><span class="term">AIME2024 benchmark</span>：一个性能评估基准（具体领域未详述），用于分析模型大小与效率的关系。</li>
+      <li><span class="term">Dense models (密集模型)</span>：指标准神经网络模型，所有参数都参与计算，与稀疏模型（如MoE）相对。文本中 AM-Thinking-v1 被归类为此类。</li>
+      <li><span class="term">MoE models (Mixture of Experts models, 混合专家模型)</span>：一种稀疏模型架构，仅激活部分专家子网络处理输入，可扩展模型规模而不显著增加计算成本。文本中作为对比对象。</li>
+      <li><span class="term">Supervised Fine-Tuning (SFT, 监督微调)</span>：迁移学习阶段，在预训练模型上使用标注数据进一步训练以适应特定任务。文本讨论其在长形式推理中的模式变化。</li>
+      <li><span class="term">Pattern Shift (模式变化)</span>：指训练行为或需求的变化。在SFT中，长形式推理任务导致需要调整超参数（如学习率）以维持稳定。</li>
+      <li><span class="term">Learning Rate (学习率)</span>：训练算法中的超参数，控制权重更新步长。文本中，传统SFT使用 \( 8 \\times 10^{-6} \)，而长形式推理SFT需更高值（如 \( 8 \\times 10^{-5} \)）以加速收敛。</li>
+      <li><span class="term">Batch Size (批大小)</span>：每次训练迭代中处理的样本数量。文本中，长形式推理SFT需更大批大小（约2M tokens vs 传统0.5M tokens）以提高稳定性。</li>
+      <li><span class="term">Convergence (收敛)</span>：训练过程中模型损失稳定到最小值的状态。文本强调在SFT中需调整超参数以实现稳定收敛。</li>
+      <li><span class="term">Training Loss (训练损失)</span>：模型预测与真实值之间的误差度量，用于监控训练进度。图7展示了SFT期间的损失曲线。</li>
+    </ul>
+  </div>
+</body>
+</html>

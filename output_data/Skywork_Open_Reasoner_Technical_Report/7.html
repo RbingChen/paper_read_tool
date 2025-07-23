@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>论文内容分析</title>
+  <style>
+    body { font-family: Arial, sans-serif; line-height: 1.6; margin: 20px; }
+    h1 { text-align: center; color: #2c3e50; }
+    h2 { color: #3498db; border-bottom: 2px solid #3498db; padding-bottom: 5px; }
+    .section { margin-bottom: 30px; }
+    .original { background-color: lightgrey; border: 1px solid grey; padding: 15px; margin-bottom: 10px; border-radius: 5px; }
+    .translated { background-color: lightgreen; border: 1px solid green; padding: 15px; margin-bottom: 20px; border-radius: 5px; }
+    .formula-container { background-color: #fffde7; padding: 15px; margin: 20px 0; text-align: center; border-radius: 5px; }
+    .formula { display: inline-block; margin: 0 auto; }
+    .term { color: red; font-weight: bold; }
+    ul { list-style-type: none; padding-left: 0; }
+    li { margin-bottom: 15px; }
+  </style>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <h1>论文内容分析：训练策略与损失函数优化</h1>
+
+  <section class="section" id="understanding">
+    <h2>内容理解</h2>
+    <p>本文描述了针对基础GRPO（一种强化学习优化算法）训练策略的改进和损失函数的设计。核心改进包括四个训练策略：1) <span class="term">多阶段训练 (Multi-Stage Training)</span>通过分阶段增加上下文长度来降低计算成本；2) 针对<span class="term">截断响应 (Truncated Responses)</span>的处理，实验表明惩罚而非掩码更有效；3) <span class="term">高温度采样 (High-Temperature Sampling)</span>（τ=1）用于增强模型探索能力；4) <span class="term">同策略训练 (On-Policy Training)</span>减缓<span class="term">熵崩溃 (Entropy Collapse)</span>。损失函数部分，作者移除了长度归一化项，采用token级别策略损失（公式3.1），并引入<span class="term">自适应熵控制 (Adaptive Entropy Control)</span>动态调整熵系数，同时省略KL损失以提升性能。整体上，这些优化旨在平衡计算效率、探索能力和泛化性能，实验证据支持其有效性。</p>
+  </section>
+
+  <section class="section" id="translation">
+    <h2>内容翻译</h2>\    <div class="translation-block">
+      <div class="original">Training Strategy We made the following refinements to the training strategy of vanilla GRPO:</div>
+      <div class="translated">训练策略：我们对基础GRPO的训练策略进行了以下改进：</div>
+    </div>
+    <div class="translation-block">
+      <div class="original">1.Multi-Stage Training. Inspired by DeepScaleR [17], we progressively increase the context length T and divide the training process into multiple stages. We found that multi-stage training significantly reduces computational costs while preserving scalability, as supported by the evidence presented in Section 3.2.2.</div>
+      <div class="translated">1. 多阶段训练。受DeepScaleR [17]启发，我们逐步增加上下文长度T，并将训练过程分为多个阶段。我们发现多阶段训练显著降低了计算成本，同时保持了可扩展性，如第3.2.2节提供的证据所支持。</div>
+    </div>
+    <div class="translation-block">
+      <div class="original">2.Advantage Mask for Truncated Responses. To address potential noise in training signals when outcomes cannot be derived from truncated responses – since assigning negative advantages in such cases may introduce bias – we experimented with an advantage mask during the early stages of multi-stage training, when many responses are truncated. However, as shown in Section 3.2.3, penalizing truncated responses does not hinder later-stage improvements and enhances token efficiency. Based on these results, we do not employ any advantage mask strategy in our training pipeline.</div>
+      <div class="translated">2. 截断响应的优势掩码。为了解决当结果无法从截断响应中推导时训练信号中的潜在噪声——因为在这种情况下分配负优势可能引入偏差——我们在多阶段训练的早期阶段尝试了优势掩码，此时许多响应被截断。然而，如第3.2.3节所示，惩罚截断响应不会阻碍后期改进，并提高了token效率。基于这些结果，我们在训练流程中没有采用任何优势掩码策略。</div>
+    </div>
+    <div class="translation-block">
+      <div class="original">3.High-Temperature Sampling. We set the rollout temperature to τ= 1 to enhance the model’s exploration capability and improve learning plasticity. This decision was motivated by our observation that the sampling policy either immediately enters (in the case of math data) or quickly transitions into (in the case of code data) a low-entropy state when using a smaller sampling temperature (e.g., τ= 0.6). See Section 3.2.4 for further details.</div>
+      <div class="translated">3. 高温度采样。我们将rollout温度设置为τ=1，以增强模型的探索能力和学习可塑性。这一决定源于我们观察到，当使用较小的采样温度（例如τ=0.6）时，采样策略要么立即进入（在数学数据的情况下）要么快速过渡到（在代码数据的情况下）低熵状态。详见第3.2.4节。</div>
+    </div>
+    <div class="translation-block">
+      <div class="original">4.On-Policy Training. We adopted on-policy training for Skywork-OR1-7B and Skywork-OR1-32B, as we found that on-policy updates significantly slow entropy collapse and lead to higher test performance. See Section 4 for our detailed findings on entropy collapse. In contrast, Skywork-OR1-Math-7B was trained with two gradient steps per training step (and was therefore not strictly on-policy). This setup preceded our complete understanding of the relationship between off-policy updates and premature entropy collapse. Nevertheless, adaptive entropy control (Section 3.2.5) effectively mitigated collapse, allowing the model to achieve strong performance.</div>
+      <div class="translated">4. 同策略训练。我们对Skywork-OR1-7B和Skywork-OR1-32B采用了同策略训练，因为我们发现同策略更新显著减缓了熵崩溃，并导致更高的测试性能。关于熵崩溃的详细发现见第4节。相比之下，Skywork-OR1-Math-7B每个训练步骤使用两个梯度步骤（因此不是严格同策略）。这一设置在我们完全理解异策略更新与早熟熵崩溃关系之前。尽管如此，自适应熵控制（第3.2.5节）有效缓解了崩溃，使模型实现了强大性能。</div>
+    </div>
+    <div class="translation-block">
+      <div class="original">Loss Function To mitigate implicit length bias, we adopt a token-level policy loss by removing the length normalization term 1/|yij| from each response. The policy loss is averaged across all tokens in a training batch, formulated as follows:</div>
+      <div class="translated">损失函数：为了减轻隐式长度偏差，我们采用token级别的策略损失，通过从每个响应中移除长度归一化项1/|yij|。策略损失在训练批次中的所有token上平均，公式如下：</div>
+    </div>
+    <div class="formula-container">
+      <div class="formula">
+        \\[
+        L_{\\text{MAGIC}}(\\theta) = -\\frac{1}{T_k} \\sum_{i \\in \\tilde{T}_k} \\sum_{j=1}^{M} \\left\\{ \\sum_{t=0}^{|y_{ij}|-1} \\min\\left( \\rho_{ij}^t(\\theta) A_{ij}^t, \\text{clip}\\left( \\rho_{ij}^t(\\theta), 1-\\epsilon, 1+\\epsilon \\right) A_{ij}^t \\right) + \\alpha_k H_{ij}^t(\\theta) \\right\\} \\tag{3.1}
+        \\]
+      </div>
+      <p>公式 (3.1)</p>
+    </div>
+    <div class="translation-block">
+      <div class="original">where \( y_{ij} := (a_{ij}^0, ..., a_{ij}^{|y_{ij}|-1}) \), \( a_{ij}^t \) is the t-th token in the sequence \( y_{ij} \), \( s_{ij}^t := (x_i, a_{ij}^0, ..., a_{ij}^{t-1}) \) is the prefix context when generating \( a_{ij}^t \), \( \\rho_{ij}^t(\\theta) := \\frac{\\pi_\\theta(a_{ij}^t | s_{ij}^t)}{\\pi_k(a_{ij}^t | s_{ij}^t)} \), \( H_{ij}^t(\\theta) := H\\left( \\pi_\\theta(\\cdot | s_{ij}^t) \\right) \) is the entropy of the generation policy of token \( a_{ij}^t \), \( \\alpha_k \\geq 0 \) is the coefficient of the entropy, \( T_k := \\sum_{i \\in \\tilde{T}_k} \\sum_{j=1}^{M} |y_{ij}| \) is the total number of tokens in the training batch. Meanwhile, we also introduce the following characteristics into the loss function:</div>
+      <div class="translated">其中 \( y_{ij} := (a_{ij}^0, ..., a_{ij}^{|y_{ij}|-1}) \), \( a_{ij}^t \) 是序列 \( y_{ij} \) 中的第t个token, \( s_{ij}^t := (x_i, a_{ij}^0, ..., a_{ij}^{t-1}) \) 是生成 \( a_{ij}^t \) 时的前缀上下文, \( \\rho_{ij}^t(\\theta) := \\frac{\\pi_\\theta(a_{ij}^t | s_{ij}^t)}{\\pi_k(a_{ij}^t | s_{ij}^t)} \), \( H_{ij}^t(\\theta) := H\\left( \\pi_\\theta(\\cdot | s_{ij}^t) \\right) \) 是生成策略的熵，对于token \( a_{ij}^t \), \( \\alpha_k \\geq 0 \) 是熵系数, \( T_k := \\sum_{i \\in \\tilde{T}_k} \\sum_{j=1}^{M} |y_{ij}| \) 是训练批次中的总token数。同时，我们还在损失函数中引入了以下特性：</div>
+    </div>
+    <div class="translation-block">
+      <div class="original">1.Adaptive Entropy Control. To preserve the model’s exploration capability and maintain high learning plasticity, it is common to include an additional entropy loss to prevent entropy collapse. An appropriately weighted entropy loss can enhance generalization. However, our experiments show that selecting a suitable coefficient in advance is often challenging, as the entropy loss is highly sensitive to both the coefficient and the training data. To address this, we introduce an additional hyperparameter, tgt-ent, representing the target entropy. This hyperparameter dynamically adjusts the coefficient αk based on the difference between the current entropy and the target entropy, ensuring that the current entropy remains lower-bounded by tgt-ent. See Section 3.2.5 for more details.</div>
+      <div class="translated">1. 自适应熵控制。为了保持模型的探索能力和高学习可塑性，通常包括额外的熵损失以防止熵崩溃。适当加权的熵损失可以增强泛化能力。然而，我们的实验表明，提前选择合适的系数往往具有挑战性，因为熵损失对系数和训练数据都非常敏感。为了解决这个问题，我们引入了一个额外的超参数tgt-ent，代表目标熵。该超参数基于当前熵与目标熵之间的差异动态调整系数αk，确保当前熵保持下界为tgt-ent。更多细节见第3.2.5节。</div>
+    </div>
+    <div class="translation-block">
+      <div class="original">2.No KL Loss. We found that including a KL loss term hinders performance gains, particularly in the later stages of multi-stage training. Therefore, we omit the KL loss from our training recipe. See Section 3.2.6 for further discussion.</div>
+      <div class="translated">2. 无KL损失。我们发现包括KL损失项会阻碍性能增益，尤其是在多阶段训练的后期。因此，我们从训练方案中省略了KL损失。进一步讨论见第3.2.6节。</div>
+    </div>
+  </section>
+
+  <section class="section" id="summary">
+    <h2>摘要总结</h2>
+    <p>本文核心内容是对GRPO算法训练策略的优化：1) 引入<span class="term">多阶段训练 (Multi-Stage Training)</span>，分阶段增加上下文长度以降低计算成本；2) 实验证明对<span class="term">截断响应 (Truncated Responses)</span>的惩罚优于优势掩码，可提升token效率；3) 使用高温度采样（τ=1）增强模型探索能力；4) <span class="term">同策略训练 (On-Policy Training)</span>减缓熵崩溃。损失函数方面，采用token级别策略损失（移除长度归一化），并设计<span class="term">自适应熵控制 (Adaptive Entropy Control)</span>动态调整熵系数，同时省略KL损失以优化性能。这些改进在实验中验证了其高效性和可扩展性。</p>
+  </section>
+
+  <section class="section" id="terms">
+    <h2>术语识别</h2>
+    <ul>
+      <li><span class="term">多阶段训练 (Multi-Stage Training)</span>: 一种训练策略，将训练过程分为多个阶段，逐步增加上下文长度T。目的是减少计算成本并保持模型的可扩展性，避免一次性处理长序列的资源消耗。</li>
+      <li><span class="term">截断响应 (Truncated Responses)</span>: 在序列生成任务中，响应被提前截断（未完整生成）。这可能导致训练信号噪声，因为无法从部分响应推导完整结果。本文实验表明，惩罚而非掩码这些响应更有效。</li>
+      <li><span class="term">优势掩码 (Advantage Mask)</span>: 一种技术，用于在强化学习中过滤不可靠的优势信号（如截断响应导致的负优势）。本文尝试在早期训练阶段使用，但最终弃用以避免偏差。</li>
+      <li><span class="term">高温度采样 (High-Temperature Sampling)</span>: 在策略采样中设置高温参数（τ=1），使概率分布更平坦，从而增强模型探索能力。低温（如τ=0.6）易导致低熵状态，降低学习可塑性。</li>
+      <li><span class="term">同策略训练 (On-Policy Training)</span>: 使用当前策略生成的样本进行模型更新。本文发现它能减缓熵崩溃，提升测试性能；异策略更新（Off-policy updates）则可能导致早熟熵崩溃。</li>
+      <li><span class="term">熵崩溃 (Entropy Collapse)</span>: 模型在训练中熵值急剧下降，导致探索能力丧失和过拟合。同策略训练和自适应熵控制可缓解此问题。</li>
+      <li><span class="term">token级别的策略损失 (Token-level Policy Loss)</span>: 损失函数设计，移除响应长度归一化项（1/|yij|），直接在每个token上计算损失，以减轻长度偏差。公式(3.1)展示了其数学形式。</li>
+      <li><span class="term">自适应熵控制 (Adaptive Entropy Control)</span>: 动态调整熵损失系数的机制，基于目标熵（tgt-ent）与当前熵的差异。避免手动设置系数的敏感性，维持模型探索能力。</li>
+      <li><span class="term">KL损失 (KL Loss)</span>: Kullback-Leibler散度损失，用于约束策略更新与参考策略的偏差。本文发现其阻碍性能增益，尤其在多阶段训练后期，因此被省略。</li>
+      <li><span class="term">目标熵 (tgt-ent)</span>: 自适应熵控制中的超参数，表示期望的熵值下限。用于动态调整熵系数αk，确保模型不丧失探索性。</li>
+      <li><span class="term">泛化 (Generalization)</span>: 模型在未见数据上的表现能力。适当加权的熵损失可增强泛化，但需避免熵崩溃。</li>
+      <li><span class="term">学习可塑性 (Learning Plasticity)</span>: 模型适应新信息的能力。高温度采样和熵控制有助于维持此能力。</li>
+    </ul>
+  </section>
+</body>
+</html>

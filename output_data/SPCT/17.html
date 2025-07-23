@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>学术论文解析报告</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; line-height: 1.6; max-width: 900px; margin: 0 auto; padding: 20px; }
+        h1 { color: #2c3e50; text-align: center; border-bottom: 2px solid #3498db; padding-bottom: 10px; }
+        h2 { color: #2980b9; border-left: 4px solid #3498db; padding-left: 10px; margin-top: 30px; }
+        .original { background-color: #f8f9fa; border: 1px solid #ced4da; padding: 15px; border-radius: 5px; margin-bottom: 15px; }
+        .translation { background-color: #e8f5e9; border: 1px solid #c8e6c9; padding: 15px; border-radius: 5px; margin-bottom: 30px; }
+        .term { color: #e53935; font-weight: bold; }
+        .reference { font-style: italic; margin-top: 5px; }
+        .formula-container { background-color: #fffde7; padding: 15px; text-align: center; margin: 20px 0; border-radius: 5px; }
+        .formula-number { display: block; text-align: right; font-size: 0.9em; color: #666; }
+        ul { padding-left: 20px; }
+        li { margin-bottom: 8px; }
+    </style>
+</head>
+<body>
+    <h1>学术论文解析报告</h1>
+    
+    <!-- 内容理解 -->
+    <h2>1. 内容理解</h2>
+    <p>该文本包含两篇被国际学习表征会议（ICLR 2025）接收的预印本论文的完整引用信息：</p>
+    <ol>
+        <li><span class="term">RMB</span>（Reward Model Benchmarking）：由周恩宇等研究者提出，专注于评估大型语言模型（<span class="term">LLM</span>）对齐过程中的奖励模型。</li>
+        <li><span class="term">Bigcodebench</span>：由Terry Yue Zhuo等研究者开发，用于评估具有复杂函数调用场景的代码生成能力。</li>
+    </ol>
+    <p>两篇论文均聚焦于人工智能基准测试领域：前者系统评估<span class="term">奖励模型</span>（Reward Models）在<span class="term">LLM对齐</span>（LLM Alignment）中的作用；后者则针对代码生成任务设计包含多样化函数调用和复杂指令的评估框架。</p>
+    
+    <!-- 内容翻译 -->
+    <h2>2. 内容翻译</h2>
+    
+    <!-- 第一篇论文 -->
+    <div class="original">
+        <p>Enyu Zhou, Guodong Zheng, Binghai Wang, Zhiheng Xi, Shihan Dou, Rong Bao, Wei Shen, Limao Xiong, Jessica Fan, Yurong Mou, Rui Zheng, Tao Gui, Qi Zhang, and Xuanjing Huang. RMB: Comprehensively benchmarking reward models in LLM alignment. In The Thirteenth International Conference on Learning Representations, 2025. URL https://openreview.net/forum?id=kmgrlG9TR0.</p>
+    </div>
+    <div class="translation">
+        <p>周恩宇、郑国栋、王炳海、席志恒、窦士涵、鲍荣、沈伟、熊立茂、Jessica Fan、牟玉容、郑锐、桂韬、张奇、黄萱菁。RMB：在大型语言模型对齐中全面评估奖励模型。发表于第十三届国际学习表征会议，2025年。URL https://openreview.net/forum?id=kmgrlG9TR0。</p>
+    </div>
+    
+    <!-- 第二篇论文 -->
+    <div class="original">
+        <p>Terry Yue Zhuo, Vu Minh Chien, Jenny Chim, Han Hu, Wenhao Yu, Ratnadira Widyasari, Imam Nur Bani Yusuf, Haolan Zhan, Junda He, Indraneil Paul, Simon Brunner, Chen GONG, James Hoang, Armel Randy Zebaze, Xiaoheng Hong, Wen-Ding Li, Jean Kaddour, Ming Xu, Zhihan Zhang, Prateek Yadav, Naman Jain, Alex Gu, Zhoujun Cheng, Jiawei Liu, Qian Liu, Zijian Wang, David Lo, Binyuan Hui, Niklas Muennighoff, Daniel Fried, Xiaoning Du, Harm de Vries, and Leandro Von Werra. Bigcodebench: Benchmarking code generation with diverse function calls and complex instructions. In The Thirteenth International Conference on Learning Representations, 2025. URL https://openreview.net/forum?id=YrycTjllL0.</p>
+    </div>
+    <div class="translation">
+        <p>Terry Yue Zhuo、Vu Minh Chien、Jenny Chim、胡涵、余文浩、Ratnadira Widyasari、Imam Nur Bani Yusuf、詹浩岚、何俊达、Indraneil Paul、Simon Brunner、GONG Chen、James Hoang、Armel Randy Zebaze、洪晓恒、李文鼎、Jean Kaddour、徐铭、张智涵、Prateek Yadav、Naman Jain、Alex Gu、程周君、刘家伟、刘茜、王子健、David Lo、惠彬源、Niklas Muennighoff、Daniel Fried、杜晓宁、Harm de Vries、Leandro Von Werra。Bigcodebench：通过多样化的函数调用和复杂指令评估代码生成。发表于第十三届国际学习表征会议，2025年。URL https://openreview.net/forum?id=YrycTjllL0。</p>
+    </div>
+    
+    <!-- 摘要总结 -->
+    <h2>3. 摘要总结</h2>
+    <p>两篇被ICLR 2025接收的预印本论文的核心贡献：</p>
+    <ul>
+        <li><strong>RMB</strong>：提出首个全面评估<span class="term">奖励模型</span>在<span class="term">LLM对齐</span>中性能的基准测试框架，系统分析不同奖励模型在复杂对齐任务中的表现差异。</li>
+        <li><strong>Bigcodebench</strong>：构建包含<strong>多样化函数调用</strong>（Diverse Function Calls）和<strong>复杂指令</strong>（Complex Instructions）的代码生成评估体系，解决现有基准在真实编程场景覆盖不足的问题。</li>
+    </ul>
+    <p>两篇论文共同推进了AI评估方法论：RMB聚焦<span class="term">强化学习对齐</span>（Reinforcement Learning Alignment）中的关键组件评估，Bigcodebench则提升代码生成任务评估的生态效度。</p>
+    
+    <!-- 术语识别 -->
+    <h2>4. 术语识别</h2>
+    <ul>
+        <li><span class="term">奖励模型（Reward Models）</span>：在强化学习中用于评估AI行为质量的数学模型，为<span class="term">LLM对齐</span>提供优化信号。</li>
+        <li><span class="term">LLM对齐（LLM Alignment）</span>：通过人类反馈等技术使大型语言模型行为与人类价值观和意图保持一致的过程。</li>
+        <li><span class="term">基准测试（Benchmarking）</span>：系统性评估AI模型在标准化任务集上性能的方法论。</li>
+        <li><span class="term">代码生成（Code Generation）</span>：AI系统根据自然语言描述自动生成可执行代码的任务。</li>
+        <li><span class="term">函数调用（Function Calls）</span>：编程中执行特定功能的代码单元，Bigcodebench通过多样化函数调用模拟真实开发环境。</li>
+        <li><span class="term">复杂指令（Complex Instructions）</span>：包含多步骤逻辑、条件约束和上下文依赖的任务描述，用于评估AI的复杂推理能力。</li>
+        <li><span class="term">国际学习表征会议（ICLR）</span>：机器学习领域的顶级会议，专注于表征学习领域的前沿研究。</li>
+    </ul>
+</body>
+</html>

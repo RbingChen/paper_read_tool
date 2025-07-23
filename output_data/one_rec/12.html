@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>OneRec技术报告分析</title>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    body { font-family: Arial, sans-serif; line-height: 1.6; }
+    .original { background-color: #f0f0f0; border: 1px solid #ccc; padding: 15px; margin-bottom: 20px; }
+    .translated { background-color: #e0ffe0; border: 1px solid #a0cca0; padding: 15px; margin-bottom: 30px; }
+    .formula-container { background-color: #ffffe0; padding: 20px; text-align: center; margin: 25px 0; }
+    .formula-number { font-style: italic; margin-top: 5px; }
+    .term { color: red; font-weight: bold; }
+    h2 { border-bottom: 2px solid #ddd; padding-bottom: 8px; }
+    section { margin-bottom: 40px; }
+  </style>
+</head>
+<body>
+  <h1>OneRec技术报告分析</h1>
+  
+  <!-- 内容理解 -->
+  <section id="understanding">
+    <h2>内容理解</h2>
+    <p>该文本主要描述OneRec推荐系统框架的两项关键技术改进：</p>
+    <ol>
+      <li><strong>格式奖励强化学习</strong>：解决合法/非法令牌(logits)挤压问题，通过设置奖励机制引导模型生成合法输出</li>
+      <li><strong>工业场景对齐</strong>：通过端到端强化学习统一优化多目标需求（用户偏好、商业化、冷启动等）</li>
+      <li><strong>训练基础设施</strong>：详细说明支撑大规模预训练的硬件架构（90服务器集群、NVLink互联、RDMA网络等）和优化技术</li>
+    </ol>
+    <p>核心创新点在于将传统推荐系统的多阶段优化整合到统一的强化学习框架中，通过奖励函数设计实现端到端的工业场景适配。</p>
+  </section>
+  
+  <!-- 内容翻译 -->
+  <section id="translation">
+    <h2>内容翻译</h2>
+    
+    <div class="original">
+      <p>OneRec Technical Report of some legal tokens being squeezed to levels comparable to those of illegal tokens, making it difficult for the model to distinguish legal tokens.</p>
+    </div>
+    <div class="translated">
+      <p>OneRec技术报告中指出，某些<strong class="term">合法令牌(legal tokens)</strong>被挤压到与<strong class="term">非法令牌(illegal tokens)</strong>相当的水平，导致模型难以区分合法令牌。</p>
+    </div>
+    
+    <div class="original">
+      <p>To address this issue, we propose incorporating a <strong>format reward</strong> in reinforcement learning to encourage the model's legal generation. Specifically, we randomly select 𝐾 samples from the 𝐺 samples for legality reinforcement learning. For legal samples, we set the advantage to 1, and for illegal samples, we discard them directly to avoid the squeezing effect.</p>
+    </div>
+    <div class="translated">
+      <p>为解决此问题，我们提出在<strong class="term">强化学习(reinforcement learning)</strong>中引入<strong class="term">格式奖励(format reward)</strong>以鼓励模型生成合法输出。具体而言，我们从𝐺个样本中随机选择𝐾个样本进行合法性强化学习。对合法样本设置<strong class="term">优势值(advantage)</strong>为1，非法样本直接丢弃以避免挤压效应。</p>
+    </div>
+    
+    <div class="formula-container">
+      <div class="math-equation">
+        \[ A_i = \begin{cases} 
+        1 & \text{if } o_i \in I_{\text{legal}} \\ 
+        0 & \text{if } o_i \notin I_{\text{legal}} 
+        \end{cases} \quad (32) \]
+      </div>
+      <div class="formula-number">公式(32)：合法性优势函数定义</div>
+    </div>
+    
+    <div class="original">
+      <p>The optimization objective formulation is the same as the <strong>ECPO</strong> (Equation 29) and we directly use 𝐴𝑖 as advantages.</p>
+    </div>
+    <div class="translated">
+      <p>优化目标公式与<strong class="term">ECPO算法(ECPO)</strong>（公式29）相同，我们直接使用𝐴𝑖作为优势值。</p>
+    </div>
+    
+    <div class="original">
+      <h3>2.4.3. Industrial Scenario Alignment</h3>
+      <p>In industrial scenarios, the recommendation system needs to consider not only user preferences but also various other aspects. For example, at Kuaishou, the ecosystem of the video community, commercialization needs, and the delivery of cold-start and long-tail videos. Traditional recommendation systems attempt to address these issues by applying algorithms or strategies at one stage of the recommendation pipeline. Due to inconsistencies across different stages, this can easily lead to a recurring cycle of unexpected problems emerging alternately. Engineers are forced to constantly make adjustments through patching, resulting in a bloated system over time that hinders iteration.</p>
+    </div>
+    <div class="translated">
+      <h3>2.4.3. 工业场景对齐</h3>
+      <p>在工业场景中，推荐系统不仅需考虑用户偏好，还需兼顾多方面因素。例如在快手平台，需平衡视频社区生态、商业化需求以及冷启动和长尾视频的分发。传统推荐系统试图在推荐流程的单一阶段应用算法或策略解决这些问题。由于不同阶段的不一致性，容易导致意外问题交替出现的循环。工程师被迫通过打补丁不断调整，长期导致系统臃肿并阻碍迭代。</p>
+    </div>
+    
+    <div class="original">
+      <p>In OneRec, we only need to incorporate optimization objectives into the reward system and adopt reinforcement learning to perform targeted optimization. This approach is not only convenient but also allows for end-to-end implementation, maintaining system consistency. We will provide an example of optimization practice in Section 4.3.3.</p>
+    </div>
+    <div class="translated">
+      <p>在<strong class="term">OneRec框架(OneRec)</strong>中，我们只需将优化目标整合到奖励系统中，并采用<strong class="term">强化学习(reinforcement learning)</strong>进行针对性优化。该方法不仅便捷，还能实现端到端部署，保持系统一致性。我们将在第4.3.3节提供优化实践示例。</p>
+    </div>
+    
+    <div class="original">
+      <h3>3. Training Framework</h3>
+      <h4>3.1. Training Infrastructure</h4>
+      <p>In this section, we describe our hardware and infrastructure that facilitated the large-scale pre-training of OneRec and introduce several optimizations that enhance training efficiency.</p>
+    </div>
+    <div class="translated">
+      <h3>3. 训练框架</h3>
+      <h4>3.1. 训练基础设施</h4>
+      <p>本节描述支持OneRec大规模预训练的硬件基础设施，并介绍提升训练效率的若干优化技术。</p>
+    </div>
+    
+    <div class="original">
+      <p><strong>Compute.</strong> We utilize 90 servers for training, each equipped with 8 flagship GPUs and 2 CPUs interconnected via 400Gbps NVLink to ensure high-speed intra-node bandwidth.</p>
+    </div>
+    <div class="translated">
+      <p><strong>计算资源：</strong> 使用90台服务器，每台配备8块旗舰GPU和2个CPU，通过400Gbps <strong class="term">NVLink互联(NVLink)</strong>确保节点内高速带宽。</p>
+    </div>
+    
+    <div class="original">
+      <p><strong>Networking.</strong> Intra-node communication is managed by the efficient NVLink network, while inter-node communication is supported by 400Gbps RDMA for training traffic and 100Gbps TCP for training data and embedding prefetching operations.</p>
+    </div>
+    <div class="translated">
+      <p><strong>网络架构：</strong> 节点内通信由高效NVLink网络管理，节点间通信采用400Gbps <strong class="term">RDMA协议(RDMA)</strong>处理训练流量，100Gbps TCP处理训练数据和<strong class="term">嵌入预取(embedding prefetching)</strong>操作。</p>
+    </div>
+    
+    <div class="original">
+      <p><strong>Storage.</strong> Each server is equipped with 4 NVMe SSDs to expedite checkpoint writes, allowing for the storage of large-scale embedding parameters and dense parameters in HDFS with minimal downtime for fault tolerance.</p>
+    </div>
+    <div class="translated">
+      <p><strong>存储系统：</strong> 每台服务器配备4块NVMe SSD加速检查点写入，大规模<strong class="term">嵌入参数(embedding parameters)</strong>和稠密参数存储在<strong class="term">HDFS分布式文件系统(HDFS)</strong>中，实现最小化故障容忍停机时间。</p>
+    </div>
+    
+    <div class="original">
+      <p><strong>Training Acceleration.</strong> For training acceleration, several core optimizations are implemented: 1) Embedding Acceleration: To manage the extensive embedding workload beyond CPU capacity, we utilize Kuaishou’s SKAI framework for GPU-based parameter servers. This framework leverages cross-GPU unified embedding tables, GPU caching paradigms, and prefetching pipelines to enhance training efficiency and reduce management overhead.</p>
+    </div>
+    <div class="translated">
+      <p><strong>训练加速：</strong> 实施的核心优化包括：1) <strong class="term">嵌入加速(Embedding Acceleration)</strong>：为处理超出CPU能力的嵌入工作负载，采用快手<strong class="term">SKAI框架(SKAI framework)</strong>构建基于GPU的参数服务器。该框架利用跨GPU统一嵌入表、GPU缓存范式和预取流水线提升训练效率并降低管理开销。</p>
+    </div>
+  </section>
+  
+  <!-- 摘要总结 -->
+  <section id="summary">
+    <h2>摘要总结</h2>
+    <p>本技术报告阐述了OneRec推荐系统的三大核心创新：</p>
+    <ul>
+      <li><strong>格式奖励机制</strong>：通过强化学习引入合法性奖励函数（公式32），解决合法/非法令牌的logits挤压问题</li>
+      <li><strong>端到端工业对齐</strong>：将多目标优化（用户偏好/商业化/冷启动）统一整合到强化学习奖励系统，避免传统多阶段系统的碎片化问题</li>
+      <li><strong>高性能训练架构</strong>：基于90服务器集群（NVLink+RDMA），采用SKAI框架实现嵌入加速，支持万亿级参数预训练</li>
+    </ul>
+    <p>关键技术突破在于通过统一的强化学习范式，实现工业级推荐系统的多目标协同优化和基础设施高效扩展。</p>
+  </section>
+  
+  <!-- 术语识别 -->
+  <section id="terms">
+    <h2>术语解释</h2>
+    <ul>
+      <li><strong class="term">合法令牌/非法令牌(legal/illegal tokens)</strong>：在序列生成中符合/违反预设格式规则的输出单元。当两者logits值相近时会导致模型决策混淆</li>
+      <li><strong class="term">格式奖励(format reward)</strong>：强化学习中针对输出结构合规性设计的奖励信号，引导模型生成合法序列</li>
+      <li><strong class="term">优势值(advantage)</strong>：在策略梯度算法中衡量特定动作优于平均水平的程度，此处用于合法性奖励（A_i=1表示合法）</li>
+      <li><strong class="term">ECPO算法(ECPO)</strong>：OneRec采用的强化学习优化目标（公式29），具体指代未在片段中展开的算法</li>
+      <li><strong class="term">NVLink互联(NVLink)</strong>：NVIDIA开发的GPU高速直连技术（400Gbps），大幅提升设备间数据传输效率</li>
+      <li><strong class="term">RDMA协议(RDMA)</strong>：远程直接内存访问技术，绕过CPU实现网络节点间超低延迟数据传输</li>
+      <li><strong class="term">嵌入参数(embedding parameters)</strong>：推荐系统中将离散特征映射为稠密向量的可学习参数矩阵</li>
+      <li><strong class="term">SKAI框架(SKAI framework)</strong>：快手开发的GPU参数服务器系统，通过统一内存管理和预取机制优化嵌入训练</li>
+    </ul>
+  </section>
+</body>
+</html>

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>论文解析：RankMixer模型</title>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    body { font-family: Arial, sans-serif; line-height: 1.6; max-width: 900px; margin: 0 auto; padding: 20px; }
+    h2 { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 5px; }
+    .section { margin-bottom: 30px; }
+    .original { background-color: #f0f0f0; border: 1px solid #cccccc; padding: 15px; margin-bottom: 10px; border-radius: 5px; }
+    .translation { background-color: #e0ffe0; border: 1px solid #00cc00; padding: 15px; margin-bottom: 20px; border-radius: 5px; }
+    .formula-container { text-align: center; margin: 20px 0; }
+    .formula { display: inline-block; padding: 10px; }
+    .formula-number { font-style: italic; margin-top: 5px; }
+    .term { color: red; font-weight: bold; }
+    ul { list-style-type: none; padding: 0; }
+    li { margin-bottom: 15px; }
+    .term-title { font-weight: bold; color: #2c3e50; }
+  </style>
+</head>
+<body>
+  <h1>论文解析报告：RankMixer模型算法分析</h1>
+  
+  <section class="section">
+    <h2>内容翻译</h2>
+    <div class="original">
+      <p>Conference acronym ’XX, June 03–05, 2018, Woodstock, NY Zhifang Fan et al.</p>
+      <p>The output of the multi-head Token Mixing module is \( S \\in \\mathbb{R}^{H \\times T D / H} \), which is stacked by all the shuffled tokens \( s_1, s_2, \\ldots, s_H \). In this work, we set \( H = T \) to maintain the same number of tokens after Token Mixing for residual connection.</p>
+      <p>After a residual connection and normalization module we can generate \( s_1, s_2, \\ldots, s_T = \\text{LN}(\\text{TokenMixing}(x_1, x_2, \\ldots, x_T) + (x_1, x_2, \\ldots, x_T)) \),</p>
+      <div class="formula-container">
+        <div class="formula">\\( s_1, s_2, \\ldots, s_T = \\text{LN}(\\text{TokenMixing}(x_1, x_2, \\ldots, x_T) + (x_1, x_2, \\ldots, x_T)) \\)</div>
+        <div class="formula-number">(5)</div>
+      </div>
+      <p>Although self-attention has proven highly effective in large language models, we find it to be suboptimal for recommendation systems. In self-attention, attention weights are calculated using the inner product of tokens. This method works well for NLP, where all tokens share a unified embedding space. However, in recommendation tasks, the feature spaces are inherently heterogeneous. Computing an inner-product similarity between two heterogeneous semantic spaces is notoriously difficult—particularly in recommender systems, where the ID space of the features from user and item side may contain hundreds of millions of elements. Consequently, applying self-attention to such diverse inputs does not outperform the parameter-free multi-head Token Mixing approach and consumes more computations and IO operations.</p>
+      <p>3.3.2 Per-token FFN. Previous DLRM and DHEN models tend to mix features from many disparate semantic spaces in a single interaction module, which may causes high-frequency fields dominate drowning out lower-frequency or long-tail signals and ultimately hurting overall recommendation quality. We introduce a parameter-isolated feed-forward network architecture, termed per-token FFN. In traditional designs, the parameters of FFN are shared across all tokens, but our approach processes each token with dedicated transformations, thus isolating the parameters for each token. For the \( t \\)-th token \( s_t \), the per-token FFN can be expressed as \( v_t = f_{t,2}^{\\text{pffn}} \\left( \\text{Gelu} \\left( f_{t,1}^{\\text{pffn}}(s_t) \\right) \\right) \),</p>
+      <div class="formula-container">
+        <div class="formula">\\( v_t = f_{t,2}^{\\text{pffn}} \\left( \\text{Gelu} \\left( f_{t,1}^{\\text{pffn}}(s_t) \\right) \\right) \\)</div>
+        <div class="formula-number">(6)</div>
+      </div>
+      <p>where \( f_{t,i}^{\\text{pffn}}(x) = x W_{t,i}^{\\text{pffn}} + b_{t,i}^{\\text{pffn}} \)</p>
+      <div class="formula-container">
+        <div class="formula">\\( f_{t,i}^{\\text{pffn}}(x) = x W_{t,i}^{\\text{pffn}} + b_{t,i}^{\\text{pffn}} \\)</div>
+        <div class="formula-number">(7)</div>
+      </div>
+      <p>is the \( i \\)-th layer MLP of the per-token FFN, \( W_{t,1}^{\\text{pffn}} \\in \\mathbb{R}^{D \\times k D} \), \( b_{t,1}^{\\text{pffn}} \\in \\mathbb{R}^{k D} \), \( W_{t,2}^{\\text{pffn}} \\in \\mathbb{R}^{k D \\times D} \), \( b_{t,2}^{\\text{pffn}} \\in \\mathbb{R}^{D} \), \( k \) is a hyperparameter to adjust the hidden dimension of the per-token FFN, \( \\text{Gelu}(\\cdot) \) is the Gelu activation function, \( s_t \\in \\mathbb{R}^{D} \) is the \( t \\)-th token.</p>
+      <p>We summarize the Per-token FFN module as \( v_1, v_2, \\ldots, v_T = \\text{PFFN}(s_1, s_2, \\ldots, s_T) \),</p>
+      <div class="formula-container">
+        <div class="formula">\\( v_1, v_2, \\ldots, v_T = \\text{PFFN}(s_1, s_2, \\ldots, s_T) \\)</div>
+        <div class="formula-number">(8)</div>
+      </div>
+      <p>where \( \\text{PFFN}(s_1, s_2, \\ldots, s_T) = f_{t,2}^{\\text{pffn}} \\left( \\text{Gelu} \\left( f_{t,1}^{\\text{pffn}}(s_1, s_2, \\ldots, s_T) \\right) \\right) \).</p>
+      <div class="formula-container">
+        <div class="formula">\\( \\text{PFFN}(s_1, s_2, \\ldots, s_T) = f_{t,2}^{\\text{pffn}} \\left( \\text{Gelu} \\left( f_{t,1}^{\\text{pffn}}(s_1, s_2, \\ldots, s_T) \\right) \\right) \\)</div>
+        <div class="formula-number">(9)</div>
+      </div>
+      <p>It is noticed that after the multi-head Token Mixing, each token consists of exactly one head of all original tokens. It is because the original tokens are mapped into different subspaces that the tokens contain different information after mixing. We observe that tokens after mixing tend to collapse into one same representation if a parameter-shared FFN is applied. Besides, per-token FFN enhances the modeling ability by introducing more parameters while keeping the computational complexity unchanged.</p>
+      <p>3.4 Sparse MoE in RankMixer</p>
+      <p>To further increase the scaling ROI, we replace dense FFNs with Sparse Mixture-of-Experts (MoE) blocks, so that the model’s capacity grows while computation cost remains roughly constant. Vanilla Sparse-MoE, however, degrades in RankMixer because: (i) uniform \( k \\)-expert routing. Top-\( k \) selection treats all feature tokens equally, wasting the budget on low-information tokens and starving high-information ones, which hinders the model from capturing differences between tokens. (ii) expert under-training. Per-token FFNs already multiply parameters by #tokens; adding non-shared experts further explodes the expert count, producing highly unbalanced routing and poorly trained experts;</p>
+      <p>We combine two complementary training strategies to solve the above problems.</p>
+      <p>ReLU Routing. To grant tokens flexible expert counts and maintain differentiability, we replace the common Top \( k \\) + softmax with a ReLU gate plus an adaptive \( \\ell_1 \) penalty [35]. Given the \( j \\)-th expert \( e_{i,j}(\\cdot) \) for token \( s_i \\in \\mathbb{R}^{d_h} \) and router \( h(\\cdot) \):</p>
+      <div class="formula-container">
+        <div class="formula">\\( G_{i,j} = \\text{ReLU} \\left( h(s_i) \\right), \\quad v_i = \\sum_{j=1}^{N_e} G_{i,j} e_{i,j}(s_i) \\)</div>
+        <div class="formula-number">(10)</div>
+      </div>
+      <p>where \( N_e \) is the number of experts per token, \( N_t \) is the number of tokens. ReLU Routing will activate more experts for high-information tokens and improve the parameter efficiency. Sparsity is steered by \( L_{\\text{reg}} \) with an coefficient \( \\lambda \) that keeps the average active-expert ratio near the budget:</p>
+      <div class="formula-container">
+        <div class="formula">\\( L = L_{\\text{task}} + \\lambda L_{\\text{reg}}, \\quad L_{\\text{reg}} = \\sum_{i=1}^{N_t} \\sum_{j=1}^{N_e} G_{i,j} \\)</div>
+        <div class="formula-number">(11)</div>
+      </div>
+      <p>Dense-training / Sparse-inference (DTSI-MoE). Inspired by [21], two routers \( h_{\\text{train}} \) and \( h_{\\text{infer}} \) are adopted, and \( L_{\\text{reg}} \) is applied only to \( h_{\\text{infer}} \). Both \( h_{\\text{train}} \) and \( h_{\\text{infer}} \) are updated during training, while only \( h_{\\text{infer}} \) is used in inference. It turns out that DS-MoE makes experts do not suffer from under-training while reducing inference cost.</p>
+      <p>3.5 Scaling Up Directions</p>
+      <p>RankMixer is intrinsically a highly parallel and extensible architecture. Its parameter count and computational cost can be expanded along four orthogonal axes: Token count \( T \), Model width \( D \), Layers \( L \) and Expert Numbers \( E \). For full-dense-activated version, parameter and forward FLOPs for one sample can be computed as</p>
+      <div class="formula-container">
+        <div class="formula">\\( \\text{\\#Param} \\approx 2 k L T D^2, \\quad \\text{FLOPs} \\approx 4 k L T D^2 \\)</div>
+        <div class="formula-number">(12)</div>
+      </div>
+      <p>The \( k \) is the scale ratio adjusting the hidden dimension of FFN. In the Sparse-MoE version, the effective parameters and compute per token are further scaled by the sparsity ratio \( s = \\frac{\\text{\\#Activated\\_Param}}{\\text{\\#Total\\_Param}} \).</p>
+      <p>4 Experiments</p>
+      <p>4.1 Experiment Settings</p>
+      <p>4.1.1 Datasets and Environment. The offline experiments were conducted using the training data from the Douyin recommendation system. These data are derived from Douyin’s online logs and user feedback labels. The training dataset includes over 300 features,</p>
+    </div>
+    <div class="translation">
+      <p>会议缩写 'XX，2018年6月03–05日，Woodstock, NY，Zhifang Fan 等人。</p>
+      <p>多头<span class="term">Token Mixing（令牌混合）</span>模块的输出是 \( S \\in \\mathbb{R}^{H \\times T D / H} \)，它由所有混洗后的令牌 \( s_1, s_2, \\ldots, s_H \) 堆叠而成。在这项工作中，我们设置 \( H = T \)，以在<span class="term">Token Mixing</span>后保留相同数量的令牌，用于<span class="term">残差连接（residual connection）</span>。</p>
+      <p>经过残差连接和归一化模块后，我们可以生成 \( s_1, s_2, \\ldots, s_T = \\text{LN}(\\text{TokenMixing}(x_1, x_2, \\ldots, x_T) + (x_1, x_2, \\ldots, x_T)) \)，</p>
+      <div class="formula-container">
+        <div class="formula">\\( s_1, s_2, \\ldots, s_T = \\text{LN}(\\text{TokenMixing}(x_1, x_2, \\ldots, x_T) + (x_1, x_2, \\ldots, x_T)) \\)</div>
+        <div class="formula-number">(5)</div>
+      </div>
+      <p>尽管<span class="term">自注意力（self-attention）</span>在大型语言模型中已被证明非常有效，但我们发现它在推荐系统中并非最优。在自注意力中，注意力权重是通过令牌的内积计算的。这种方法在NLP中效果良好，因为所有令牌共享统一的嵌入空间。然而，在推荐任务中，特征空间本质上是<span class="term">异构的（heterogeneous）</span>。计算两个异构语义空间之间的内积相似度非常困难——尤其是在推荐系统中，用户端和物品端的特征ID空间可能包含数亿个元素。因此，将自注意力应用于这种多样化的输入时，其性能不如无参数的多头<span class="term">Token Mixing</span>方法，且消耗更多计算和IO操作。</p>
+      <p>3.3.2 <span class="term">Per-token FFN（逐令牌前馈网络）</span>。先前的DLRM和DHEN模型倾向于在单一交互模块中混合来自多个不同语义空间的特征，这可能导致高频字段主导并淹没低频或长尾信号，最终损害整体推荐质量。我们引入了一种参数隔离的前馈网络架构，称为<span class="term">Per-token FFN</span>。在传统设计中，FFN的参数在所有令牌之间共享，但我们的方法使用专用变换处理每个令牌，从而隔离每个令牌的参数。对于第 \( t \) 个令牌 \( s_t \)，<span class="term">Per-token FFN</span>可表示为 \( v_t = f_{t,2}^{\\text{pffn}} \\left( \\text{Gelu} \\left( f_{t,1}^{\\text{pffn}}(s_t) \\right) \\right) \)，</p>
+      <div class="formula-container">
+        <div class="formula">\\( v_t = f_{t,2}^{\\text{pffn}} \\left( \\text{Gelu} \\left( f_{t,1}^{\\text{pffn}}(s_t) \\right) \\right) \\)</div>
+        <div class="formula-number">(6)</div>
+      </div>
+      <p>其中 \( f_{t,i}^{\\text{pffn}}(x) = x W_{t,i}^{\\text{pffn}} + b_{t,i}^{\\text{pffn}} \)</p>
+      <div class="formula-container">
+        <div class="formula">\\( f_{t,i}^{\\text{pffn}}(x) = x W_{t,i}^{\\text{pffn}} + b_{t,i}^{\\text{pffn}} \\)</div>
+        <div class="formula-number">(7)</div>
+      </div>
+      <p>是<span class="term">Per-token FFN</span>的第 \( i \) 层MLP，\( W_{t,1}^{\\text{pffn}} \\in \\mathbb{R}^{D \\times k D} \)，\( b_{t,1}^{\\text{pffn}} \\in \\mathbb{R}^{k D} \)，\( W_{t,2}^{\\text{pffn}} \\in \\mathbb{R}^{k D \\times D} \)，\( b_{t,2}^{\\text{pffn}} \\in \\mathbb{R}^{D} \)，\( k \) 是用于调整<span class="term">Per-token FFN</span>隐藏维度的超参数，\( \\text{Gelu}(\\cdot) \) 是Gelu激活函数，\( s_t \\in \\mathbb{R}^{D} \) 是第 \( t \) 个令牌。</p>
+      <p>我们将<span class="term">Per-token FFN</span>模块总结为 \( v_1, v_2, \\ldots, v_T = \\text{PFFN}(s_1, s_2, \\ldots, s_T) \)，</p>
+      <div class="formula-container">
+        <div class="formula">\\( v_1, v_2, \\ldots, v_T = \\text{PFFN}(s_1, s_2, \\ldots, s_T) \\)</div>
+        <div class="formula-number">(8)</div>
+      </div>
+      <p>其中 \( \\text{PFFN}(s_1, s_2, \\ldots, s_T) = f_{t,2}^{\\text{pffn}} \\left( \\text{Gelu} \\left( f_{t,1}^{\\text{pffn}}(s_1, s_2, \\ldots, s_T) \\right) \\right) \)。</p>
+      <div class="formula-container">
+        <div class="formula">\\( \\text{PFFN}(s_1, s_2, \\ldots, s_T) = f_{t,2}^{\\text{pffn}} \\left( \\text{Gelu} \\left( f_{t,1}^{\\text{pffn}}(s_1, s_2, \\ldots, s_T) \\right) \\right) \\)</div>
+        <div class="formula-number">(9)</div>
+      </div>
+      <p>值得注意的是，在多头<span class="term">Token Mixing</span>之后，每个令牌恰好包含所有原始令牌的一个头。这是因为原始令牌被映射到不同的子空间，使得混合后令牌包含不同信息。我们观察到，如果应用参数共享的FFN，混合后的令牌容易坍缩为相同的表示。此外，<span class="term">Per-token FFN</span>通过引入更多参数增强了建模能力，同时保持计算复杂度不变。</p>
+      <p>3.4 RankMixer中的<span class="term">Sparse MoE（稀疏专家混合）</span></p>
+      <p>为了进一步提高扩展的投资回报率（ROI），我们用<span class="term">Sparse Mixture-of-Experts (MoE)</span>块替换密集FFN，从而在计算成本大致不变的情况下增加模型容量。然而，在RankMixer中，原始<span class="term">Sparse-MoE</span>会退化，因为：(i) 统一的 \( k \) 专家路由。Top-\( k \) 选择平等对待所有特征令牌，浪费预算在低信息令牌上，而饿死高信息令牌，这阻碍了模型捕获令牌间差异。(ii) 专家训练不足。<span class="term">Per-token FFN</span>已将参数乘以令牌数量；添加非共享专家进一步爆炸了专家数量，导致路由高度不平衡和专家训练不佳。</p>
+      <p>我们结合两种互补的训练策略来解决上述问题。</p>
+      <p><span class="term">ReLU Routing（ReLU路由）</span>。为了赋予令牌灵活的专家数量并保持可微性，我们将常见的Top \( k \) + softmax替换为ReLU门加自适应 \( \\ell_1 \) 惩罚[35]。给定第 \( j \) 个专家 \( e_{i,j}(\\cdot) \) 用于令牌 \( s_i \\in \\mathbb{R}^{d_h} \) 和路由器 \( h(\\cdot) \):</p>
+      <div class="formula-container">
+        <div class="formula">\\( G_{i,j} = \\text{ReLU} \\left( h(s_i) \\right), \\quad v_i = \\sum_{j=1}^{N_e} G_{i,j} e_{i,j}(s_i) \\)</div>
+        <div class="formula-number">(10)</div>
+      </div>
+      <p>其中 \( N_e \) 是每个令牌的专家数量，\( N_t \) 是令牌数量。<span class="term">ReLU Routing</span>将为高信息令牌激活更多专家，提高参数效率。稀疏性由 \( L_{\\text{reg}} \) 控制，系数 \( \\lambda \) 保持平均激活专家比率接近预算：</p>
+      <div class="formula-container">
+        <div class="formula">\\( L = L_{\\text{task}} + \\lambda L_{\\text{reg}}, \\quad L_{\\text{reg}} = \\sum_{i=1}^{N_t} \\sum_{j=1}^{N_e} G_{i,j} \\)</div>
+        <div class="formula-number">(11)</div>
+      </div>
+      <p><span class="term">Dense-training / Sparse-inference (DTSI-MoE)（密集训练/稀疏推理 MoE）</span>。受[21]启发，采用两个路由器 \( h_{\\text{train}} \) 和 \( h_{\\text{infer}} \)，且 \( L_{\\text{reg}} \) 仅应用于 \( h_{\\text{infer}} \)。训练期间同时更新 \( h_{\\text{train}} \) 和 \( h_{\\text{infer}} \)，但推理时仅使用 \( h_{\\text{infer}} \)。事实证明，DS-MoE使专家免受训练不足的影响，同时降低推理成本。</p>
+      <p>3.5 扩展方向</p>
+      <p>RankMixer本质上是高度并行和可扩展的架构。其参数数量和计算成本可沿四个正交轴扩展：令牌数量 \( T \)、模型宽度 \( D \)、层数 \( L \) 和专家数量 \( E \)。对于全密集激活版本，一个样本的参数和前向FLOPs可计算为</p>
+      <div class="formula-container">
+        <div class="formula">\\( \\text{\\#Param} \\approx 2 k L T D^2, \\quad \\text{FLOPs} \\approx 4 k L T D^2 \\)</div>
+        <div class="formula-number">(12)</div>
+      </div>
+      <p>其中 \( k \) 是调整FFN隐藏维度的缩放比率。在<span class="term">Sparse-MoE</span>版本中，有效参数和每个令牌的计算进一步由稀疏比率 \( s = \\frac{\\text{\\#Activated\\_Param}}{\\text{\\#Total\\_Param}} \) 缩放。</p>
+      <p>4 实验</p>
+      <p>4.1 实验设置</p>
+      <p>4.1.1 数据集和环境。离线实验使用抖音推荐系统的训练数据进行。这些数据源自抖音的在线日志和用户反馈标签。训练数据集包含超过300个特征，</p>
+    </div>
+  </section>
+  
+  <section class="section">
+    <h2>内容理解</h2>
+    <p>本文介绍了RankMixer模型，一种针对推荐系统优化的高效架构。核心认知包括：</p>
+    <ul>
+      <li><strong>模型结构创新</strong>：RankMixer使用<span class="term">多头Token Mixing</span>替代传统的<span class="term">自注意力（self-attention）</span>机制。因为推荐系统中的特征空间是<span class="term">异构的（heterogeneous）</span>（如用户ID和物品ID来自不同语义空间），内积相似度计算困难且低效。Token Mixing通过无参数混洗令牌实现高效交互

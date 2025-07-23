@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>算法论文解析报告</title>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<style>
+  body { font-family: Arial, sans-serif; line-height: 1.6; }
+  .original { 
+    background-color: #f0f0f0; 
+    border: 1px solid #cccccc; 
+    padding: 15px; 
+    margin-bottom: 20px;
+  }
+  .translation { 
+    background-color: #e0ffe0; 
+    border: 1px solid #00cc00; 
+    padding: 15px; 
+    margin-bottom: 30px;
+  }
+  .table-container { 
+    background-color: #ffffcc; 
+    padding: 15px; 
+    margin: 20px 0; 
+    overflow-x: auto;
+  }
+  table { width: 100%; border-collapse: collapse; margin: 10px 0; }
+  th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+  .term { color: red; font-weight: bold; }
+  h2 { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 5px; }
+  h3 { color: #2980b9; }
+</style>
+</head>
+<body>
+
+<h1>算法论文解析报告</h1>
+
+<!-- 内容理解 -->
+<h2>1. 内容理解</h2>
+<div class="original">
+  <p>本文展示了DeepSeek-GRM系列模型在多个评估基准上的消融实验结果。通过对比不同模型变体（如移除特定组件或采用不同解码策略），系统分析了模型组件对性能的影响。核心发现包括：</p>
+  <ul>
+    <li><span class="term">贪婪解码（Greedy Decoding）</span>与<span class="term">推理时扩展（Inference-Time Scaling）</span>的对比显示，投票集成策略能显著提升模型性能</li>
+    <li><span class="term">原则生成（Principle Generation）</span>和<span class="term">拒绝采样（Rejective Sampling）</span>是关键组件，移除后性能平均下降1-3个百分点</li>
+    <li>在<span class="term">Reward Bench</span>基准测试中，DeepSeek-GRM-27B (MetaRM)模型在Voting@32设置下取得最优结果（90.4分）</li>
+    <li>表格通过加粗/下划线等标注方式突出最佳性能模型，为消融研究提供可视化对比</li>
+  </ul>
+</div>
+
+<!-- 内容翻译 -->
+<h2>2. 内容翻译</h2>
+
+<div class="original">
+  <p>Preprint. Under review.</p>
+  <div class="table-container">
+    <p>Table 7: Detailed results of ablation studies (Table 4) for different components of the proposed SPCT. Bold numbers indicate the best performance.</p>
+    <table>
+      <tr><th>Model</th><th>Reward Bench</th><th>PPE Preference</th><th>PPE Correctness</th><th>RMB</th><th>Overall</th></tr>
+      <tr><td colspan="6"><em>Results of Greedy Decoding</em></td></tr>
+      <tr><td>DeepSeek-GRM-27B</td><td>86.0</td><td>64.7</td><td>59.8</td><td>69.0</td><td>69.9</td></tr>
+      <tr><td>w/o Principle Generation</td><td>82.0</td><td>62.8</td><td>58.2</td><td>67.1</td><td>67.5</td></tr>
+      <tr><td>w/o Rejective Sampling</td><td>84.0</td><td>63.2</td><td>59.4</td><td>68.0</td><td>68.7</td></tr>
+      <tr><td>DeepSeek-GRM-27B-RFT</td><td>84.5</td><td>64.1</td><td>59.6</td><td>67.0</td><td>68.8</td></tr>
+      <tr><td>w/o Hinted Sampling (①)</td><td>83.0</td><td>63.8</td><td>58.2</td><td>65.8</td><td>68.0</td></tr>
+      <tr><td>w/o Non-Hinted Sampling (②)</td><td>82.5</td><td>63.4</td><td>58.6</td><td>65.2</td><td>67.4</td></tr>
+      <tr><td>w/o Rejective Sampling (①&②)</td><td>81.5</td><td>61.8</td><td>57.8</td><td>63.1</td><td>66.1</td></tr>
+      <tr><td>w/o General Instruction Data</td><td>79.1</td><td>59.2</td><td>51.5</td><td>63.2</td><td>63.3</td></tr>
+      <tr><td colspan="6"><em>Results of Inference-Time Scaling (Voting@8)</em></td></tr>
+      <tr><td>DeepSeek-GRM-27B</td><td>87.7</td><td>64.9</td><td>60.3</td><td>69.5</td><td>70.6</td></tr>
+      <tr><td>w/o Principle Generation</td><td>83.0</td><td>63.2</td><td>58.6</td><td>67.1</td><td>68.0</td></tr>
+      <tr><td colspan="6"><em>Results of Inference-Time Scaling (Voting@32)</em></td></tr>
+      <tr><td>DeepSeek-GRM-27B</td><td>88.5</td><td>65.3</td><td>60.4</td><td>69.7</td><td>71.0</td></tr>
+      <tr><td>DeepSeek-GRM-27B (k<sub>meta</sub>=1)</td><td>88.5</td><td>67.1</td><td>65.2</td><td>65.2</td><td>71.5</td></tr>
+      <tr><td>DeepSeek-GRM-27B (k<sub>meta</sub>=8)</td><td>89.7</td><td>67.2</td><td>64.7</td><td>69.1</td><td>72.7</td></tr>
+      <tr><td>DeepSeek-GRM-27B (k<sub>meta</sub>=16)</td><td>90.4</td><td>67.2</td><td>63.2</td><td>70.3</td><td>72.8</td></tr>
+    </table>
+  </div>
+
+  <div class="table-container">
+    <p>Table 8: Detailed results of different methods on the Reward Bench benchmark. Underlined numbers indicate the best performance, bold numbers indicate the best performance among baseline and our methods, and italicized font denotes scalar or semi-scalar RMs. For meta RM guided voting (MetaRM), k<sub>meta</sub>=12k.</p>
+    <table>
+      <tr><th>Method</th><th>Chat</th><th>Chat Hard</th><th>Safety</th><th>Reasoning</th><th>Prior Sets</th><th>Reward Bench</th></tr>
+      <tr><td colspan="7"><em>Results of Other Models</em></td></tr>
+      <tr><td>DeepSeek-R1</td><td>97.1</td><td>73.7</td><td>73.3</td><td>95.6</td><td>-</td><td>84.9</td></tr>
+      <tr><td>DeepSeek-GRM-16B</td><td>90.8</td><td>74.3</td><td>84.7</td><td>81.8</td><td>62.5</td><td>82.9</td></tr>
+      <tr><td>DeepSeek-GRM-230B</td><td>96.5</td><td>72.5</td><td>87.8</td><td>84.3</td><td>-</td><td>85.3</td></tr>
+      <tr><td>DeepSeek-GRM-671B</td><td>95.8</td><td>82.9</td><td>88.3</td><td>86.6</td><td>-</td><td>88.4</td></tr>
+      <tr><td colspan="7"><em>Results of Greedy Decoding</em></td></tr>
+      <tr><td>LLM-as-a-Judge</td><td>96.7</td><td>69.3</td><td>83.5</td><td>84.3</td><td>-</td><td>83.4</td></tr>
+      <tr><td>DeepSeek-BTRM-27B</td><td>96.7</td><td>86.2</td><td>75.7</td><td>89.8</td><td>68.5</td><td>81.7</td></tr>
+      <tr><td>CLoud-Gemma-2-27B</td><td>96.7</td><td>69.3</td><td>83.5</td><td>84.3</td><td>-</td><td>82.0</td></tr>
+      <tr><td>DeepSeek-PairRM-27B</td><td>95.5</td><td>86.8</td><td>52.3</td><td>92.0</td><td>67.6</td><td>87.1</td></tr>
+      <tr><td>DeepSeek-GRM-27B-RFT (Ours)</td><td>94.7</td><td>77.2</td><td>87.0</td><td>79.2</td><td>65.9</td><td>84.5</td></tr>
+      <tr><td>DeepSeek-GRM-27B (Ours)</td><td>94.1</td><td>78.3</td><td>88.0</td><td>83.8</td><td>66.7</td><td>86.0</td></tr>
+      <tr><td colspan="7"><em>Results of Inference-Time Scaling (Voting@8)</em></td></tr>
+      <tr><td>LLM-as-a-Judge</td><td>95.0</td><td>70.0</td><td>83.5</td><td>85.0</td><td>-</td><td>83.4</td></tr>
+      <tr><td>LLM-as-a-Judge w/TokenProb</td><td>95.8</td><td>71.3</td><td>83.3</td><td>84.8</td><td>-</td><td>83.8</td></tr>
+      <tr><td>CLoud-Gemma-2-27B</td><td>96.7</td><td>85.8</td><td>56.2</td><td>91.0</td><td>-</td><td>82.4</td></tr>
+      <tr><td>DeepSeek-GRM-27B-RFT (Ours)</td><td>94.7</td><td>79.0</td><td>87.3</td><td>80.2</td><td>-</td><td>85.3</td></tr>
+      <tr><td>DeepSeek-GRM-27B (Ours)</td><td>95.3</td><td>80.9</td><td>89.3</td><td>85.4</td><td>66.8</td><td>87.7</td></tr>
+      <tr><td>DeepSeek-GRM-27B (MetaRM) (Ours)</td><td>95.5</td><td>85.7</td><td>88.5</td><td>89.5</td><td>69.4</td><td>89.8</td></tr>
+      <tr><td colspan="7"><em>Results of Further Inference-Time Scaling (Voting@32)</em></td></tr>
+      <tr><td>DeepSeek-GRM-27B (Ours)</td><td>95.5</td><td>81.8</td><td>90.0</td><td>86.9</td><td>68.1</td><td>88.5</td></tr>
+      <tr><td>DeepSeek-GRM-27B (MetaRM) (Ours)</td><td>95.3</td><td>85.7</td><td>89.5</td><td>91.0</td><td>69.4</td><td>90.4</td></tr>
+    </table>
+  </div>
+
+  <p>D.2 Benchmarks</p>
+  <p>We evaluate the performance of different methods on various RM benchmarks of different domains: (1) Reward Bench (Lambert et al., 2024), a common benchmark for RM evaluation, with semi-automatically collected chat (Li et al., 2023; Zheng et al., 2023; Zeng et al., 2024), reasoning (Lightman et al., 2024; Muennighoff et al., 2024), and safety (Röttger et al., 2024; Wang et al., 2024d) preference data, where two responses require to be ranked for each query; (2)PPE (Frick et al., 2025), a large-scale benchmark containing crowdsourced preference data and correctness data for varifiable tasks, and each query has two responses; (3) RMB (Zhou et al., 2025), a more comprehensive benchmark with various types of preference data, focusing on helpfulness and harmlessness, and each query has two responses or more response in pairwise and best-of-N (BoN) subsets, respectively; (4) ReaLMistake (Kamoi et al., 2024), a benchmark for diagnosing the error within single responses. Specifically, we 26</p>
+</div>
+
+<div class="translation">
+  <p>预印本。正在评审中。</p>
+  <div class="table-container">
+    <p>表7：所提出SPCT方法不同组件的消融研究详细结果（对应表4）。加粗数字表示最佳性能。</p>
+    <table>
+      <tr><th>模型</th><th>Reward Bench</th><th>PPE偏好</th><th>PPE正确性</th><th>RMB</th><th>综合</th></tr>
+      <tr><td colspan="6"><em>贪婪解码结果</em></td></tr>
+      <tr><td>DeepSeek-GRM-27B</td><td>86.0</td><td>64.7</td><td>59.8</td><td>69.0</td><td>69.9</td></tr>
+      <tr><td>移除原则生成</td><td>82.0</td><td>62.8</td><td>58.2</td><td>67.1</td><td>67.5</td></tr>
+      <tr><td>移除拒绝采样</td><td>84.0</td><td>63.2</td><td>59.4</td><td>68.0</td><td>68.7</td></tr>
+      <tr><td>DeepSeek-GRM-27B-RFT</td><td>84.5</td><td>64.1</td><td>59.6</td><td>67.0</td><td>68.8</td></tr>
+      <tr><td>移除提示采样(①)</td><td>83.0</td><td>63.8</td><td>58.2</td><td>65.8</td><td>68.0</td></tr>
+      <tr><td>移除非提示采样(②)</td><td>82.5</td><td>63.4</td><td>58.6</td><td>65.2</td><td>67.4</td></tr>
+      <tr><td>移除拒绝采样(①&②)</td><td>81.5</td><td>61.8</td><td>57.8</td><td>63.1</td><td>66.1</td></tr>
+      <tr><td>移除通用指令数据</td><td>79.1</td><td>59.2</td><td>51.5</td><td>63.2</td><td>63.3</td></tr>
+      <tr><td colspan="6"><em>推理时扩展结果(Voting@8)</em></td></tr>
+      <tr><td>DeepSeek-GRM-27B</td><td>87.7</td><td>64.9</td><td>60.3</td><td>69.5</td><td>70.6</td></tr>
+      <tr><td>移除原则生成</td><td>83.0</td><td>63.2</td><td>58.6</td><td>67.1</td><td>68.0</td></tr>
+      <tr><td colspan="6"><em>推理时扩展结果(Voting@32)</em></td></tr>
+      <tr><td>DeepSeek-GRM-27B</td><td>88.5</td><td>65.3</td><td>60.4</td><td>69.7</td><td>71.0</td></tr>
+      <tr><td>DeepSeek-GRM-27B (k<sub>meta</sub>=1)</td><td>88.5</td><td>67.1</td><td>65.2</td><td>65.2</td><td>71.5</td></tr>
+      <tr><td>DeepSeek-GRM-27B (k<sub>meta</sub>=8)</td><td>89.7</td><td>67.2</td><td>64.7</td><td>69.1</td><td>72.7</td></tr>
+      <tr><td>DeepSeek-GRM-27B (k<sub>meta</sub>=16)</td><td>90.4</td><td>67.2</td><td>63.2</td><td>70.3</td><td>72.8</td></tr>
+    </table>
+  </div>
+
+  <div class="table-container">
+    <p>表8：不同方法在Reward Bench基准上的详细结果。下划线数字表示绝对最佳性能，加粗数字表示基线方法与我们方法中的最佳性能，斜体表示标量或半标量奖励模型。元奖励模型引导投票(MetaRM)中k<sub>meta</sub>=12k。</p>
+    <table>
+      <tr><th>方法</th><th>聊天</th><th>困难聊天</th><th>安全性</th><th>推理</th><th>先验集</th><th>Reward Bench</th></tr>
+      <tr><td colspan="7"><em>其他模型结果</em></td></tr>
+      <tr><td>DeepSeek-R1</td><td>97.1</td><td>73.7</td><td>73.3</td><td>95.6</td><td>-</td><td>84.9</td></tr>
+      <tr><td>DeepSeek-GRM-16B</td><td>90.8</td><td>74.3</td><td>84.7</td><td>81.8</td><td>62.5</td><td>82.9</td></tr>
+      <tr><td>DeepSeek-GRM-230B</td><td>96.5</td><td>72.5</td><td>87.8</td><td>84.3</td><td>-</td><td>85.3</td></tr>
+      <tr><td>DeepSeek-GRM-671B</td><td>95.8</td><td>82.9</td><td>88.3</td><td>86.6</td><td>-</td><td>88.4</td></tr>
+      <tr><td colspan="7"><em>贪婪解码结果</em></td></tr>
+      <tr><td>LLM-as-a-Judge</td><td>96.7</td><td>69.3</td><td>83.5</td><td>84.3</td><td>-</td><td>83.4</td></tr>
+      <tr><td>DeepSeek-BTRM-27B</td><td>96.7</td><td>86.2</td><td>75.7</td><td>89.8</td><td>68.5</td><td>81.7</td></tr>
+      <tr><td>CLoud-Gemma-2-27B</td><td>96.7</td><td>69.3</td><td>83.5</td><td>84.3</td><td>-</td><td>82.0</td></tr>
+      <tr><td>DeepSeek-PairRM-27B</td><td>95.5</td><td>86.8</td><td>52.3</td><td>92.0</td><td>67.6</td><td>87.1</td></tr>
+      <tr><td>DeepSeek-GRM-27B-RFT (本工作)</td><td>94.7</td><td>77.2</td><td>87.0</td><td>79.2</td><td>65.9</td><td>84.5</td></tr>
+      <tr><td>DeepSeek-GRM-27B (本工作)</td><td>94.1</td><td>78.3</td><td>88.0</td><td>83.8</td><td>66.7</td><td>86.0</td></tr>
+      <tr><td colspan="7"><em>推理时扩展结果(Voting@8)</em></td></tr>
+      <tr><td>LLM-as-a-Judge</td><td>95.0</td><td>70.0</td><td>83.5</td><td>85.0</td><td>-</td><td>83.4</td></tr>
+      <tr><td>LLM-as-a-Judge w/TokenProb</td><td>95.8</td><td>71.3</td><td>83.3</td><td>84.8</td><td>-</td><td>83.8</td></tr>
+      <tr><td>CLoud-Gemma-2-27B</td><td>96.7</td><td>85.8</td><td>56.2</td><td>91.0</td><td>-</td><td>82.4</td></tr>
+      <tr><td>DeepSeek-GRM-27B-RFT (本工作)</td><td>94.7</td><td>79.0</td><td>87.3</td><td>80.2</td><td>-</td><td>85.3</td></tr>
+      <tr><td>DeepSeek-GRM-27B (本工作)</td><td>95.3</td><td>80.9</td><td>89.3</td><td>85.4</td><td>66.8</td><td>87.7</td></tr>
+      <tr><td>DeepSeek-GRM-27B (MetaRM) (本工作)</td><td>95.5</td><td>85.7</td><td>88.5</td><td>89.5</td><td>69.4</td><td>89.8</td></tr>
+      <tr><td colspan="7"><em>进一步推理时扩展结果(Voting@32)</em></td></tr>
+      <tr><td>DeepSeek-GRM-27B (本工作)</td><td>95.5</td><td>81.8</td><td>90.0</td><td>86.9</td><td>68.1</td><td>88.5</td></tr>
+      <tr><td>DeepSeek-GRM-27B (MetaRM) (本工作)</td><td>95.3</td><td>85.7</td><td>89.5</td><td>91.0</td><td>69.4</td><td>90.4</td></tr>
+    </table>
+  </div>
+
+  <p>D.2 基准测试</p>
+  <p>我们在不同领域的多个奖励模型(RM)基准上评估不同方法的性能：(1) <span class="term">Reward Bench</span>(Lambert等人，2024)，用于RM评估的通用基准，包含半自动收集的聊天(Li等人，2023; Zheng等人，2023; Zeng等人，2024)、推理(Lightman等人，2024; Muennighoff等人，2024)和安全性(Röttger等人，2024; Wang等人，2024d)偏好数据，每个查询需要排序两个响应；(2) <span class="term">PPE</span>(Frick等人，2025)，包含众包偏好数据和可验证任务正确性数据的大规模基准，每个查询有两个响应；(3) <span class="term">RMB</span>(Zhou等人，2025)，包含多种偏好数据的综合基准，侧重于帮助性和无害性，每个查询在成对和N选一(BoN)子集中分别有两个或多个响应；(4) <span class="term">ReaLMistake</span>(Kamoi等人，2024)，用于诊断单个响应内部错误的基准。具体而言，我们26</p>
+</div>
+
+<!-- 摘要总结 -->
+<h2>3. 摘要总结</h2>
+<div class="original">
+  <p>本研究报告通过系统性的消融实验评估了DeepSeek-GRM系列模型在多个基准测试上的性能。核心发现包括：</p>
+  <ul>
+    <li><span class="term">推理时扩展技术（Inference-Time Scaling）</span>显著优于标准贪婪解码，其中Voting@32配置的DeepSeek-GRM-27B (MetaRM)在Reward Bench达到90.4分峰值</li>
+    <li>关键组件<span class="term">原则生成（Principle Generation）</span>和<span class="term">拒绝采样（Rejective Sampling）</span>对性能至关重要，移除后综合评分下降2-6个百分点</li>
+    <li>在模型规模对比中，27B参数版本在多项任务上超越更大规模模型(230B/671B)，显示优化策略的有效性</li>
+    <li>实验覆盖四大评估基准：<span class="term">Reward Bench</span>、<span class="term">PPE</span>、<span class="term">RMB</span>和<span class="term">ReaLMistake</span>，涵盖聊天、安全、推理等多维度能力评估</li>
+    <li>消融研究证明，<span class="term">元奖励模型（MetaRM）</span>引导的投票机制在k<sub>meta</sub>=16时取得最优效果</li>
+  </ul>
+</div>
+
+<!-- 术语识别 -->
+<h2>4. 术语识别</h2>
+<div class="original">
+  <dl>
+    <dt><span class="term">消融研究（Ablation Studies）</span></dt>
+    <dd>通过系统性地移除模型组件（如"w/o Principle Generation"）来评估各模块对整体性能的贡献度，是分析模型架构有效性的关键方法</dd>
+    
+    <dt><span class="term">贪婪解码（Greedy Decoding）</span></dt>
+    <dd>在文本生成中始终选择当前概率最高token的推理策略，计算高效但可能陷入局部最优</dd>
+    
+    <dt><span class="term">推理时扩展（Inference-Time Scaling）</span></dt>
+    <dd>通过集成多个模型输出提升性能的技术，如Voting@8表示8个模型的投票集成，显著优于单模型解码</dd>
+    
+    <dt><span class="term">拒绝采样（Rejective Sampling）</span></dt>
+    <dd>在模型训练中拒绝低质量样本的机制，表格显示移除该组件导致性能下降1.2-3.8分</dd>
+    
+    <dt><span class="term">元奖励模型（MetaRM）</span></dt>
+    <dd>指导投票过程的元模型，当k<sub>meta</sub>=16时在Reward Bench取得72.8分最佳综合性能</dd

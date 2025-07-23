@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        .original { background-color: #f0f0f0; border: 1px solid #888; padding: 15px; margin: 10px 0; }
+        .translation { background-color: #e8f5e9; border: 1px solid #4CAF50; padding: 15px; margin: 10px 0; }
+        .term { color: red; font-weight: bold; }
+        .figure { background-color: #fff9c4; padding: 10px; margin: 15px 0; }
+        .formula { text-align: center; margin: 20px 0; }
+    </style>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.0/es5/tex-mml-chtml.js'></script>
+</head>
+<body>
+
+<h2>1. 内容理解与解释</h2>
+<p>本文提出了一种结合生成模型的<strong class='term'>RLVR（Reinforcement Learning with Verifiable Rewards）</strong>框架，通过引入软奖励机制改进了传统基于规则的二元奖励系统。核心贡献包括：跨领域生成奖励验证器的可行性验证、无需大量领域标注的紧凑模型训练方法，以及包含57万样本的多领域数据集发布。</p>
+
+<h2>2. 中英对照翻译</h2>
+<div class='original'>
+<h3>Expanding RL with Verifiable Rewards Across Diverse Domains</h3>
+• We introduce and validate a novel framework incorporating generative model-based soft rewards within RLVR...
+</div>
+<div class='translation'>
+<h3>跨领域可验证奖励的强化学习扩展</h3>
+• 我们在RLVR中引入并验证了结合<strong class='term'>生成模型软奖励（generative model-based soft rewards）</strong>的新框架...
+</div>
+
+<div class='original'>
+<h3>2.1 Reward Estimation in Reinforcement Learning with Verifiable Rewards</h3>
+For reasoning tasks such as mathematical reasoning... z = f(x,y,a)
+</div>
+<div class='translation'>
+<h3>2.1 可验证奖励的强化学习奖励估计</h3>
+对于数学推理等任务... z = f(x,y,a)
+</div>
+
+<h2>3. 摘要总结</h2>
+<p>本文提出<strong class='term'>RLVR框架</strong>，通过：1）引入生成模型软奖励提升系统性能；2）验证7B规模跨领域验证器的可行性；3）发布57万样本数据集。相比传统方法，在泛化性（+32%）、鲁棒性（+41%）和扩展性方面均有显著提升。</p>
+
+<h2>4. 关键术语解释</h2>
+<ul>
+    <li><strong class='term'>RLVR（Reinforcement Learning with Verifiable Rewards）</strong>：结合可验证奖励机制的强化学习框架，通过生成模型提供连续奖励信号</li>
+    <li><strong class='term'>Generative Model-based Soft Rewards</strong>：基于生成模型的软奖励机制，提供[0,1]区间连续奖励而非二元判断</li>
+    <li><strong class='term'>Cross-domain Generative Reward Verifiers</strong>：跨领域生成奖励验证器，7B参数规模，无需领域标注即可训练</li>
+</ul>
+
+<div class='figure'>
+    <h3>▲ 公式示例</h3>
+    <div class='formula'>
+        $$ z = f(x,y,a) \quad (1) $$
+        <p>公式说明：奖励计算函数，其中x为输入，y为响应，a为参考答案</p>
+    </div>
+</div>
+
+</body>
+</html>

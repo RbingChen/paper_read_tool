@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>算法论文分析：自适应熵控制</title>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    body { font-family: Arial, sans-serif; line-height: 1.6; margin: 20px; }
+    h2 { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 5px; }
+    .translation-group { margin-bottom: 20px; }
+    .original { background-color: #f0f0f0; border: 1px solid #cccccc; padding: 10px; border-radius: 5px; margin-bottom: 5px; }
+    .translated { background-color: #e0f7e0; border: 1px solid #4caf50; padding: 10px; border-radius: 5px; }
+    .figure { background-color: #fffde7; padding: 10px; border-radius: 5px; margin: 10px 0; text-align: center; font-style: italic; }
+    .formula-container { text-align: center; margin: 15px 0; }
+    .formula { display: inline-block; margin: 10px 0; }
+    .term { color: red; font-weight: bold; }
+    ul { list-style-type: none; padding: 0; }
+    li { margin-bottom: 10px; }
+  </style>
+</head>
+<body>
+  <h2>Content Understanding (内容理解)</h2>
+  <p>本节文本介绍了自适应熵控制（Adaptive Entropy Control）方法，旨在解决强化学习中熵正则化（entropy regularization）的一个关键问题：选择合适的熵损失系数（entropy loss coefficient）具有挑战性。基于第4节的研究发现，防止过早熵崩溃（premature entropy collapse）是必要的，但固定熵损失系数可能导致训练不稳定或效率低下。因此，自适应熵控制被提出，它通过动态调整熵损失系数来维持模型熵在合理水平。该方法的核心是引入两个超参数：目标熵（tgt-ent, target entropy）和调整步长（Δ, adjustment step size）。在训练过程中，系统根据当前熵（e, current entropy）与目标熵的比较，自适应地更新系数（c_k）。具体规则是：如果当前熵低于目标熵，则增加系数；如果高于，则减少系数。此外，为了减少不稳定性，熵损失仅在当前熵不高于目标熵时激活（通过指示函数 I{e≤tgt-ent} 实现），这确保了熵始终以目标熵为下界。实验部分（如Figure 10所示）验证了该方法的有效性：在Skywork-OR1-Math-7B模型中，使用tgt-ent=0.2和Δ=0.005的设置，成功防止了熵崩溃，并提升了在AIME24基准上的性能。最后，文本简要提到一个消融研究（ablation study）用于进一步分析，并引出下一节关于KL损失（KL loss）的探讨。</p>
+
+  <h2>Content Translation (内容翻译)</h2>
+  <div class="translation-group">
+    <div class="original">3.2.5 Adaptive Entropy Control
+Building on the findings from Section 4 – which suggest that while preventing premature entropy collapse via entropy regularization is beneficial, selecting an appropriate entropy loss coefficient is challenging – we introduce Adaptive Entropy Control, a method that adaptively adjusts the entropy loss coefficient based on the target and current entropy. Specifically, we introduce two additional hyperparameters: tgt-ent (the desired target entropy) and ∆(the adjustment step size for the entropy loss coefficient). We initialize the adaptive coefficient with c0= 0. At each training step k, let e denote the current entropy of the actor (estimated from the rollout buffer). If e is less than tgt-ent, we increase ck by ∆ (i.e., ck+1=ck+ ∆). If e exceeds tgt-ent, we decrease ck by ∆. To alleviate instability caused by unnecessary entropy loss, we activate the entropy loss only when e ≤ tgt-ent, i.e., αk=ck·I{e≤tgt-ent }, ensuring that the current entropy remains lower-bounded by the target entropy.</div>
+    <div class="translated">3.2.5 自适应熵控制
+基于第4节的发现——这表明，虽然通过熵正则化防止过早熵崩溃是有益的，但选择合适的熵损失系数具有挑战性——我们引入了自适应熵控制，这是一种基于目标熵和当前熵自适应调整熵损失系数的方法。具体来说，我们引入了两个额外的超参数：tgt-ent（期望的目标熵）和Δ（熵损失系数的调整步长）。我们将自适应系数初始化为c0=0。在每个训练步骤k，让e表示行动者（actor）的当前熵（从rollout缓冲区估计）。如果e小于tgt-ent，我们将ck增加Δ（即，ck+1=ck+Δ）。如果e超过tgt-ent，我们将ck减少Δ。为了减轻由不必要的熵损失引起的不稳定性，我们仅在e ≤ tgt-ent时激活熵损失，即αk=ck·I{e≤tgt-ent}，确保当前熵保持以目标熵为下界。</div>
+  </div>
+  <div class="translation-group">
+    <div class="original">By leveraging adaptive entropy control, we maintain the model’s entropy at a reasonable level throughout training and effectively prevent premature collapse. Figure 10 illustrates the entropy trajectory of Skywork-OR1-Math-7B across all training stages. In our experiments, we set tgt-ent= 0.2 and ∆= 0.005. To further validate the effectiveness of adaptive entropy control, we conducted an ablation study detailed in Section 4.5.</div>
+    <div class="translated">通过利用自适应熵控制，我们在整个训练过程中将模型的熵维持在合理水平，并有效防止过早崩溃。图10展示了Skywork-OR1-Math-7B在所有训练阶段的熵轨迹。在我们的实验中，我们设置tgt-ent=0.2和Δ=0.005。为了进一步验证自适应熵控制的有效性，我们在第4.5节进行了详细的消融研究。</div>
+  </div>
+  <div class="formula-container">
+    <div class="formula">
+      \[
+      \alpha_k = c_k \cdot I\{e_k \leq \text{tgt-ent}\}, \quad c_{k+1} = \begin{cases} c_k + \Delta & \text{if } e_k < \text{tgt-ent} \\ c_k - \Delta & \text{if } e_k > \text{tgt-ent} \end{cases}, \quad c_0 = 0 \quad (3.2)
+      \]
+    </div>
+  </div>
+  <div class="figure">
+    <strong>Figure 10:</strong> Entropy of generated responses (left) and avg@8 performance on AIME24 (right) of Skywork-OR1-Math-7B across all stages. We use adaptive entropy control with tgt-ent=0.2 and ∆ = 0.005. Under adaptive entropy control, the entropy of Skywork-OR1-Math-7B is generally lower-bounded by the target entropy 0.2 and the performance on AIME24 has been steadily improving.
+    <br>
+    <strong>图10：</strong>生成的响应的熵（左）和Skywork-OR1-Math-7B在所有阶段的AIME24上的avg@8性能（右）。我们使用tgt-ent=0.2和Δ=0.005的自适应熵控制。在自适应熵控制下，Skywork-OR1-Math-7B的熵通常以目标熵0.2为下界，并且在AIME24上的性能稳步提高。 
+  </div>
+  <div class="translation-group">
+    <div class="original">3.2.6 No KL Loss
+To investigate the impact of the KL loss, we conducted the following ablation experiments.</div>
+    <div class="translated">3.2.6 无KL损失
+为了研究KL损失的影响，我们进行了以下消融实验。</div>
+  </div>
+
+  <h2>Summary (摘要总结)</h2>
+  <p>本节核心内容介绍了自适应熵控制（Adaptive Entropy Control）方法，用于解决强化学习中熵损失系数选择困难的问题。该方法基于目标熵（tgt-ent）和当前熵动态调整熵损失系数，通过引入调整步长（Δ）实现自适应更新：当熵低于目标时增加系数，高于时减少系数，并仅在熵不高于目标时激活损失以防止不稳定性。实验设置tgt-ent=0.2和Δ=0.005，应用于Skywork-OR1-Math-7B模型，成功维持熵水平、防止过早崩溃，并提升AIME24性能。通过消融研究进一步验证了其有效性，并引出对KL损失的后续探讨。</p>
+
+  <h2>Terminology Identification (术语识别)</h2>
+  <ul>
+    <li><strong class="term">Adaptive Entropy Control (自适应熵控制)</strong>: 一种动态调整熵损失系数的方法，基于目标熵和当前熵自适应更新系数，以防止训练中的过早熵崩溃。</li>
+    <li><strong class="term">entropy regularization (熵正则化)</strong>: 在强化学习损失函数中添加熵项的技术，用于鼓励探索和防止策略过早收敛（premature collapse）。</li>
+    <li><strong class="term">entropy loss coefficient (熵损失系数)</strong>: 控制熵正则化项权重的超参数，在自适应方法中由c_k表示，并随训练动态调整。</li>
+    <li><strong class="term">tgt-ent (目标熵)</strong>: 期望的模型熵值，作为自适应控制的参考点，确保熵不低于此值以维持探索能力。</li>
+    <li><strong class="term">Δ (调整步长)</strong>: 用于更新熵损失系数的固定步长值，决定系数增加或减少的幅度。</li>
+    <li><strong class="term">actor (行动者)</strong>: 在强化学习策略中，负责生成动作的模型组件，其熵反映策略的随机性。</li>
+    <li><strong class="term">rollout buffer (rollout缓冲区)</strong>: 存储环境交互数据（如状态、动作）的缓冲区，用于估计行动者的当前熵。</li>
+    <li><strong class="term">ablation study (消融研究)</strong>: 通过移除或修改特定组件（如自适应熵控制）的实验，分析其对整体性能的影响。</li>
+    <li><strong class="term">KL loss (KL损失)</strong>: Kullback-Leibler散度损失，用于约束策略更新以防止偏离参考策略，在文本中作为后续实验的焦点。</li>
+  </ul>
+</body>
+</html>

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>论文解析报告</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; }
+        .original { background-color: #f0f0f0; border: 1px solid #ccc; padding: 15px; margin-bottom: 20px; }
+        .translation { background-color: #e0f7e0; border: 1px solid #4CAF50; padding: 15px; margin-bottom: 20px; }
+        .figure { background-color: #fffde7; padding: 15px; margin: 20px 0; text-align: center; }
+        .term { color: red; font-weight: bold; }
+        h2 { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 5px; }
+        .section { margin-bottom: 30px; }
+    </style>
+</head>
+<body>
+
+<!-- 内容理解 -->
+<div class="section">
+    <h2>内容理解</h2>
+    <p>该文本主要探讨了强化学习对齐技术中的三类奖励模型：标量奖励模型（Scalar RM）、半标量奖励模型（Semi-Scalar RM）和生成式奖励模型（GRM）。核心内容包括：</p>
+    <ol>
+        <li><span class="term">宪法AI（Constitutional AI）</span>作为传统人类反馈强化学习（RLHF）的替代方案，通过预定义规则实现模型对齐，但存在规则静态化问题</li>
+        <li><span class="term">标量奖励模型</span>使用简单数值反馈，计算高效但表达能力有限，在复杂场景中泛化能力不足</li>
+        <li><span class="term">半标量奖励模型</span>通过文本中间表示增强反馈，在效率和表达力间折衷</li>
+        <li>作者提出的<span class="term">SPCT流程</span>采用生成式奖励模型（GRM），通过并行采样解决推理延迟问题</li>
+    </ol>
+    <p>文本最后指出生成式奖励模型在在线强化学习管道中的效率瓶颈，并建议未来研究方向。</p>
+</div>
+
+<!-- 内容翻译 -->
+<div class="section">
+    <h2>内容翻译</h2>
+    
+    <div class="original">
+        <strong>Preprint. Under review.</strong>
+    </div>
+    <div class="translation">
+        <strong>预印本。正在评审中。</strong>
+    </div>
+    
+    <div class="figure">
+        <strong>Figure 5:</strong> Illustration of the derivation of DeepSeek-GRM-RFT, DeepSeek-GRM, and Meta RM in the SPCT pipeline.<br>
+        <strong>图5：</strong> SPCT流程中DeepSeek-GRM-RFT、DeepSeek-GRM和Meta RM的推导示意图。
+    </div>
+    
+    <div class="original">
+        <h3>A Additional Related Work</h3>
+        <p><span class="term">Constitutional AI</span> Constitutional AI has emerged as a scalable alternative to traditional <span class="term">reinforcement learning from human feedback (RLHF)</span>, aiming to align language models with human values through a set of guiding principles or "constitutions", replacing human critiques with AI-generated feedback or classifiers based on these handicraft principles. Similarly, rule-based approaches like <span class="term">Sparrow</span> and <span class="term">Rule-Based Rewards (RBR)</span> incorporate explicit natural language rules into the training loop for specific domains like safety. Although effective, these methods rely on static, manually written constitutions that are limited in scope, potentially biased, and inflexible. This has motivated interests in automating the generation or refinement of principles, which aligns with our target in this work.</p>
+    </div>
+    <div class="translation">
+        <h3>A 补充相关工作</h3>
+        <p><span class="term">宪法AI（Constitutional AI）</span> 宪法AI已成为传统<span class="term">人类反馈强化学习（RLHF）</span>的可扩展替代方案，旨在通过一套指导原则（即"宪法"）使语言模型与人类价值观对齐，用基于这些人工原则的AI生成反馈或分类器取代人类评估。类似地，<span class="term">Sparrow</span>和<span class="term">基于规则的奖励（RBR）</span>等方法将显式的自然语言规则融入训练循环，应用于安全等特定领域。尽管有效，这些方法依赖静态手工编写的宪法，存在范围有限、潜在偏见和缺乏灵活性的问题。这激发了自动化生成或优化原则的研究兴趣，与本文目标一致。</p>
+    </div>
+    
+    <div class="original">
+        <h3>Scalar Reward Models</h3>
+        <p><span class="term">Scalar reward modeling</span> for LLMs are proposed the earliest to serve as a proxy model for human feedback. Recent studies focus on <span class="term">Bradley-Terry modeling</span> and other regression approaches for better expressiveness for scalar reward models of general preference. In contrast to these outcome reward models, <span class="term">process reward models</span> are proposed as step verifiers for reasoning problems, e.g., math, etc., with rich feedbacks, demonstrating the feasibility of scalar RMs in a formal domain with extensive reasoning and knowledge. Scalar RM excels in simplicity and is computationally efficient, but suffers from limited expressivity and struggles to generalize across diverse input types or refine reward signals at inference time.</p>
+    </div>
+    <div class="translation">
+        <h3>标量奖励模型</h3>
+        <p>面向大语言模型的<span class="term">标量奖励建模（Scalar reward modeling）</span>最早被提出作为人类反馈的代理模型。近期研究聚焦<span class="term">Bradley-Terry模型</span>和其他回归方法，以提升通用偏好标量奖励模型的表达能力。与这些结果奖励模型不同，<span class="term">过程奖励模型（process reward models）</span>被提出作为数学等推理问题的步骤验证器，提供丰富反馈，证明了标量奖励模型在需要广泛推理和知识的正式领域的可行性。标量奖励模型优势在于简单性和计算效率，但表达能力有限，难以泛化到多样化输入类型或在推理时优化奖励信号。</p>
+    </div>
+    
+    <div class="original">
+        <h3>Semi-Scalar Reward Models</h3>
+        <p><span class="term">Semi-scalar reward models</span> aim to enrich scalar reward signals through textual intermediate representations. Consequently, works proposed to enhance the quality of generated critiques to eventually improve reward generation. Some studies use the token probability to substitute the scalar head for reward extraction. These works show that semi-scalar RMs face challenges in inference-time scaling based on sampling and voting, resulting in limited performance improvement. The semi-scalar approach trades off between scalar RMs and GRMs in terms of both efficiency and effectiveness.</p>
+    </div>
+    <div class="translation">
+        <h3>半标量奖励模型</h3>
+        <p><span class="term">半标量奖励模型（Semi-scalar reward models）</span>旨在通过文本中间表示增强标量奖励信号。相关研究提出改进生成式评论的质量以优化奖励生成，部分工作用词元概率替代标量头部进行奖励提取。这些研究表明半标量奖励模型在基于采样和投票的推理时扩展上面临挑战，导致性能提升有限。半标量方法在效率和效果上对标量奖励模型和生成式奖励模型进行了折衷。</p>
+    </div>
+    
+    <div class="original">
+        <h3>B Limitations and Future Directions</h3>
+        <p><span class="term">Limitations</span> Though SPCT significantly leverages the performance and inference-time scalability of GRMs and surpasses (semi-)scalar RMs in general domains, it still faces a few limitations. (1) The efficiency of the generative RMs is largely lagging behind the scalar RMs at the same scale by nature, which inhibits its large-scale usage in online RL pipelines. However, since we adopt parallel sampling for inference-time scaling, the latency of reward generation with a reasonable amount of, e.g., eight samplings will not increase significantly. Further research around the efficient generation of LLMs and innovations in RM applications</p>
+    </div>
+    <div class="translation">
+        <h3>B 局限性与未来方向</h3>
+        <p><span class="term">局限性（Limitations）</span> 尽管SPCT显著利用了生成式奖励模型的性能和推理时扩展性，在通用领域超越（半）标量奖励模型，但仍存在局限：(1) 生成式奖励模型的效率本质上远落后于同规模标量奖励模型，阻碍了其在在线强化学习管道中的大规模应用。然而，由于我们采用并行采样实现推理时扩展，合理采样量（如8次采样）的奖励生成延迟不会显著增加。围绕高效大语言模型生成和奖励模型应用创新的进一步研究</p>
+    </div>
+</div>
+
+<!-- 摘要总结 -->
+<div class="section">
+    <h2>摘要总结</h2>
+    <p>本文系统分析了三类语言模型对齐技术：</p>
+    <ul>
+        <li><span class="term">宪法AI</span>：通过预定义规则替代人类反馈，存在规则僵化问题</li>
+        <li><span class="term">标量奖励模型</span>：提供数值反馈，计算高效但表达能力有限</li>
+        <li><span class="term">半标量奖励模型</span>：结合文本中间表示，在效率与表达力间折衷</li>
+    </ul>
+    <p>作者提出<span class="term">SPCT流程</span>，采用生成式奖励模型（GRM）实现：</p>
+    <ul>
+        <li>通过<span class="term">并行采样</span>缓解推理延迟问题（如8次采样）</li>
+        <li>在通用领域超越传统（半）标量方法</li>
+    </ul>
+    <p>核心局限在于GRM的在线推理效率，未来需优化LLM生成效率并创新RM应用范式。</p>
+</div>
+
+<!-- 术语识别 -->
+<div class="section">
+    <h2>术语解释</h2>
+    <dl>
+        <dt><span class="term">Constitutional AI（宪法AI）</span></dt>
+        <dd>使用预定义规则集（宪法）指导AI对齐的技术，用AI生成反馈替代人类评估，解决RLHF的可扩展性问题。代表工作：Bai et al. (2022b)</dd>
+        
+        <dt><span class="term">Scalar Reward Models（标量奖励模型）</span></dt>
+        <dd>输出单一数值作为奖励信号的代理模型，采用Bradley-Terry建模等回归方法。优势：计算高效；劣势：表达能力有限，泛化能力弱</dd>
+        
+        <dt><span class="term">Semi-Scalar Reward Models（半标量奖励模型）</span></dt>
+        <dd>通过文本中间表示增强标量奖励的混合模型（如token概率奖励）。在标量RM和生成式RM间折衷，存在推理时扩展瓶颈</dd>
+        
+        <dt><span class="term">Generative Reward Models - GRM（生成式奖励模型）</span></dt>
+        <dd>SPCT流程核心组件，生成文本形式奖励信号。相比标量RM具有更强表达能力，但计算效率较低</dd>
+        
+        <dt><span class="term">SPCT（流程名称）</span></dt>
+        <dd>作者提出的新型训练流程，包含DeepSeek-GRM-RFT、DeepSeek-GRM和Meta RM模块，通过并行采样实现推理时扩展</dd>
+        
+        <dt><span class="term">Process Reward Models（过程奖励模型）</span></dt>
+        <dd>针对多步推理任务（如数学证明）的奖励模型，提供步骤级验证反馈。代表工作：Cobbe et al. (2021)</dd>
+        
+        <dt><span class="term">Rule-Based Rewards - RBR（基于规则的奖励）</span></dt>
+        <dd>将显式自然语言规则集成到训练循环的方法，适用于安全等特定领域。代表工作：Mu et al. (2024)</dd>
+    </dl>
+</div>
+
+</body>
+</html>

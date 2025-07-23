@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>论文解析报告</title>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<style>
+  body { font-family: Arial, sans-serif; line-height: 1.6; }
+  .original { 
+    background-color: #f0f0f0; 
+    border: 1px solid #ccc; 
+    padding: 15px; 
+    margin-bottom: 10px;
+    border-radius: 5px;
+  }
+  .translation { 
+    background-color: #e0f7e0; 
+    border: 1px solid #4CAF50; 
+    padding: 15px; 
+    margin-bottom: 20px;
+    border-radius: 5px;
+  }
+  .figure { 
+    background-color: #fffde7; 
+    padding: 15px; 
+    margin: 20px 0;
+    text-align: center;
+    font-weight: bold;
+  }
+  .term { 
+    color: #d32f2f; 
+    font-weight: bold; 
+  }
+  section { margin-bottom: 30px; }
+  h2 { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 5px; }
+  .formula-container { 
+    text-align: center; 
+    margin: 20px 0;
+    padding: 15px;
+  }
+</style>
+</head>
+<body>
+
+<h1>论文内容解析报告</h1>
+
+<!-- 内容理解 -->
+<section>
+  <h2>内容理解</h2>
+  <p>本文讨论分布式推理系统中的负载不均衡问题及其解决方案。核心问题在于：1）不同提示的生成长度差异导致实例间负载不均；2）内存带宽限制加剧长尾延迟。当处理长序列（32k长度）和大批量（batch size 16/32）时，单个序列的吞吐量显著下降至28 tokens/s甚至19 tokens/s。某些过载实例的rollout时间比其他实例长30%。</p>
+  <p>作者提出两种负载均衡优化策略：1）<span class="term">静态负载均衡(Static Load Balancing)</span>：通过将重复采样移至trainer并增加随机洗牌，解除提示与特定实例的绑定关系；2）<span class="term">动态实例分配(Dynamic Instance Allocation)</span>：解耦rollout worker与推理引擎，通过实时感知负载均衡器动态分配任务。这些优化显著改善了资源利用率并解耦了系统参数约束。</p>
+</section>
+
+<!-- 内容翻译 -->
+<section>
+  <h2>内容翻译</h2>
+  
+  <div class="figure">
+    Figure 5: Detached Rollout and Upgrade with Streaming Load Balancing Architecture<br>
+    图5：采用流式负载均衡架构的解耦Rollout与升级方案
+  </div>
+  
+  <div class="original">
+    Second, generation length varies between different prompts and random samples, this further imposes unbalanced load among inferencing instances, e.g. random samples of one hard problem which demands more tokens are all on one instance. This imbalance, together with the memory bandwidth issue, make the long-tail issue even worse. At 32k length and batch size 16, a total of 460 tokens/s throughput can be seen from the same instance, making only 28 tokens/s for a single sequence. Batch size 32 further decrease single sequence token throughput to 19.
+  </div>
+  <div class="translation">
+    其次，不同提示和随机样本的生成长度存在差异，这进一步导致推理实例间的负载不均衡。例如，某个需要更多token的难题的所有随机样本都集中在同一个实例上。这种不均衡与内存带宽问题共同加剧了长尾效应。在32k长度和批量大小16的情况下，同一实例的总吞吐量为460 tokens/s，单个序列的吞吐量仅为28 tokens/s。批量大小增至32时，单个序列的token吞吐量进一步降至19 tokens/s。
+  </div>
+  
+  <div class="original">
+    In practice, we found that these "crowded" instances can take 30% longer time for rollout than others. Instead of directly speeding up the inferencing framework’s generation speed which might involve scheduling and kv-cache management, we choose to optimize the load balancing strategy:
+  </div>
+  <div class="translation">
+    实践中，我们发现这些"拥挤"实例的rollout时间比其他实例长30%。我们没有直接优化涉及调度和kv-cache管理的推理框架生成速度，而是选择优化负载均衡策略：
+  </div>
+  
+  <div class="original">
+    • For our first approach, we use static load balancing to spread the random sampling of one prompt across multiple instances. verl applies an SPMD design. By coupling the rollout and update workers, it achieves faster weight sharding and data sharing with simpler design. However the random sampling is done inside the rollout workers using an batched inference call, leaving the same prompt bound to the same inferencing instance. Simply moving the repeat sampling out of rollout worker into the trainer, with additional shuffling, relaxed this constraint. This change alleviates the imbalanced load, relieved the crowded instances from having to run many long sequences with low per sequence throughputs, as well as decouples the world_size and batch_size: now the batch_size can be smaller than number of GPUs world_size divided by tensor parallel size tp_size.
+  </div>
+  <div class="translation">
+    • 第一种方法采用<span class="term">静态负载均衡(Static Load Balancing)</span>，将单个提示的随机采样分散到多个实例。verl采用<span class="term">SPMD设计(SPMD design)</span>，通过耦合rollout worker和update worker，以更简单的设计实现更快的权重分片和数据共享。但随机采样在rollout worker内部通过批处理推理调用完成，导致相同提示被绑定到同一推理实例。通过将重复采样移出rollout worker至trainer并增加洗牌操作，解除了此约束。该优化缓解了负载不均衡，减轻了拥挤实例运行长序列导致的低序列吞吐量问题，同时解耦了<span class="term">world_size</span>和<span class="term">batch_size</span>：现在batch_size可小于GPU总数(world_size)除以<span class="term">张量并行规模(tp_size)</span>。
+  </div>
+  
+  <div class="original">
+    • We further detach the rollout worker from the inference engine, enabling dynamic instance allocation via a custom load-balancer aware of real-time system metrics. The system now have the flexibility to dynamically allocate the inferencing instance, on-the-fly, for each generation sample. To achieve this, we add the frontend server to the offline vLLM engine inside the rollout worker, exposing an API endpoint, attach the endpoints of all instances to a custom load balancer, then invoke this aggregated endpoint from each rollout worker. By implementing the load balancer with awareness of each instances’ current load and speed
+  </div>
+  <div class="translation">
+    • 我们进一步将rollout worker与推理引擎解耦，通过感知实时系统指标的自定义负载均衡器实现<span class="term">动态实例分配(Dynamic Instance Allocation)</span>。系统现在能动态为每个生成样本实时分配推理实例。为实现此功能，我们在rollout worker内部的离线<span class="term">vLLM引擎(vLLM engine)</span>中添加<span class="term">前端服务器(Frontend Server)</span>，暴露API端点，将所有实例端点连接到自定义负载均衡器，然后通过各rollout worker调用聚合端点。通过实现能感知各实例当前负载和速度的负载均衡器
+  </div>
+</section>
+
+<!-- 摘要总结 -->
+<section>
+  <h2>摘要总结</h2>
+  <p>本文核心内容聚焦于解决分布式推理系统中的负载不均衡问题：</p>
+  <ul>
+    <li><strong>问题诊断</strong>：生成长度差异和内存带宽限制导致实例负载不均，引发显著的长尾延迟（过载实例耗时增加30%），大批量处理时单个序列吞吐量骤降至19-28 tokens/s</li>
+    <li><strong>静态优化</strong>：重构采样流程，将重复采样移至trainer并引入随机洗牌，解除提示与实例的绑定关系，同时解耦系统参数约束（batch_size < world_size / tp_size）</li>
+    <li><strong>动态优化</strong>：解耦rollout worker与推理引擎，通过实时感知负载均衡器动态分配任务，前端服务器+vLLM引擎实现灵活实例调度</li>
+    <li><strong>架构创新</strong>：提出流式负载均衡架构（图5），显著提升资源利用率并降低长尾延迟</li>
+  </ul>
+</section>
+
+<!-- 术语识别 -->
+<section>
+  <h2>术语解释</h2>
+  <dl>
+    <dt><span class="term">长尾问题 (Long-tail issue)</span></dt>
+    <dd>指分布式系统中少数任务因资源竞争或负载不均导致远超平均水平的延迟现象。本文中由生成长度差异和内存带宽限制共同引发。</dd>
+    
+    <dt><span class="term">静态负载均衡 (Static Load Balancing)</span></dt>
+    <dd>预先分配任务的负载分配策略。本文通过采样重分布解除提示与实例的固定绑定，数学表达为：
+      <div class="formula-container">
+        \(\text{batch\_size} < \frac{\text{world\_size}}{\text{tp\_size}}\)
+        <div>(1) 系统参数解耦公式</div>
+      </div>
+    </dd>
+    
+    <dt><span class="term">动态实例分配 (Dynamic Instance Allocation)</span></dt>
+    <dd>基于实时指标（负载/速度）动态分配推理资源的机制。通过前端服务器暴露API端点，由负载均衡器实现按需调度。</dd>
+    
+    <dt><span class="term">SPMD设计 (SPMD design)</span></dt>
+    <dd>单程序多数据(Single Program Multiple Data)并行模式，所有处理器执行相同程序但处理不同数据分片。</dd>
+    
+    <dt><span class="term">张量并行 (Tensor Parallelism, tp_size)</span></dt>
+    <dd>将大型张量操作分割到多个设备执行的并行策略，tp_size表示并行设备数。</dd>
+    
+    <dt><span class="term">vLLM引擎 (vLLM engine)</span></dt>
+    <dd>针对大语言模型优化的高性能推理引擎，本文中用于离线推理场景。</dd>
+    
+    <dt><span class="term">world_size</span></dt>
+    <dd>分布式系统中参与计算的GPU总数，关键系统级规模参数。</dd>
+  </dl>
+</section>
+
+</body>
+</html>

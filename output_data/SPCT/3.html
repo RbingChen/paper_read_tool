@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        .original {
+            background-color: #f0f0f0;
+            border: 1px solid #ccc;
+            padding: 15px;
+            margin-bottom: 10px;
+        }
+        .translation {
+            background-color: #e0f7e0;
+            border: 1px solid #4CAF50;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        .formula-container {
+            background-color: #fffde7;
+            padding: 15px;
+            text-align: center;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        .term {
+            color: red;
+            font-weight: bold;
+        }
+        h2 { color: #2c3e50; }
+        h3 { color: #3498db; }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+
+<h2>1. 内容理解</h2>
+<div class="original">
+    <p>该文本探讨了通用奖励模型（GRMs）的两个关键特性：<span class="term">推理时间可扩展性（inference-time scalability）</span>和<span class="term">输入灵活性（input flexibility）</span>。通过实验证明，使用筛选后的原则（principles）能显著提升奖励质量。基于此，作者提出<span class="term">自原则批判调整（Self-Principled Critique Tuning, SPCT）</span>方法，该方法通过两阶段训练（拒绝微调和基于规则的在线强化学习）使GRMs能生成自适应原则，从而指导高质量奖励生成。</p>
+</div>
+
+<h2>2. 内容翻译</h2>
+
+<div class="original">
+    <h3>原文</h3>
+    <p>final reward. Thus, the <span class="term">inference-time scalability</span> of <span class="term">RMs</span> is determined by whether different rewards could be obtained from multiple sampling, where scalar RMs would fail in most cases due to the invariant generation of rewards; and the <span class="term">input flexibility</span> is defined by whether the RM supports rating single, paired, and multiple responses, where pairwise RMs could hardly rate single responses and usually require extra techniques (Jiang et al., 2023; Liu et al., 2025) to handle multiple responses. The formulation of <span class="term">pointwise GRMs</span> is:</p>
+</div>
+<div class="translation">
+    <h3>翻译</h3>
+    <p>最终奖励。因此，<span class="term">奖励模型（RMs）</span>的<span class="term">推理时间可扩展性（inference-time scalability）</span>取决于能否通过多次采样获得不同奖励——标量RMs因奖励生成不变性在多数情况下无法满足此要求；而<span class="term">输入灵活性（input flexibility）</span>则定义为RM能否支持对单个、成对和多个响应的评分——成对RMs难以评分单个响应，且通常需额外技术（Jiang等, 2023; Liu等, 2025）处理多响应。<span class="term">点式通用奖励模型（pointwise GRMs）</span>的公式化表示为：</p>
+</div>
+
+<div class="formula-container">
+    $$\\begin{equation}
+    \\{S_i\\}_{i=1}^n = f_{\\text{point}}\\left(R, \\{y_i\\}_{i=1}^n\\right) = f_{\\text{extract}}(C), \\quad R = C \\sim r_\\theta\\left(x, \\{y_i\\}_{i=1}^n\\right), \\quad S_i \\in \\mathbb{R}
+    \\end{equation}$$
+    <p>(公式1)</p>
+</div>
+
+<div class="original">
+    <p>where \(x\) is the query, \(y_i\) is the i-th response, \(r_\\theta\) is the reward function parameterized by \(\theta\), \(R\) is the reward, \(C\) is the critique, \(S_i\) is the individual score of \(y_i\), and \(f_{\\text{extract}}(\\cdot)\) extracts the rewards from generation results. Usually, the rewards are discrete, and in this work, we assign \(S_i \\in \\mathbb{N}, 1 \\leq S_i \\leq 10\) by default. Detailed analysis is provided in Appendix C.1.</p>
+</div>
+<div class="translation">
+    <p>其中 \(x\) 表示查询，\(y_i\) 表示第 \(i\) 个响应，\(r_\\theta\) 是由参数 \(\theta\) 定义的奖励函数，\(R\) 为奖励值，\(C\) 为批判文本，\(S_i\) 是 \(y_i\) 的独立分数，\(f_{\\text{extract}}(\\cdot)\) 从生成结果中提取奖励。通常奖励值为离散值，本工作中默认设定 \(S_i \\in \\mathbb{N}\) 且 \(1 \\leq S_i \\leq 10\)。详细分析见附录C.1。</p>
+</div>
+
+<div class="original">
+    <h3>2.2 Boosting Reward Quality with Principles</h3>
+    <p><span class="term">Generalist RM</span> requires to generate high-quality rewards beyond specific domains (Hendrycks et al., 2021; Jimenez et al., 2024), where the criteria for rewards are more diverse and complex, and there are often no explicit reference or ground truth. To this end, for general domains, we adopt <span class="term">principles</span> to guide reward generation in place of artificial rules. <span class="term">Principles</span> for LLMs are first introduced in <span class="term">Constitutional AI</span> (Bai et al., 2022b; Sharma et al., 2025), which are handicraft criteria that guide the LLMs or curated classifiers to construct safe data pipelines. With principles, the reward generation of GRMs changes to</p>
+</div>
+<div class="translation">
+    <h3>2.2 通过原则提升奖励质量</h3>
+    <p><span class="term">通用奖励模型（Generalist RM）</span>需在特定领域外生成高质量奖励（Hendrycks等, 2021; Jimenez等, 2024），其奖励标准更复杂多样且常无明确参考。为此，在通用领域我们采用<span class="term">原则（principles）</span>替代人工规则指导奖励生成。LLM的<span class="term">原则</span>最初由<span class="term">宪法式AI（Constitutional AI）</span>提出（Bai等, 2022b; Sharma等, 2025），即通过手工标准引导LLM或分类器构建安全数据流程。引入原则后，GRMs的奖励生成变为：</p>
+</div>
+
+<div class="formula-container">
+    $$\\begin{equation}
+    R = C \\sim r_\\theta\\left(x, \\{y_i\\}_{i=1}^n, \\{p_i\\}_{i=1}^m\\right)
+    \\end{equation}$$
+    <p>(公式2)</p>
+</div>
+
+<div class="original">
+    <p>where \( \\{p_i\\}_{i=1}^m \) denotes the principles. We conduct a preliminary experiment to examine the influence of proper principles on reward quality, with the Chat Hard subset of Reward Bench (Lambert et al., 2024) and the IFEval subset of the PPE benchmark (Frick et al., 2025).</p>
+    <table>
+        <caption>Table 1: Preliminary experiments on the influence of principles on reward quality</caption>
+        <tr><th>Method</th><th>Chat Hard</th><th>IFEval</th></tr>
+        <tr><td>GPT-4o-2024-08-06</td><td>76.1</td><td>56.0</td></tr>
+        <tr><td>w/ Self-Gen. Principles</td><td>75.9</td><td>55.6</td></tr>
+        <tr><td>w/ Filtered Principles</td><td>77.8</td><td>57.5</td></tr>
+        <tr><td>Gemma-2-27B-it</td><td>59.1</td><td>56.1</td></tr>
+        <tr><td>w/ Self-Gen. Principles</td><td>64.0</td><td>55.8</td></tr>
+        <tr><td>w/ Filtered Principles</td><td>68.0</td><td>57.3</td></tr>
+    </table>
+    <p>The default setting of DeepSeek-GRM-27B includes self-generated principles. We used GPT-4o-2024-08-06 to generate the principles and then pointwise rewards four times for each sample. And we filtered the principles whose according rewards are aligned with the ground truth. We tested different LLMs with principles generated by themselves and the filtered principles, and compared them with the default setting with no principle guidance. The results are shown in Table 1. We found that the self-generated principles barely improve performance, but the filtered principles could significantly boost the reward quality. This indicates that proper principles better guide reward generation under correctly summoned criteria. Details are depicted in Appendix D.</p>
+</div>
+<div class="translation">
+    <p>其中 \( \\{p_i\\}_{i=1}^m \) 表示原则集。我们使用Reward Bench的Chat Hard子集（Lambert等, 2024）和PPE基准的IFEval子集（Frick等, 2025）进行初步实验，验证原则对奖励质量的影响。</p>
+    <table>
+        <caption>表1：原则对奖励质量影响的初步实验</caption>
+        <tr><th>方法</th><th>Chat Hard</th><th>IFEval</th></tr>
+        <tr><td>GPT-4o-2024-08-06</td><td>76.1</td><td>56.0</td></tr>
+        <tr><td>使用自生成原则</td><td>75.9</td><td>55.6</td></tr>
+        <tr><td>使用筛选原则</td><td>77.8</td><td>57.5</td></tr>
+        <tr><td>Gemma-2-27B-it</td><td>59.1</td><td>56.1</td></tr>
+        <tr><td>使用自生成原则</td><td>64.0</td><td>55.8</td></tr>
+        <tr><td>使用筛选原则</td><td>68.0</td><td>57.3</td></tr>
+    </table>
+    <p>DeepSeek-GRM-27B的默认设置包含自生成原则。我们使用GPT-4o-2024-08-06生成原则，并对每个样本进行四次点式奖励计算。通过筛选与真实奖励对齐的原则，测试不同LLM在自生成原则和筛选原则下的表现，并与无原则指导的默认设置对比（结果见表1）。发现自生成原则对性能提升有限，但筛选原则能显著提高奖励质量，表明正确筛选的原则能更有效指导奖励生成。详见附录D。</p>
+</div>
+
+<div class="original">
+    <h3>3 Self-Principled Critique Tuning (SPCT)</h3>
+    <p>Inspired from the preliminary results, we developed a novel approach for pointwise GRMs to learn generating adaptive and high-quality principles that could effectively guide the generation of critiques, termed <span class="term">Self-Principled Critique Tuning (SPCT)</span>. As shown in Figure 3, SPCT consists of two phases: <span class="term">rejective fine-tuning</span>, as the cold start, and <span class="term">rule-based online RL</span>, reinforcing generalist reward generation by advancing the generated principles and critiques. SPCT fosters these behaviors in GRMs for inference-time scaling as well.</p>
+    <h4>3.1 Unpinning Principles from Understanding to Generation</h4>
+    <p>From preliminary experiments in Section 2.2, we found that proper principles could guide reward generation within certain criteria, which is critical for high-quality rewards. However, it remains challenging to generate effective principles for generalist RM at scale. To address this challenge, we propose to unpin principles from understanding to generation, i.e. view principles as a part of reward generation instead of a preprocessing step.</p>
+</div>
+<div class="translation">
+    <h3>3 自原则批判调整（SPCT）</h3>
+    <p>基于初步实验结果，我们提出<span class="term">自原则批判调整（Self-Principled Critique Tuning, SPCT）</span>方法，使点式GRMs能学习生成自适应高质量原则以指导批判生成。如图3所示，SPCT包含两阶段：作为冷启动的<span class="term">拒绝微调（rejective fine-tuning）</span>和通过提升生成原则与批判来增强通用奖励生成的<span class="term">基于规则的在线强化学习（rule-based online RL）</span>。SPCT还促进了GRMs在推理时扩展中的这些行为。</p>
+    <h4>3.1 从理解到生成的原则解耦</h4>
+    <p>根据2.2节的实验，我们发现合适的原则能在特定标准下指导奖励生成，这对高质量奖励至关重要。但大规模生成有效原则仍具挑战性。为此，我们提出将原则从理解解耦到生成，即把原则视为奖励生成的一部分而非预处理步骤。</p>
+</div>
+
+<h2>3. 摘要总结</h2>
+<div class="original">
+    <p>本文核心内容：</p>
+    <ul>
+        <li>提出<span class="term">点式通用奖励模型（pointwise GRMs）</span>的数学框架（公式1），解决传统标量RMs的<span class="term">推理时间可扩展性</span>和<span class="term">输入灵活性</span>局限</li>
+        <li>通过实验证明：使用<span class="term">筛选原则（filtered principles）</span>可显著提升奖励质量（表1），而自生成原则效果有限</li>
+        <li>提出<span class="term">SPCT方法</span>：两阶段训练框架（拒绝微调 + 基于规则的在线RL），使GRMs能动态生成自适应原则（公式2）</li>
+        <li>创新性将原则生成从预处理步骤整合至奖励生成流程，提升通用领域适应性</li>
+    </ul>
+</div>
+
+<h2>4. 术语识别</h2>
+<div class="original">
+    <dl>
+        <dt><span class="term">推理时间可扩展性（inference-time scalability）</span></dt>
+        <dd>指模型在推理阶段通过多次采样生成不同奖励值的能力。标量RMs因奖励生成不变性在此方面表现受限。</dd>
+        
+        <dt><span class="term">输入灵活性（input flexibility）</span></dt>
+        <dd>奖励模型处理不同数量响应（单个/成对/多个）的能力。成对RMs难以直接评分单个响应。</dd>
+        
+        <dt><span class="term">点式通用奖励模型（pointwise GRMs）</span></dt>
+        <dd>通过函数 \(f_{\\text{point}}\) 和 \(f_{\\text{extract}}\) 从批判文本 \(C\) 中提取独立响应分数 \(S_i\) 的框架（公式1）。</dd>
+        
+        <dt><span class="term">原则（principles）</span></dt>
+        <dd>替代人工规则的指导准则，源自宪法式AI（Constitutional AI），用于引导奖励生成（公式2）。</dd>
+        
+        <dt><span class="term">自原则批判调整（SPCT）</span></dt>
+        <dd>新型训练方法：包含拒绝微调（冷启动）和基于规则的在线RL两阶段，使GRMs生成自适应原则。</dd>
+        
+        <dt><span class="term">拒绝微调（rejective fine-tuning）</span></dt>
+        <dd>SPCT的冷启动阶段，通过拒绝低质量样本初始化模型。</dd>
+        
+        <dt><span class="term">基于规则的在线RL（rule-based online RL）</span></dt>
+        <dd>SPCT的第二阶段，使用规则奖励机制在线优化原则和批判生成。</dd>
+    </dl>
+</div>
+
+</body>
+</html>

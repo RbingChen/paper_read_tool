@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>论文解析：RankMixer架构</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; line-height: 1.6; }
+        .original { background-color: #f8f9fa; border: 1px solid #dee2e6; padding: 15px; margin-bottom: 10px; }
+        .translation { background-color: #e6ffed; border: 1px solid #c3e6cb; padding: 15px; margin-bottom: 20px; }
+        .highlight { color: #dc3545; font-weight: bold; }
+        .formula-container { text-align: center; margin: 20px 0; }
+        .formula-label { font-style: italic; margin-top: 5px; }
+        .section-title { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 5px; }
+        .figure { background-color: #fffde7; padding: 15px; text-align: center; margin: 20px 0; border: 1px dashed #ffd54f; }
+    </style>
+</head>
+<body>
+
+<!-- 内容理解 -->
+<h2 class="section-title">内容理解</h2>
+<p>本文提出了一种名为<b class="highlight">RankMixer</b>的新型推荐系统架构，核心创新在于：1）<b class="highlight">多头令牌混合(Multi-head token mixing)</b>实现参数无关的跨令牌特征交互，优于传统注意力机制；2）<b class="highlight">每令牌前馈网络(Per-token FFN)</b>通过独立参数分配解决特征空间主导问题。通过扩展为<b class="highlight">稀疏专家混合(Sparse MoE)</b>结构，在抖音推荐系统中实现参数量提升100倍的同时降低推理延迟。该架构突破传统Transformer在训练效率、ID组合爆炸和内存限制上的瓶颈。</p>
+
+<!-- 内容翻译 -->
+<h2 class="section-title">内容翻译</h2>
+
+<div class="original">
+Conference acronym ’XX, June 03–05, 2018, Woodstock, NY Zhifang Fan et al.
+is based on two scalable components: 1. Multi-head token mixing achieves cross-token feature interactions only through the parameter-free operator. This strategy outperforms the self-attention mechanism in terms of performance and computational efficiency. 2.Per-token feed-forward networks (FFNs) expand model capacity significantly and tackle inter-feature-space domination problem by allocating independent parameters for different feature subspace modeling. These FFNs also align well with the recommendation data patterns, enabling a better scaling behavior.
+</div>
+<div class="translation">
+会议缩写 'XX, 2018年6月3-5日, 纽约州伍德斯托克, 范志芳等人
+基于两个可扩展组件：1. <b class="highlight">多头令牌混合(Multi-head token mixing)</b>仅通过无参数算子实现跨令牌特征交互。该策略在性能和计算效率上优于自注意力机制。2. <b class="highlight">每令牌前馈网络(FFNs)</b>通过为不同特征子空间建模分配独立参数，显著扩展模型容量并解决特征空间主导问题。这些FFN也与推荐数据模式高度契合，实现更优的扩展性。
+</div>
+
+<div class="original">
+To further boost the ROI of large-scale models, we extend the per-token FFN modules into a Sparse Mixture-of-Experts (MoE) structure. By dynamically activating only a subset of experts per token for different data, we can significantly increase the model capacity with a minimal increase in computational cost. RankMixer adopts a highly parallel architecture similar to transformers, but overcomes several critical limitations of self-attention based feature-interaction: low training efficiency, the combinatorial explosion when modeling cross-space ID similarity and severe memory-bound caused by attention weights matrix.
+</div>
+<div class="translation">
+为提升大规模模型的投资回报率，我们将每令牌FFN模块扩展为<b class="highlight">稀疏专家混合(Sparse Mixture-of-Experts, MoE)</b>结构。通过为不同数据动态激活每令牌的部分专家子集，能以最小计算成本显著提升模型容量。RankMixer采用类似Transformer的高度并行架构，但克服了基于自注意力的特征交互的关键缺陷：训练效率低、跨空间ID相似性建模的组合爆炸问题，以及注意力权重矩阵导致的内存瓶颈。
+</div>
+
+<div class="original">
+At the same time, RankMixer offers greater model capacity and learning capability under the same Flops compared with Vanilla Transformer. In production deployment on Douyin’s recommendation system, we demonstrate that it is feasible to scale model parameters by over 100 ×while maintaining shorter inference latency compared with previous baseline. This is made possible by the RankMixer architecture’s ability to decouple parameter growth from FLOPs, and decouple FLOPs growth from actual cost through high MFU and engineering optimization.
+</div>
+<div class="translation">
+同时，在相同浮点运算量(Flops)下，RankMixer比原始Transformer提供更大模型容量和学习能力。在抖音推荐系统的生产部署中，我们证明参数量可扩展100倍以上，同时保持比基线更低的推理延迟。这得益于RankMixer架构能将参数增长与FLOPs解耦，并通过高<b class="highlight">MFU（矩阵乘法利用率）</b>和工程优化将FLOPs增长与实际成本解耦。
+</div>
+
+<div class="original">
+The main contributions can be summarized as follows:
+•We propose a novel architecture called RankMixer follows a hardware-aware model-design philosophy. We design the multi-head token mixing and per-token FFN strategies to capture heterogeneous feature interactions efficiently, and using dynamic routing strategy to improve the scalability of SparseMoE in RankMixer.
+•Leveraging levers of high MFU and performance-optimization, we scale the model parameters by 100 ×without increasing the inference cost, including improving GPU utilization, SparseMoE acceleration, and low-precision inference.
+•We conduct extensive offline and online experiments and investigate the model’s scaling law on the trillion-scale industrial recommendation dataset. The RankMixer model has been successfully deployed on the Douyin Feed Recommendation Ranking for full-traffic serving, achieving 0.2% and 0.5% increase on active days and App duration, respectively.
+</div>
+<div class="translation">
+主要贡献总结如下：
+• 提出遵循硬件感知设计理念的RankMixer架构，设计多头令牌混合和每令牌FFN策略高效捕获异构特征交互，并采用动态路由策略提升稀疏MoE的可扩展性。
+• 利用高MFU和性能优化杠杆，实现参数量100倍扩展而不增加推理成本，包括提升GPU利用率、稀疏MoE加速和低精度推理。
+• 在万亿级工业推荐数据集上开展实验并研究模型扩展规律。RankMixer已在抖音Feed推荐排序系统全流量部署，活跃天数和App时长分别提升0.2%和0.5%。
+</div>
+
+<div class="original">
+RankMixer’s overall architecture consists of T input tokens processed by L successive RankMixer blocks, followed by an output pooling operator. Each RankMixer block has two main components: (1) a Multi-Head Token Mixing layer, and (2) a Per-Token Feed-Forward Network (PFFN) layer, as illustrated in Figure 1. First, the input vector einput is tokenized into 𝑇 feature tokens x1,x2,...,x𝑇, each representing a coherent feature vector. RankMixer blocks iteratively refine token representations for 𝐿 layers through:
+</div>
+<div class="translation">
+RankMixer整体架构包含T个输入令牌，经L个连续RankMixer块处理后进入输出池化算子。每个块含两个核心组件：(1)<b class="highlight">多头令牌混合层</b>，(2)<b class="highlight">每令牌前馈网络(PFFN)层</b>（如图1所示）。输入向量einput被令牌化为𝑇个特征令牌x1,x2,...,x𝑇，每个代表一个连贯特征向量。RankMixer块通过以下公式迭代精炼令牌表示：
+</div>
+
+<div class="formula-container">
+    \[ S^{n-1} = \text{LN}(\text{TokenMixing}(X^{n-1}) + X^{n-1}) \]
+    \[ X^n = \text{LN}(\text{PFFN}(S^{n-1}) + S^{n-1}) \quad (1) \]
+    <div class="formula-label">公式(1): RankMixer块的计算流程</div>
+</div>
+
+<div class="original">
+where LN(·) is a layer normalization function, TokenMixing(·) and PFFN(·) are the multi-head Token Mixing module and the per-token FFN module, X𝑛∈R𝑇×𝐷 is the output of the 𝑛-th RankMixer block, X0∈R𝑇×𝐷 is stacked by x1,x2,...,x𝑇, and𝐷 is the hidden dimension of the model.
+</div>
+<div class="translation">
+其中LN(·)是层归一化函数，TokenMixing(·)和PFFN(·)分别对应多头令牌混合模块和每令牌FFN模块，X𝑛∈R𝑇×𝐷表示第𝑛个块的输出，X0∈R𝑇×𝐷由x1,x2,...,x𝑇堆叠而成，𝐷为模型隐藏维度。
+</div>
+
+<!-- 摘要总结 -->
+<h2 class="section-title">摘要总结</h2>
+<p>本文提出<b class="highlight">RankMixer</b>推荐架构，核心创新是：1）<b class="highlight">多头令牌混合</b>用无参数操作实现高效特征交互，替代计算昂贵的自注意力；2）<b class="highlight">每令牌FFN</b>通过独立参数解决特征空间主导问题。通过扩展为<b class="highlight">稀疏MoE</b>结构，在抖音推荐系统实现参数量100倍增长（>100×）且降低延迟，关键突破在于：参数增长与计算成本解耦、高MFU优化、动态专家路由。实验证明其在万亿级数据集提升活跃度0.2%和时长0.5%，解决了传统Transformer的ID组合爆炸和内存瓶颈问题。</p>
+
+<!-- 术语识别 -->
+<h2 class="section-title">术语解释</h2>
+<dl>
+    <dt><b class="highlight">多头令牌混合 (Multi-head token mixing)</b></dt>
+    <dd>无参数的特征交互机制，通过并行多组操作替代自注意力，解决计算效率和内存瓶颈问题（原文：achieves cross-token feature interactions through parameter-free operator）。</dd>
+    
+    <dt><b class="highlight">每令牌前馈网络 (Per-token FFN)</b></dt>
+    <dd>为每个特征令牌分配独立参数的子网络，针对性建模不同特征子空间，防止特征主导并提升扩展性（原文：allocating independent parameters for different feature subspace modeling）。</dd>
+    
+    <dt><b class="highlight">稀疏专家混合 (Sparse MoE)</b></dt>
+    <dd>动态路由架构：对每个输入仅激活部分专家网络，实现参数量增长与计算成本解耦（原文：dynamically activating only a subset of experts per token）。</dd>
+    
+    <dt><b class="highlight">MFU (Matrix Multiply Utilization)</b></dt>
+    <dd>硬件效率指标：衡量GPU矩阵乘法单元的实际利用率，通过优化可达近100%（原文：decouple FLOPs growth from actual cost through high MFU）。</dd>
+    
+    <dt><b class="highlight">特征令牌化 (Feature Tokenization)</b></dt>
+    <dd>将用户特征、视频ID等原始输入转化为结构化令牌序列，每个令牌表示一个语义连贯的特征向量（原文：input vector is tokenized into 𝑇 feature tokens）。</dd>
+</dl>
+
+<div class="figure">
+    <b>图示：</b> RankMixer架构示意图（对应原文Figure 1）
+    <div>【多头令牌混合层】→【每令牌FFN层】→ 层归一化残差连接</div>
+</div>
+
+</body>
+</html>

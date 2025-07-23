@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>论文解析报告</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; line-height: 1.6; }
+        .original { background-color: #f0f0f0; border: 1px solid #ccc; padding: 15px; margin-bottom: 20px; }
+        .translation { background-color: #e0ffe0; border: 1px solid #4CAF50; padding: 15px; margin-bottom: 20px; }
+        .figure { background-color: #fffde7; padding: 15px; margin: 20px 0; text-align: center; }
+        .term { color: red; font-weight: bold; }
+        h2 { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 5px; }
+        table { width: 100%; border-collapse: collapse; margin: 15px 0; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        .formula-container { text-align: center; margin: 20px 0; }
+        .formula-label { font-style: italic; margin-top: 5px; }
+    </style>
+</head>
+<body>
+
+<h1>论文解析报告</h1>
+
+<!-- 内容理解 -->
+<h2>1. 内容理解</h2>
+<div>
+    <p>本文聚焦于RankMixer模型的架构设计与性能分析：</p>
+    <ul>
+        <li><span class="term">扩展性（scalability）</span>：通过增加宽度（<em>D</em>）、特征令牌（<em>T</em>）和层数（<em>L</em>）实现模型扩展，验证了模型质量与参数总量正相关</li>
+        <li><span class="term">消融研究（ablation study）</span>：移除跳跃连接、多头令牌混合等组件导致AUC显著下降，证明其必要性</li>
+        <li><span class="term">路由策略（routing strategy）</span>：对比三种令牌混合方案，多头令牌混合在性能与计算效率上最优</li>
+        <li><span class="term">稀疏混合专家（Sparse-MoE）</span>：采用DTSI（密集训练-稀疏推理）与ReLU路由解决专家不平衡问题，实现8倍参数扩展</li>
+    </ul>
+</div>
+
+<!-- 内容翻译 -->
+<h2>2. 内容翻译</h2>
+
+<div class="original">
+    Conference acronym ’XX, June 03–05, 2018, Woodstock, NY Zhifang Fan et al.
+    scalability of its cross structure. Moreover, MoE’s strategy of scaling
+    by adding experts brings about challenges in maintaining expert
+    balance, which results in suboptimal scaling performance.
+    To be Specific, We can scale up RankMixer model by increasing
+    width (𝐷), feature token ( 𝑇) and Layer( 𝐿). In our experiments we
+    observed a conclusion shared with LLM scaling laws: model qual-
+    ity correlates primarily with the total number of parameters, and
+    different scaling directions (depth L, width D, tokens T) yield al-
+    most identical performance. From a compute-efficiency standpoint,
+    while larger hidden-dim generate larger matrix-multiply shapes
+    and thus achieve higher MFU than stacking more layers. So the
+    final configuration for 100M and 1B are set as ( 𝐷=768,𝑇=16,𝐿=2)
+    and (𝐷=1536,𝑇=32,𝐿=2) respectively.
+</div>
+<div class="translation">
+    Zhifang Fan 等，会议缩写 'XX，2018年6月3-5日，纽约州伍德斯托克
+    其交叉结构的可扩展性。此外，混合专家（MoE）通过增加专家实现扩展的策略
+    在维持专家平衡方面存在挑战，导致扩展性能欠佳。
+    具体而言，我们可通过增加宽度（𝐷）、特征令牌（𝑇）和层数（𝐿）扩展RankMixer模型。
+    实验中观察到与LLM扩展定律一致的结论：模型质量主要与参数总量相关，
+    不同扩展方向（深度L、宽度D、令牌数T）产生几乎相同的性能。从计算效率角度看，
+    增大隐藏维度会产生更大的矩阵乘法形状，从而比堆叠更多层获得更高的MFU（模型浮点利用率）。
+    因此最终100M和1B参数模型的配置分别为（𝐷=768, 𝑇=16, 𝐿=2）
+    和（𝐷=1536, 𝑇=32, 𝐿=2）。
+</div>
+
+<h3>4.4 消融研究</h3>
+<div class="original">
+    Table 2: Ablation on components of RankMixer-100M
+    Setting ΔAUC
+    w/o skip connections −0.07%
+    w/o multi-head token mixing −0.50%
+    w/o layer normalization −0.05%
+    Per-token FFN→shared FFN−0.31%
+</div>
+<div class="translation">
+    <strong>表2：RankMixer-100M组件消融研究</strong>
+    <table>
+        <tr><th>设置</th><th>ΔAUC</th></tr>
+        <tr><td>无跳跃连接</td><td>−0.07%</td></tr>
+        <tr><td>无多头令牌混合</td><td>−0.50%</td></tr>
+        <tr><td>无层归一化</td><td>−0.05%</td></tr>
+        <tr><td>逐令牌FFN→共享FFN</td><td>−0.31%</td></tr>
+    </table>
+</div>
+
+<div class="original">
+    Table 3: Token2FFN Routing–strategy comparison
+    Routing strategy ΔAUC ΔParams ΔFLOPs
+    All-Concat-MLP −0.18% 0.0% 0.0%
+    All-Share −0.25% 0.0% 0.0%
+    Self-Attention −0.03% +16% +71.8%
+</div>
+<div class="translation">
+    <strong>表3：令牌到FFN的路由策略比较</strong>
+    <table>
+        <tr><th>路由策略</th><th>ΔAUC</th><th>ΔParams</th><th>ΔFLOPs</th></tr>
+        <tr><td>全连接MLP</td><td>−0.18%</td><td>0.0%</td><td>0.0%</td></tr>
+        <tr><td>全共享</td><td>−0.25%</td><td>0.0%</td><td>0.0%</td></tr>
+        <tr><td>自注意力</td><td>−0.03%</td><td>+16%</td><td>+71.8%</td></tr>
+    </table>
+</div>
+
+<div class="original">
+    In the RankMixer-100M model, we performed ablation studies on
+    residual connections, Multi-Head Token-Mixing. From Table 2, we
+    can see that removing these components significantly decreased the
+    model’s performance. Removing Multi-Head Token-Mixing loses
+    global information, as each FFN only models partial features with-
+    out interaction. Removing residual connections and LayerNorm
+    also worsens performance, reducing training stability and making
+    gradient explosion or vanishing issues more likely.
+</div>
+<div class="translation">
+    在RankMixer-100M模型中，我们对残差连接和<span class="term">多头令牌混合（Multi-Head Token-Mixing）</span>进行消融研究。
+    从表2可见，移除这些组件显著降低模型性能。移除多头令牌混合会丢失全局信息，
+    因为每个FFN仅建模部分特征且无交互。移除残差连接和层归一化同样损害性能，
+    降低训练稳定性并增加梯度爆炸/消失风险。
+</div>
+
+<div class="original">
+    We further analyzed the token mixing strategies, i.e., the routing
+    strategies from feature tokens to FFNs in the Table 3. The routing
+    strategies compared with Multi-Head Token Mixing (Multi-Head
+    Token-Mixing) include: All-Concat-MLP: Concatenates all tokens
+    and processes them through a large MLP before splitting them
+    into the same number of tokens. The decrease of performance
+    shows the challenges in learning large matrices and weakening
+    local information learning. All-Share: No splitting, the entire input
+    vector is shared and fed to each per-token FFN similar as MoE. The
+    performane declines siginifantly which show the importance of
+    feature subspace split and independent modeling contrast to all-
+    shared input. Self-Attention: Applies self-attention between tokens
+    for routing. Its performance is slightly inferior to the Multi-Head
+    Token-Mixing and also suffers from high computational cost, which
+    shows the difficulty of learning similarity across hundreds of differ-
+    ent feature subspaces.
+</div>
+<div class="translation">
+    我们进一步分析令牌混合策略（即表3中特征令牌到FFN的路由策略）。与<span class="term">多头令牌混合</span>对比的策略包括：
+    <strong>全连接MLP</strong>：拼接所有令牌并通过大型MLP处理后再分割，性能下降表明学习大矩阵的挑战及局部信息弱化；
+    <strong>全共享</strong>：不分割输入向量，整个向量共享至每个FFN（类似MoE），性能显著下降证明特征子空间分割与独立建模的重要性；
+    <strong>自注意力</strong>：在令牌间应用自注意力路由，性能略低于多头令牌混合且计算成本高，表明跨数百特征子空间学习相似性的困难。
+</div>
+
+<div class="figure">
+    <strong>图3：</strong>不同专家激活稀疏度下RankMixer变体的AUC性能（1,1/2,1/4,1/8）<br>
+    <em>密集训练+ReLU路由的SMoE几乎保留1B密集模型全部精度</em>
+</div>
+
+<div class="figure">
+    <strong>图4：</strong>RankMixer中不同令牌的专家激活比例
+</div>
+
+<h3>4.5 稀疏MoE的可扩展性与专家平衡</h3>
+<div class="original">
+    Scalability. Figure 3 plots offline AUC gains versus Sparsity of
+    SMoE. Combining Dense-Training-Sparse-Inference with ReLU
+    routing is essential for preserving accuracy under aggressive spar-
+    sity, enabling RankMixer to scale parameter capacity (and memory
+    footprint) by > 8 ×with nearly no loss in AUC and with substan-
+    tial inference-time savings (+50% improvement over throughput).
+    Vanilla SMoE’s performance drops monotonically as fewer experts
+    are activated, illustrating the expert-imbalance and under-training
+    issues we identified. Adding a load-balancing loss reduces the degra-
+    dation relative to vanilla SMoE, yet still falls short of the DTSI +
+    ReLU version because the problems mostly lies in the expert train-
+    ing instead of the router. This validates Sparse-MoE as the path to
+    scale RankMixer from the current 1 B parameters to future 10 B-
+    scale deployments without breaching the cost budgets.
+</div>
+<div class="translation">
+    <strong>可扩展性</strong>：图3绘制了离线AUC增益与<span class="term">稀疏混合专家（Sparse-MoE）</span>稀疏度的关系。<span class="term">密集训练-稀疏推理（DTSI）</span>
+    结合<span class="term">ReLU路由</span>对在激进稀疏度下保持精度至关重要，使RankMixer参数容量（及内存占用）扩展>8倍，
+    几乎无AUC损失且推理时间大幅节省（吞吐量提升50%）。原始SMoE性能随专家激活数减少单调下降，
+    表明专家不平衡和训练不足问题。添加负载均衡损失可缓解性能下降，但仍不及DTSI+ReLU方案，
+    因问题主要在专家训练而非路由器。这验证了稀疏MoE是将RankMixer从1B扩展到10B规模的经济路径。
+</div>
+
+<div class="original">
+    Expert balance and diversity. Vanilla Sparse MoE often suffers
+    from expert imbalance, which in turn leaves some experts under-
+    trained and eventually leads to “dying experts” (experts that are
+    almost never activated) and only a few fixed experts are constantly
+    activated. Figure 4 shows that combining DTSI (dense-training,
+    sparse-inference) with ReLU routing effectively resolves this issue:
+</div>
+<div class="translation">
+    <strong>专家平衡与多样性</strong>：原始稀疏MoE常受<span class="term">专家不平衡（expert imbalance）</span>影响，导致部分专家训练不足，
+    最终产生“死亡专家”（几乎不被激活），仅少数固定专家持续激活。图4显示DTSI（密集训练-稀疏推理）
+    结合ReLU路由有效解决此问题。
+</div>
+
+<!-- 摘要总结 -->
+<h2>3. 摘要总结</h2>
+<div>
+    <p>本文核心研究RankMixer模型的扩展性与优化策略：</p>
+    <ol>
+        <li><strong>扩展定律验证</strong>：模型质量与参数总量强相关，增加宽度（<em>D</em>）比深度（<em>L</em>）更具计算效率</li>
+        <li><strong>关键组件验证</strong>：消融实验证明跳跃连接、多头令牌混合和层归一化对性能至关重要（AUC下降0.05%-0.50%）</li>
+        <li><strong>路由策略优化</strong>：多头令牌混合在性能与计算效率上优于全连接MLP（-0.18% AUC）、全共享（-0.25%）和自注意力（+71.8% FLOPs）</li>
+        <li><strong>稀疏MoE突破</strong>：DTSI+ReLU路由实现>8倍参数扩展，解决专家不平衡问题，推理速度提升50%</li>
+    </ol>
+    <p>最终方案支持RankMixer从1B参数向10B规模经济扩展。</p>
+</div>
+
+<!-- 术语识别 -->
+<h2>4. 术语解释</h2>
+<div>
+    <ul>
+        <li><span class="term">多头令牌混合（Multi-Head Token-Mixing）</span>：将特征令牌分割至独立子空间，由不同FFN并行处理后再合并的机制，用于捕获全局特征交互</li>
+        <li><span class="term">DTSI（Dense-Training-Sparse-Inference）</span>：训练时激活所有专家，推理时仅激活部分专家的混合专家训练范式</li>
+        <li><span class="term">ReLU路由（ReLU routing）</span>：使用ReLU激活函数实现专家选择的稀疏路由机制，公式表达为：
+            <div class="formula-container">
+                \( \\text{Routing} = \\text{ReLU}(W \\cdot X + b) \)
+                <div class="formula-label">(公式1: 路由计算)</div>
+            </div>
+        </li>
+        <li><span class="term">专家不平衡（Expert Imbalance）</span>：稀疏MoE中部分专家被过度激活而其他专家闲置的现象，导致模型容量利用率低下</li>
+        <li><span class="term">MFU（Model FLOPs Utilization）</span>：模型浮点运算利用率，衡量硬件计算效率的核心指标</li>
+        <li><span class="term">SMoE（Sparse Mixture of Experts）</span>：基于稀疏激活的混合专家架构，每个输入仅激活部分专家子集</li>
+    </ul>
+</div>
+
+</body>
+</html>

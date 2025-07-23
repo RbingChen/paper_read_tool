@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='UTF-8'>
+    <title>论文解析报告</title>
+    <script src='https://polyfill.io/v3/polyfill.min.js?features=es6'></script>
+    <script id='MathJax-script' async src='https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'></script>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; max-width: 900px; margin: 0 auto; padding: 20px; }
+        h1 { color: #2c3e50; text-align: center; }
+        h2 { color: #3498db; border-bottom: 2px solid #3498db; padding-bottom: 5px; }
+        .original { background-color: #f0f0f0; border: 1px solid #cccccc; padding: 15px; margin-bottom: 10px; border-radius: 5px; }
+        .translation { background-color: #e0f7e0; border: 1px solid #4CAF50; padding: 15px; margin-bottom: 25px; border-radius: 5px; }
+        .figure { background-color: #fffde7; padding: 15px; margin: 15px 0; border-left: 4px solid #FFD700; }
+        .term { color: red; font-weight: bold; }
+        .formula-container { text-align: center; margin: 20px 0; }
+        .formula { font-size: 1.2em; }
+        .formula-label { font-style: italic; margin-top: 5px; }
+        .section { margin-bottom: 40px; }
+        ul { padding-left: 20px; }
+        li { margin-bottom: 10px; }
+    </style>
+</head>
+<body>
+    <h1>论文内容解析报告</h1>
+    
+    <!-- 内容翻译 -->
+    <div class='section'>
+        <h2>内容翻译</h2>
+        
+        <div class='figure'>
+            <div class='original'>
+                Figure 8: AIME24 avg@32 performance vs. context length for different <span class='term'>advantage mask strategies</span> in <span class='term'>Ablation Experiments</span> 3. All strategies achieve the same accuracy at the 32K context length. The accuracy was further improved after the training of Stage II even though the noisy training signals from truncated responses were introduced in Stage I.
+            </div>
+            <div class='translation'>
+                图8：消融实验3中，不同<span class='term'>优势掩码策略（advantage mask strategies）</span>在AIME24 avg@32上的性能与上下文长度的关系。所有策略在32K上下文长度下达到相同的准确率。尽管在第一阶段引入了来自截断响应的噪声训练信号，但在第二阶段训练后准确率得到进一步提升。
+            </div>
+        </div>
+        
+        <div class='figure'>
+            <div class='original'>
+                Figure 7 shows the <span class='term'>clip ratio</span>, overall accuracy, and accuracy on non-truncated responses in <span class='term'>Ablation Experiments</span> 2. We observe that although the response quality within the context length (i.e., the accuracy of non-truncated responses) increases as expected after applying the <span class='term'>Adv-Mask-Before</span> strategy, the overall training accuracy continues to decline, and the <span class='term'>clip ratio</span> increases steadily. This appears to be a form of <span class='term'>reward hacking</span> from our perspective. More importantly, as shown later in Figure 8, the accuracy of the <span class='term'>Adv-Mask-Before</span> strategy under large context lengths – where responses are typically not truncated (e.g., 32K) – shows no improvement. This may be attributed to the smaller <span class='term'>effective training batch size</span> caused by the increased <span class='term'>clip ratio</span> under the <span class='term'>Adv-Mask-Before</span> strategy. The behavior of <span class='term'>Adv-Mask-After</span> serves as an intermediate point between <span class='term'>Adv-Mask-Before</span> and <span class='term'>No-Adv-Mask</span>.
+            </div>
+            <div class='translation'>
+                图7展示了<span class='term'>消融实验（Ablation Experiments）</span>2中的<span class='term'>截断比例（clip ratio）</span>、整体准确率以及在非截断响应上的准确率。我们观察到，尽管在应用<span class='term'>Adv-Mask-Before</span>策略后，上下文长度内的响应质量（即非截断响应的准确率）如预期有所提高，但整体训练准确率持续下降，且<span class='term'>截断比例（clip ratio）</span>稳步上升。从我们的角度看，这似乎是一种<span class='term'>奖励黑客（reward hacking）</span>行为。更重要的是，如图8所示，<span class='term'>Adv-Mask-Before</span>策略在较大上下文长度（例如32K，此时响应通常不会被截断）下的准确率并未提升。这可能归因于<span class='term'>Adv-Mask-Before</span>策略下<span class='term'>截断比例（clip ratio）</span>增加导致的<span class='term'>有效训练批量大小（effective training batch size）</span>减小。<span class='term'>Adv-Mask-After</span>的行为则介于<span class='term'>Adv-Mask-Before</span>和<span class='term'>No-Adv-Mask</span>之间。
+            </div>
+        </div>
+        
+        <div class='original'>
+            <span class='term'>Advantage Mask</span> Does Not Exhibit Better Performance Given a Larger Inference Budget. Although <span class='term'>Ablation Experiments</span> 2 demonstrate that \\(\\bar{r}_{\\pi}^{\\text{untrunc}}(x)\\) is optimized under short context lengths when applying <span class='term'>advantage masks</span>, we find that accuracy does not improve when the context length is large enough to avoid truncation (i.e., 32K). We compare the test-time scaling behavior on AIME24 for models trained with different <span class='term'>advantage mask strategies</span> (see Figure 8). The results show that applying an <span class='term'>advantage mask</span> does not improve test-time scaling behavior in Stage I, and accuracy at 32K remains unchanged-even though \\(\\bar{r}_{\\pi}^{\\text{non−trunc}}(x)\\) is optimized during training. In contrast, <span class='term'>RL training</span> without an <span class='term'>advantage mask</span> in Stage I not only maintains accuracy at large context lengths but also significantly improves <span class='term'>token efficiency</span>. Moreover, the shorter response lengths learned in Stage I do not hinder the simultaneous improvements in both response length and accuracy observed in Stage II. Based on these findings, we did not apply any <span class='term'>advantage mask</span> to address noisy training signals from truncated samples in our final training recipe.
+        </div>
+        <div class='translation'>
+            <span class='term'>优势掩码（Advantage Mask）</span>在更大的推理预算下并未表现出更好的性能。尽管<span class='term'>消融实验（Ablation Experiments）</span>2表明，在应用<span class='term'>优势掩码（advantage masks）</span>时，短上下文长度下的\\(\\bar{r}_{\\pi}^{\\text{untrunc}}(x)\\)得到了优化，但我们发现当上下文长度足够大以避免截断（即32K）时，准确率并未提升。我们比较了使用不同<span class='term'>优势掩码策略（advantage mask strategies）</span>训练的模型在AIME24上的测试时缩放行为（见图8）。结果表明，在第一阶段应用<span class='term'>优势掩码（advantage mask）</span>并未改善测试时缩放行为，且在32K处的准确率保持不变——尽管训练中优化了\\(\\bar{r}_{\\pi}^{\\text{non−trunc}}(x)\\)。相比之下，第一阶段不使用<span class='term'>优势掩码（advantage mask）</span>的<span class='term'>强化学习训练（RL training）</span>不仅保持了在长上下文下的准确率，还显著提高了<span class='term'>token效率（token efficiency）</span>。此外，第一阶段学习到的较短响应长度并不妨碍在第二阶段同时观察到响应长度和准确率的提升。基于这些发现，我们在最终训练方案中没有应用任何<span class='term'>优势掩码（advantage mask）</span>来处理来自截断样本的噪声训练信号。
+        </div>
+        
+        <div class='original'>
+            3.2.4 <span class='term'>High-temperature Sampling</span>
+            The group-wise nature of <span class='term'>GRPO</span> implies that the sampling procedure for responses directly affects the quality and diversity of each group, which in turn influences learning. Prior work suggests that higher temperatures generally lead to slightly worse performance due to increased randomness. If the temperature is set too high, it may increase the likelihood of sampling groups containing only incorrect responses, thereby reducing
+        </div>
+        <div class='translation'>
+            3.2.4 <span class='term'>高温采样（High-temperature Sampling）</span>
+            <span class='term'>GRPO</span>的分组性质意味着响应的采样过程直接影响每组的质量和多样性，进而影响

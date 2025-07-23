@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset='UTF-8'>
+  <title>RankMixer论文解析</title>
+  <style>
+    .original { background:#f5f5f5; border:1px solid #999; padding:15px; margin:10px 0 }
+    .translation { background:#e8f5e9; border:1px solid #4CAF50; padding:15px; margin:10px 0 }
+    .term { color:red; font-weight:bold }
+    .figure { background:#fff9c4; padding:10px; margin:15px 0; text-align:center }
+    table { width:100%; border-collapse:collapse; margin:20px 0 }
+    th, td { border:1px solid #ddd; padding:8px }
+    math { display:block; margin:20px auto }
+  </style>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.0/es5/tex-mml-chtml.js'></script>
+</head>
+<body>
+
+  <section>
+    <h2>1. 内容理解</h2>
+    <p>本文提出RankMixer模型，重点解决工业推荐系统中排序模型的扩展性问题。核心贡献包括：</p>
+    <ul>
+      <li>在百亿参数规模下验证模型有效性</li>
+      <li>提出新的模型架构设计平衡计算效率与效果</li>
+      <li>通过大规模实验验证模型扩展规律</li>
+    </ul>
+    <p>实验使用包含万亿级记录的工业数据集，对比了DLRM-MLP、DCNv2、AutoInt等主流模型，证明RankMixer在AUC/UAUC指标和计算效率上的优势。</p>
+  </section>
+
+  <section>
+    <h2>2. 内容翻译</h2>
+    <div class='original'>
+      <h3>4.1.2 Evaluation Metrics</h3>
+      <p>To evaluate model performance, we use AUC (Area Under the Curve) and UAUC (User-level AUC)...</p>
+    </div>
+    <div class='translation'>
+      <h3>4.1.2 评估指标</h3>
+      <p>为评估模型性能，我们使用<term>AUC（曲线下面积）</term>和<term>UAUC（用户级AUC）</term>作为主要性能指标...</p>
+    </div>
+
+    <div class='original'>
+      <h3>4.2 Comparison with SOTA methods</h3>
+      <p>To explore how to scale up the model, we compare models with similar parameter sizes...</p>
+    </div>
+    <div class='translation'>
+      <h3>4.2 与SOTA方法的比较</h3>
+      <p>为探索模型扩展方法，我们比较参数规模约1亿的模型...</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>3. 摘要总结</h2>
+    <ul>
+      <li>提出RankMixer模型，在保持计算效率的同时显著提升推荐效果</li>
+      <li>实验证明模型参数规模从1亿扩展到10亿时，AUC提升0.95%</li>
+      <li>相比Wukong等模型，FLOPs降低47%的同时效果提升30%</li>
+      <li>发现模型扩展规律：参数效率与计算效率需平衡</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>4. 术语解释</h2>
+    <table>
+      <tr>
+        <th><term>UAUC</term></th>
+        <td>User-level AUC（用户级AUC），按用户维度计算的AUC指标，更能反映个性化推荐效果</td>
+      </tr>
+      <tr>
+        <th><term>MFU</term></th>
+        <td>Model FLOPs Utilization（模型浮点运算利用率），计算公式：
+          <math display='block'>
+            <mtext>MFU</mtext><mo>=</mo>
+            <mfrac>
+              <mtext>实际FLOPs消耗</mtext>
+              <mtext>硬件理论FLOPs容量</mtext>
+            </mfrac>
+          </math>
+        </td>
+      </tr>
+    </table>
+  </section>
+
+  <div class='figure'>
+    <h3>表1: 模型性能对比</h3>
+    <table>
+      <tr>
+        <th>模型</th>
+        <th>Finish AUC↑</th>
+        <th>训练FLOPs/Batch</th>
+      </tr>
+      <tr>
+        <td>RankMixer-1B</td>
+        <td>+0.95%</td>
+        <td>2.1T</td>
+      </tr>
+    </table>
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>论文解析报告</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; }
+        .original { background-color: #f0f0f0; border: 1px solid #ccc; padding: 15px; margin-bottom: 10px; }
+        .translation { background-color: #e0f7e0; border: 1px solid #4CAF50; padding: 15px; margin-bottom: 20px; }
+        .formula-container { background-color: #fffde7; padding: 15px; text-align: center; margin: 20px 0; }
+        .term { color: red; font-weight: bold; }
+        h2 { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 5px; }
+        h3 { color: #2980b9; }
+        .section { margin-bottom: 30px; }
+    </style>
+</head>
+<body>
+
+<!-- 内容理解 -->
+<section class="section">
+    <h2>内容理解</h2>
+    <p>该文本探讨了大语言模型（LLM）对齐的核心框架：</p>
+    <ol>
+        <li>定义了<strong class="term">参考模型（reference model）</strong> π₀ 作为对齐起点</li>
+        <li>提出通过<strong class="term">奖励函数（reward function）</strong> r(x,y) 量化输出质量</li>
+        <li>引入<strong class="term">KL散度（KL Divergence）</strong>约束模型偏离程度</li>
+        <li>对比两种对齐方法：<strong class="term">RLHF（Reinforcement Learning from Human Feedback）</strong> 和 <strong class="term">对比方法（Contrastive methods）</strong></li>
+        <li>RLHF 分两步：奖励估计 + KL正则化强化学习</li>
+        <li>DPO 等对比方法直接优化偏好数据，避免显式奖励估计</li>
+    </ol>
+</section>
+
+<!-- 内容翻译 -->
+<section class="section">
+    <h2>内容翻译</h2>
+    
+    <div class="original">
+        <h3>2 Preliminaries</h3>
+        <p>Given a prompt x, a large language model (LLM) samples a text completion Y. We denote the LLM by π and the sampling distribution of the completions by π(y|x).</p>
+        <p>Most approaches to alignment begin with a supervised fine-tuning step where the LLM is trained with the ordinary next-word prediction task on example data illustrating the target behavior. We denote the resulting model by π<sub>0</sub>, and call it the reference model. The problem we are interested in is how to further align this model.</p>
+    </div>
+    <div class="translation">
+        <h3>2 预备知识</h3>
+        <p>给定提示 x，大语言模型（LLM）会采样生成文本补全 Y。我们将该 LLM 记作 π，其补全的采样分布记作 π(y|x)。</p>
+        <p>大多数对齐方法始于监督微调步骤：LLM 在展示目标行为的示例数据上，通过常规的下一个词预测任务进行训练。我们将所得模型记作 π<sub>0</sub>，并称之为<strong class="term">参考模型（reference model）</strong>。我们关注的核心问题是如何进一步对齐该模型。</p>
+    </div>
+
+    <div class="original">
+        <p>To define the goal, we begin with some (unknown, ground truth) reward function r(x,y) that measures the quality of a completion y for a prompt x. The reward relates to preferences in the sense that y<sub>1</sub> is preferred to y<sub>0</sub> if and only if r(x,y<sub>1</sub>) > r(x,y<sub>0</sub>). Informally, the goal is to produce a LLM π<sub>r</sub> where the samples have high reward, but are otherwise similar to the reference model.</p>
+    </div>
+    <div class="translation">
+        <p>为定义目标，我们引入一个（未知的、真实的）<strong class="term">奖励函数（reward function）</strong> r(x,y)，用于衡量提示 x 对应的补全 y 的质量。该奖励与偏好相关联：当且仅当 r(x,y<sub>1</sub>) > r(x,y<sub>0</sub>) 时，y<sub>1</sub> 优于 y<sub>0</sub>。非正式地说，目标是生成一个 LLM π<sub>r</sub>，其样本具有高奖励值，同时保持与参考模型的相似性。</p>
+    </div>
+
+    <div class="original">
+        <p>The intuitive requirement that the aligned model should be similar to the reference model is usually formalized in terms of KL divergence. The context-conditional KL divergence and the KL divergence from π<sub>r</sub> to π<sub>0</sub> on a prompt set D are defined as:</p>
+        <div class="formula-container">
+            \[
+            D_{KL}(\pi_r \parallel \pi_0 | x) := \mathbb{E}_{y \sim \pi_r(y|x)} \left[ \log \frac{\pi_r(y|x)}{\pi_0(y|x)} \right]
+            \]
+            \[
+            D_{KL}(\pi_r \parallel \pi_0) := \mathbb{E}_{x \sim D} \left[ D_{KL}(\pi_r \parallel \pi_0 | x) \right]
+            \]
+        </div>
+    </div>
+    <div class="translation">
+        <p>对齐模型应与参考模型相似这一直观要求，通常通过<strong class="term">KL散度（KL Divergence）</strong>形式化表示。在提示集 D 上，从 π<sub>r</sub> 到 π<sub>0</sub> 的上下文条件KL散度及其KL散度定义为：</p>
+        <div class="formula-container">
+            \[
+            D_{KL}(\pi_r \parallel \pi_0 | x) := \mathbb{E}_{y \sim \pi_r(y|x)} \left[ \log \frac{\pi_r(y|x)}{\pi_0(y|x)} \right] \quad (1)
+            \]
+            \[
+            D_{KL}(\pi_r \parallel \pi_0) := \mathbb{E}_{x \sim D} \left[ D_{KL}(\pi_r \parallel \pi_0 | x) \right] \quad (2)
+            \]
+        </div>
+    </div>
+
+    <div class="original">
+        <p>We also need to define what it means for samples from the language model to have high reward. Naively, we could just look at the expected reward of the samples. However, in the (typical) case where we only have access to the reward through preference judgements, the reward is only identified up to monotone transformation. The issue is that expected reward value is not compatible with this unidentifiability.<sup>1</sup> Instead, we consider the win rate of the aligned model against the reference model. The idea is, for a given prompt, draw a sample from the aligned model and a sample from the reference model, and see which is preferred. This can be mathematically formalized by defining the context-conditional win rate and the overall win rate on a prompt set D:</p>
+        <div class="formula-container">
+            \[
+            p_{\pi_r \succ \pi_0 | x} := \mathbb{P}_{Y \sim \pi_r(y|x), Y_0 \sim \pi_0(y|x)} (r(x,Y) \geq r(x,Y_0))
+            \]
+            \[
+            p_{\pi_r \succ \pi_0} := \mathbb{E}_{x \sim D} \left[ \mathbb{P}_{Y \sim \pi_r(y|x), Y_0 \sim \pi_0(y|x)} (r(x,Y) \geq r(x,Y_0)) \right]
+            \]
+        </div>
+    </div>
+    <div class="translation">
+        <p>我们还需定义语言模型样本具有高奖励的含义。简单做法是考察样本的期望奖励。然而，在（典型情况下）我们仅能通过偏好判断获取奖励时，奖励只能确定到单调变换的程度。问题在于期望奖励值与此不可识别性不兼容。<sup>1</sup> 因此，我们考虑对齐模型相对于参考模型的<strong class="term">胜率（win rate）</strong>。其核心思想是：给定提示时，从对齐模型和参考模型各采样一个结果，比较哪个更受偏好。这可通过定义提示集 D 上的上下文条件胜率及整体胜率进行数学形式化：</p>
+        <div class="formula-container">
+            \[
+            p_{\pi_r \succ \pi_0 | x} := \mathbb{P}_{Y \sim \pi_r(y|x), Y_0 \sim \pi_0(y|x)} (r(x,Y) \geq r(x,Y_0)) \quad (3)
+            \]
+            \[
+            p_{\pi_r \succ \pi_0} := \mathbb{E}_{x \sim D} \left[ \mathbb{P}_{Y \sim \pi_r(y|x), Y_0 \sim \pi_0(y|x)} (r(x,Y) \geq r(x,Y_0)) \right] \quad (4)
+            \]
+        </div>
+    </div>
+
+    <div class="original">
+        <h3>Reinforcement Learning from Human Feedback (RLHF)</h3>
+        <p>The most studied approach to alignment is RLHF. This procedure follows two steps. First, the reward function is explicitly estimated from preference data, using the Bradley-Terry [BT52] model. Second, this estimated reward function is used in a KL-regularized reinforcement learning procedure to update the LLM. Denoting the estimated reward function by \(\hat{r}\), the objective function for the reinforcement learning step is:</p>
+        <div class="formula-container">
+            \[
+            \mathcal{L}_{\text{RLHF}} (\pi_\theta; \pi_0) = -\mathbb{E}_{x \sim D, y \sim \pi_\theta(y|x)} [\hat{r}(x,y)] + \beta D_{KL}(\pi_\theta \parallel \pi_0) \quad (2.1)
+            \]
+        </div>
+        <p>where D is a prompt set and β is a hyper-parameter to control the deviation of π<sub>θ</sub> from the reference model π<sub>0</sub>. The policy π<sub>r</sub> is learned by finding the minimizer of the objective function in (2.1); e.g., using PPO [Sch+17].</p>
+    </div>
+    <div class="translation">
+        <h3>人类反馈强化学习（RLHF）</h3>
+        <p>最广泛研究的对齐方法是<strong class="term">RLHF（Reinforcement Learning from Human Feedback）</strong>。该过程分两步：首先，使用 Bradley-Terry [BT52] 模型从偏好数据显式估计奖励函数；其次，在KL正则化的强化学习过程中使用该估计奖励函数更新LLM。记估计奖励函数为 \(\hat{r}\)，强化学习步骤的目标函数为：</p>
+        <div class="formula-container">
+            \[
+            \mathcal{L}_{\text{RLHF}} (\pi_\theta; \pi_0) = -\mathbb{E}_{x \sim D, y \sim \pi_\theta(y|x)} [\hat{r}(x,y)] + \beta D_{KL}(\pi_\theta \parallel \pi_0) \quad (2.1)
+            \]
+        </div>
+        <p>其中 D 是提示集，β 是控制 π<sub>θ</sub> 偏离参考模型 π<sub>0</sub> 程度的超参数。策略 π<sub>r</sub> 通过最小化目标函数 (2.1) 学习得到（例如使用 PPO [Sch+17]）。</p>
+    </div>
+
+    <div class="original">
+        <h3>Contrastive methods</h3>
+        <p>Contrastive methods use the preference data D = {(x,y<sup>w</sup>,y<sup>l</sup>)} where x is the prompt, and y<sup>w</sup> and y<sup>l</sup> are preferred and dis-preferred responses, directly to define an objective function for fine-tuning the LLM, avoiding explicitly estimating the reward function. For example, the DPO [Raf+23] objective is:</p>
+        <div class="formula-container">
+            \[
+            \mathcal{L}_{\text{DPO}} (\pi_\theta; \pi_0) = -\mathbb{E}_{(x,y^w,y^l) \sim D} \left[ \log \sigma \left( \beta \log \frac{\pi_\theta(y^w|x)}{\pi_0(y^w|x)} - \beta \log \frac{\pi_\theta(y^l|x)}{\pi_0(y^l|x)} \right) \right] \quad (2.2)
+            \]
+        </div>
+        <p>The aligned model is found by optimizing this objective directly (via gradient descent).</p>
+    </div>
+    <div class="translation">
+        <h3>对比方法（Contrastive methods）</h3>
+        <p><strong class="term">对比方法（Contrastive methods）</strong>直接使用偏好数据 D = {(x,y<sup>w</sup>,y<sup>l</sup>)}（其中 x 为提示，y<sup>w</sup> 和 y<sup>l</sup> 分别为偏好和非偏好响应）定义LLM微调的目标函数，避免显式估计奖励函数。例如 <strong class="term">DPO（Direct Preference Optimization）</strong> [Raf+23] 的目标函数为：</p>
+        <div class="formula-container">
+            \[
+            \mathcal{L}_{\text{DPO}} (\pi_\theta; \pi_0) = -\mathbb{E}_{(x,y^w,y^l) \sim D} \left[ \log \sigma \left( \beta \log \frac{\pi_\theta(y^w|x)}{\pi_0(y^w|x)} - \beta \log \frac{\pi_\theta(y^l|x)}{\pi_0(y^l|x)} \right) \right] \quad (2.2)
+            \]
+        </div>
+        <p>通过对该目标函数直接优化（通过梯度下降）得到对齐模型。</p>
+    </div>
+
+    <div class="original">
+        <p><sup>1</sup>Fundamentally, the expectation of the transformed reward is not the reward of the transformed expectation.</p>
+    </div>
+    <div class="translation">
+        <p><sup>1</sup>根本而言，变换后奖励的期望并非变换后期望的奖励。</p>
+    </div>
+</section>
+
+<!-- 摘要总结 -->
+<section class="section">
+    <h2>摘要总结</h2>
+    <p>本文系统阐述了大语言模型（LLM）对齐的核心框架：</p>
+    <ul>
+        <li>以监督微调得到的<strong class="term">参考模型（reference model）</strong> π₀ 为起点</li>
+        <li>通过<strong class="term">奖励函数（reward function）</strong> r(x,y) 和<strong class="term">KL散度（KL Divergence）</strong>定义对齐目标</li>
+        <li>提出<strong class="term">胜率（win rate）</strong>作为偏好数据的评估指标</li>
+        <li>详述两种主流对齐方法：
+            <ol>
+                <li><strong class="term">RLHF</strong>：分奖励估计（Bradley-Terry模型）和KL正则化强化学习（目标函数如式2.1）两步</li>
+                <li><strong class="term">对比方法（如DPO）</strong>：直接优化偏好数据的目标函数（如式2.2），避免显式奖励估计</li>
+            </ol>
+        </li>
+    </ul>
+    <p>核心数学工具包括：条件KL散度（式1-2）、胜率概率模型（式3-4）、RLHF目标函数（式2.1）和DPO目标函数（式2.2）。</p>
+</section>
+
+<!-- 术语识别 -->
+<section class="section">
+    <h2>术语解释</h2>
+    <dl>
+        <dt><strong class="term">参考模型（Reference Model, π₀）</strong></dt>
+        <dd>通过监督微调（SFT）获得的初始模型，作为对齐过程的基准。在后续优化中约束新模型不要过度偏离该参考模型。</dd>
+        
+        <dt><strong class="term">奖励函数（Reward Function, r(x,y))</strong></dt>
+        <dd>量化评估提示 x 对应补全 y 质量的函数。满足 r(x,y₁) > r(x,y₀) 当且仅当 y₁ 优于 y₀，是偏好学习的数学基础。</dd>
+        
+        <dt><strong class="term">KL散度（KL Divergence, D<sub>KL</sub>)</strong></dt>
+        <dd>衡量两个概率分布差异的指标。对齐任务中用于约束优化模型（π<sub>r</sub>）与参考模型（π₀）的偏离程度，防止过度优化导致退化。</dd>
+        
+        <dt><strong class="term">胜率（Win Rate, p<sub>πᵣ≻π₀</sub>)</strong></dt>
+        <dd>评估指标：从对齐模型生成的样本优于参考模型样本的概率（式3-4）。解决奖励函数单调变换不变性导致的期望奖励不可比问题。</dd>
+        
+        <dt><strong class="term">RLHF（Reinforcement Learning from Human Feedback）</strong></dt>
+        <dd>主流对齐方法：第一阶段用Bradley-Terry模型从人类偏好数据估计奖励函数；第二阶段通过KL正则化强化学习（目标函数2.1）优化策略。</dd>
+        
+        <dt><strong class="term">DPO（Direct Preference Optimization）</strong></dt>
+        <dd>对比方法代表：直接利用偏好数据定义目标函数（式2.2），通过二元比较的logistic损失函数优化策略，绕开显式奖励建模步骤。</dd>
+    </dl>
+</section>
+
+</body>
+</html>

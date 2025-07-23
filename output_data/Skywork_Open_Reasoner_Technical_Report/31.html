@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset='UTF-8'>
+<title>论文解析报告</title>
+<script src='https://polyfill.io/v3/polyfill.min.js?features=es6'></script>
+<script id='MathJax-script' async src='https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'></script>
+<style>
+  body { font-family: Arial, sans-serif; line-height: 1.6; }
+  .original { 
+    background-color: #f0f0f0; 
+    border: 1px solid #cccccc;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+  }
+  .translation { 
+    background-color: #e0f2e0; 
+    border: 1px solid #a0d0a0;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+  }
+  .highlight { 
+    color: red; 
+    font-weight: bold;
+  }
+  .diagram {
+    background-color: #fffacd;
+    padding: 15px;
+    margin: 15px 0;
+    border-radius: 5px;
+    text-align: center;
+  }
+  .section-title {
+    color: #2c3e50;
+    border-bottom: 2px solid #3498db;
+    padding-bottom: 5px;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 15px 0;
+  }
+  th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+  }
+  th {
+    background-color: #f2f2f2;
+  }
+</style>
+</head>
+<body>
+
+<h1 class='section-title'>内容理解</h1>
+<div>
+  <p>该文本详细描述了构建高质量数学和编程问题数据集的方法论，核心包含两个关键流程：</p>
+  <ol>
+    <li><span class='highlight'>数据筛选与收集（Data Selection & Collection）</span>：
+      <ul>
+        <li>应用<b class='highlight'>Correct</b>标准：过滤答案无效的数学问题和缺乏完整测试用例的编程问题</li>
+        <li>应用<b class='highlight'>Challenging</b>标准：筛选基础模型无法稳定解决的问题（全对/全错）</li>
+        <li>整合多个高难度数据源（如NuminaMath-1.5子集、DeepScaleR等）</li>
+      </ul>
+    </li>
+    <li><span class='highlight'>预处理流程（Preprocessing Pipeline）</span>：
+      <ul>
+        <li>数学问题处理：通过<b class='highlight'>Math-Verify</b>验证答案一致性，移除含外部链接/图像的问题，执行跨数据集去重</li>
+        <li>编程问题处理：验证测试用例有效性，基于嵌入相似度进行去重</li>
+      </ul>
+    </li>
+    <li><span class='highlight'>模型感知难度估计（Model-Aware Difficulty Estimation）</span>：
+      <ul>
+        <li>通过模型生成结果（数学N=16/编程N=8）计算正确率</li>
+        <li>排除全对(<span class='highlight'>N/N</span>)或全错(<span class='highlight'>0/N</span>)的问题</li>
+        <li>使用公式：<br>
+          <div class='diagram'>
+            \[
+            \text{Difficulty} = 1 - \frac{\text{Correct Solutions}}{N}
+            \]
+            <p>(1) 问题难度计算公式</p>
+          </div>
+        </li>
+      </ul>
+    </li>
+  </ol>
+</div>
+
+<h1 class='section-title'>内容翻译</h1>
+
+<div class='original'>
+  <h3>2. Correct</h3>
+  <p>We filter out math problems with invalid or incorrect answers, as well as code problems without comprehensive test cases.</p>
+  
+  <h3>3. Challenging</h3>
+  <p>We pre-filter problems for which all N generations from the base model are either entirely correct or entirely incorrect.</p>
+  
+  <p>Following these criteria, we incorporate challenging problems from NuminaMath-1.5 and other sources to enhance problem difficulty and diversity in our data mixture: 1) NuminaMath-1.5 subsets: amc aime, olympiads, olympiads ref, aops forum, cn contest, inequalities, and number theory. 2) DeepScaleR. 3) STILL-3-Preview-RL-Data. 4) Omni-MATH. 5) AIME problems prior to 2024. For the code data mixture, we primarily consider problems from the following two sources, which offer sufficiently challenging coding questions: 1) LeetCode problems [30]. 2) TACO [15].</p>
+  
+  <h3>Preprocessing Pipeline</h3>
+  <p>For both math and coding problems, we first perform in-dataset deduplication to eliminate redundancy. For all collected math problems:</p>
+  <ul>
+    <li>We use Math-Verify [11] to re-extract answers from the provided textual solutions and retain only those problems where the extracted answer matches the corresponding answer in the dataset.</li>
+    <li>We remove all instances that contain external URLs or potential figures in the problem statement.</li>
+    <li>We then perform cross-dataset deduplication to eliminate potentially duplicated problems from similar sources and decontaminate against AIME24 and AIME25 problems, following DeepScaleR's deduplication scheme.</li>
+  </ul>
+  <p>This process yields approximately 105K math problems. For coding problems, we apply a more rigorous filtering process as follows:</p>
+  <ul>
+    <li>We discard samples with empty, incomplete, or corrupted original unit test cases.</li>
+    <li>We programmatically verify all test cases using the provided original solutions. A sample is marked as valid only if the solution passes all corresponding test cases perfectly.</li>
+    <li>We conduct extensive deduplication based on embedding similarity across the collected coding problems, as many share the same problem with only slight variations in instructions.</li>
+  </ul>
+  <p>This results in a total of 13.7K coding questions (2.7K from LeetCode and 11K from TACO) in the final dataset.</p>
+  
+  <h3>6.2 Model-Aware Difficulty Estimation</h3>
+  <p>Due to the zero-advantage in GRPO when all sampled responses are either entirely correct or entirely incorrect within a group, we conduct an initial offline difficulty estimation for each problem relative to the models being trained. Specifically, for each problem, we perform N=16 rollouts for math problems and N=8 for coding questions using a temperature of 1.0 and a maximum token length of 32K, and use the percentage of correct solutions as a proxy for problem difficulty with respect to a given model. After verifying the correctness of the sampled solutions, we exclude problems with 0/N (all incorrect) or N/N (all correct) rollouts. We report the percentage statistics of discarded and retained math/code problems for both the 7B and 32B models as follows:</p>
+  
+  <div class='diagram'>
+    <table>
+      <tr>
+        <th>Model</th>
+        <th>0/N (Discarded)</th>
+        <th>N/N (Discarded)</th>
+        <th>Remaining</th>
+      </tr>
+      <tr>
+        <td>Deepseek-R1-Distill-Qwen-7B</td>
+        <td>21.4% / 28%</td>
+        <td>32.4% / 24%</td>
+        <td>46.2% / 48%</td>
+      </tr>
+      <tr>
+        <td>Deepseek-R1-Distill-Qwen-32B</td>
+        <td>20.7% / 17.1%</td>
+        <td>42.0% / 45.4%</td>
+        <td>37.3% / 37.6%</td>
+      </tr>
+    </table>
+    <p>注：表格中百分比格式为 math/code</p>
+  </div>
+</div>
+
+<div class='translation'>
+  <h3>2. 正确性（Correct）</h3>
+  <p>我们过滤掉答案无效或不正确的数学问题，以及缺乏全面测试用例的编程问题。</p>
+  
+  <h3>3. 挑战性（Challenging）</h3>
+  <p>我们预先过滤那些基础模型所有N次生成结果要么完全正确要么完全错误的问题。</p>
+  
+  <p>遵循这些标准，我们整合来自NuminaMath-1.5和其他来源的挑战性问题，以增强数据混合的难度和多样性：1) NuminaMath-1.5子集：AMC/AIME竞赛题、奥林匹克竞赛题、奥林匹克参考题、AOPS论坛题、中国竞赛题、不等式和数论题。2) DeepScaleR数据集。3) STILL-3-Preview-RL-Data数据集。4) Omni-MATH数据集。5) 2024年前的AIME竞赛题。对于编程数据混合，我们主要考虑以下两个来源的问题，它们提供足够挑战性的编程题目：1) LeetCode问题[30]。2) TACO数据集[15]。</p>
+  
+  <h3>预处理流程（Preprocessing Pipeline）</h3>
+  <p>对于数学和编程问题，我们首先执行数据集内去重以消除冗余。针对所有收集的数学问题：</p>
+  <ul>
+    <li>使用<b class='highlight'>Math-Verify</b>[11]从提供的文本解答中重新提取答案，仅保留提取答案与数据集中对应答案匹配的问题。</li>
+    <li>移除问题陈述中包含外部URL或潜在图像的所有实例。</li>
+    <li>执行跨数据集去重，遵循DeepScaleR的去重方案，消除相似来源的潜在重复问题，并对AIME24和AIME25问题进行去污染处理。</li>
+  </ul>
+  <p>此过程产生约105K个数学问题。对于编程问题，我们采用更严格的过滤流程：</p>
+  <ul>
+    <li>丢弃原始单元测试用例为空、不完整或损坏的样本。</li>
+    <li>使用提供的原始解决方案以编程方式验证所有测试用例。仅当解决方案完美通过所有对应测试用例时，样本才被标记为有效。</li>
+    <li>基于嵌入相似度对收集的编程问题进行广泛去重，因为许多问题仅在指令表述上存在轻微差异。</li>
+  </ul>
+  <p>最终数据集共包含13.7K个编程问题（2.7K来自LeetCode，11K来自TACO）。</p>
+  
+  <h3>6.2 模型感知难度估计（Model-Aware Difficulty Estimation）</h3>
+  <p>由于在<b class='highlight'>GRPO</b>中当组内所有采样响应完全正确或完全错误时存在零优势，我们针对训练模型对每个问题进行初步离线难度估计。具体而言，对于每个问题，我们使用温度参数1.0和最大token长度32K进行数学问题N=16次、编程问题N=8次生成，并以正确解决方案的百分比作为问题相对于给定模型难度的代理指标。验证采样解决方案的正确性后，我们排除0/N（全错）或N/N（全对）的问题。7B和32B模型的数学/编程问题丢弃与保留百分比统计如下：</p>
+  
+  <div class='diagram'>
+    <table>
+      <tr>
+        <th>模型</th>
+        <th>0/N (丢弃)</th>
+        <th>N/N (丢弃)</th>
+        <th>保留</th>
+      </tr>
+      <tr>
+        <td>Deepseek-R1-Distill-Qwen-7B</td>
+        <td>21.4% / 28%</td>
+        <td>32.4% / 24%</td>
+        <td>46.2% / 48%</td>
+      </tr>
+      <tr>
+        <td>Deepseek-R1-Distill-Qwen-32B</td>
+        <td>20.7% / 17.1%</td>
+        <td>42.0% / 45.4%</td>
+        <td>37.3% / 37.6%</td>
+      </tr>
+    </table>
+    <p>注：表格中百分比格式为 数学/编程</p>
+  </div>
+</div>
+
+<h1 class='section-title'>摘要总结</h1>
+<div>
+  <p>本文核心描述了构建高质量数学与编程问题数据集的系统方法：</p>
+  <ol>
+    <li><b class='highlight'>数据筛选</b>采用双重标准：
+      <ul>
+        <li><b class='highlight'>Correct</b>：确保答案有效性和测试用例完整性</li>
+        <li><b class='highlight'>Challenging</b>：筛选基础模型无法稳定解决的问题（全对/全错）</li>
+      </ul>
+    </li>
+    <li><b class='highlight'>数据来源</b>整合多个高难度数据集：
+      <ul>
+        <li>数学：NuminaMath-1.5子集/DeepScaleR/Omni-MATH等</li>
+        <li>编程：LeetCode/TACO</li>
+      </ul>
+    </li>
+    <li><b class='highlight'>预处理流程</b>包含：
+      <ul>
+        <li>数学问题：答案验证（Math-Verify）、URL/图像过滤、跨数据集去重 → 105K问题</li>
+        <li>编程问题：测试用例验证、嵌入相似度去重 → 13.7K问题</li>
+      </ul>
+    </li>
+    <li><b class='highlight'>难度估计</b>方法：
+      <ul>
+        <li>通过模型生成结果计算正确率（数学N=16/编程N=8）</li>
+        <li>排除全对（N/N）或全错（0/N）问题</li>
+        <li>不同规模模型保留率：7B模型46.2%/48%，32B模型37.3%/37.6%</li>
+      </ul>
+    </li>
+  </ol>
+</div>
+
+<h1 class='section-title'>术语识别</h1>
+<div>
+  <ul>
+    <li><b class='highlight'>Correct（正确性标准）</b>：数据筛选的第一级标准，要求数学问题必须具有有效正确答案，编程问题必须包含全面的测试用例。</li>
+    
+    <li><b class='highlight'>Challenging（挑战性标准）</b>：数据筛选的第二级标准，通过基础模型生成测试（N次）过滤那些模型始终全对或全错的问题，确保保留具有适度挑战性的问题。</li>
+    
+    <li><b class='highlight'>NuminaMath-1.5</b>：数学问题数据集，包含AMC/AIME竞赛题、奥林匹克题库、AOPS论坛题等专业数学问题子集。</li>
+    
+    <li><b class='highlight'>Math-Verify</b>：自动化工具[11]，用于从文本解答中重新提取答案并与标准答案比对，确保答案一致性。</li>
+    
+    <li><b class='highlight'>In-dataset deduplication（数据集内去重）</b>：在单个数据集内部消除重复或高度相似的问题条目。</li>
+    
+    <li><b class='highlight'>Cross-dataset deduplication（跨数据集去重）</b>：在不同数据集之间识别并移除重复问题（如AIME24/AIME25），防止数据污染。</li>
+    
+    <li><b class='highlight'>Embedding similarity（嵌入相似度）</b>：通过语义嵌入向量计算问题之间的相似度，用于识别仅指令表述不同的重复编程问题。</li>
+    
+    <li><b class='highlight'>Model-Aware Difficulty Estimation（模型感知难度估计）</b>：基于特定模型生成结果（正确率百分比）量化问题难度的方法，公式：\( \text{Difficulty} = 1 - \frac{\text{Correct Solutions}}{N} \)。</li>
+    
+    <li><b class='highlight'>GRPO（Group Relative Policy Optimization）</b>：强化学习算法，当组内所有响应全对或全错时出现"零优势"现象，导致无法有效优化策略。</li>
+    
+    <li><b class='highlight'>Rollout（生成采样）</b>：指模型针对给定问题生成解决方案的过程（数学N=16次，编程N=8次）。</li>
+    
+    <li><b class='highlight'>0/N & N/N（全错/全对）</b>：模型生成解决方案全部错误（0/N）或全部正确（N/N）的问题，在难度估计中被排除。</li>
+  </ul>
+</div>
+
+</body>
+</html>

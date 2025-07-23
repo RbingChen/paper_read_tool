@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>OneRec Technical Report Analysis</title>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<style>
+  body { font-family: Arial, sans-serif; line-height: 1.6; }
+  .original { background-color: #f5f5f5; border: 1px solid #ddd; padding: 15px; margin-bottom: 20px; }
+  .translation { background-color: #e8f5e9; border: 1px solid #4caf50; padding: 15px; margin-bottom: 30px; }
+  .figure { background-color: #fffde7; padding: 15px; margin: 20px 0; text-align: center; }
+  .term { color: red; font-weight: bold; }
+  .section { margin-bottom: 40px; }
+  h1 { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 10px; }
+  h2 { color: #2980b9; }
+  .formula-container { text-align: center; margin: 20px 0; }
+  .formula-number { display: block; font-style: italic; margin-top: 5px; }
+  ul { padding-left: 20px; }
+  li { margin-bottom: 10px; }
+</style>
+</head>
+<body>
+
+<!-- 内容理解 -->
+<div class="section">
+  <h1>内容理解</h1>
+  <p>该技术报告介绍了快手团队提出的<strong class="term">OneRec</strong>端到端推荐系统架构。报告指出传统推荐系统存在三大核心问题：1）多级级联架构导致<strong class="term">计算碎片化（computational fragmentation）</strong>和<strong class="term">优化不一致（optimization inconsistencies）</strong>；2）难以应用AI领域新技术；3）计算效率低下。OneRec通过端到端生成式架构解决了这些问题，实现了计算效率10倍提升，发现<strong class="term">缩放定律（scaling laws）</strong>，并使强化学习首次有效应用于推荐优化。实际部署中，OPEX降至传统方案的10.6%，关键用户指标显著提升。</p>
+</div>
+
+<!-- 内容翻译 -->
+<div class="section">
+  <h1>内容翻译</h1>
+  
+  <div class="original">
+    <p>arXiv:2506.13695v1 [cs.IR] 16 Jun 2025</p>
+    <h2>OneRec Technical Report</h2>
+    <h3>OneRec Team</h3>
+    <p><strong class="term">Recommender systems</strong> have been widely used in various large-scale user-oriented platforms for many years. Over the past decade, recommendation technology has evolved from traditional heuristic-based rules to <strong class="term">deep learning models</strong>, significantly improving recommendation accuracy. However, compared to the rapid changes and developments in the AI community, recommendation systems have not achieved a breakthrough in recent years. For instance, they still rely on a <strong class="term">multi-stage cascaded architecture</strong> rather than an <strong class="term">end-to-end approach</strong>, leading to <strong class="term">computational fragmentation</strong> and <strong class="term">optimization inconsistencies</strong>. Additionally, the cascading structure has hindered the effective application of key breakthrough technologies from the AI community in recommendation scenarios.</p>
+    <p>To address these issues, we propose <strong class="term">OneRec</strong>, which reshapes the recommendation system through an end-to-end generative approach. Under this new architecture, we have achieved promising results. Firstly, we have enhanced the computational <strong class="term">FLOPs</strong> of the current recommendation model by 10× and have identified the <strong class="term">scaling laws</strong> for recommendations within certain boundaries. Secondly, <strong class="term">reinforcement learning (RL)</strong> techniques, previously difficult to apply for optimizing recommendations, show significant potential in this framework. Lastly, through infrastructure optimizations, we have achieved 23.7% and 28.8% <strong class="term">Model FLOPs Utilization (MFU)</strong> on flagship GPUs during training and inference, respectively, aligning closely with the LLM community. This architecture significantly reduces communication and storage overhead, resulting in <strong class="term">operating expense (OPEX)</strong> that is only 10.6% of traditional recommendation pipelines. Deployed in Kuaishou/Kuaishou Lite APP, it handles 25% of total <strong class="term">queries per second (QPS)</strong>, enhancing overall <strong class="term">App Stay Time</strong> by 0.54% and 1.24%, respectively. Additionally, we have observed significant increases in metrics such as <strong class="term">7-day Lifetime (LT7)</strong>, which is a crucial indicator of recommendation experience. We also provide practical lessons and insights derived from developing, optimizing, and maintaining a production-scale recommendation system with significant real-world impact.</p>
+  </div>
+  
+  <div class="translation">
+    <p>arXiv:2506.13695v1 [cs.IR] 2025年6月16日</p>
+    <h2>OneRec技术报告</h2>
+    <h3>OneRec团队</h3>
+    <p><strong class="term">推荐系统（Recommender systems）</strong>多年来已在各种面向用户的大型平台中广泛使用。在过去的十年中，推荐技术已从传统的基于启发式的规则发展到<strong class="term">深度学习模型（deep learning models）</strong>，显著提高了推荐准确性。然而，与人工智能社区的快速变化和发展相比，推荐系统近年来并未取得突破。例如，它们仍然依赖于<strong class="term">多级级联架构（multi-stage cascaded architecture）</strong>而非<strong class="term">端到端方法（end-to-end approach）</strong>，导致<strong class="term">计算碎片化（computational fragmentation）</strong>和<strong class="term">优化不一致（optimization inconsistencies）</strong>。此外，级联结构阻碍了人工智能社区的关键突破技术在推荐场景中的有效应用。</p>
+    <p>为了解决这些问题，我们提出了<strong class="term">OneRec</strong>，它通过端到端的生成方法重塑了推荐系统。在这种新架构下，我们取得了令人瞩目的成果。首先，我们将当前推荐模型的计算<strong class="term">FLOPs（浮点运算次数）</strong>提高了10倍，并在一定范围内确定了推荐的<strong class="term">缩放定律（scaling laws）</strong>。其次，先前难以用于优化推荐的<strong class="term">强化学习（RL）技术（reinforcement learning techniques）</strong>在该框架下显示出巨大潜力。最后，通过基础设施优化，我们在训练和推理期间分别在旗舰GPU上实现了23.7%和28.8%的<strong class="term">模型浮点运算利用率（MFU）（Model FLOPs Utilization）</strong>，与大型语言模型（LLM）社区的水平接近。这种架构显著降低了通信和存储开销，使<strong class="term">运营成本（OPEX）（operating expense）</strong>仅为传统推荐管道的10.6%。在快手/快手极速版APP中部署后，它处理了总<strong class="term">每秒查询率（QPS）（queries per second）</strong>的25%，分别将整体<strong class="term">应用停留时间（App Stay Time）</strong>提高了0.54%和1.24%。此外，我们还观察到<strong class="term">7日生命周期（LT7）（7-day Lifetime）</strong>等指标的显著提升，这是推荐体验的关键指标。我们还提供了从开发、优化和维护具有重大实际影响的生产规模推荐系统中获得的实践经验和见解。</p>
+  </div>
+  
+  <div class="figure">
+    <div class="original">
+      <p>Figure 1|Online performance, FLOPs, OPEX, and MFU comparison.</p>
+      <p>©2025 Kuaishou. All rights reserved</p>
+    </div>
+    <div class="translation">
+      <p>图1 | 在线性能、FLOPs、OPEX和MFU对比</p>
+      <p>©2025 快手。保留所有权利</p>
+    </div>
+  </div>
+</div>
+
+<!-- 摘要总结 -->
+<div class="section">
+  <h1>摘要总结</h1>
+  <p>本报告提出<strong class="term">OneRec</strong>——一种端到端生成式推荐架构，解决了传统级联推荐系统的三大瓶颈问题：1）多阶段架构导致的<strong class="term">计算碎片化</strong>和<strong class="term">优化不一致</strong>；2）AI新技术应用障碍；3）低效的计算资源利用。关键技术突破包括：</p>
+  <ul>
+    <li>计算效率提升：<strong class="term">FLOPs</strong>提升10倍，首次发现推荐系统的<strong class="term">缩放定律</strong></li>
+    <li>算法创新：实现<strong class="term">强化学习</strong>在推荐优化中的有效应用</li>
+    <li>硬件利用率突破：训练/推理<strong class="term">MFU</strong>达23.7%/28.8% (接近LLM水平)</li>
+    <li>成本优化：<strong class="term">OPEX</strong>降至传统方案的10.6%</li>
+  </ul>
+  <p>在快手/快手极速版生产环境中：处理25%总<strong class="term">QPS</strong>，提升<strong class="term">应用停留时间</strong>0.54%/1.24%，关键指标<strong class="term">LT7</strong>显著增长。证明端到端架构可同时实现技术突破与商业价值。</p>
+</div>
+
+<!-- 术语识别 -->
+<div class="section">
+  <h1>术语解释</h1>
+  <ul>
+    <li><strong class="term">多级级联架构（Multi-stage Cascaded Architecture）</strong>：传统推荐系统架构，将推荐流程拆分为召回、粗排、精排、重排等多个独立阶段，各阶段使用不同模型，导致计算碎片化和全局优化困难。</li>
+    <li><strong class="term">端到端方法（End-to-End Approach）</strong>：OneRec的核心创新，将推荐流程整合为单一模型，从原始输入直接生成最终推荐结果，消除阶段间信息损失。</li>
+    <li><strong class="term">FLOPs（Floating Point Operations）</strong>：浮点运算次数，衡量模型计算复杂度的关键指标。OneRec将推荐模型FLOPs提升10倍。</li>
+    <li><strong class="term">缩放定律（Scaling Laws）</strong>：描述模型性能（如准确率）随计算量（FLOPs）、数据量或模型规模变化的规律性关系，对系统设计有重要指导意义。</li>
+    <li><strong class="term">模型浮点运算利用率（MFU, Model FLOPs Utilization）</strong>：衡量硬件实际执行计算效率的指标，计算公式：<div class="formula-container">
+        \[ \text{MFU} = \frac{\text{实际达到的FLOPs}}{\text{硬件理论峰值FLOPs}} \times 100\% \]
+        <span class="formula-number">(1)</span>
+      </div>OneRec在GPU上实现23.7%（训练）/28.8%（推理）的MFU。</li>
+    <li><strong class="term">运营成本（OPEX, Operating Expense）</strong>：系统运行产生的综合成本，包括计算资源、存储、能耗等。OneRec使OPEX降至传统方案的10.6%。</li>
+    <li><strong class="term">7日生命周期（LT7, 7-day Lifetime）</strong>：关键用户留存指标，反映用户在使用推荐服务后7天内持续活跃的程度，直接衡量推荐系统长期价值。</li>
+  </ul>
+</div>
+
+</body>
+</html>

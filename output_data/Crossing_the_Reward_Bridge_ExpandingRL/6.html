@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>论文解析报告</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; }
+        h1 { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 10px; }
+        h2 { color: #2980b9; margin-top: 25px; }
+        .section { margin-bottom: 30px; }
+        .original { 
+            background-color: #f0f0f0; 
+            border: 1px solid #bdc3c7; 
+            padding: 15px; 
+            margin-bottom: 10px; 
+            border-radius: 5px;
+        }
+        .translation { 
+            background-color: #e0f7e0; 
+            border: 1px solid #27ae60; 
+            padding: 15px; 
+            margin-bottom: 20px; 
+            border-radius: 5px;
+        }
+        .formula-container { 
+            text-align: center; 
+            margin: 20px 0; 
+            padding: 15px;
+        }
+        .term { 
+            color: #e74c3c; 
+            font-weight: bold; 
+        }
+        .figure-ref { 
+            background-color: #fffde7; 
+            padding: 5px 10px; 
+            border-radius: 3px; 
+            font-style: italic;
+        }
+        .term-list { margin-left: 20px; }
+        .term-item { margin-bottom: 15px; }
+    </style>
+</head>
+<body>
+    <h1>论文解析报告</h1>
+
+    <!-- 内容理解 -->
+    <div class="section">
+        <h2>1. 内容理解</h2>
+        <p>该文本聚焦于强化学习（<span class="term">Reinforcement Learning (RL)</span>）中奖励机制的设计与验证：</p>
+        <ul>
+            <li>提出两种奖励类型：<span class="term">二元奖励（Binary reward）</span>（0/1离散值）和<span class="term">软奖励（Soft reward）</span>（[0,1]连续值），分别适用于规则模型和概率模型</li>
+            <li>使用<span class="term">Qwen2.5-72B-Instruct</span>进行多数投票评估，并与GPT-4o对比验证一致性（<span class="term">Cohen’s Kappa (κ)</span>>0.86）</li>
+            <li>基于160k蒸馏数据训练<span class="term">RM-7B奖励模型</span>，采用多种<span class="term">RL算法</span>（REINFORCE/RLOO/REINFORCE++）并引入<span class="term">KL散度惩罚（KL divergence penalty）</span>控制模型偏差</li>
+            <li>实验使用<span class="term">Qwen2.5-7B</span>作为基础模型，30k训练样本，通过奖励归一化优化训练过程</li>
+        </ul>
+    </div>
+
+    <!-- 内容翻译 -->
+    <div class="section">
+        <h2>2. 内容翻译</h2>
+        
+        <div class="original">
+            <p>Expanding RL with Verifiable Rewards Across Diverse Domains</p>
+        </div>
+        <div class="translation">
+            <p>在多样化领域中扩展具有可验证奖励的强化学习</p>
+        </div>
+        
+        <div class="original">
+            <p>Qwen2.5-72B-Instruct RL with the reward determined by the judgment of Qwen2.5-72B-Instruct (Team, 2024).</p>
+        </div>
+        <div class="translation">
+            <p>Qwen2.5-72B-Instruct RL：奖励由Qwen2.5-72B-Instruct的判断确定（Team, 2024）。</p>
+        </div>
+        
+        <div class="original">
+            <p>RM-7B (ours) RL with the reward determined by the judgment of the reward model trained on our 160k distilled data based on Qwen2.5-7B-Instruct (Team, 2024).</p>
+        </div>
+        <div class="translation">
+            <p>RM-7B（我们的）：奖励由基于我们160k蒸馏数据训练的奖励模型确定，该模型基于Qwen2.5-7B-Instruct（Team, 2024）。</p>
+        </div>
+        
+        <div class="original">
+            <p>Binary When using rule-based rewards, we directly judge if the label is in the answer. When using model-based rewards, we use the output of the model. The value of binary reward should be in{0, 1}.</p>
+        </div>
+        <div class="translation">
+            <p><span class="term">二元奖励（Binary）</span>：使用基于规则的奖励时，直接判断标签是否在答案中；使用基于模型的奖励时，采用模型输出值。二元奖励的值域为{0, 1}。</p>
+        </div>
+        
+        <div class="original">
+            <p>Soft When using rule-based rewards, we use Jaccard similarity (Jaccard, 1912) as the reward. When using model-based rewards, we use the probability of the first output token. The value of soft reward should be in [0, 1].</p>
+        </div>
+        <div class="translation">
+            <p><span class="term">软奖励（Soft）</span>：使用基于规则的奖励时，采用<span class="term">杰卡德相似度（Jaccard similarity）</span>作为奖励；使用基于模型的奖励时，采用第一个输出token的概率值。软奖励的值域为[0, 1]。</p>
+        </div>
+        
+        <div class="original">
+            <h3>4.3 Evaluation</h3>
+            <p>We begin by investigating majority voting using a strong open-source LLM, Qwen2.5-72B-Instruct (Team, 2024), as the reward model πϕ. The evaluation process follows the prompting template provided in Table 4. Given a prompt x and a reference answer a, we generate m evaluation samples and determine the correctness of a response y via majority voting. A response is considered correct if at least half of the evaluations classify it as such, i.e.,</p>
+            <div class="formula-container">
+                \\[ \\sum_{j=1}^{m} \\mathbf{1}_{\\left[\\pi_{\\phi}^{(j)}(x,y_T,a)=1\\right]} \\geq \\frac{m}{2} \\]
+            </div>
+            <p>We measure the agreement between the Qwen-based evaluation method (majority voting over m samples) and GPT-4o (a single evaluation per response) using Cohen’s Kappa ( κ). As shown in <span class="figure-ref">Figure 3</span>, the two evaluation methods demonstrate almost perfect agreement (0.81 ≤κ≤1.00), with κ exceeding 0.86 for mathematics and 0.88 for multi-subject college-level problems. This high level of agreement remains consistent across varying values of m, indicating that the results are not highly sensitive to the number of evaluation samples. Based on this observation, we adopt m=1 in all subsequent evaluations to improve efficiency without compromising evaluation quality.</p>
+        </div>
+        <div class="translation">
+            <h3>4.3 评估</h3>
+            <p>我们首先使用强大的开源LLM——Qwen2.5-72B-Instruct（Team, 2024）作为奖励模型πϕ进行<span class="term">多数投票（majority voting）</span>研究。评估过程遵循表4提供的提示模板。给定提示x和参考答案a，我们生成m个评估样本，并通过多数投票确定响应y的正确性。当至少一半的评估将其分类为正确时，该响应被视为正确，即：</p>
+            <div class="formula-container">
+                \\[ \\sum_{j=1}^{m} \\mathbf{1}_{\\left[\\pi_{\\phi}^{(j)}(x,y_T,a)=1\\right]} \\geq \\frac{m}{2} \\]
+            </div>
+            <p>我们使用<span class="term">科恩卡帕系数（Cohen’s Kappa, κ）</span>衡量基于Qwen的评估方法（对m个样本进行多数投票）与GPT-4o（每个响应单次评估）之间的一致性。如<span class="figure-ref">图3</span>所示，两种评估方法表现出近乎完美的一致性（0.81≤κ≤1.00），其中数学问题κ值超过0.86，多学科大学级问题超过0.88。这种高度一致性在不同m值下保持稳定，表明结果对评估样本数量不敏感。基于此观察，我们在后续所有评估中采用m=1，以提高效率而不影响评估质量。</p>
+        </div>
+        
+        <div class="original">
+            <h3>4.4 Implementation Details</h3>
+            <p>After obtaining the 160k distilled data from Qwen2.5-72B-Instruct, we perform supervised fine-tuning on Qwen2.5-7B-Instruct using this data, resulting in our reward model. We use different RL algorithms to validate the effectiveness of our method, including REINFORCE (Williams, 1992; Ahmadian et al., 2024), RLOO (Kool et al., 2019; Ahmadian et al., 2024), and REINFORCE++ (Hu, 2025). Following Stiennon et al. (2020); Ouyang et al. (2022); Hu (2025), we introduce a Kullback-Leibler (KL) divergence penalty between the RL model and the reference policy (i.e., base model) distributions to mitigate bias in the reward model. We update ˜r(x,a,yi) as follows:</p>
+            <div class="formula-container">
+                \\[ \\tilde{r}(x,a,y_i) \\leftarrow \\tilde{r}(x,a,y_i) - \\beta \\log \\left( \\frac{\\pi_\\theta(y_i|x)}{\\pi_{\\text{ref}}(y_i|x)} \\right) \\tag{6} \\]
+            </div>
+            <p>where β≥0 controls the effect of the KL penalty, and πref represents the reference policy distribution. We set β=0.01 for all experiments.</p>
+            <p>For all algorithms, we apply reward normalization as introduced in Section 3.2. We use Qwen2.5-7B (Team, 2024) as the base model for our experiments. Despite not undergoing post-training, it demonstrates reasonable instruction-following capabilities, as shown by its zero-shot performance in Table 1. We also include the results of Qwen2.5-72B-Instruct and DeepSeek-R1-Distill-Qwen-32B to illustrate the difficulty level of our datasets. For both datasets, we select 30k samples as the training data. The training hyper-parameters of RL distilled data collection, reward model training, and the main experiments can be found in Table 9 in the Appendix.</p>
+        </div>
+        <div class="translation">
+            <h3>4.4 实现细节</h3>
+            <p>从Qwen2.5-72B-Instruct获得160k蒸馏数据后，我们使用该数据对Qwen2.5-7B-Instruct进行<span class="term">监督微调（supervised fine-tuning）</span>，得到奖励模型。我们使用不同的<span class="term">RL算法</span>验证方法有效性，包括<span class="term">REINFORCE</span>（Williams, 1992; Ahmadian et al., 2024）、<span class="term">RLOO</span>（Kool et al., 2019; Ahmadian et al., 2024）和<span class="term">REINFORCE++</span>（Hu, 2025）。遵循Stiennon et al. (2020); Ouyang et al. (2022); Hu (2025)的方法，我们在RL模型与参考策略（即基础模型）分布之间引入<span class="term">KL散度惩罚（KL divergence penalty）</span>以减轻奖励模型偏差：</p>
+            <div class="formula-container">
+                \\[ \\tilde{r}(x,a,y_i) \\leftarrow \\tilde{r}(x,a,y_i) - \\beta \\log \\left( \\frac{\\pi_\\theta(y_i|x)}{\\pi_{\\text{ref}}(y_i|x)} \\right) \\tag{6} \\]
+            </div>
+            <p>其中β≥0控制KL惩罚强度，πref代表参考策略分布。所有实验中设置β=0.01。</p>
+            <p>所有算法均应用第3.2节介绍的<span class="term">奖励归一化（reward normalization）</span>。实验使用Qwen2.5-7B（Team, 2024）作为基础模型。尽管未经过后训练，其零

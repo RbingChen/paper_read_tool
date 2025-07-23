@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Algorithm Expert Analysis</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; margin: 20px; }
+        h1 { color: #2c3e50; text-align: center; }
+        h2 { color: #3498db; border-bottom: 2px solid #3498db; padding-bottom: 5px; }
+        .original { background-color: #f0f0f0; border: 1px solid #cccccc; padding: 15px; margin: 10px 0; border-radius: 5px; }
+        .translation { background-color: #e0f7e0; border: 1px solid #4caf50; padding: 15px; margin: 10px 0; border-radius: 5px; }
+        .formula-container { text-align: center; margin: 20px 0; padding: 10px; }
+        .formula { display: inline-block; font-size: 1.2em; }
+        .formula-caption { font-style: italic; margin-top: 5px; color: #555; }
+        .figure-ref { background-color: #fffde7; padding: 10px; margin: 15px 0; border: 1px dashed #ffd600; border-radius: 5px; }
+        .term { color: red; font-weight: bold; }
+        table { border-collapse: collapse; width: 100%; margin: 15px 0; background-color: white; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        section { margin-bottom: 30px; }
+        .paragraph { margin-bottom: 20px; }
+        ul { list-style-type: none; padding: 0; }
+        li { margin-bottom: 10px; padding: 8px; background-color: #f9f9f9; border-left: 4px solid #3498db; }
+    </style>
+</head>
+<body>
+    <h1>Algorithm Expert Analysis: Ablation Experiments 5</h1>
+    
+    <section id="understanding">
+        <h2>Content Understanding</h2>
+        <p>This text describes <strong class="term">Ablation Experiments 5</strong>, which investigate the impact of including or excluding the <strong class="term">KL Loss (Kullback-Leibler Divergence Loss)</strong> in a reinforcement learning (RL) training setup. The experiment is divided into two stages: Stage 1 uses a <strong class="term">KL coefficient (β)</strong> of 1e-3 based on a reference model (<strong class="term">DeepSeek-R1-Distill-Qwen-7B</strong>), while Stage 2 compares β=1e-3 with β=0 (no KL loss). The <strong class="term">KL-regularized policy loss</strong> is mathematically defined and added to the original policy loss to prevent the <strong class="term">actor model</strong>'s policy from deviating too far from the <strong class="term">reference model</strong>. Results show that KL loss strongly pulls the actor model back toward the reference model, rapidly reducing <strong class="term">KL divergence</strong> but hindering performance improvement on the <strong class="term">AIME24</strong> metric. Consequently, the authors set β=0 for all subsequent training. Key elements include a mathematical formula, hyperparameters in Table 4, and results visualized in Figure 11.</p>
+    </section>
+    
+    <section id="translation">
+        <h2>Content Translation</h2>
+        
+        <div class="paragraph">
+            <div class="original">
+                Ablation Experiments 5: KL Loss vs. No KL Loss
+            </div>
+            <div class="translation">
+                消融实验5：KL损失 vs. 无KL损失
+            </div>
+        </div>
+        
+        <div class="paragraph">
+            <div class="original">
+                We consider token-level k3 loss in our ablation and the KL-regularized policy loss we employed is:
+            </div>
+            <div class="translation">
+                我们在消融实验中考虑了token级别的k3损失，我们采用的KL正则化策略损失是：
+            </div>
+        </div>
+        
+        <div class="formula-container">
+            <div class="formula">
+                \[ L_{\beta}(\theta) = L(\theta) + \beta \sum_{i \in T_k} \sum_{j=1}^{|y_i|} \sum_{t=0}^{|y_{ij}|-1} \left( \frac{\pi_{\text{ref}}(a_t^{ij} | s_t^{ij})}{\pi_{\theta}(a_t^{ij} | s_t^{ij})} - \log \frac{\pi_{\text{ref}}(a_t^{ij} | s_t^{ij})}{\pi_{\theta}(a_t^{ij} | s_t^{ij})} - 1 \right) \]
+            </div>
+            <div class="formula-caption">Equation 1: KL-regularized policy loss formula (rendered via MathJax)</div>
+        </div>
+        
+        <div class="paragraph">
+            <div class="original">
+                where \( L(\theta) \) is the original policy loss defined in (3.1), \( \beta \) is the KL coefficient. We first run a stage 1 experiment with \( \beta = 10^{-3} \) based on DeepSeek-R1-Distill-Qwen-7B (reference policy). Then in stage 2, we conducted ablations based on the stage 1 checkpoint, comparing \( \beta = 10^{-3} \) with \( \beta = 0 \). The other hyper-parameters are reported in Table 4. The results can be found in Figure 11(a) and Figure 11(b).
+            </div>
+            <div class="translation">
+                其中 \( L(\theta) \) 是在(3.1)中定义的原始策略损失，\( \beta \) 是KL系数。我们首先基于DeepSeek-R1-Distill-Qwen-7B（参考策略）运行了阶段1实验，\( \beta = 10^{-3} \)。然后在阶段2，我们基于阶段1的检查点进行了消融实验，比较 \( \beta = 10^{-3} \) 和 \( \beta = 0 \)。其他超参数在表4中报告。结果可以在图11(a)和图11(b)中找到。
+            </div>
+        </div>
+        
+        <div class="paragraph">
+            <div class="original">
+                <table>
+                    <tr><th>Batch Size</th><th>Mini-batch Size</th><th>Group Size</th><th>Context Length</th><th>TEntropy Control</th></tr>
+                    <tr><td>256</td><td>128</td><td>16</td><td>Stage II 16K</td><td>target entropy 0.2</td></tr>
+                </table>
+                Table 4: Shared hyperparameters in Ablation Experiments 5 based on stage1 checkpoint
+            </div>
+            <div class="translation">
+                <table>
+                    <tr><th>批次大小</th><th>小批次大小</th><th>组大小</th><th>上下文长度</th><th>T熵控制</th></tr>
+                    <tr><td>256</td><td>128</td><td>16</td><td>Stage II 16K</td><td>目标熵 0.2</td></tr>
+                </table>
+                表4：基于阶段1检查点的消融实验5共享超参数
+            </div>
+        </div>
+        
+        <div class="paragraph">
+            <div class="original">
+                We observe that, in Stage 2, the <strong class="term">KL loss</strong> strongly pulls the <strong class="term">actor model</strong>’s policy back toward the <strong class="term">reference model</strong>, causing the <strong class="term">KL divergence</strong> to rapidly decrease toward zero (see Figure 11(a)). As a result, performance on <strong class="term">AIME24</strong> fails to improve significantly once the actor’s policy becomes too similar to the reference policy (see Figure 11(b)). Based on this observation, we set \( \beta = 0 \) for all training stages of our released models.
+            </div>
+            <div class="translation">
+                我们观察到，在阶段2，<strong class="term">KL损失</strong>强烈地将<strong class="term">actor模型</strong>的策略拉回<strong class="term">参考模型</strong>，导致<strong class="term">KL散度</strong>迅速降至零（见图11(a)）。结果，一旦actor的策略变得与参考策略过于相似，在<strong class="term">AIME24</strong>上的性能未能显著提升（见图11(b)）。基于此观察，我们在所有发布模型的训练阶段设置 \( \beta = 0 \)。
+            </div>
+        </div>
+        
+        <div class="figure-ref">
+            <div class="original">
+                (a) (b)
+                Figure 11: Results of Ablation Experiments 5. Left: <strong class="term">KL divergence</strong> between the <strong class="term">actor model</strong> and the <strong class="term">reference model</strong> during <strong class="term">RL training</strong> with different <strong class="term">KL loss coefficient</strong> \( \beta \) in Ablation Experiments 5. Setting \( \beta = 10^{-3} \) pulls the actor model back towards the reference model strongly in stage 2. Right: The <strong class="term">AIME24 avg@8</strong> performance at temperature 1 during RL training of different \( \beta \) in Ablation Experiments 5.
+            </div>
+            <div class="translation">
+                (a) (b)
+                图11：消融实验5的结果。左图：在消融实验5中，不同<strong class="term">KL损失系数</strong> \( \beta \) 下，<strong class="term">actor模型</strong>与<strong class="term">参考模型</strong>之间的<strong class="term">KL散度</strong>在<strong class="term">RL训练</strong>期间的变化。设置 \( \beta = 10^{-3} \) 在阶段2强烈地将actor模型拉回参考模型。右图：在消融实验5中，不同 \( \beta \) 下，温度1时的<strong class="term">AIME24 avg@8</strong>性能。
+            </div>
+        </div>
+    </section>
+    
+    <section id="summary">
+        <h2>Summary</h2>
+        <p>消融实验5的核心内容是：通过两阶段实验比较KL损失（β=1e-3）和无KL损失（β=0）在强化学习训练中的影响。阶段1使用参考模型初始化并设置β=1e-3，阶段2基于此检查点进行消融。结果显示，KL损失作为正则化项会强制actor模型的策略接近参考模型，导致KL散度快速下降（图11a），但抑制了在AIME24指标上的性能提升（图11b）。因此，最终决策是在所有训练阶段移除KL损失（β=0），以避免模型过于保守。关键支撑包括KL正则化损失公式、共享超参数（表4）和实验结果可视化。</p>
+    </section>
+    
+    <section id="terminology">
+        <h2>Terminology Identification</h2>
+        <ul>
+            <li><strong class="term">Ablation Experiments (消融实验)</strong>: A method to evaluate the importance of specific components (e.g., KL loss) by removing them from a model and comparing performance. In this text, it tests the impact of KL loss on RL training outcomes.</li>
+            <li><strong class="term">KL Loss (Kullback-Leibler Divergence Loss, KL损失)</strong>: A regularization term that measures the difference between two probability distributions (e.g., actor model and reference model policies). It is added to the policy loss to prevent over-divergence, defined as part of the KL-regularized loss in Equation 1.</li>
+            <li><strong class="term">Policy Loss (策略损失)</strong>: The loss function used in reinforcement learning to optimize the policy network. Here, it is denoted as \( L(\theta) \) and combined with KL loss for regularization.</li>
+            <li><strong class="term">KL Coefficient (β, KL系数)</strong>: A hyperparameter (β) that controls the weight of KL loss in the total loss function. Values like β=1e-3 or β=0 are tested to balance regularization strength.</li>
+            <li><strong class="term">Actor Model (Actor模型)</strong>: The model in RL that generates actions based on states. In this experiment, its policy is trained and compared against a reference model.</li>
+            <li><strong class="term">Reference Model (参考模型)</strong>: A pre-trained model (e.g., DeepSeek-R1-Distill-Qwen-7B) used as a baseline to guide the actor model via KL divergence, ensuring policy stability.</li>
+            <li><strong class="term">KL Divergence (KL散度)</strong>: A metric quantifying the difference between two distributions. Here, it is monitored during training (Figure 11a) to assess how closely the actor model aligns with the reference model.</li>
+            <li><strong class="term">AIME24 (AIME24指标)</strong>: An evaluation metric for model performance, likely specific to a task or dataset. In this context, "avg@8" suggests an average score over 8 samples, and results show it fails to improve with KL loss (Figure 11b).</li>
+            <li><strong class="term">RL Training (强化学习训练)</strong>: The process of training models using reinforcement learning algorithms. This text involves RL training with policy optimization and KL regularization.</li>
+            <li><strong class="term">Token-level k3 loss (Token级别k3损失)</strong>: Mentioned but not detailed; likely a specific loss function at the token level, possibly related to sequence modeling. The "k3" may be a notation or typo, and it is considered in the ablation setup.</li>
+        </ul>
+    </section>
+</body>
+</html>

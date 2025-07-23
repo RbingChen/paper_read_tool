@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>论文解析：Policy Filtration for RLHF</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; max-width: 900px; margin: 0 auto; padding: 20px; }
+        h1, h2, h3 { color: #2c3e50; border-bottom: 1px solid #eee; padding-bottom: 10px; }
+        .original { background-color: #f8f9fa; border: 1px solid #ced4da; padding: 15px; margin-bottom: 5px; border-radius: 5px; }
+        .translated { background-color: #e6f4ea; border: 1px solid #a3cfbb; padding: 15px; border-radius: 5px; }
+        .term { color: #e74c3c; font-weight: bold; }
+        .math-container { text-align: center; margin: 20px 0; background-color: #fffde7; padding: 15px; border-radius: 5px; }
+        .math-label { font-style: italic; margin-top: 5px; }
+        section { margin-bottom: 30px; }
+    </style>
+</head>
+<body>
+
+<h1>论文解析：Policy Filtration for RLHF to Mitigate Noise in Reward Models</h1>
+
+<!-- 内容理解 -->
+<section id="understanding">
+    <h2>内容理解</h2>
+    <p>本文提出了一种名为<strong class="term">PF-PPO（Policy Filtration for PPO）</strong>的新方法，旨在解决<strong class="term">RLHF（Reinforcement Learning from Human Feedback）</strong>中奖励模型噪声问题。核心发现是：奖励模型在给出<strong class="term">极端奖励（高/低）</strong>时比中等奖励更可靠。基于此，作者设计了一种过滤机制，在PPO训练前筛除奖励不可靠的样本（主要是中等奖励样本），从而提升训练信号的信噪比。该方法在代码生成（HumanEval、MBPP、LeetCode Contest）和数学推理任务中显著提升模型性能，尤其在复杂逻辑场景下效果突出。</p>
+</section>
+
+<!-- 内容翻译 -->
+<section id="translation">
+    <h2>内容翻译</h2>
+    
+    <div class="original">Policy Filtration for RLHF to Mitigate Noise in Reward Models</div>
+    <div class="translated">通过策略过滤减轻奖励模型噪声的RLHF方法</div>
+    
+    <div class="original">rewards in general, it can be more reliable in specific regions (e.g., when it gives high rewards) than the others. The observation is based on the simple experiment: We use a policy model fine-tuned for code generation to generate a set of responses for prompts in the <strong class="term">HumanEval dataset</strong>. Later, we score these responses using a <strong class="term">reward model</strong> trained with the common recipe (see Ouyang et al., 2022, and also Section 2) and compare them with the actual scores. We find that, across different sets of samples, the reward model is more reliable when it gives high or low rewards than when it gives moderate rewards (cf. Figure 1). This property also holds on other datasets and tasks and see Appendix A for more experiment results and further discussion. Considering that <strong class="term">RLHF</strong> updates the policy solely based on the reward signal, this observation motivates us to filter out the samples with possibly unreliable rewards aiming to improve RLHF by increasing the <strong class="term">signal-to-noise ratio</strong> on training samples.</div>
+    <div class="translated">奖励模型在特定区域（例如给出高奖励时）通常比其他区域更可靠。这一观察基于简单实验：我们使用针对代码生成微调的策略模型为<strong class="term">HumanEval数据集</strong>中的提示生成响应，并通过标准方法训练的<strong class="term">奖励模型</strong>（参考Ouyang等人，2022）评分后与实际分数对比。发现奖励模型在给出<strong class="term">高/低奖励</strong>时比中等奖励时更可靠（见图1）。该特性在其他数据集和任务中同样成立（详见附录A）。由于<strong class="term">RLHF</strong>完全依赖奖励信号更新策略，此发现促使我们过滤不可靠奖励样本，通过提升训练样本的<strong class="term">信噪比</strong>改进RLHF。</div>
+    
+    <div class="original">Based on this motivation, we propose a simple modification to the standard <strong class="term">PPO</strong>-based RLHF algorithm (Ouyang et al., 2022), resulting in <strong class="term">Policy Filtration for PPO (PF-PPO)</strong>. As in standard PPO, we generate N samples for each prompt and score these samples using the reward model. Then, we use a filtered subset of these samples in PF-PPO for subsequent policy training. We design filtering strategies to improve the reliability of the reward model on the filtered samples by maximizing the <strong class="term">coefficient of determination</strong> (R²) between the rewards and actual scores on these filtered samples. We show that the rewards of these filtered samples are more accurate, thus providing better training signal and improving the performance of the policy. Our method is also connected with <strong class="term">reject sampling</strong> that filters out responses with low rewards during inference to yield a better response. Reject sampling is a simple but surprisingly strong inference-time strategy, whereas we adopt similar filtration in an RL algorithm.</div>
+    <div class="translated">基于此动机，我们对标准<strong class="term">PPO</strong>算法进行改进，提出<strong class="term">PF-PPO（策略过滤PPO）</strong>。与标准PPO相同，我们为每个提示生成N个样本并用奖励模型评分。但在PF-PPO中，仅使用过滤后的样本子集进行策略训练。过滤策略通过最大化样本奖励与实际分数间的<strong class="term">决定系数（R²）</strong>来提升奖励模型可靠性。实验表明过滤后样本的奖励更准确，能提供更优训练信号。该方法与<strong class="term">拒绝采样</strong>（推理时筛除低奖励响应）相关，但我们将类似过滤应用于RL算法而非推理阶段。</div>
+    
+    <div class="original">Empirically, we show that PF-PPO can improve the performance of <strong class="term">LLMs</strong> on the tasks where the complex logic makes the reward model inaccurate in general. We conduct extensive ablation studies to validate the design of our algorithm. In code generation, we illustrate the effectiveness of our algorithm by fine-tuning LLMs that achieves new <strong class="term">SOTA</strong> on <strong class="term">HumanEval</strong> and <strong class="term">MBPP</strong> benchmarks across 7-billion-parameter LLMs. We also create the <strong class="term">LeetCode Contest</strong> benchmark that includes competition-level coding tasks for human experts and observe that PF-PPO results in even more significant improvement on this challenging benchmark. In math reasoning, we demonstrate that PF-PPO can improve the performance across different types of reward models.</div>
+    <div class="translated">实验表明，PF-PPO能在复杂逻辑导致奖励模型失效的任务中提升<strong class="term">LLM</strong>性能。通过消融实验验证算法设计后，我们在代码生成任务中微调70亿参数LLM，在<strong class="term">HumanEval</strong>和<strong class="term">MBPP</strong>基准上达到新<strong class="term">SOTA</strong>。新构建的<strong class="term">LeetCode竞赛</strong>基准包含专家级编程任务，PF-PPO在此挑战性基准上提升显著。在数学推理任务中，PF-PPO对不同奖励模型均有改进。</div>
+    
+    <div class="original">2. Related Work</div>
+    <div class="translated">2. 相关工作</div>
+    
+    <div class="original">Limitation of reward model. The outcome of RLHF highly relies on the quality of the reward model. Unfortunately, the reward model can hardly provide accurate scores due to 1) the mis-specified reward modeling to represent human preferences (Lambert et al., 2023; Pitis, 2023); 2) the presence of incorrect and ambiguous preferences in the dataset (Ouyang et al., 2022; Bai et al., 2022), and 3) the poor generalization ability of the reward model (McKinney et al., 2023). The inaccuracy of reward model is attributed as one major cause of <strong class="term">reward hacking</strong> and <strong class="term">hallucination</strong> in LLMs (Kalai & Vempala, 2024). While there are previous papers try to improve the accuracy of the reward model itself (Wang et al., 2024; Coste et al., 2023; Zhang et al., 2024), the objective of our paper is to design a better RLHF algorithm in the face of inaccurate reward models. Moreover, Bai et al. (2022) also mentioned that using the output of the reward model directly in the RLHF process may not be a good choice. A possible solution is to penalize the outputs with low rewards more to improve the worst-case responses but they did not further implement this.</div>
+    <div class="translated">奖励模型的局限性：RLHF效果高度依赖奖励模型质量。但奖励模型常因以下原因无法提供准确评分：1) 人类偏好建模错误；2) 数据中存在错误/模糊偏好；3) 泛化能力差。奖励模型不准确性是LLM中<strong class="term">奖励破解</strong>和<strong class="term">幻觉</strong>的主因之一。虽有研究尝试改进奖励模型本身，但本文目标是设计面向不准确奖励模型的RLHF算法。Bai等人(2022)指出直接使用奖励模型输出可能不佳，需对低奖励输出加强惩罚，但未进一步实现。</div>
+    
+    <div class="original"><strong class="term">Reject sampling</strong>. Reject sampling (or <strong class="term">best-of-N sampling</strong>) is a popular and effective inference-time strategy to enhance the response of an LLM by generating N responses and select the best one according to a reward model (Nakano et al., 2021; Cobbe et al., 2021). This trick can yield good responses while keeping a tight <strong class="term">KL constraint</strong> to the original policy. Inspired by its effectiveness in inference, researchers also try to involve this trick in policy optimization. For example, <strong class="term">RAFT</strong> (Dong et al., 2023), <strong class="term">BOND</strong> (Sessa et al., 2024) and <strong class="term">vBoN</strong> (Amini et al., 2024) learn a policy that distills the best-of-N policy using supervised fine-tuning losses. In a boarder sense, the rank information of the N samples can also be leveraged. For example, <strong class="term">RRHF</strong> (Yuan et al., 2023) and <strong class="term">PRO</strong> (Song et al., 2024) train the policy using the combination of a ranking loss and a SFT loss (w.r.t. the best response) based on N responses for each prompt. However, these algorithms do not adopt an elaborate RL algorithm, while state-of-the-art language models adopts RL algorithms in alignment, benefiting from the generalization power of the reward model especially in reasoning tasks (Ivison et al., 2024). Unlike these algorithms, we adopt the idea of reject sampling in the sampling phase of an RL algorithm instead of using supervised learning losses.</div>
+    <div class="translated"><strong class="term">拒绝采样</strong>（或称<strong class="term">N选一采样</strong>）是流行的推理时策略：生成N个响应后根据奖励模型选择最优解。该方法在保持与原始策略紧密<strong class="term">KL约束</strong>的同时生成优质响应。受此启发，RAFT、BOND、vBoN等方法将N选一策略蒸馏到策略模型中。RRHF和PRO则利用排序损失和SFT损失组合训练策略。但这些方法未采用精细RL算法，而SOTA语言模型在对齐中使用RL算法（尤其推理任务）。与它们不同，我们在RL算法的采样阶段引入拒绝采样思想，而非监督损失。</div>
+    
+    <div class="original">RLHF algorithms in the face of inaccurate reward models. One key challenge in RLHF is the inaccuracy of reward model, which can lead to <strong class="term">reward over-optimization</strong> (Gao et al., 2023; Skalse et al., 2022; Chaudhari et al., 2024). Optimization with a policy constraint (e.g., a KL divergence between the target policy and the reference policy) is a remedy frequently used in not only RL-based algorithms (Ouyang et al., 2022; Wu et al., 2023; Zhu et al., 2023) but also di-2</div>
+    <div class="translated">面向不准确奖励模型的RLHF算法：关键挑战是奖励模型不准确导致的<strong class="term">奖励过优化</strong>。策略约束（如目标策略与参考策略间的KL散度）是常用解决方案，广泛用于RL算法（如PPO）及其他方法...</div>
+    
+    <!-- 数学公式 -->
+    <div class="math-container">
+        \\[ R^2 = 1 - \\frac{\\sum_{i}(y_i - \\

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>OneRec技术报告分析</title>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    body { font-family: Arial, sans-serif; line-height: 1.6; max-width: 900px; margin: 0 auto; padding: 20px; }
+    .section { margin-bottom: 30px; }
+    h1 { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 10px; }
+    h2 { color: #2980b9; margin-top: 25px; }
+    .original { background-color: #f8f9fa; border: 1px solid #ced4da; padding: 15px; border-radius: 5px; margin-bottom: 10px; }
+    .translation { background-color: #e8f5e9; border: 1px solid #c8e6c9; padding: 15px; border-radius: 5px; margin-bottom: 20px; }
+    .figure { background-color: #fffde7; padding: 15px; border-radius: 5px; margin: 20px 0; font-style: italic; }
+    .term { color: #e53935; font-weight: bold; }
+    .formula-container { text-align: center; margin: 20px 0; }
+    .formula-label { display: block; font-size: 0.9em; color: #7f8c8d; }
+    ul { padding-left: 20px; }
+    li { margin-bottom: 8px; }
+  </style>
+</head>
+<body>
+  <h1>OneRec技术报告分析</h1>
+  
+  <div class="section">
+    <h2>内容理解</h2>
+    <p>该技术报告介绍了<strong class="term">OneRec</strong>推荐系统框架的创新设计。核心是通过<strong class="term">编码器-解码器架构（Encoder-Decoder Architecture）</strong>替代传统的<strong class="term">级联推荐系统（Cascaded Recommender System）</strong>。传统系统采用多阶段处理（召回→预排序→排序），而OneRec实现了端到端的视频生成流程，显著优化了计算效率和系统复杂度。两大核心特性包括：1）<strong class="term">端到端优化（End-to-End Optimization）</strong>直接面向最终目标建模；2）<strong class="term">计算效率（Computational Efficiency）</strong>在训练/推理阶段最大化硬件利用率。实验验证了其在快手场景的显著效果：训练/推理MFU提升5.2×/2.6×，运营成本降至传统方案的10.6%，同时提升用户停留时长等核心指标。</p>
+  </div>
+  
+  <div class="section">
+    <h2>内容翻译</h2>
+    
+    <div class="original">OneRec Technical Report</div>
+    <div class="translation">OneRec技术报告</div>
+    
+    <div class="figure">
+      <div class="original">Figure 2 | Comparison between a cascaded recommender system and the OneRec. The cascaded approach system typically involves stages such as retrieval, pre-ranking, and ranking, each potentially employing multiple strategies or models. In contrast, OneRec adopts an encoder-decoder architecture to generate user-preferred videos in an end-to-end manner under the guidance of a reward model.</div>
+      <div class="translation">图2 | 级联推荐系统与OneRec的对比。级联系统通常包含召回、预排序和排序等阶段，每个阶段可能采用多种策略或模型。相比之下，OneRec采用编码器-解码器架构，在奖励模型指导下以端到端方式生成用户偏好的视频。</div>
+    </div>
+    
+    <div class="original">single-stage encoder-decoder based generative framework. This approach exhibits the following characteristics:</div>
+    <div class="translation">基于单阶段编码器-解码器的生成框架。该方法具有以下特性：</div>
+    
+    <div class="original">⊢ End-to-End Optimization : The system is designed to be both end-to-end and sufficiently simple to enable direct optimization for the final objective.</div>
+    <div class="translation">⊢ <strong class="term">端到端优化（End-to-End Optimization）</strong>：系统设计为端到端且足够简洁，可直接优化最终目标。</div>
+    
+    <div class="original">⊢ Computational Efficiency : With a focus on computational intensity, the method rigorously optimizes computational utilization efficiency during both training and inference phases, thereby fully leveraging the benefits brought by computing power advancements.</div>
+    <div class="translation">⊢ <strong class="term">计算效率（Computational Efficiency）</strong>：聚焦计算强度，在训练和推理阶段严格优化计算利用效率，充分释放硬件算力红利。</div>
+    
+    <div class="original">Our new framework yields several significant findings:</div>
+    <div class="translation">新框架带来以下重要发现：</div>
+    
+    <div class="original">■ Through extensive infrastructure optimizations, we have achieved 23.7% and 28.8% MFU on flagship GPUs during training and inference, respectively — representing 5.2 × and 2.6× improvements over the original ranking model — significantly narrowing the gap with the LLM community. More importantly, this end-to-end architecture dramatically reduces unnecessary communication and storage overhead, resulting in OPEX that is merely 10.6% of that associated with traditional complex recommendation pipelines. Currently, its deployment in the main scenarios of the Kuaishou/Kuaishou Lite APP manages approximately 25% of total QPS, delivering improvements of 0.54% and 1.24% in App Stay Time, while simultaneously improving all core metrics—including user engagement, video cold start, and distribution balance — demonstrating comprehensive performance gains.</div>
+    <div class="translation">■ 通过深度基础设施优化，在旗舰GPU上实现训练23.7%/推理28.8%的<strong class="term">MFU（Model FLOPs Utilization）</strong>，较原排序模型提升5.2×/2.6×，显著缩小与LLM领域的差距。更重要的是，端到端架构大幅降低通信与存储开销，使<strong class="term">OPEX（Operational Expenditure）</strong>降至传统复杂推荐管线的10.6%。当前在快手/快手极速版APP主场景部署，承载约25%总<strong class="term">QPS（Queries Per Second）</strong>，<strong class="term">应用停留时间（App Stay Time）</strong>提升0.54%/1.24%，同时改善用户参与度、视频冷启动、分发平衡等所有核心指标。</div>
+    
+    <div class="original">■ We have enhanced the computational FLOPs of the current recommendation model by 10 ×. Through this process, we have identified the scaling laws for recommendation systems. This discovery provides valuable insights into how recommendation system performance can be</div>
+    <div class="translation">■ 将推荐模型计算<strong class="term">FLOPs（Floating Point Operations）</strong>提升10倍。在此过程中发现<strong class="term">推荐系统缩放定律（Scaling Laws）</strong>，为系统性能优化提供关键指导。</div>
+    
+    <div class="formula-container">
+      <p class="formula-label">预训练损失函数</p>
+      $$
+      \\mathcal{L}_{pre} \\text{ (Pre-train Loss)}
+      $$
+    </div>
+    
+    <div class="formula-container">
+      <p class="formula-label">后训练损失函数</p>
+      $$
+      \\mathcal{L}_{post} \\text{ (Post-train Loss)}
+      $$
+    </div>
+  </div>
+  
+  <div class="section">
+    <h2>摘要总结</h2>
+    <p>OneRec提出了一种基于<strong class="term">编码器-解码器架构（Encoder-Decoder Architecture）</strong>的端到端生成式推荐框架，取代传统多阶段级联系统。其核心创新在于：1）通过<strong class="term">端到端优化（End-to-End Optimization）</strong>直接学习用户偏好；2）极致<strong class="term">计算效率（Computational Efficiency）</strong>设计，训练/推理MFU达23.7%/28.8%；3）基础设施优化使运营成本降至传统方案10.6%。在快手场景验证中，显著提升用户停留时间（+0.54%~1.24%）及多项核心指标，同时发现推荐系统的<strong class="term">缩放定律（Scaling Laws）</strong>，为大规模推荐系统演进提供新范式。</p>
+  </div>
+  
+  <div class="section">
+    <h2>术语识别</h2>
+    <ul>
+      <li><strong class="term">编码器-解码器架构（Encoder-Decoder Architecture）</strong>：深度学习框架，编码器将输入数据压缩为特征表示，解码器基于该表示生成目标输出。OneRec中用于直接生成推荐结果。</li>
+      <li><strong class="term">级联推荐系统（Cascaded Recommender System）</strong>：多阶段推荐架构，通常包含召回（Retrieval）、预排序（Pre-rank）、排序（Rank）等串行处理模块。</li>
+      <li><strong class="term">端到端优化（End-to-End Optimization）</strong>：直接从原始输入到最终输出进行联合优化，避免多阶段系统的误差累积和次优解。</li>
+      <li><strong class="term">MFU（Model FLOPs Utilization）</strong>：模型浮点运算利用率，衡量硬件计算资源的实际有效使用率。</li>
+      <li><strong class="term">OPEX（Operational Expenditure）</strong>：运营支出，包括服务器、带宽、运维等持续成本。</li>
+      <li><strong class="term">QPS（Queries Per Second）</strong>：系统每秒处理的查询请求量，衡量服务吞吐能力。</li>
+      <li><strong class="term">应用停留时间（App Stay Time）</strong>：用户在应用内的平均停留时长，关键用户体验指标。</li>
+      <li><strong class="term">缩放定律（Scaling Laws）</strong>：描述系统性能（如推荐效果）随计算量、数据量、模型规模等变化的规律性关系。</li>
+      <li><strong class="term">FLOPs（Floating Point Operations）</strong>：浮点运算次数，衡量模型计算复杂度。</li>
+      <li><strong class="term">奖励模型（Reward Model）</strong>：用于指导生成过程的评估模型，通常建模用户长期价值。</li>
+    </ul>
+  </div>
+</body>
+</html>

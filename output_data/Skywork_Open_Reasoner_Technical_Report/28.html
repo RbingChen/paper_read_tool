@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>算法论文解析报告</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; }
+        .original { 
+            background-color: #f0f0f0; 
+            border: 1px solid #cccccc; 
+            padding: 15px; 
+            margin-bottom: 20px;
+        }
+        .translation { 
+            background-color: #e0f7e0; 
+            border: 1px solid #4CAF50; 
+            padding: 15px; 
+            margin-bottom: 30px;
+        }
+        .figure { 
+            background-color: #fffde7; 
+            padding: 15px; 
+            margin: 20px 0; 
+            text-align: center;
+        }
+        .term { 
+            color: red; 
+            font-weight: bold; 
+        }
+        table { 
+            width: 100%; 
+            border-collapse: collapse; 
+            margin: 15px 0;
+        }
+        th, td { 
+            border: 1px solid #ddd; 
+            padding: 8px; 
+            text-align: center;
+        }
+        th { 
+            background-color: #f2f2f2; 
+        }
+        h2 { 
+            color: #2c3e50; 
+            border-bottom: 2px solid #3498db; 
+            padding-bottom: 5px;
+        }
+        .section { 
+            margin-bottom: 40px;
+        }
+    </style>
+</head>
+<body>
+
+<h1>算法论文解析报告</h1>
+
+<!-- 内容理解 -->
+<div class="section">
+    <h2>内容理解</h2>
+    <p>文本深入分析了强化学习训练中资源配置对效率与性能的影响：</p>
+    <ol>
+        <li><span class="term">NSGD（SGD步数）</span>增加会提升策略更新时间（t<sub>T</sub>），但固定<span class="term">DR（rollout批次大小）</span>时对总训练时间影响有限。实验证明<span class="term">NSGD∈{2,4}</span>能在相近时间内执行更多SGD步骤。</li>
+        <li>增加<span class="term">NSGD</span>或<span class="term">数据重用（data reuse）</span>会加速<span class="term">熵崩溃（entropy collapse）</span>，导致测试性能下降，需谨慎使用。</li>
+        <li>增加计算资源时，单纯减少<span class="term">rollout时间（t<sub>R</sub>）</span>存在收益递减（表9），因t<sub>R</sub>受最长响应生成时间制约。</li>
+        <li>优化策略：在资源增加时扩大<span class="term">rollout预算（rollout budget）</span>（通过增加<span class="term">DR</span>或<span class="term">组大小（group size）</span>），保持t<sub>R</sub>基本稳定，通过更大样本量提升梯度估计精度。</li>
+    </ol>
+</div>
+
+<!-- 内容翻译 -->
+<div class="section">
+    <h2>内容翻译</h2>
+    
+    <div class="original">
+        <p>the configuration tuple (NSGD, DR, DT, Nreuse). We report the detailed time usage for the configurations (1, 64, 64, 1), (2, 64, 32, 1), and (4, 64, 16, 1) in Table 8. It is evident that increasing NSGD leads to a higher tT. However, the impact on the overall training time ttotal remains minor, provided that DR is fixed. Thus, the configurations with NSGD∈ {2,4} perform multiple SGD steps within comparable training time, improving training efficiency. That said, the experimental results in Section 4.4 show that accelerating training via rollout batch decomposition or data reuse leads to faster entropy collapse and poorer test performance. Therefore, we do not recommend increasing NSGD solely for the purpose of improving training efficiency – unless appropriate mechanisms are in place to mitigate entropy collapse, particularly those caused by off-policy updates – as doing so may result in degraded generalization performance.</p>
+    </div>
+    <div class="translation">
+        <p>配置元组 <span class="term">(NSGD, DR, DT, Nreuse)</span>。我们在表8中报告了配置(1,64,64,1)、(2,64,32,1)和(4,64,16,1)的详细时间使用情况。显然，增加<span class="term">NSGD</span>会导致更高的<span class="term">策略更新时间(t<sub>T</sub>)</span>。但在<span class="term">DR</span>固定的情况下，对总训练时间<span class="term">t<sub>total</sub></span>的影响仍然很小。因此，当<span class="term">NSGD</span>∈{2,4}时，配置在可比较的训练时间内执行多个<span class="term">SGD</span>步骤，提高了训练效率。也就是说，4.4节的实验结果表明，通过<span class="term">rollout批次分解（rollout batch decomposition）</span>或<span class="term">数据重用（data reuse）</span>来加速训练会导致更快的<span class="term">熵崩溃（entropy collapse）</span>和更差的测试性能。因此，我们不建议仅为了提高训练效率而增加<span class="term">NSGD</span>——除非有适当的机制来缓解熵崩溃，特别是那些由<span class="term">离线策略更新（off-policy updates）</span>引起的熵崩溃——因为这样做可能会导致泛化性能下降。</p>
+    </div>
+
+    <div class="figure">
+        <strong>表8（原文）</strong>
+        <table>
+            <tr>
+                <th>Experiment</th>
+                <th>(NSGD, DR, DT, Nreuse)</th>
+                <th>t<sub>total</sub></th>
+                <th>t<sub>R</sub></th>
+                <th>t<sub>T</sub></th>
+                <th>t<sub>O</sub></th>
+                <th>t<sub>R</sub>/t<sub>total</sub></th>
+                <th>t<sub>T</sub>/t<sub>total</sub></th>
+            </tr>
+            <tr>
+                <td>-</td>
+                <td>(1,64,64,1)</td>
+                <td>116</td>
+                <td>90</td>
+                <td>8</td>
+                <td>18</td>
+                <td>77.6%</td>
+                <td>6.9%</td>
+            </tr>
+            <tr>
+                <td>-</td>
+                <td>(2,64,32,1)</td>
+                <td>114</td>
+                <td>87</td>
+                <td>10</td>
+                <td>17</td>
+                <td>76.3%</td>
+                <td>8.7%</td>
+            </tr>
+            <tr>
+                <td>-</td>
+                <td>(4,64,16,1)</td>
+                <td>118</td>
+                <td>90</td>
+                <td>12</td>
+                <td>16</td>
+                <td>76.3%</td>
+                <td>10.2%</td>
+            </tr>
+        </table>
+        <p>Table 8: Detailed time usage for three experiments from Ablation Experiments 6 over 1000 training steps. All the experiments utilized the same training resources (i.e., 32 H800 GPUs).</p>
+    </div>
+    <div class="figure">
+        <strong>表8（翻译）</strong>
+        <table>
+            <tr>
+                <th>实验</th>
+                <th>(NSGD, DR, DT, Nreuse)</th>
+                <th>t<sub>total</sub></th>
+                <th>t<sub>R</sub></th>
+                <th>t<sub>T</sub></th>
+                <th>t<sub>O</sub></th>
+                <th>t<sub>R</sub>/t<sub>total</sub></th>
+                <th>t<sub>T</sub>/t<sub>total</sub></th>
+            </tr>
+            <tr>
+                <td>-</td>
+                <td>(1,64,64,1)</td>
+                <td>116</td>
+                <td>90</td>
+                <td>8</td>
+                <td>18</td>
+                <td>77.6%</td>
+                <td>6.9%</td>
+            </tr>
+            <tr>
+                <td>-</td>
+                <td>(2,64,32,1)</td>
+                <td>114</td>
+                <td>87</td>
+                <td>10</td>
+                <td>17</td>
+                <td>76.3%</td>
+                <td>8.7%</td>
+            </tr>
+            <tr>
+                <td>-</td>
+                <td>(4,64,16,1)</td>
+                <td>118</td>
+                <td>90</td>
+                <td>12</td>
+                <td>16</td>
+                <td>76.3%</td>
+                <td>10.2%</td>
+            </tr>
+        </table>
+        <p>表8：消融实验6中三个实验在1000个训练步骤的详细时间使用情况。所有实验使用相同的训练资源（即32个H800 GPU）。</p>
+    </div>
+
+    <div class="original">
+        <h3>5.2 Improving Test Performance with More Computational Resources</h3>
+        <p>In this section, we address the second question: given more computational resources, how should training resources be allocated to achieve higher test performance or better training efficiency? Regarding training efficiency, two approaches may be considered. On the one hand, increasing the number of SGD steps – previously discussed – may seem promising. However, experimental findings do not support the effectiveness of this approach (see Section 5.1). On the other hand, under a fixed rollout budget (i.e., the number of samples to be rolled out), one might expect a significant reduction in rollout time tR as training resources are scaled up. In practice, however, this expectation is not fully realized. Table 9 shows the rollout time tR for 1024 samples under varying training resources. Notably, as training resources increase, the reduction in tR diminishes. This is because tR is primarily determined by the batch size and the time required to generate the longest response. Once sufficient resources are available, further scaling does not significantly reduce the processing time dominated by the generation of the longest sample. Therefore, when additional training resources are available, a more effective strategy is to increase the rollout budget appropriately, such that the rollout time tR remains roughly constant or increases only marginally. By leveraging a larger rollout buffer, more accurate gradient estimates can be obtained, which may improve training efficiency and enhance test performance. In the following, we focus on how the rollout budget – determined by the rollout batch size and group size – affects RL performance. The overall idea of these studies are illustrated in Figure 24.</p>
+    </div>
+    <div class="translation">
+        <h3>5.2 利用更多计算资源提升测试性能</h3>
+        <p>在本节中，我们解决第二个问题：在给定更多计算资源的情况下，应如何分配训练资源以实现更高的测试性能或更好的训练效率？关于训练效率，可以考虑两种方法。一方面，增加<span class="term">SGD</span>步骤的数量（如前所述）似乎很有希望。然而，实验结果并不支持这种方法的有效性（见5.1节）。另一方面，在固定的<span class="term">rollout预算（rollout budget）</span>（即要生成的样本数量）下，人们可能期望随着训练资源的增加，<span class="term">rollout时间(t<sub>R</sub>)</span>会显著减少。然而，在实践中，这种期望并未完全实现。表9显示了在不同训练资源下生成1024个样本的rollout时间t<sub>R</sub>。值得注意的是，随着训练资源的增加，t<sub>R</sub>的减少量逐渐减少。这是因为t<sub>R</sub>主要由批次大小和生成最长响应所需的时间决定。一旦有足够的资源，进一步的扩展并不能显著减少由生成最长样本所主导的处理时间。因此，当有额外的训练资源可用时，一个更有效的策略是适当增加<span class="term">rollout预算（rollout budget）</span>，使得rollout时间t<sub>R</sub>大致保持不变或仅略微增加。通过利用更大的<span class="term">rollout缓冲区（rollout buffer）</span>，可以获得更准确的梯度估计，这可能会提高训练效率并增强测试性能。接下来，我们将重点讨论由<span class="term">rollout批次大小（rollout batch size）</span>和<span class="term">组大小（group size）</span>决定的rollout预算如何影响<span class="term">RL（强化学习）</span>性能。这些研究的总体思路如图24所示。</p>
+    </div>
+
+    <div class="figure">
+        <strong>表9（原文）</strong>
+        <table>
+            <tr>
+                <th>The number of H800</th>
+                <th>32</th>
+                <th>64</th>
+                <th>128</th>
+                <th>256</th>
+            </tr>
+            <tr>
+                <td>Rollout time t<sub>R</sub> (reduction)</td>
+                <td>375</td>
+                <td>270 (-105)</td>
+                <td>225 (-45)</td>
+                <td>205 (-20)</td>
+            </tr>
+        </table>
+        <p>Table 9: Rollout time t<sub>R</sub> (seconds) for generating 1024 responses in one training step. The data shows that as computational resources increase, the incremental reduction in t<sub>R</sub> diminishes.</p>
+    </div>
+    <div class="figure">
+        <strong>表9（翻译）</strong>
+        <table>
+            <tr>
+                <th>H800数量</th>
+                <th>32</th>
+                <th>64</th>
+                <th>128</th>
+                <th>256</th>
+            </tr>
+            <tr>
+                <td>Rollout时间t<sub>R</sub>（减少量）</td>
+                <td>375</td>
+                <td>270 (-105)</td>
+                <td>225 (-45)</td>
+                <td>205 (-20)</td>
+            </tr>
+        </table>
+        <p>表9：在一个训练步骤中生成1024个响应的Rollout时间t<sub>R</sub>（单位：秒）。数据显示，随着计算资源的增加，t<sub>R</sub>的增量减少逐渐减弱。</p>
+    </div>
+
+    <div class="original">
+        <p>Larger Batch Size, Better Test Performance. To investigate how the rollout batch size DR affects the training dynamics, we conducted the following ablation experiments.</p>
+    </div>
+    <div class="translation">
+        <p>更大的批次大小，更好的测试性能。为了研究<span class="term">rollout批次大小(DR)</span>如何影响训练动态，我们进行了以下消融实验。</p>
+    </div>
+</div>
+
+<!-- 摘要总结 -->
+<div class="section">
+    <h2>摘要总结</h2>
+    <p>本文核心研究强化学习训练

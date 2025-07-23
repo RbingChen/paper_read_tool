@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>文本分析报告</title>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    h1, h2, h3 { color: #333; }
+    .section { margin-bottom: 30px; }
+    .section-title { background-color: #e0e0ff; padding: 10px; border-left: 5px solid #6666ff; margin-bottom: 15px; }
+    .original { background-color: #f0f0f0; border: 1px solid #cccccc; padding: 15px; margin: 10px 0; }
+    .translation { background-color: #e0ffe0; border: 1px solid #00cc00; padding: 15px; margin: 10px 0; }
+    .formula { text-align: center; margin: 15px 0; font-size: 1.1em; }
+    .term { color: red; font-weight: bold; }
+    .figure { background-color: yellow; padding: 10px; margin: 10px 0; }
+    .summary, .terminology-list { padding: 10px; background-color: #f9f9f9; border: 1px solid #ddd; }
+    .terminology-item { margin-bottom: 10px; }
+  </style>
+</head>
+<body>
+  <h1>文本分析报告</h1>
+  <p>输入文本：ExamQA 数据集中的表格示例，展示多样化领域的问题和答案对。</p>
+
+  <div class="section">
+    <h2 class="section-title">a. 内容理解</h2>
+    <div class="understanding">
+      <p>该文本是 ExamQA 数据集的一部分，具体为 Table 10 的示例内容。文本展示了如何通过多样化领域的问题和答案对，支持强化学习（<span class="term">RL (Reinforcement Learning)</span>）在可验证奖励方面的扩展。核心结构包括一个标题、列标题（coarse, fine, question, answer），以及四个条目，每个条目对应不同学科领域（社会科学、STEM、人文学科、应用科学）。每个条目包含粗粒度领域、细粒度领域、问题描述和参考答案，旨在提供可验证的奖励信号用于 RL 训练。文本结尾标注了表格编号和可能页码（18）。关键元素包括：</p>
+      <ul>
+        <li><strong>标题</strong>：强调 RL 在跨领域可验证奖励的应用。</li>
+        <li><strong>列标题</strong>：定义表格结构，coarse 表示粗粒度领域（如 Social Sciences），fine 表示细粒度子领域（如 Psychology），question 和 answer 为问题与答案内容。</li>
+        <li><strong>条目内容</strong>：每个条目独立展示一个领域的具体问题，涉及心理学、土木工程、哲学和农学，答案均简洁明确，便于自动评估。</li>
+        <li><strong>数学公式</strong>：在土木工程条目中包含土壤力学参数（如 <span class="term">ϕ (phi)</span> 和 <span class="term">γ (gamma)</span>），需用 MathJax 渲染。</li>
+        <li><strong>术语</strong>：文本包含多个专业术语（如 <span class="term">Rankine earth pressure</span> 和 <span class="term">ATP (Adenosine Triphosphate)</span>），这些是领域知识的关键。</li>
+      </ul>
+      <p>整体上，文本体现了 ExamQA 数据集的设计目标：通过真实、多样的问题答案对，为 RL 提供可量化和可验证的奖励机制，促进 AI 在跨领域任务中的泛化能力。</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title">b. 内容翻译</h2>
+    <p>以下是文本的英文与中文对照翻译。翻译按段落分组（标题、列标题、各条目、结尾），并应用样式：原文浅灰色背景+灰色边框，翻译浅绿色背景+绿色边框。关键术语已用红色粗体高亮，数学公式居中展示并编号。</p>
+
+    <div class="original">
+      <h3>Expanding RL with Verifiable Rewards Across Diverse Domains</h3>
+    </div>
+    <div class="translation">
+      <h3>在多样化领域中扩展可验证奖励的强化学习</h3>
+    </div>
+
+    <div class="original">
+      <p>coarse fine question answer</p>
+    </div>
+    <div class="translation">
+      <p>粗粒度 细粒度 问题 答案</p>
+    </div>
+
+    <div class="original">
+      <p>Social Sciences Psychology Setting up an activity for students to 'bomb' each other with compliments belongs to ( ).Self-awareness guidance</p>
+    </div>
+    <div class="translation">
+      <p>社会科学 心理学 为学生设置一个活动，让他们用赞美“轰炸”彼此，属于（ ）。<span class="term">自我意识指导 (Self-awareness guidance)</span></p>
+    </div>
+
+    <div class="original">
+      <p>STEM Civil Engineering A gravity retaining wall meets the Rankine earth pressure conditions, H=3 m, top width 2 m, bottom width 3 m, fill c=0,<span class="term">ϕ</span>=30°, <span class="term">γ</span>=18.0 kN/m3, the base friction coefficient is 0.4, the anti-sliding stability safety factor <span class="term">Ks</span> and the anti-tilting stability safety factor <span class="term">Kt</span> are respectively ()2.67; 1.73</p>
+      <div class="formula">
+        \[
+          \phi = 30^\circ, \quad \gamma = 18.0\, \text{kN/m}^3
+        \]
+        <p>公式编号: (1) 内摩擦角 ϕ, (2) 单位重量 γ</p>
+      </div>
+    </div>
+    <div class="translation">
+      <p>STEM 土木工程 一个重力挡土墙满足<span class="term">Rankine土压力 (Rankine earth pressure)</span>条件，H=3米，顶宽2米，底宽3米，填料c=0, <span class="term">ϕ</span>=30°, <span class="term">γ</span>=18.0 kN/m3，基底摩擦系数为0.4，<span class="term">抗滑稳定安全系数 Ks (anti-sliding stability safety factor)</span>和<span class="term">抗倾覆稳定安全系数 Kt (anti-tilting stability safety factor)</span>分别为()2.67; 1.73</p>
+      <div class="formula">
+        \[
+          \phi = 30^\circ, \quad \gamma = 18.0\, \text{kN/m}^3
+        \]
+        <p>公式编号: (1) 内摩擦角 ϕ, (2) 单位重量 γ</p>
+      </div>
+    </div>
+
+    <div class="original">
+      <p>Humanities Philosophy Laozi pointed out in the 'Tao Te Ching', 'Without leaving the door, one knows the world; without peering through the window, one knows the way of heaven. The farther one goes, the less one knows. Therefore, the sage knows without traveling, sees without looking, and achieves without doing.' Laozi's view here denies the decisive role of practice in understanding</p>
+    </div>
+    <div class="translation">
+      <p>人文学科 哲学 老子在《道德经》中指出，“不出户，知天下；不窥牖，见天道。其出弥远，其知弥少。是以圣人不行而知，不见而明，不为而成。”老子的观点在这里否认了<span class="term">实践在认识中的决定性作用 (decisive role of practice in understanding)</span></p>
+    </div>
+
+    <div class="original">
+      <p>Applied Sciences Agronomy Under light, the physiological processes that can occur in the mesophyll cells and vascular bundle sheath cells of wheat (C3) areProduction of ATP and [H]</p>
+    </div>
+    <div class="translation">
+      <p>应用科学 农学 在光照下，小麦（C3植物）的叶肉细胞和维管束鞘细胞中可能发生的生理过程是<span class="term">ATP (Adenosine Triphosphate)</span>和<span class="term">[H] (Hydrogen ions or reducing power)</span>的产生</p>
+    </div>
+
+    <div class="original">
+      <p>Table 10: Example question and reference answer pairs in ExamQA.</p>
+      <p>18</p>
+    </div>
+    <div class="translation">
+      <p>表10：ExamQA中的示例问题和参考答案对。</p>
+      <p>18（页码）</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title">c. 摘要总结</h2>
+    <div class="summary">
+      <p>文本是 ExamQA 数据集 Table 10 的示例内容，核心在于展示多样化领域的问题和答案对，以支持强化学习（<span class="term">RL (Reinforcement Learning)</span>）在可验证奖励方面的应用。摘要要点：</p>
+      <ul>
+        <li><strong>结构</strong>：包含一个标题、列标题（粗粒度领域、细粒度领域、问题、答案）和四个条目，覆盖社会科学（心理学）、STEM（土木工程）、人文学科（哲学）和应用科学（农学）。</li>
+        <li><strong>内容</strong>：每个条目提供具体问题描述和参考答案，例如心理学中的自我意识活动、土木工程中的挡土墙稳定性计算、哲学中老子对实践作用的观点、农学中小麦光合作用过程。</li>
+        <li><strong>目的</strong>：通过真实、可验证的问题答案对，为 RL 提供跨领域奖励信号，促进模型泛化。文本结尾标注表格编号和页码。</li>
+        <li><strong>关键特征</strong>：强调领域多样性、答案的精确性（如数学参数和术语），服务于 RL 训练中的奖励机制设计。</li>
+      </ul>
+      <p>总之，该文本是 ExamQA 数据集的一个缩影，旨在通过结构化、多学科示例，推动 RL 在复杂、可验证环境中的扩展。</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title">d. 术语识别</h2>
+    <div class="terminology">
+      <p>识别文本中的关键术语，并用红色粗体高亮显示（包含英文原文）。以下是详细解释：</p>
+      <div class="terminology-list">
+        <div class="terminology-item">
+          <p><span class="term">RL (Reinforcement Learning)</span>: 强化学习，一种机器学习范式，代理通过与环境互动学习最优策略，以最大化累积奖励。在文本中，指代通过可验证奖励（如问题答案对）扩展 RL 应用。</p>
+        </div>
+        <div class="terminology-item">
+          <p><span class="term">ExamQA</span>: 一个假设或真实的问题回答数据集名称，包含多样化领域的问题和参考答案对，用于训练和评估 AI 模型（如 RL 代理），提供可量化奖励信号。</p>
+        </div>
+        <div class="terminology-item">
+          <p><span class="term">Self-awareness guidance (自我意识指导)</span>: 心理学和教育学术语，指通过活动（如学生互赠赞美）引导个体反思自身情感、行为和认知，提升自我意识。在文本中，是心理学问题的答案类别。</p>
+        </div>
+        <div class="terminology-item">
+          <p><span class="term">Rankine earth pressure (Rankine土压力)</span>: 土木工程术语，由 William Rankine 提出的理论，用于计算挡土墙上土壤的主动或被动压力。条件包括土壤参数如内摩擦角（ϕ）和单位重量（γ）。</p>
+        </div>
+        <div class="terminology-item">
+          <p><span class="term">ϕ (phi)</span>: 土壤力学符号，表示内摩擦角（单位：度），影响土壤剪切强度。文本中 ϕ=30° 是挡土墙计算的关键参数。</p>
+        </div>
+        <div class="terminology-item">
+          <p><span class="term">γ (gamma)</span>: 土壤力学符号，表示单位重量（单位：kN/m³），即土壤密度乘以重力加速度。文本中 γ=18.0 kN/m³ 用于土压力计算。</p>
+        </div>
+        <div class="terminology-item">
+          <p><span class="term">Ks (anti-sliding stability safety factor, 抗滑稳定安全系数)</span>: 土木工程术语，评估挡土墙抵抗滑动的安全裕度，计算值 2.67 表示稳定性较高。</p>
+        </div>
+        <div class="terminology-item">
+          <p><span class="term">Kt (anti-tilting stability safety factor, 抗倾覆稳定安全系数)</span>: 土木工程术语，评估挡土墙抵抗倾覆的安全裕度，计算值 1.73 表示稳定性可接受。</p>
+        </div>
+        <div class="terminology-item">
+          <p><span class="term">ATP (Adenosine Triphosphate, 三磷酸腺苷)</span>: 生物学术语，细胞能量货币，在光合作用和呼吸作用中产生。文本中指小麦细胞在光照下的生理过程产物。</p>
+        </div>
+        <div class="terminology-item">
+          <p><span class="term">[H] (Hydrogen ions or reducing power, 氢离子或还原力)</span>: 生物化学符号，表示氢离子或还原剂（如 NADPH），在光合作用中参与碳固定。文本中与 ATP 一同产生于小麦细胞。</p>
+        </div>
+        <div class="term">decisive role of practice in understanding (实践在认识中的决定性作用)</span>: 哲学术语，指实践（如经验活动）对知识获取的核心影响。文本中老子观点否认此作用，强调直觉认知。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>论文解析报告</title>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<style>
+  body { font-family: Arial, sans-serif; line-height: 1.6; }
+  .section { margin-bottom: 30px; }
+  h2 { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 5px; }
+  .en { background-color: #f0f0f0; border: 1px solid #cccccc; padding: 15px; border-radius: 5px; margin-bottom: 10px; }
+  .cn { background-color: #e8f5e9; border: 1px solid #4caf50; padding: 15px; border-radius: 5px; margin-bottom: 20px; }
+  .figure { background-color: #fffde7; padding: 15px; border: 1px solid #ffd600; border-radius: 5px; margin: 15px 0; }
+  .math-formula { text-align: center; margin: 20px 0; font-size: 1.2em; }
+  .term { color: #e53935; font-weight: bold; }
+  table { width: 100%; border-collapse: collapse; margin: 15px 0; }
+  th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+  th { background-color: #f2f2f2; }
+</style>
+</head>
+<body>
+
+<h1>论文解析报告</h1>
+
+<!-- 内容理解部分 -->
+<div class="section">
+  <h2>内容理解</h2>
+  <p>该文本主要研究<strong class="term">奖励模型（Reward Models, RMs）</strong>在不同基准测试上的性能表现，重点关注<strong class="term">推理时扩展（Inference-Time Scaling）</strong>技术。核心内容包含：</p>
+  <ul>
+    <li>图6展示不同RM模型在<strong class="term">Reward Bench</strong>和综合基准上的性能随采样数(k)的变化趋势</li>
+    <li>表6详细比较不同模型在多个基准指标（Reward Bench, PPE Preference, PPE Correctness, RMB）上的得分</li>
+    <li>实验证明<strong class="term">MetaRM@k</strong>方法显著提升性能，DeepSeek-GRM-27B模型在Voting@32时达到最佳结果（72.8 Overall）</li>
+    <li>D.1章节说明实验超参数设置：温度参数设为0.5（部分实验为0），默认配置<math xmlns="http://www.w3.org/1998/Math/MathML"><msub><mi>k</mi><mtext>meta</mtext></msub><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mi>k</mi></math></li>
+  </ul>
+</div>
+
+<!-- 内容翻译部分 -->
+<div class="section">
+  <h2>内容翻译</h2>
+  
+  <div class="en">Preprint. Under review.</div>
+  <div class="cn">预印本。正在评审中。</div>
+  
+  <div class="figure">
+    <div class="en">
+      80.5<br>82.5<br>84.5<br>86.5<br>88.5<br>90.5<br>92.5<br>94.5<br>
+      1 2 4 8 16 32<br>
+      k: #sampled rewards (logscale)<br>
+      DeepSeek-GRM-27B (MetaRM@k)<br>
+      DeepSeek-GRM-27B (Voting@k)<br>
+      GPT-4o-2024-08-06 (Greedy)<br>
+      Nemotron-4-340B-Reward (Scalar)<br>
+      Gemini-1.5-Pro-002 (Greedy)<br>
+      Claude-3.5-sonnet-20240620 (Greedy)<br>
+      LLaMA-3.1-70B-Instruct (Greedy)<br>
+      ArmoRM-LLaMA3-8B-v0.1 (Scalar)<br>
+      CLoud-Gemma-2-27B (Voting@k)<br>
+      DeepSeek-BTRM-27B (Scalar)<br>
+      LLM-as-a-Judge w/ TokenProb<br>
+      Skywork-Reward-Gemma-2-27B (Scalar)<br>
+      (Voting@k)<br>
+      InternLM2-20B-Reward (Scalar)<br>
+      DeepSeek-PairRM-27B (Scalar)<br>
+      (a) Results on the Reward Bench benchmark.
+    </div>
+    <div class="cn">
+      80.5<br>82.5<br>84.5<br>86.5<br>88.5<br>90.5<br>92.5<br>94.5<br>
+      1 2 4 8 16 32<br>
+      k: 采样奖励数量（对数尺度）<br>
+      DeepSeek-GRM-27B (MetaRM@k)<br>
+      DeepSeek-GRM-27B (Voting@k)<br>
+      GPT-4o-2024-08-06 (贪婪解码)<br>
+      Nemotron-4-340B-Reward (标量)<br>
+      Gemini-1.5-Pro-002 (贪婪解码)<br>
+      Claude-3.5-sonnet-20240620 (贪婪解码)<br>
+      LLaMA-3.1-70B-Instruct (贪婪解码)<br>
+      ArmoRM-LLaMA3-8B-v0.1 (标量)<br>
+      CLoud-Gemma-2-27B (Voting@k)<br>
+      DeepSeek-BTRM-27B (标量)<br>
+      基于TokenProb的LLM-as-a-Judge<br>
+      Skywork-Reward-Gemma-2-27B (标量)<br>
+      (Voting@k)<br>
+      InternLM2-20B-Reward (标量)<br>
+      DeepSeek-PairRM-27B (标量)<br>
+      (a) Reward Bench基准测试结果
+    </div>
+  </div>
+  
+  <div class="figure">
+    <div class="en">
+      66.5<br>68.5<br>70.5<br>72.5<br>
+      1 2 4 8 16 32<br>
+      k: #sampled rewards (logscale)<br>
+      DeepSeek-GRM-27B (MetaRM@k)<br>
+      DeepSeek-GRM-27B (Voting@k)<br>
+      GPT-4o (Greedy)<br>
+      Nemotron-4-340B-Reward (Scalar)<br>
+      Gemini-1.5-Pro-002 (Greedy)<br>
+      Claude-3.5-sonnet-20240620 (Greedy)<br>
+      LLaMA-3.1-70B-Instruct (Greedy)<br>
+      ArmoRM-LLaMA3-8B-v0.1 (Scalar)<br>
+      CLoud-Gemma-2-27B (Voting@k)<br>
+      DeepSeek-BT-27B (Scalar)<br>
+      LLM-as-a-Judge w/ TokenProb<br>
+      (Voting@k)<br>
+      Skywork-Reward-Gemma-2-27B (Scalar)<br>
+      InternLM2-20B-Reward (Scalar)<br>
+      (b) Results on all tested reward modeling benchmarks.
+    </div>
+    <div class="cn">
+      66.5<br>68.5<br>70.5<br>72.5<br>
+      1 2 4 8 16 32<br>
+      k: 采样奖励数量（对数尺度）<br>
+      DeepSeek-GRM-27B (MetaRM@k)<br>
+      DeepSeek-GRM-27B (Voting@k)<br>
+      GPT-4o (贪婪解码)<br>
+      Nemotron-4-340B-Reward (标量)<br>
+      Gemini-1.5-Pro-002 (贪婪解码)<br>
+      Claude-3.5-sonnet-20240620 (贪婪解码)<br>
+      LLaMA-3.1-70B-Instruct (贪婪解码)<br>
+      ArmoRM-LLaMA3-8B-v0.1 (标量)<br>
+      CLoud-Gemma-2-27B (Voting@k)<br>
+      DeepSeek-BT-27B (标量)<br>
+      基于TokenProb的LLM-as-a-Judge<br>
+      (Voting@k)<br>
+      Skywork-Reward-Gemma-2-27B (标量)<br>
+      InternLM2-20B-Reward (标量)<br>
+      (b) 所有测试奖励建模基准结果
+    </div>
+  </div>
+  
+  <div class="en">Figure 6: Inference-time scaling performance with different RMs on different reward modeling benchmarks. Non-italic font indicates models based on Gemma-2-27B.</div>
+  <div class="cn">图6：不同奖励模型在不同奖励建模基准上的推理时扩展性能。非斜体字体表示基于Gemma-2-27B的模型。</div>
+  
+  <div class="en">
+    <table>
+      <tr><th>Model</th><th>Reward Bench</th><th>PPE Preference</th><th>PPE Correctness</th><th>RMB</th><th>Overall</th></tr>
+      <tr><td colspan="6"><strong>Reported Results of Public Models</strong></td></tr>
+      <tr><td>Nemotron-4-340B-Reward</td><td>92.0</td><td>59.3</td><td>60.8</td><td>69.9</td><td>70.5</td></tr>
+      <tr><td>GPT-4o</td><td>86.7</td><td>67.1</td><td>57.6</td><td>73.8</td><td>71.3</td></tr>
+      <tr><td colspan="6"><strong>Results of Inference-Time Scaling (Voting@1)</strong></td></tr>
+      <tr><td>LLM-as-a-Judge</td><td>83.0</td><td>63.4</td><td>57.4</td><td>64.3</td><td>67.0</td></tr>
+      <tr><td>CLoud-Gemma-2-27B</td><td>82.0</td><td>67.0</td><td>62.0</td><td>63.2</td><td>68.5</td></tr>
+      <tr><td>DeepSeek-GRM-27B-RFT (Ours)</td><td>84.0</td><td>62.2</td><td>59.4</td><td>65.8</td><td>67.8</td></tr>
+      <tr><td>DeepSeek-GRM-27B (Ours)</td><td>85.2</td><td>62.4</td><td>59.5</td><td>64.4</td><td>67.9</td></tr>
+      <tr><td colspan="6"><strong>Results of Inference-Time Scaling (Voting@8)</strong></td></tr>
+      <tr><td>LLM-as-a-Judge</td><td>83.4</td><td>63.8</td><td>58.2</td><td>65.2</td><td>67.6 (+0.6)</td></tr>
+      <tr><td>LLM-as-a-Judge w/TokenProb</td><td>83.8</td><td>64.6</td><td>58.8</td><td>65.2</td><td>68.1 (+1.1)</td></tr>
+      <tr><td>CLoud-Gemma-2-27B</td><td>82.4</td><td>67.3</td><td>62.4</td><td>63.2</td><td>68.8 (+0.3)</td></tr>
+      <tr><td>DeepSeek-GRM-27B-RFT (Ours)</td><td>85.3</td><td>64.5</td><td>59.7</td><td>67.7</td><td>69.3 (+1.5)</td></tr>
+      <tr><td>DeepSeek-GRM-27B (Ours)</td><td>87.7</td><td>64.9</td><td>60.3</td><td>69.5</td><td>70.6 (+2.7)</td></tr>
+      <tr><td>DeepSeek-GRM-27B (MetaRM) (Ours)</td><td>89.8</td><td>66.4</td><td>63.0</td><td>68.8</td><td>72.0 (+4.1)</td></tr>
+      <tr><td colspan="6"><strong>Results of Further Inference-Time Scaling (Voting@32)</strong></td></tr>
+      <tr><td>DeepSeek-GRM-27B (Ours)</td><td>88.5</td><td>65.3</td><td>60.4</td><td>69.7</td><td>71.0 (+3.1)</td></tr>
+      <tr><td>DeepSeek-GRM-27B (MetaRM) (Ours)</td><td>90.4</td><td>67.2</td><td>63.2</td><td>70.3</td><td>72.8 (+4.9)</td></tr>
+    </table>
+  </div>
+  <div class="cn">
+    <table>
+      <tr><th>模型</th><th>Reward Bench</th><th>PPE偏好</th><th>PPE正确性</th><th>RMB</th><th>综合</th></tr>
+      <tr><td colspan="6"><strong>公开模型报告结果</strong></td></tr>
+      <tr><td>Nemotron-4-340B-Reward</td><td>92.0</td><td>59.3</td><td>60.8</td><td>69.9</td><td>70.5</td></tr>
+      <tr><td>GPT-4o</td><td>86.7</td><td>67.1</td><td>57.6</td><td>73.8</td><td>71.3</td></tr>
+      <tr><td colspan="6"><strong>推理时扩展结果 (Voting@1)</strong></td></tr>
+      <tr><td>LLM-as-a-Judge</td><td>83.0</td><td>63.4</td><td>57.4</td><td>64.3</td><td>67.0</td></tr>
+      <tr><td>CLoud-Gemma-2-27B</td><td>82.0</td><td>67.0</td><td>62.0</td><td>63.2</td><td>68.5</td></tr>
+      <tr><td>DeepSeek-GRM-27B-RFT (本研)</td><td>84.0</td><td>62.2</td><td>59.4</td><td>65.8</td><td>67.8</td></tr>
+      <tr><td>DeepSeek-GRM-27B (本研)</td><td>85.2</td><td>62.4</td><td>59.5</td><td>64.4</td><td>67.9</td></tr>
+      <tr><td colspan="6"><strong>推理时扩展结果 (Voting@8)</strong></td></tr>
+      <tr><td>LLM-as-a-Judge</td><td>83.4</td><td>63.8</td><td>58.2</td><td>65.2</td><td>67.6 (+0.6)</td></tr>
+      <tr><td>LLM-as-a-Judge w/TokenProb</td><td>83.8</td><td>64.6</td><td>58.8</td><td>65.2</td><td>68.1 (+1.1)</td></tr>
+      <tr><td>CLoud-Gemma-2-27B</td><td>82.4</td><td>67.3</td><td>62.4</td><td>63.2</td><td>68.8 (+0.3)</td></tr>
+      <tr><td>DeepSeek-GRM-27B-RFT (本研)</td><td>85.3</td><td>64.5</td><td>59.7</td><td>67.7</td><td>69.3 (+1.5)</td></tr>
+      <tr><td>DeepSeek-GRM-27B (本研)</td><td>87.7</td><td>64.9</td><td>60.3</td><td>69.5</td><td>70.6 (+2.7)</td></tr>
+      <tr><td>DeepSeek-GRM-27B (MetaRM) (本研)</td><td>89.8</td><td>66.4</td><td>63.0</td><td>68.8</td><td>72.0 (+4.1)</td></tr>
+      <tr><td colspan="6"><strong>进一步推理时扩展结果 (Voting@32)</strong></td></tr>
+      <tr><td>DeepSeek-GRM-27B (本研)</td><td>88.5</td><td>65.3</td><td>60.4</td><td>69.7</td><td>71.0 (+3.1)</td></tr>
+      <tr><td>DeepSeek-GRM-27B (MetaRM) (本研)</td><td>90.4</td><td>67.2</td><td>63.2</td><td>70.3</td><td>72.8 (+4.9)</td></tr>
+    </table>
+  </div>
+  
+  <div class="en">Table 6: Detailed results of inference-time scalability experiments (Table 3) of different methods and models on RM benchmarks. Underlined numbers indicate the best performance, bold numbers indicate the best performance among baseline and our methods, and italicized font denotes scalar or semi-scalar RMs. For meta RM guided voting (MetaRM), \( k_{\text{meta}} = \frac{1}{2} k \). Numbers in the parentheses is the performance change after inference-time scaling.</div>
+  <div class="cn">表6：不同方法和模型在奖励模型基准上的推理时扩展性实验详细结果（对应表3）。下划线数字表示最佳性能，粗体数字表示基线和本方法中的最佳性能，斜体字体表示标量或半标量奖励模型。对于元奖励模型引导投票（MetaRM），\( k_{\text{meta}} = \frac{1}{2} k \)。括号内数字表示推理时扩展后的性能变化。</div>
+  
+  <div class="en">BTRM-27B, and DeepSeek-PairRM-27B (Jiang et al., 2023) uses the same dataset from the RL stage of DeepSeek-GRM-27B, except for single response rating data.</div>
+  <div class="cn">BTRM-27B和DeepSeek-PairRM-27B（Jiang等人，2023）使用了与DeepSeek-GRM-27B强化学习阶段相同的数据集，但排除了单响应评分

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>OneRec技术报告解析</title>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<style>
+  body { font-family: Arial, sans-serif; line-height: 1.6; }
+  .original { background-color: #f0f0f0; border: 1px solid #cccccc; padding: 15px; margin-bottom: 10px; }
+  .translation { background-color: #e0ffe0; border: 1px solid #00cc00; padding: 15px; margin-bottom: 20px; }
+  .highlight { color: red; font-weight: bold; }
+  .formula-container { text-align: center; margin: 20px 0; background-color: #ffffcc; padding: 15px; }
+  .formula-label { display: block; font-style: italic; margin-top: 5px; }
+  section { margin-bottom: 30px; }
+  h1, h2, h3 { color: #333; }
+  dt { font-weight: bold; margin-top: 10px; }
+  dd { margin-bottom: 15px; }
+</style>
+</head>
+<body>
+
+<h1>OneRec技术报告解析</h1>
+
+<section id="content-understanding">
+  <h2>内容理解</h2>
+  <p>本文本摘自OneRec技术报告中的表14，主要定义了OneRec推荐系统框架中使用的核心符号和术语（第一部分）。内容分为三大模块：</p>
+  <ol>
+    <li><span class="highlight">通用符号(General Notation)</span>：定义模型基础参数如隐藏维度、量化层设置和项目语义标识符</li>
+    <li><span class="highlight">项目标记化(Item Tokenization)</span>：描述多模态项目特征的压缩编码过程，包含QFormer架构细节</li>
+    <li><span class="highlight">多尺度特征工程(Multi-Scale Feature Engineering)</span>：定义用户行为序列的分级建模框架，包含短期/长期行为路径的特征表示</li>
+  </ol>
+  <p>该符号表为理解OneRec的量化推荐架构提供了关键术语参考，涉及协同过滤、特征压缩和序列建模等技术。</p>
+</section>
+
+<section id="translation">
+  <h2>内容翻译</h2>
+  
+  <div class="original">
+    <h3>Table 14 | Notation and Symbol Definitions in OneRec (Part 1)</h3>
+    <h4>General Notation</h4>
+    <p><span class="highlight">𝑑model</span> Model hidden dimension (embedding dimension)</p>
+    <p><span class="highlight">𝐿𝑡</span> Number of quantization layers in tokenization (set to 3)</p>
+    <p><span class="highlight">𝑁𝑡</span> Codebook size for each quantization layer</p>
+    <p><span class="highlight">{𝑠1 𝑚,𝑠2 𝑚,...,𝑠𝐿𝑡 𝑚}</span> Coarse-to-fine semantic identifiers for item 𝑚</p>
+  </div>
+  <div class="translation">
+    <h3>表14 | OneRec中的符号定义（第一部分）</h3>
+    <h4>通用符号</h4>
+    <p><span class="highlight">𝑑model</span> 模型隐藏维度（嵌入维度）</p>
+    <p><span class="highlight">𝐿𝑡</span> 标记化中的量化层数（设置为3）</p>
+    <p><span class="highlight">𝑁𝑡</span> 每个量化层的码本大小</p>
+    <p><span class="highlight">{𝑠1 𝑚,𝑠2 𝑚,...,𝑠𝐿𝑡 𝑚}</span> 项目𝑚的从粗到细的语义标识符</p>
+  </div>
+
+  <div class="original">
+    <h4>Item Tokenization</h4>
+    <p><span class="highlight">𝑑𝑡</span> Embedding dimension in tokenization (set to 512)</p>
+    <p><span class="highlight">𝑁𝑀</span> The number of original multimodal token vectors of an item (set to 1280)</p>
+    <p><span class="highlight">M</span> Multimodal token vectors from miniCPM-V-8B, M∈ℝ<sup>𝑁𝑀×𝑑𝑡</sup></p>
+    <p><span class="highlight">𝑁˜𝑀</span> The number of compressed multimodal token vectors of an item (set to 4)</p>
+    <p><span class="highlight">Q(𝑖)</span> Query tokens in QFormer at layer 𝑖, Q(𝑖)∈ℝ<sup>𝑁˜𝑀×𝑑𝑡</sup></p>
+    <p><span class="highlight">˜M</span> Compressed multimodal representation after QFormer, ˜M∈ℝ<sup>𝑁˜𝑀×𝑑𝑡</sup></p>
+    <p><span class="highlight">𝑁𝑐</span> Number of QFormer layers (set to 4)</p>
+    <p><span class="highlight">R(𝑙)</span> Residual vectors at quantization layer 𝑙</p>
+    <p><span class="highlight">C(𝑙)</span> Codebook (K-means centroids) at quantization layer 𝑙</p>
+    <p><span class="highlight">𝒄(𝑙)𝑘</span> 𝑘-th centroid in the codebook at layer 𝑙</p>
+    <p><span class="highlight">𝑠𝑙𝑖</span> Semantic identifier for item 𝑖 at quantization layer 𝑙</p>
+    <p><span class="highlight">D𝑝𝑎𝑖𝑟</span> Dataset of item pairs with high collaborative similarity</p>
+    <p><span class="highlight">𝜏</span> Temperature coefficient for item-to-item loss</p>
+    <p><span class="highlight">sim(·,·)</span> Similarity function used in item-to-item contrastive loss</p>
+    <p><span class="highlight">𝑡𝑘</span> The 𝑘-th caption token</p>
+  </div>
+  <div class="translation">
+    <h4>项目标记化</h4>
+    <p><span class="highlight">𝑑𝑡</span> 标记化中的嵌入维度（设置为512）</p>
+    <p><span class="highlight">𝑁𝑀</span> 项目原始多模态标记向量的数量（设置为1280）</p>
+    <p><span class="highlight">M</span> 来自miniCPM-V-8B的多模态标记向量，M∈ℝ<sup>𝑁𝑀×𝑑𝑡</sup></p>
+    <p><span class="highlight">𝑁˜𝑀</span> 项目压缩后多模态标记向量的数量（设置为4）</p>
+    <p><span class="highlight">Q(𝑖)</span> 第𝑖层QFormer中的查询标记，Q(𝑖)∈ℝ<sup>𝑁˜𝑀×𝑑𝑡</sup></p>
+    <p><span class="highlight">˜M</span> QFormer后的压缩多模态表示，˜M∈ℝ<sup>𝑁˜𝑀×𝑑𝑡</sup></p>
+    <p><span class="highlight">𝑁𝑐</span> QFormer层数（设置为4）</p>
+    <p><span class="highlight">R(𝑙)</span> 量化层𝑙的残差向量</p>
+    <p><span class="highlight">C(𝑙)</span> 量化层𝑙的码本（K-means质心）</p>
+    <p><span class="highlight">𝒄(𝑙)𝑘</span> 层𝑙码本中的第𝑘个质心</p>
+    <p><span class="highlight">𝑠𝑙𝑖</span> 项目𝑖在量化层𝑙的语义标识符</p>
+    <p><span class="highlight">D𝑝𝑎𝑖𝑟</span> 具有高协同相似度的项目对数据集</p>
+    <p><span class="highlight">𝜏</span> 项目间损失的温度系数</p>
+    <p><span class="highlight">sim(·,·)</span> 项目间对比损失中使用的相似度函数</p>
+    <p><span class="highlight">𝑡𝑘</span> 第𝑘个标题标记</p>
+  </div>
+
+  <div class="original">
+    <h4>Multi-Scale Feature Engineering</h4>
+    <p><span class="highlight">𝐿𝑠</span> Length of short-term behavior sequence (set to 20)</p>
+    <p><span class="highlight">𝐿𝑝</span> Length of positive-feedback behavior sequence (set to 256)</p>
+    <p><span class="highlight">𝐿𝑙</span> Length of lifelong behavior sequence (set to 2000)</p>
+    <p><span class="highlight">f𝑢</span> Concatenated user static features before dense transformation</p>
+    <p><span class="highlight">f𝑠</span> Concatenated short-term behavior features before dense transformation</p>
+    <p><span class="highlight">f𝑝</span> Concatenated positive-feedback behavior features before dense transformation</p>
+    <p><span class="highlight

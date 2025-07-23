@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>论文解析报告</title>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    body { font-family: Arial, sans-serif; line-height: 1.6; }
+    .original { background-color: #f0f0f0; border: 1px solid #cccccc; padding: 15px; margin-bottom: 10px; }
+    .translation { background-color: #e0f2e0; border: 1px solid #a0d0a0; padding: 15px; margin-bottom: 20px; }
+    .figure { background-color: #ffffcc; padding: 15px; margin: 20px 0; text-align: center; }
+    table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+    th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+    .term { color: red; font-weight: bold; }
+    .section-title { font-size: 1.2em; font-weight: bold; margin-top: 30px; color: #2c3e50; }
+    .formula-container { text-align: center; margin: 20px 0; }
+    .formula-label { font-style: italic; margin-top: 5px; }
+  </style>
+</head>
+<body>
+
+<h1>论文解析报告</h1>
+
+<!-- 内容理解 -->
+<div class="section-title">1. 内容理解</div>
+<p>该文本主要包含三部分核心内容：</p>
+<ol>
+  <li><span class="term">Cohen's Kappa（科恩卡帕系数）</span>一致性分析：通过图3和表8展示GPT-4o模型与多人投票机制在不同学科领域（多学科/数学）和投票人数(m)条件下的一致性水平</li>
+  <li>强化学习实验配置：表9详细列出了<span class="term">RL（强化学习）</span>和<span class="term">SFT（监督微调）</span>的关键<span class="term">Hyperparameter（超参数）</span>设置</li>
+  <li>方法论说明：使用<span class="term">Majority vote（多数投票）</span>机制（要求YES票数 > m/2）作为评估基准</li>
+</ol>
+<p>实验数据表明：当投票人数m增加时，GPT-4o与人类评分者的一致性保持稳定（college-level κ≈0.88），证明其评估可靠性。</p>
+
+<!-- 内容翻译 -->
+<div class="section-title">2. 内容翻译</div>
+
+<div class="original">
+  <p>Expanding RL with Verifiable Rewards Across Diverse Domains</p>
+  <p>Majority vote over m graders (YES count > m/2)</p>
+  <p>0.810.820.830.840.850.860.870.88Cohen's Kappa</p>
+  <p>Almost Perfect Agreement (0.81)Cohen's Kappa: GPT-4o vs. Majority Vote with m Graders</p>
+  <p>Multi-Subject</p>
+  <p>Math</p>
+  <p>Figure 3: Agreement between GPT-4o and Majority Vote with m Graders, measured by Cohen’s Kappa.</p>
+  <p>Level Agreement ( κ↑)</p>
+  <p>m=1m=10</p>
+  <p>college-level 0.881 0.883</p>
+  <p>Table 8: Cohen’s Kappa agreement ( κ) between GPT-4o and majority voting ( m: the number of votes) using Qwen2.5-72B-Instruct as evaluator across college-level multi-subject problems.</p>
+  <p>HyperparameterReward Training Main Experiments</p>
+  <p>RL SFT RL SFT</p>
+  <p>micro train batch size 8 4 8 4</p>
+  <p>train batch size 128 128 128 128</p>
+  <p>micro rollout batch size 16 – 16 –</p>
+  <p>rollout batch size 128 – 128 –</p>
+  <p>nsamples perprompt 4 – 4 –</p>
+  <p>max samples 40000 1600000 30000 30000</p>
+  <p>max epochs 1 1 1 1</p>
+  <p>prompt max len 1024 – 1024 –</p>
+  <p>generate max len 1024 – 1024 –</p>
+  <p>max len – 4096 – 4096</p>
+  <p>actor learning rate 5e-7 – 5e-7 –</p>
+  <p>initklcoef 0.01 – 0.01 –</p>
+  <p>Table 9: Training hyper parameters. Other hyper parameters are the default configuration in OpenRLHF.</p>
+</div>
+
+<div class="translation">
+  <p>在多样化领域中扩展具有可验证奖励的强化学习</p>
+  <p>基于m位评分者的多数投票（YES票数 > m/2）</p>
+  <p>0.81 0.82 0.83 0.84 0.85 0.86 0.87 0.88 Cohen's Kappa值</p>
+  <p>几乎完美的一致性(0.81) Cohen's Kappa：GPT-4o vs. 含m位评分者的多数投票</p>
+  <p>多学科</p>
+  <p>数学</p>
+  <p>图3：通过<span class="term">Cohen's Kappa（科恩卡帕系数）</span>测量的GPT-4o与含m位评分者的多数投票之间的一致性</p>
+  <p>一致性水平 (κ↑)</p>
+  <p>m=1 m=10</p>
+  <p>大学水平 0.881 0.883</p>
+  <p>表8：在大学水平多学科问题上，使用Qwen2.5-72B-Instruct作为评估器，GPT-4o与多数投票（m：投票数）之间的<span class="term">Cohen's Kappa（科恩卡帕系数）</span>一致性(κ)</p>
+  <p>超参数 奖励训练 主实验</p>
+  <p>RL SFT RL SFT</p>
+  <p>微训练批次大小 8 4 8 4</p>
+  <p>训练批次大小 128 128 128 128</p>
+  <p>微rollout批次大小 16 – 16 –</p>
+  <p>rollout批次大小 128 – 128 –</p>
+  <p>每提示样本数 4 – 4 –</p>
+  <p>最大样本数 40000 1600000 30000 30000</p>
+  <p>最大训练轮数 1 1 1 1</p>
+  <p>提示最大长度 1024 – 1024 –</p>
+  <p>生成最大长度 1024 – 1024 –</p>
+  <p>最大长度 – 4096 – 4096</p>
+  <p>行动者学习率 5e-7 – 5e-7 –</p>
+  <p>初始KL系数 0.01 – 0.01 –</p>
+  <p>表9：训练<span class="term">Hyperparameter（超参数）</span>。其他超参数采用<span class="term">OpenRLHF</span>中的默认配置</p>
+</div>
+
+<!-- 图表特殊处理 -->
+<div class="figure">
+  <p>图示说明：图3展示Cohen's Kappa值随评分者数量(m)的变化趋势</p>
+  <p>横轴：评分者数量(m)，纵轴：Kappa值(κ)，图例：多学科/数学领域</p>
+</div>
+
+<!-- 摘要总结 -->
+<div class="section-title">3. 摘要总结</div>
+<p>本文核心研究<span class="term">RL（强化学习）</span>在多样化领域中的可验证奖励机制，关键贡献包括：</p>
+<ol>
+  <li>提出基于<span class="term">Majority vote（多数投票）</span>(m位评分者，阈值>m/2)的评估框架</li>
+  <li>通过<span class="term">Cohen's Kappa（科恩卡帕系数）</span>量化GPT-4o与人类评估的一致性：<br>
+    - 大学多学科问题中κ≈0.88（m=1和m=10时一致性稳定）<br>
+    - 达到"几乎完美"一致性水平(κ>0.81)</li>
+  <li>公开完整<span class="term">RL（强化学习）</span>/<span class="term">SFT（监督微调）</span>实验配置：<br>
+    - 关键参数：批次大小(8-128)、学习率(5e-7)、KL系数(0.01)<br>
+    - 训练规模：最高1.6M样本，基于<span class="term">OpenRLHF</span>框架实现</li>
+</ol>
+
+<!-- 术语识别 -->
+<div class="section-title">4. 术语识别</div>
+<table>
+  <tr>
+    <th>术语</th>
+    <th>英文全称/解释</th>
+    <th>详细说明</th>
+  </tr>
+  <tr>
+    <td class="term">Cohen's Kappa</td>
+    <td>Cohen's Kappa Coefficient</td>
+    <td>衡量分类任务中评估者间一致性的统计量，计算公式：<div class="formula-container">\(\kappa = \frac{p_o - p_e}{1 - p_e}\)</div><div class="formula-label">其中\(p_o\)为观察一致性，\(p_e\)为期望一致性</div>取值0.81-1.00表示"几乎完美"一致性</td>
+  </tr>
+  <tr>
+    <td class="term">Majority vote</td>
+    <td>Majority Voting</td>
+    <td>集成学习方法，要求最终决策获得超过半数投票（YES count > m/2）。用于消除个体评估者偏差</td>
+  </tr>
+  <tr>
+    <td class="term">RL</td>
+    <td>Reinforcement Learning</td>
+    <td>强化学习，智能体通过环境奖励信号学习最优决策策略的机器学习范式</td>
+  </tr>
+  <tr>
+    <td class="term">SFT</td>
+    <td>Supervised Fine-Tuning</td>
+    <td>监督微调，在预训练模型基础上使用标注数据进行有监督训练</td>
+  </tr>
+  <tr>
+    <td class="term">Hyperparameter</td>
+    <td>Hyperparameter</td>
+    <td>模型训练前设置的参数（如学习率、批次大小），区别于训练中学习的参数</td>
+  </tr>
+  <tr>
+    <td class="term">OpenRLHF</td>
+    <td>Open Reinforcement Learning from Human Feedback</td>
+    <td>基于人类反馈的强化学习开源框架，提供RLHF训练标准化实现</td>
+  </tr>
+  <tr>
+    <td class="term">initklcoef</td>
+    <td>Initial KL Coefficient</td>
+    <td>KL散度初始系数（表9），控制新策略与原始策略的差异程度，防止强化学习训练崩溃</td>
+  </tr>
+</table>
+
+</body>
+</html>

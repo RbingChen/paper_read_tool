@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>论文解析报告</title>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<style>
+  body { font-family: Arial, sans-serif; line-height: 1.6; }
+  .section { margin-bottom: 30px; }
+  h2 { border-bottom: 2px solid #333; padding-bottom: 5px; }
+  .original { 
+    background-color: #f0f0f0; 
+    border: 1px solid #ccc; 
+    padding: 15px; 
+    margin-bottom: 10px; 
+    border-radius: 5px;
+  }
+  .translation { 
+    background-color: #e0f7e0; 
+    border: 1px solid #4CAF50; 
+    padding: 15px; 
+    border-radius: 5px;
+  }
+  .figure { 
+    background-color: #fffde7; 
+    padding: 15px; 
+    margin: 15px 0; 
+    border-left: 4px solid #FFD700;
+  }
+  .term { 
+    color: red; 
+    font-weight: bold; 
+  }
+  .formula-container { 
+    text-align: center; 
+    margin: 20px 0;
+  }
+  .term-list { 
+    margin-top: 10px; 
+    padding-left: 20px;
+  }
+</style>
+</head>
+<body>
+
+<div class="section">
+  <h2>内容理解</h2>
+  <p>该文本描述了强化学习对齐研究中的关键发现：奖励模型在不同奖励区间的可靠性差异。主要内容聚焦于：</p>
+  <ul>
+    <li>通过<strong class="term">策略过滤(Policy Filtration)</strong>技术缓解<strong class="term">奖励模型(Reward Models)</strong>的噪声问题</li>
+    <li>在<strong class="term">Ape210k</strong>和<strong class="term">CMATH</strong>两个基准上的实验验证</li>
+    <li>可视化展示奖励值与实际得分的相关性（图4）</li>
+    <li>核心发现：奖励模型在中等奖励区间的可靠性显著低于高/低奖励区间</li>
+    <li>实验方法：使用微调策略生成响应→分组计算平均正确率→重复验证</li>
+  </ul>
+</div>
+
+<div class="section">
+  <h2>内容翻译</h2>
+  
+  <div class="original">
+    Policy Filtration for RLHF to Mitigate Noise in Reward Models
+  </div>
+  <div class="translation">
+    通过<strong class="term">策略过滤(Policy Filtration)</strong>降低<strong class="term">RLHF</strong>中<strong class="term">奖励模型(Reward Models)</strong>的噪声
+  </div>
+  
+  <div class="figure">
+    <div class="original">
+      (a) The actual scores vs. the reward values for the reward model evaluated on <strong class="term">Ape210k</strong><br>
+      (b) The actual scores vs. the reward values for the reward model evaluated on <strong class="term">CMATH</strong>
+    </div>
+    <div class="translation">
+      (a) 在<strong class="term">Ape210k</strong>数据集上评估的<strong class="term">奖励模型(Reward Model)</strong>的<strong class="term">实际分数(actual scores)</strong>与奖励值对比<br>
+      (b) 在<strong class="term">CMATH</strong>数据集上评估的<strong class="term">奖励模型(Reward Model)</strong>的<strong class="term">实际分数(actual scores)</strong>与奖励值对比
+    </div>
+  </div>
+  
+  <div class="original">
+    Figure 4. We provide additional evidence that the reward model is less reliable when it yields moderate rewards than when it yields high or low rewards. We conduct the same statistics as in Figure 1 but on different benchmarks. Specifically, the reward models for the Ape210k and CMATH benchmarks are trained separately using the corresponding datasets for these two benchmarks. We collect 10 responses for each prompt in the dataset using a fine-tuned policy. We group the responses with similar rewards and calculate the average of their actual scores (i.e., the average correctness), indicating each group by one point. To evaluate the reliability of the reward model, we repeat the process ten times resulting in ten lines.
+  </div>
+  <div class="translation">
+    图4. 我们提供进一步证据表明：当<strong class="term">奖励模型(reward model)</strong>产生中等奖励时，其可靠性低于产生高奖励或低奖励时。我们在不同基准上重复了图1的统计方法。具体而言：
+    <ul>
+      <li>针对<strong class="term">Ape210k</strong>和<strong class="term">CMATH</strong>基准的奖励模型分别使用对应数据集独立训练</li>
+      <li>使用<strong class="term">微调策略(fine-tuned policy)</strong>为每个提示收集10个响应</li>
+      <li>将奖励值相似的响应分组→计算其<strong class="term">实际分数(actual scores)</strong>（即平均正确率）的平均值→每组用一个数据点表示</li>
+      <li>为评估可靠性，重复该过程10次生成10条趋势线</li>
+    </ul>
+  </div>
+</div>
+
+<div class="section">
+  <h2>摘要总结</h2>
+  <p>本文核心内容是通过实验验证<strong class="term">奖励模型(Reward Models)</strong>的可靠性缺陷及其解决方案：</p>
+  <ul>
+    <li><strong>核心问题</strong>：奖励模型在中等奖励区间的预测可靠性显著下降</li>
+    <li><strong>验证方法</strong>：在<strong class="term">Ape210k</strong>和<strong class="term">CMATH</strong>基准上分析奖励值与实际正确率的相关性</li>
+    <li><strong>关键技术</strong>：采用<strong class="term">策略过滤(Policy Filtration)</strong>减少<strong class="term">RLHF</strong>过程中的噪声干扰</li>
+    <li><strong>实验设计</strong>：
+      <ol>
+        <li>使用<strong class="term">微调策略(fine-tuned policy)</strong>生成多组响应</li>
+        <li>按奖励值分组计算平均实际正确率</li>
+        <li>通过10次重复实验验证结果稳定性</li>
+      </ol>
+    </li>
+    <li><strong>核心结论</strong>：奖励模型在高/低奖励区间更可靠，需针对性优化中等奖励区间性能</li>
+  </ul>
+</div>
+
+<div class="section">
+  <h2>术语识别</h2>
+  <div class="term-list">
+    <p><strong class="term">1. Policy Filtration (策略过滤)</strong><br>
+    技术定义：在<strong class="term">RLHF</strong>过程中筛选策略输出的方法，用于减少噪声数据对奖励模型训练的干扰<br>
+    作用机制：通过阈值过滤中等置信度的策略输出，保留高确定性数据</p>
+    
+    <p><strong class="term">2. RLHF (Reinforcement Learning from Human Feedback，基于人类反馈的强化学习)</strong><br>
+    技术定义：结合人类偏好数据训练奖励模型，再用其优化强化学习策略的框架<br>
+    核心组件：人类偏好标注→奖励模型训练→策略优化循环</p>
+    
+    <p><strong class="term">3. Reward Models (奖励模型)</strong><br>
+    技术定义：学习人类偏好映射关系的神经网络，接收策略输出→预测标量奖励值<br>
+    关键挑战：中等奖励区间存在较高预测噪声（本文核心发现）</p>
+    
+    <p><strong class="term">4. Noise (噪声)</strong><br>
+    本文特指：奖励模型预测值与真实人类偏好之间的系统性偏差<br>
+    主要来源：标注不一致性、模型容量限制、数据分布偏差</p>
+    
+    <p><strong class="term">5. Ape210k/CMATH (基准数据集)</strong><br>
+    • Ape210k：包含21万中英文数学问题的推理数据集<br>
+    • CMATH：中文数学问题测试集，聚焦复杂算术和逻辑推理<br>
+    实验作用：验证奖励模型在不同领域可靠性</p>
+    
+    <p><strong class="term">6. Fine-tuned Policy (微调策略)</strong><br>
+    技术定义：在预训练语言模型基础上，经RLHF优化的策略网络<br>
+    实验功能：生成用于奖励模型评估的多样化响应</p>
+    
+    <p><strong class="term">7. Actual Scores (实际分数)</strong><br>
+    操作定义：响应的人工评估正确率（0-1标度）<br>
+    核心指标：奖励模型预测质量的金标准（reward values vs actual scores）</p>
+  </div>
+</div>
+
+</body>
+</html>

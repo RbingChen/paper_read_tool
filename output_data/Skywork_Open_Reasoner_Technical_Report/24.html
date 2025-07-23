@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>算法专家分析报告</title>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    body { font-family: Arial, sans-serif; line-height: 1.6; margin: 20px; }
+    .section { margin-bottom: 30px; }
+    h2 { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 5px; }
+    .original { background-color: #f0f0f0; border: 1px solid #cccccc; padding: 15px; margin-bottom: 10px; }
+    .translation { background-color: #e0ffe0; border: 1px solid #00cc00; padding: 15px; margin-bottom: 20px; }
+    .figure { background-color: #ffffcc; padding: 10px; margin: 10px 0; font-style: italic; }
+    .term { color: red; font-weight: bold; }
+    .summary { background-color: #eef; padding: 15px; border-left: 4px solid #3498db; }
+    .terms-list { list-style-type: none; padding: 0; }
+    .terms-list li { margin-bottom: 10px; padding: 8px; background-color: #f9f9f9; border-left: 3px solid #e74c3c; }
+  </style>
+</head>
+<body>
+  <h1>算法专家分析报告：论文文本处理</h1>
+  
+  <!-- 内容理解部分 -->
+  <div class="section">
+    <h2>内容理解</h2>
+    <p>文本讨论了在强化学习（RL）训练中，<span class="term">熵损失（Entropy Loss）</span>对训练数据的敏感性及其优化方法。核心内容包括：<span class="term">熵（Entropy）</span>在训练过程中可能崩溃（持续下降至零），导致性能下降；实验表明，熵损失高度依赖训练数据，不同数据集会导致熵动态（上升或下降）的显著差异；为此，作者提出<span class="term">自适应熵控制（Adaptive Entropy Control）</span>方法，动态调整熵损失系数以防止崩溃。在消融实验中，该方法成功提升了测试性能，但大<span class="term">NSGD（Number of SGD Steps）</span>时仍不稳定，可能因全词汇表计算熵而增加意外标记概率。整体上，文本强调数据依赖性对超参数调优的挑战，并通过实验验证自适应方法的有效性。</p>
+  </div>
+  
+  <!-- 内容翻译部分 -->
+  <div class="section">
+    <h2>内容翻译</h2>
+    
+    <!-- 段落 1: 参数和表格标题 -->
+    <div class="original">
+      <p>Batch Size Mini-batch Size Group Size T Temperature τKL Loss
+      64 32 16 Stage II 16K 1.0 No
+      Table 6: Shared Hyperparameters in Ablation Experiments 8 Based on Skywork-OR1-Math-7B-stage1</p>
+    </div>
+    <div class="translation">
+      <p>批大小（Batch Size） 小批量大小（Mini-batch Size） 组大小（Group Size） T 温度（Temperature） τ KL损失（KL Loss）
+      64 32 16 第二阶段（Stage II） 16K 1.0 否（No）
+      表6：基于Skywork-OR1-Math-7B-stage1的消融实验8共享超参数</p>
+    </div>
+    
+    <!-- 段落 2: 图标题 -->
+    <div class="original">
+      <p>Figure 19: The results of Ablation Experiments 8. Left: The entropy of generated responses during RL training. Right: The AIME24 avg@8 performance at temperature 1 during RL training.</p>
+    </div>
+    <div class="translation">
+      <div class="figure">
+        <p>图19：消融实验8的结果。左图：强化学习训练期间生成响应的熵（Entropy）。右图：强化学习训练期间温度1下的AIME24平均@8性能（AIME24 avg@8 performance）。</p>
+      </div>
+    </div>
+    
+    <!-- 段落 3: 正文点 -->
+    <div class="original">
+      <p>•For αk= 1e-4, while entropy does not exhibit a continuous rise, it still collapses, persistently decreasing toward zero.</p>
+    </div>
+    <div class="translation">
+      <p>•当αk=1e-4时，尽管熵未持续上升，它仍崩溃（Collapse），持续向零下降。</p>
+    </div>
+    
+    <!-- 段落 4: 熵损失敏感性 -->
+    <div class="original">
+      <p>Entropy Loss Is Sensitive to Training Data. From our two preliminary experiments, we observe that the entropy loss is highly sensitive to variations in training data. We conducted two experiments under identical configurations, both using an entropy loss coefficient of 1e-3. The only difference between the two setups was the training dataset used (both datasets belong to the math domain). The results, shown in Figure 20, reveal a striking difference in entropy dynamics: while the original dataset exhibited a steady decline in entropy throughout training, the new dataset resulted in a consistent upward trend in entropy. This finding highlights the data-dependent nature of tuning the entropy loss coefficient.</p>
+    </div>
+    <div class="translation">
+      <p>熵损失对训练数据敏感（Entropy Loss Is Sensitive to Training Data）。通过两项初步实验，我们观察到熵损失对训练数据的变化高度敏感。我们在相同配置下进行了两个实验，均使用熵损失系数1e-3。唯一区别是训练数据集（两者均属数学领域）。图20所示结果揭示了熵动态的显著差异：原始数据集在训练期间熵持续下降，而新数据集导致熵一致上升。这一发现突显了调优熵损失系数的数据依赖性本质。</p>
+    </div>
+    
+    <!-- 段落 5: 自适应熵控制 -->
+    <div class="original">
+      <p>Adjusting the Coefficient of Entropy Loss Adaptively. Based on our findings regarding the sensitivity of entropy loss, we propose a method called adaptive entropy control (see Section 3.2.5 for details), which dynamically adjusts the entropy loss coefficient during training. As shown in Figure 10, the entropy of Skywork-OR1-Math-7B remains lower-bounded by the target entropy throughout the RL training process. To further validate the effectiveness of adaptive entropy control, we conduct the following ablation experiments.</p>
+    </div>
+    <div class="translation">
+      <p>自适应调整熵损失系数（Adjusting the Coefficient of Entropy Loss Adaptively）。基于熵损失敏感性的发现，我们提出一种称为自适应熵控制（Adaptive Entropy Control）的方法（详见第3.2.5节），在训练期间动态调整熵损失系数。如图10所示，Skywork-OR1-Math-7B的熵在整个强化学习训练过程中始终以目标熵为下界。为进一步验证自适应熵控制的有效性，我们进行了以下消融实验。</p>
+    </div>
+    
+    <!-- 段落 6: 消融实验9 -->
+    <div class="original">
+      <p>Ablation Experiments 9: Effectiveness of Adaptive Entropy Control
+      Consider the off-policy experiment in Ablation Experiments 6 with (NSGD, DR, DT, Nreuse) = (4,64,16,1), which exhibits fast entropy collapse and bad test performance. Note that there is no entropy loss in this experiment. We ran an experiment based on its configuration with adaptive entropy control (using a target entropy of 0.2) enabled. We report the results in Figure 21.
+      As previously analyzed, increasing NSGD accelerates policy convergence and leads to degraded test performance. As shown in Figure 21, applying adaptive entropy control successfully prevents entropy collapse and results in higher test performance. However, it is worth noting that, although the coefficient is adjusted adaptively, entropy remains unstable when NSGD is large. We speculate that this is due to the entropy loss being computed over the entire vocabulary, which may increase the probability of many unintended tokens. Therefore, we do 25</p>
+    </div>
+    <div class="translation">
+      <p>消融实验9：自适应熵控制的有效性（Ablation Experiments 9: Effectiveness of Adaptive Entropy Control）
+      考虑消融实验6中的离策略实验（Off-policy Experiment），其参数为(NSGD, DR, DT, Nreuse) = (4,64,16,1)，该实验表现出快速熵崩溃和较差测试性能。注意此实验未使用熵损失。我们基于其配置运行了一个实验，启用自适应熵控制（目标熵为0.2）。结果报告于图21。
+      如前分析，增加NSGD加速策略收敛（Policy Convergence）但导致测试性能下降。如图21所示，应用自适应熵控制成功防止熵崩溃并提升测试性能。然而，需注意当NSGD较大时，尽管系数自适应调整，熵仍不稳定。我们推测这是因为熵损失基于整个词汇表计算，可能增加意外标记（Unintended Tokens）的概率。因此，我们做25</p>
+    </div>
+  </div>
+  
+  <!-- 摘要总结部分 -->
+  <div class="section">
+    <h2>摘要总结</h2>
+    <div class="summary">
+      <p>文本核心内容聚焦于强化学习训练中<span class="term">熵损失（Entropy Loss）</span>的敏感性和优化。关键发现包括：熵损失高度依赖训练数据，不同数据集会导致熵动态（上升或下降）的显著差异；熵崩溃（持续下降至零）会损害性能；为此，作者提出<span class="term">自适应熵控制（Adaptive Entropy Control）</span>，动态调整损失系数以防止崩溃。消融实验验证了该方法：在NSGD=4的配置下，自适应控制成功提升测试性能并防止崩溃，但大NSGD时仍不稳定，可能因全词汇表计算增加意外标记概率。整体强调数据依赖性对超参数调优的挑战，并展示自适应方法的有效性。</p>
+    </div>
+  </div>
+  
+  <!-- 术语识别部分 -->
+  <div class="section">
+    <h2>术语识别</h2>
+    <ul class="terms-list">
+      <li><span class="term">Batch Size（批大小）</span>: 每次迭代中用于更新模型的样本数量。较大批大小可加速训练但增加内存需求。</li>
+      <li><span class="term">Mini-batch Size（小批量大小）</span>: 在随机梯度下降（SGD）中，将数据集分成的小批量样本数。影响模型收敛速度和稳定性。</li>
+      <li><span class="term">Group Size（组大小）</span>: 在分布式训练或特定优化算法中，数据或参数的分组大小。用于并行处理或减少通信开销。</li>
+      <li><span class="term">Temperature（T，温度）</span>: 在softmax函数中控制输出概率分布平滑度的超参数。高温度使分布更均匀（高熵），低温度使分布更尖锐（低熵）。</li>
+      <li><span class="term">KL Loss（KL散度损失）</span>: Kullback-Leibler散度损失，衡量两个概率分布差异。在RL中常用于约束策略变化，防止过度偏离参考策略。</li>
+      <li><span class="term">Entropy Loss（熵损失）</span>: 基于信息熵的损失函数，用于鼓励策略多样性。高熵表示不确定性高，防止模型输出过于确定；计算为 \( H(p) = -\\sum p(x) \\log p(x) \)，其中 \( p(x) \) 是概率分布。</li>
+      <li><span class="term">Entropy Collapse（熵崩溃）</span>: 训练中熵值持续下降至接近零的现象，导致模型输出缺乏多样性，性能下降。</li>
+      <li><span class="term">Adaptive Entropy Control（自适应熵控制）</span>: 动态调整熵损失系数的方法，以维持目标熵值。防止崩溃并提升泛化性能。</li>
+      <li><span class="term">NSGD（Number of SGD Steps）</span>: 每次数据重用时的随机梯度下降步数。增加NSGD加速收敛但可能加剧过拟合。</li>
+      <li><span class="term">DR（Data Reuse）</span>: 数据重用次数，表示同一批次数据被用于多次更新。</li>
+      <li><span class="term">DT（Data Type）</span>: 数据类型，可能指训练数据的格式或特征表示。</li>
+      <li><span class="term">Nreuse（Number of Reuse）</span>: 数据重用参数，控制样本被重复使用的次数。</li>
+      <li><span class="term">AIME24 avg@8（AIME24平均@8）</span>: 评估指标，可能指在AIME24数据集上的平均性能得分（如准确率），@8表示特定设置（如top-8预测）。</li>
+      <li><span class="term">RL Training（强化学习训练）</span>: 使用强化学习算法训练模型，通过奖励信号优化策略。</li>
+      <li><span class="term">Ablation Experiments（消融实验）</span>: 通过移除或修改特定组件（如损失函数）来研究其影响的对照实验。</li>
+      <li><span class="term">Off-policy Experiment（离策略实验）</span>: 在强化学习中，使用与当前策略不同的行为策略生成数据的实验设置。</li>
+      <li><span class="term">Policy Convergence（策略收敛）</span>: 强化学习策略稳定到最优解的过程。</li>
+      <li><span class="term">Unintended Tokens（意外标记）</span>: 模型生成的无关或不正确输出标记，常因损失函数设计不当导致。</li>
+    </ul>
+  </div>
+</body>
+</html>

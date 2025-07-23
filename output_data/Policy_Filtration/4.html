@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>论文分析：Policy Filtration for RLHF to Mitigate Noise in Reward Models</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; margin: 20px; }
+        h1, h2, h3, h4 { color: #333; }
+        .section { margin-bottom: 30px; border-left: 3px solid #0078D7; padding-left: 15px; }
+        .original { background-color: #f0f0f0; border: 1px solid #cccccc; padding: 15px; margin-bottom: 10px; }
+        .translation { background-color: #e0ffe0; border: 1px solid #00cc00; padding: 15px; margin-bottom: 20px; }
+        .term { font-weight: bold; color: red; }
+        .formula { text-align: center; margin: 15px 0; font-size: 1.1em; }
+        .formula-number { display: block; text-align: center; font-style: italic; margin-top: 5px; }
+        ul { list-style-type: none; padding-left: 0; }
+        li { margin-bottom: 10px; }
+    </style>
+</head>
+<body>
+    <h1>论文分析：Policy Filtration for RLHF to Mitigate Noise in Reward Models</h1>
+    
+    <div class="section">
+        <h2>内容理解</h2>
+        <p>本文是论文的实验部分（第5节），重点描述了在强化学习从人类反馈（<strong class="term">RLHF (Reinforcement Learning from Human Feedback)</strong>）中应用策略过滤（Policy Filtration）来减少奖励模型噪声的实验设置。核心内容包括：实验在代码生成（如HumanEval、MBPP、LeetCode基准）和数学推理（如Ape210K、CMATH基准）任务上进行，这些任务允许精确测量大语言模型（<strong class="term">LLM (Large Language Model)</strong>）的响应质量。文本详细解释了基准测试的选择、数据集构建过程（包括监督微调（<strong class="term">SFT (Supervised Fine-Tuning)</strong>）、奖励模型训练和近端策略优化（<strong class="term">PPO (Proximal Policy Optimization)</strong>）数据集）、模型实现细节（如使用deepseek-6.7B和Qwen1.5-7B模型、学习率设置），以及代码生成实验的基线比较（如RAFT和BOND方法）。整体上，本文展示了如何通过结构化实验设计来验证策略过滤在减少奖励模型噪声方面的有效性，强调数据集的构建方法（如基于编辑距离选择响应对）和训练技巧（如奖励归一化）的重要性。</p>
+    </div>
+    
+    <div class="section">
+        <h2>内容翻译</h2>
+        
+        <div class="original">
+            <h3>Policy Filtration for RLHF to Mitigate Noise in Reward Models</h3>
+        </div>
+        <div class="translation">
+            <h3>用于减少奖励模型噪声的RLHF策略过滤</h3>
+        </div>
+        
+        <div class="original">
+            <h4>5. Experiments</h4>
+        </div>
+        <div class="translation">
+            <h4>5. 实验</h4>
+        </div>
+        
+        <div class="original">
+            <h4>5.1. Benchmarks</h4>
+            <p>We conduct experiments on two tasks where the quality of LLM responses can be precisely measured, code generation and math reasoning. Specifically, we evaluate the algorithms using the following benchmarks.</p>
+            <p>HumanEval benchmark and MBPP benchmark. HumanEval (Chen et al., 2021) and MBPP (Austin et al., 2021) are two popular benchmarks for evaluating code LLMs. HumanEval includes 164 Python problems, each of which is associated with multiple test cases used to assess the correctness of generated code in a zero-shot setting. Similarly, MBPP includes 378 problems.</p>
+            <p>To train models for these two benchmarks, we select data from 75k Magicoder-OSS-instruct (Wei et al., 2023b) and 55k evol-codealpaca-v1 (Luo et al., 2023) to construct the SFT dataset, the reward model dataset, and the PPO query dataset. For SFT, we use all the 130k training samples from Magicoder-OSS-instruct and evol-codealpaca-v1. For reward modeling, we curate 7k prompts from these 130k samples and generate five responses using the SFT model for each prompt. Following the methodology in Pal et al. (2024), we select two responses with the maximum edit distance to create response pairs for each prompt. We use these 7k prompts with generated response pairs as the reward model dataset. For policy optimization, we curate 3k prompts from the 130k samples as the PPO query dataset.</p>
+        </div>
+        <div class="translation">
+            <h4>5.1. 基准测试</h4>
+            <p>我们在两个任务上进行了实验，其中大语言模型（<strong class="term">LLM</strong>）响应的质量可以精确测量：代码生成和数学推理。具体来说，我们使用以下基准评估算法。</p>
+            <p>HumanEval基准和MBPP基准。HumanEval（Chen等人，2021）和MBPP（Austin等人，2021）是两个流行的用于评估代码生成大语言模型的基准。HumanEval包含164个Python问题，每个问题都有多个测试用例，用于在零样本设置中评估生成代码的正确性。类似地，MBPP包含378个问题。</p>
+            <p>为针对这两个基准训练模型，我们从75k Magicoder-OSS-instruct（Wei等人，2023b）和55k evol-codealpaca-v1（Luo等人，2023）中选择数据，构建监督微调（<strong class="term">SFT</strong>）数据集、奖励模型数据集和PPO查询数据集。对于SFT，我们使用Magicoder-OSS-instruct和evol-codealpaca-v1的全部130k训练样本。对于奖励建模，我们从这130k样本中筛选出7k提示，并使用SFT模型为每个提示生成五个响应。遵循Pal等人（2024）的方法，我们选择编辑距离最大的两个响应，为每个提示创建响应对。我们将这7k提示及其生成的响应对作为奖励模型数据集。对于策略优化，我们从130k样本中筛选出3k提示作为PPO查询数据集。</p>
+        </div>
+        
+        <div class="original">
+            <p>LeetCode contest benchmark. To evaluate code LLMs on more challenging problems, we construct the LeetCode Contest benchmark. This benchmark includes competition-level problems designed for human, and therefore is more challenging since it requires human-level problem understanding and code generation skills. In this benchmark, we collect 160 problems from LeetCode weekly contests from July 2022 to January 2024. For each problem, we include 100 test cases to ensure the generated code is assessed thoroughly.</p>
+            <p>To train models for this benchmark, we construct LeetCode training datasets comprising 1,000 problems collected from the LeetCode website. For SFT, we use self-generated correct answers to create the SFT dataset following the methodology in Setlur et al. (2024). For reward modeling, we generate five responses using the SFT model for each of the 400 curated prompts and selected two responses for each prompt following the similar procedure as above. For policy optimization, we used the full 1,000 prompts as our PPO query dataset to train the code LLM.</p>
+        </div>
+        <div class="translation">
+            <p>LeetCode竞赛基准。为了在更具挑战性的问题上评估代码生成大语言模型，我们构建了LeetCode竞赛基准。该基准包含为人类设计的竞赛级别问题，因此更具挑战性，因为它需要人类级别的问题理解和代码生成技能。在此基准中，我们从2022年7月至2024年1月的LeetCode周赛中收集了160个问题。每个问题包含100个测试用例，以确保对生成代码进行全面评估。</p>
+            <p>为针对此基准训练模型，我们构建了LeetCode训练数据集，包含从LeetCode网站收集的1,000个问题。对于SFT，我们使用自生成的正确答案，遵循Setlur等人（2024）的方法创建SFT数据集。对于奖励建模，我们使用SFT模型为400个筛选提示中的每个提示生成五个响应，并遵循类似上述流程为每个提示选择两个响应。对于策略优化，我们使用全部1,000个提示作为PPO查询数据集来训练代码生成大语言模型。</p>
+        </div>
+        
+        <div class="original">
+            <p>Ape210K and CMATH benchmarks. Ape210K (Zhao et al., 2020) and CMATH (Wei et al., 2023a) are two popular Chinese benchmarks for elementary-school-level math-reasoning tasks. Ape210K contains 210k diverse math problems and we use a separate split of 5k problems for evaluation, following the practice in Zhao et al. (2020). CMATH contains 1.7k math word problems sourcing from actual Chinese workbooks and exams. We check the correctness of the answers using the automatic evaluation scripts provided in Zhou et al. (2024). To train models for math reasoning, we use the training split of 200k problems from Ape210K.</p>
+        </div>
+        <div class="translation">
+            <p>Ape210K和CMATH基准。Ape210K（Zhao等人，2020）和CMATH（Wei等人，2023a）是两个流行的中文小学数学推理任务基准。Ape210K包含210k个多样化数学问题，我们遵循Zhao等人（2020）的做法，使用单独的5k问题分割进行评估。CMATH包含1.7k个源自实际中国练习册和考试的数学应用题。我们使用Zhou等人（2024）提供的自动评估脚本检查答案的正确性。为训练数学推理模型，我们使用Ape210K的200k问题训练分割。</p>
+        </div>
+        
+        <div class="original">
+            <h4>5.2. Implementation Details</h4>
+            <p>We use deepseek-6.7B (Guo et al., 2024) and Qwen1.5-7B (Team, 2024) as our base model for code generation and math reasoning respectively. In the SFT phase, we train on the SFT dataset for 5 epochs with the learning rate \(1 \\times 10^{-5}\), resulting in the SFT policy. In the reward model training phase, we follow Ouyang et al. (2022) and train on our reward model dataset for 1 epoch with the learning rate \(1 \\times 10^{-5}\). In the PPO phase, we adopt the training tricks from the blog (Shen et al., 2024). Specifically, we adopt reward normalization and advantage normalization for stable training. In addition, we set the learning rate for the policy network as \(5 \\times 10^{-7}\) and learning rate for the value network as \(9 \\times 10^{-6}\). In the PPO algorithm, we collect responses for the context in the PPO query dataset and iterate through this dataset for 5 iterations (enough for convergence) and select the best checkpoints on evaluation set as the outcome policy. For each collected context-response pair, we use it to accumulate loss and gradient for 3 times on average. We use full parameter fine-tuning in all the phases. We provide the source code for all experiments in the supplementary.</p>
+        </div>
+        <div class="translation">
+            <h4>5.2. 实现细节</h4>
+            <p>我们分别使用deepseek-6.7B（Guo等人，2024）和Qwen1.5-7B（Team，2024）作为代码生成和数学推理的基础模型。在SFT阶段，我们在SFT数据集上训练5个epoch，学习率为 \(1 \\times 10^{-5}\)，得到SFT策略。在奖励模型训练阶段，我们遵循Ouyang等人（2022）的方法，在奖励模型数据集上训练1个epoch，学习率为 \(1 \\times 10^{-5}\)。在PPO阶段，我们采用博客（Shen等人，2024）中的训练技巧。具体来说，我们采用奖励归一化和优势归一化以确保训练稳定性。此外，我们将策略网络的学习率设置为 \(5 \\times 10^{-7}\)，价值网络的学习率设置为 \(9 \\times 10^{-6}\)。在PPO算法中，我们为PPO查询数据集中的上下文收集响应，并迭代该数据集5次（足以收敛），然后在评估集上选择最佳检查点作为最终策略。对于每个收集的上下文-响应对，我们平均使用它累积损失和梯度3次。所有阶段均使用全参数微调。我们在补充材料中提供了所有实验的源代码。</p>
+            <div class="formula">
+                \[ \\text{学习率 (SFT)} = 1 \\times 10^{-5} \\]
+                <span class="formula-number">公式 (1): SFT阶段的学习率设置</span>
+            </div>
+            <div class="formula">
+                \[ \\text{学习率 (策略网络)} = 5 \\times 10^{-7} \\]
+                <span class="formula-number">公式 (2): PPO阶段策略网络的学习率</span>
+            </div>
+            <div class="formula">
+                \[ \\text{学习率 (价值网络)} = 9 \\times 10^{-6} \\]
+                <span class="formula-number">公式 (3): PPO阶段价值网络的学习率</span>
+            </div>
+        </div>
+        
+        <div class="original">
+            <h4>5.3. Experiment Results on Code Generation</h4>
+            <p>Baselines. For code generation, we compare different variants of PF-PPO with reinforcement learning algorithms, supervised fine-tuning methods, and direct policy optimization methods. We use greedy decoding during inference and pass@1 (Chen et al., 2021) as the performance metrics. For fair comparison between different baselines, we re-implement these baselines with the same code base and the same datasets. We also use the same reward model and the same SFT policy if applicable.</p>
+            <p>Supervised fine-tuning. Starting from deepseek-6.7B, we first fine-tune this policy on the SFT dataset. Other algorithms learn based on this SFT policy. RAFT (Dong et al., 2023) and BOND (Sessa et al., 2024) train the policy to fit the best-of-N (BoN) responses or the BoN policy via different supervised learning losses. RAFT maximizes the log-probability of the BoN response, whereas BOND minimizes a combination of the forward and backward KL divergence w.r.t. the BoN policy. We set the coefficient to combine these two loss terms as β<sub>BOND</sub> = 1.0. BOND is an iterative algorithm to fit the BoN policy based on the policy of the previous iteration.</p>
+        </div>
+        <div class="translation">
+            <h4>5.3. 代码生成实验结果</h4>
+            <p>基线方法。对于代码生成，我们比较了PF-PPO的不同变体与强化学习算法、监督微调方法和直接策略优化方法。在推理过程中，我们使用贪婪解码，并以pass@1（Chen等人，2021）作为性能指标。为公平比较不同基线，我们使用相同的代码库和相同的数据集重新实现这些基线。如果适用，我们还使用相同的奖励模型和相同的SFT策略。</p>
+            <p>监督微调。从deepseek-6.7B开始，我们首先在SFT数据集上微调此策略。其他算法基于此SFT策略进行学习。RAFT（Dong等人，2023）和BOND（Sessa等人，2024）通过不同的监督学习损失训练策略以拟合最佳N个（<strong class="term">BoN (Best-of-N)</strong>）响应或BoN策略。RAFT最大化BoN响应的对数概率，而BOND最小化相对于BoN策略的前向和后向KL散度的组合。我们将组合这两个损失项的系数设置为β<sub>BOND</sub> = 1.0。BOND是一种迭代算法，基于前一次迭代的策略来拟合BoN策略。</p>
+        </div>
+    </div>
+    
+    <div class="section">
+        <h2>摘要总结</h2>
+        <p>本文实验部分的核心内容可概括为以下三点：</p>
+        <ul>
+            <li><strong>基准测试设计</strong>：实验在代码生成（HumanEval、MBPP、LeetCode Contest）和数学推理（Ape210K、CMATH）任务上进行，这些基准允许精确量化<strong class="term">LLM</strong>响应质量。代码生成基准侧重于零样本设置下的正确性评估，而LeetCode Contest增加了人类级别的挑战性；数学推理基准则使用自动脚本验证答案。</li>
+            <li><strong>数据集与模型实现</strong>：详细描述了数据集构建方法，包括从Magicoder-OSS-instruct和evol-codealpaca-v1等来源筛选数据，创建<strong class="term">SFT</strong>、奖励模型和<strong class="term">PPO</strong>查询数据集（例如，基于最大编辑距离选择响应对）。模型使用deepseek-6.7B（代码生成）和Qwen1.5-7B（数学推理），训练参数包括学习率（如SFT阶段 \(1 \\times 10^{-5}\)）、epoch数（如5个epoch for SFT），并采用奖励归一化等技巧稳定训练。</li>
+            <li><strong>实验比较</strong>：在代码生成任务中，比较了PF-PPO变体与基线方法（如RAFT和BOND），使用pass@1指标和贪婪解码。强调公平比较：所有基线使用相同代码库、数据集和奖励模型，其中RAFT和BOND通过监督损失拟合最佳响应策略。</li>
+        </ul>
+        <p>整体上，实验旨在验证策略过滤在减少奖励模型噪声中的有效性，突出结构化基准和严谨实现的重要性。</p>
+    </div>
+    
+    <div class="section">
+        <h2>术语识别</h2>
+        <ul>
+            <li><strong class="term">RLHF (Reinforcement Learning from Human Feedback)</strong>：强化学习从人类反馈，一种训练方法，其中模型通过人类反馈信号优化策略。本文中用于减少奖励模型噪声。</li>
+            <li><strong class="term">SFT (Supervised Fine-Tuning)</strong>：监督微调，使用标注数据对预训练模型进行微调。本文中构建SFT数据集（如130k样本），训练基础策略。</li>
+            <li><strong class="term">PPO (Proximal Policy Optimization)</strong>：近端策略优化，一种强化学习算法。本文中用于策略优化阶段，设置特定学习率（如策略网络 \(5 \\times 10^{-7}\)) 和训练技巧（如奖励归一化）。</li>
+            <li><strong class="term">HumanEval</strong>：代码生成基准，包含164个Python问题和测试用例，用于零样本评估生成代码正确性。</li>
+            <li><strong class="term">MBPP</strong>：代码生成基准，包含378个问题，类似HumanEval但规模更大。</li>
+            <li><strong class="term">LeetCode Contest</strong>：高难度代码生成基准，包含160个竞赛级问题（各100个测试用例），需人类级别问题解决能力。</li>
+            <li><strong class="term">Ape210K</strong>：中文数学推理基准，包含210k小学数学问题，使用5k分割进行评估。</li>
+            <li><strong class="term">CMATH</strong>：中文数学推理基准，包含1.7k应用题，源自实际教材和考试。</li>
+            <li><strong class="term">Pass@1</strong>：性能指标，评估模型在第一次尝试中生成正确代码的比例，本文用于代码生成实验。</li>
+            <li><strong class="term">RAFT (Reward-rAnked FineTuning)</strong>：一种方法，通过最大化最佳响应（BoN）的对数概率训练

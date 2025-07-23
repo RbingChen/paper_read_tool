@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>论文解析报告</title>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<style>
+  body { font-family: Arial, sans-serif; line-height: 1.6; }
+  .section { margin-bottom: 30px; }
+  h2 { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 5px; }
+  .original { background-color: #f8f9fa; border: 1px solid #ced4da; padding: 15px; margin: 10px 0; }
+  .translation { background-color: #e8f5e9; border: 1px solid #c8e6c9; padding: 15px; margin: 10px 0; }
+  .figure { background-color: #fffde7; padding: 10px; margin: 15px 0; text-align: center; font-style: italic; }
+  .term { color: #e53935; font-weight: bold; }
+  .formula-container { text-align: center; margin: 20px 0; }
+  .formula-number { display: block; font-size: 0.9em; }
+</style>
+</head>
+<body>
+
+<div class="section">
+  <h2>内容理解</h2>
+  <p>本文介绍了一种名为 <strong class="term">Skywork Open Reasoner 1 (Skywork-OR1)</strong> 的强化学习优化方法，专注于提升长思维链（CoT）语言模型的推理能力。核心创新点包括：</p>
+  <ul>
+    <li>提出针对已进行监督微调（SFT）的长CoT模型的强化学习方案，区别于传统仅针对基础模型的方法</li>
+    <li>发现并解决强化学习中的<strong class="term">过早熵崩溃（premature entropy collapse）</strong>现象</li>
+    <li>在数学（AIME24/AIME25）和编程（LiveCodeBench）基准测试中显著超越主流模型</li>
+    <li>通过详尽的消融实验验证各组件有效性，并开源全部资源促进可复现性</li>
+  </ul>
+  <p>研究填补了长思维链模型强化学习优化的方法论空白，证明基于规则的奖励机制即可显著提升模型性能。</p>
+</div>
+
+<div class="section">
+  <h2>内容翻译</h2>
+  
+  <div class="original">
+    <h3>1 Introduction</h3>
+    <p>In recent months, <strong class="term">post-training techniques</strong> based on <strong class="term">reinforcement learning (RL)</strong> have achieved groundbreaking success in enhancing the reasoning capabilities of large language models (LLMs). Representative models such as OpenAI-o1 [9], DeepSeek-R1 [6], and Kimi-K1.5 [24] demonstrate RL’s remarkable ability to significantly improve performance in mathematics and coding. While prior RL approaches have primarily relied on <strong class="term">Monte Carlo Tree Search (MCTS)</strong> or <strong class="term">Process Reward Models (PRMs)</strong> to improve reasoning over <strong class="term">supervised fine-tuning (SFT)</strong> models, the success of DeepSeek-R1 demonstrates conclusively that <strong class="term">online RL</strong> with a simple <strong class="term">rule-based reward</strong> is sufficient to substantially enhance the reasoning capabilities of base models.</p>
+  </div>
+  <div class="translation">
+    <h3>1 引言</h3>
+    <p>近几个月来，基于<strong class="term">强化学习（RL）</strong>的<strong class="term">训练后优化技术</strong>在提升大语言模型（LLMs）推理能力方面取得突破性进展。代表性模型如OpenAI-o1[9]、DeepSeek-R1[6]和Kimi-K1.5[24]证明了RL在显著提升数学和编程性能方面的卓越能力。虽然先前RL方法主要依赖<strong class="term">蒙特卡洛树搜索（MCTS）</strong>或<strong class="term">过程奖励模型（PRMs）</strong>来改进<strong class="term">监督微调（SFT）</strong>模型的推理能力，但DeepSeek-R1的成功确凿证明：采用简单<strong class="term">基于规则的奖励</strong>机制的<strong class="term">在线强化学习</strong>足以显著增强基础模型的推理能力。</p>
+  </div>
+  
+  <div class="original">
+    <p>As model capabilities continue to advance, <strong class="term">Chains-of-Thought (CoT)</strong> have grown progressively longer. For example, the DeepSeek-R1-Distill model series [6] generates CoT sequences averaging over 10K tokens on the AIME24 benchmark, significantly surpassing earlier popular SFT models such as the Qwen 2.5 model series [33] and the Llama 3.1 model series [5]. Despite several reproduction efforts (e.g., Logic-RL [31], Open-Reasoner-Zero [8], DAPO [34], VAPO [35]) following the success of DeepSeek-R1, most have focused on applying RL to base models rather than to long CoT models that have already undergone SFT. As a result, it remains unclear how to improve the reasoning abilities of long CoT models using RL in an efficient and scalable manner. While recent works such as DeepScaleR [17], Light-R1 [28], and DeepCoder [16] have made preliminary progress toward efficient RL optimization for long CoT models, their analyses do not systematically disentangle the contributions of distinct algorithmic components during RL training.</p>
+  </div>
+  <div class="translation">
+    <p>随着模型能力持续提升，<strong class="term">思维链（CoT）</strong>变得日益冗长。例如DeepSeek-R1-Distill系列模型[6]在AIME24基准测试中生成的CoT序列平均超过10K token，显著超越早期主流SFT模型如Qwen 2.5系列[33]和Llama 3.1系列[5]。尽管在DeepSeek-R1成功后出现了多项复现研究（如Logic-RL[31]、Open-Reasoner-Zero[8]、DAPO[34]、VAPO[35]），但多数聚焦于基础模型的RL应用，而非已进行SFT的长CoT模型。因此，如何通过RL高效、可扩展地提升长CoT模型的推理能力仍不明确。虽然近期工作如DeepScaleR[17]、Light-R1[28]和DeepCoder[16]在长CoT模型高效RL优化方面取得初步进展，但其分析未能系统解耦RL训练中各算法组件的贡献。</p>
+  </div>
+  
+  <div class="original">
+    <p>In this work, we introduce <strong class="term">Skywork Open Reasoner 1</strong> (abbreviated as Skywork-OR1 throughout the report), an efficient and scalable RL recipe for long CoT models. Our experiments are based on the DeepSeek-R1-Distill model series and open-source datasets with rigorous preprocessing and filtering. <span class="figure">As shown in Figure 1 and Table 13</span>, the Skywork-OR1 model series achieves significant performance improvements over base models, demonstrating the effectiveness of our RL implementation. Specifically, Skywork-OR1-32B achieves scores of 82.2 on AIME24, 73.3 on AIME25, and 63.0 on LiveCodeBench[10] (2024-08 - 2025-02), outperforming DeepSeek-R1 and Qwen3-32B in the math domain. Skywork-OR1-7B achieves 70.2 on AIME24, 54.6 on AIME25, and 47.6 on LiveCodeBench, exhibiting competitive performance relative to similarly sized models in both math and coding tasks. Our previously released model, Skywork-OR1-Math-7B, also delivers strong performance among similarly sized models, scoring 69.8 on AIME24, 52.3 on AIME25, and 43.6 on LiveCodeBench. We conducted exhaustive ablation experiments to validate the effectiveness of the core components in the training pipeline.</p>
+  </div>
+  <div class="translation">
+    <p>本文提出<strong class="term">Skywork开放推理器1号</strong>（报告中简称Skywork-OR1），一种面向长CoT模型的高效可扩展RL方案。实验基于DeepSeek-R1-Distill系列模型和经严格预处理的开源数据集。<span class="figure">如图1和表13所示</span>，Skywork-OR1系列相较基础模型实现显著性能提升，证明了RL方案的有效性。具体而言：Skywork-OR1-32B在AIME24获82.2分，AIME25获73.3分，LiveCodeBench[10]（2024-08至2025-02）获63.0分，数学领域超越DeepSeek-R1和Qwen3-32B；Skywork-OR1-7B在AIME24获70.2分，AIME25获54.6分，LiveCodeBench获47.6分，在数学和编程任务中均展现与同规模模型相当的竞争力；先前发布的Skywork-OR1-Math-7B在AIME24获69.8分，AIME25获52.3分，LiveCodeBench获43.6分。我们通过详尽消融实验验证训练流程核心组件的有效性。</p>
+  </div>
+  
+  <div class="original">
+    <p>Balancing <strong class="term">exploration and exploitation</strong> is crucial in RL training [22]. We conducted a comprehensive study on <strong class="term">premature entropy collapse</strong>, a phenomenon associated with excessive exploitation, and found that mitigating premature entropy collapse is essential for achieving better test performance. Through exhaustive ablation experiments, we identified key factors that influence entropy dynamics.</p>
+  </div>
+  <div class="translation">
+    <p>平衡<strong class="term">探索与利用（exploration and exploitation）</strong>对RL训练至关重要[22]。我们对与过度利用相关的<strong class="term">过早熵崩溃（premature entropy collapse）</strong>现象进行全面研究，发现缓解此现象对提升测试性能具有关键作用。通过完备的消融实验，我们确定了影响熵动态的关键因素。</p>
+  </div>
+  
+  <div class="original">
+    <p>To ensure full reproducibility and support ongoing research within the LLM community, we release all of our training resources, including source code∗, the post-training dataset†, and model weights‡§. Furthermore, we conducted extensive ablation studies across both data and algorithmic dimensions to elucidate effective RL implementations for long CoT models. As a follow-up to our previously released Notion blog post [7], we present this more detailed technical report, with our key findings summarized as follows:</p>
+  </div>
+  <div class="translation">
+    <p>为确保完全可复现性并支持LLM社区持续研究，我们开源全部训练资源，包括源代码∗、训练后数据集†及模型权重‡§。此外，我们在数据和算法维度开展广泛消融研究，阐明长CoT模型的高效RL实现方案。作为先前Notion技术博客[7]的延续，本技术报告详细阐述以下核心发现：</p>
+  </div>
+  
+  <div class="figure">
+    <p>∗https://github.com/SkyworkAI/Skywork-OR1</p>
+    <p>†https://huggingface.co/datasets/Skywork/Skywork-OR1-RL-Data</p>
+    <p>‡https://huggingface.co/Skywork/Skywork-OR1-7B</p>
+    <p>§https://huggingface.co/Skywork/Skywork-OR1-32B</p>
+  </div>
+</div>
+
+<div class="section">
+  <h2>摘要总结</h2>
+  <p>本文核心贡献总结：</p>
+  <ol>
+    <li><strong>方法创新：</strong>提出Skywork-OR1强化学习框架，首次实现针对已进行监督微调的长思维链（CoT）模型的高效优化</li>
+    <li><strong>性能突破：</strong>Skywork-OR1-32B在AIME24（82.2分）、AIME25（73.3分）、LiveCodeBench（63.0分）显著超越DeepSeek-R1/Qwen3-32B等主流模型</li>
+    <li><strong>关键发现：</strong>揭示强化学习中<strong class="term">过早熵崩溃</strong>现象的本质，证明缓解此现象可提升模型泛化能力</li>
+    <li><strong>技术透明：</strong>完整开源训练代码、数据集及模型权重，通过数据和算法双维度消融实验验证方案有效性</li>
+    <li><strong>领域影响：</strong>为长推理链语言模型的强化学习优化建立新范式，证明基于规则的奖励机制即可实现性能飞跃</li>
+  </ol>
+</div>
+
+<div class="section">
+  <h2>术语识别</h2>
+  <dl>
+    <dt><strong class="term">强化学习（Reinforcement Learning, RL）</strong></dt>
+    <dd>机器学习范式，智能体通过与环境交互获得的奖励信号优化决策策略。本文中用于提升语言模型的推理能力。</dd>
+    
+    <dt><strong class="term">思维链（Chains-of-Thought, CoT）</strong></dt>
+    <dd>语言模型展示推理过程的技术，通过生成中间推理步骤得出最终答案。本文特指长度超过10K token的长推理链。</dd>
+    
+    <dt><strong class="term">监督微调（Supervised Fine-Tuning, SFT）</strong></dt>
+    <dd>在预训练模型基础上使用标注数据进行的精细调整，通常作为RL训练前的准备阶段。</dd>
+    
+    <dt><strong class="term">蒙特卡洛树搜索（Monte Carlo Tree Search, MCTS）</strong></dt>
+    <dd>基于随机模拟的决策树搜索算法，传统RL方法中用于探索解空间。</dd>
+    
+    <dt><strong class="term">过程奖励模型（Process Reward Models, PRMs）</strong></dt>
+    <dd>对推理过程中间步骤进行奖励评估的模型，区别于仅评估最终结果的奖励机制。</dd>
+    
+    <dt><strong class="term">过早熵崩溃（Premature Entropy Collapse）</strong></dt>
+    <dd>RL训练中因过度利用（exploitation）导致的熵值急剧下降现象，本文发现其损害模型泛化能力。</dd>
+    
+    <dt><strong class="term">在线强化学习（Online RL）</strong></dt>
+    <dd>智能体实时与环境交互的学习方式，区别于使用固定数据集的离线学习。</dd>
+    
+    <dt><strong class="term">消融实验（Ablation Studies）</strong></dt>
+    <dd>通过系统性移除模型组件来评估其贡献的实验方法，本文用于验证RL方案各模块的有效性。</dd>
+  </dl>
+</div>
+
+</body>
+</html>

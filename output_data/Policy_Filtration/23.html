@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>算法论文解析</title>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<style>
+  .original { background-color: #f0f0f0; border: 1px solid #ccc; padding: 15px; margin-bottom: 20px; }
+  .translation { background-color: #e6ffe6; border: 1px solid #4CAF50; padding: 15px; margin-bottom: 30px; }
+  .table-container { background-color: #ffffcc; padding: 15px; margin: 20px 0; overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; }
+  th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+  .term { color: red; font-weight: bold; }
+  .formula-container { text-align: center; margin: 20px 0; }
+  .formula-number { display: block; font-style: italic; }
+  .section-title { font-size: 1.2em; font-weight: bold; margin: 25px 0 10px; }
+</style>
+</head>
+<body>
+
+<h1>Policy Filtration for RLHF to Mitigate Noise in Reward Models</h1>
+
+<!-- 内容理解 -->
+<div class="section-title">内容理解</div>
+<p>文本包含两个核心部分：</p>
+<ol>
+  <li><span class="term">拓扑排序算法</span>（Topological Sort Algorithm）：通过Python代码实现基于BFS的拓扑排序，用于识别有向图中的安全节点（无出边节点）。算法维护依赖字典和出度计数器，从终端节点开始处理，通过队列迭代处理节点并更新依赖关系。</li>
+  <li><span class="term">强化学习算法比较</span>（RL Algorithm Comparison）：对比PPO-S、PPO-M和PF-PPO三种算法的计算复杂度与性能：
+    <ul>
+      <li>所有算法每迭代处理5n个查询-响应对</li>
+      <li>PF-PPO通过响应过滤减少策略/评论家网络更新次数（2nm vs 5nm）</li>
+      <li>表格数据显示PF-PPO在HumanEval、MBPP和LeetCode基准上性能最优</li>
+    </ul>
+  </li>
+</ol>
+
+<!-- 内容翻译 -->
+<div class="section-title">内容翻译</div>
+
+<div class="original">
+  <pre>39 safe_nodes.add(u)
+40 # For each node v that depends on u, decrement its out-degree
+41 # If v’s out-degree becomes zero, it becomes a terminal
+42 for v in dependencies[u]:
+43   out_degree[v] -= 1
+44   if out_degree[v] == 0:
+45     queue.append(v)
+46
+47 # Sort and return safe nodes
+48 return sorted(safe_nodes)</pre>
+</div>
+<div class="translation">
+  <pre>39 安全节点集合添加u
+40 # 对每个依赖u的节点v，减少其出度
+41 # 若v的出度归零，则其成为终端节点
+42 for v in dependencies[u]:
+43   out_degree[v] -= 1
+44   if out_degree[v] == 0:
+45     队列追加v
+46
+47 # 排序并返回安全节点
+48 return 排序后的安全节点集合</pre>
+</div>
+
+<div class="original">
+  <h3>Explanation:</h3>
+  <p>1. <strong>Dependencies</strong>: We build a ‘dependencies‘ dictionary... back edges.</p>
+  <p>2. <strong>Out-degree</strong>: We also keep track... outgoing edges).</p>
+  <p>3. <strong>Topological Sort (BFS)</strong>: We start by adding... such cycles.</p>
+  <p>4. <strong>Result</strong>: The safe nodes are collected... final result.</p>
+  <p>This approach ensures... in the graph.</p>
+</div>
+<div class="translation">
+  <h3>解释：</h3>
+  <p>1. <strong>依赖关系</strong>：构建‘dependencies‘字典，键为节点，值为依赖该键的节点列表，用于追踪反向边。</p>
+  <p>2. <strong>出度</strong>：记录每个节点的出度，用于确定终端节点（即无出边节点）。</p>
+  <p>3. <strong>拓扑排序(BFS)</strong>：从无出边节点（终端）开始加入队列。处理队列节点时：标记为安全节点，减少其依赖节点的出度，若依赖节点出度归零则加入队列。此机制确保处理所有环中节点并避免重复访问。</p>
+  <p>4. <strong>结果</strong>：收集安全节点排序后返回。</p>
+  <p>该方法确保正确识别终端节点和安全节点，并能处理图中的环。</p>
+</div>
+
+<div class="original">
+  <h3>C. Discussion on the computational costs</h3>
+  <p>PPO-S, PPO-M, and PF-PPO all collect... following conclusions: First, the total computational complexity... improves the performance. Second, the computational complexity... effectiveness of our method.</p>
+</div>
+<div class="translation">
+  <h3>C. 计算成本讨论</h3>
+  <p>PPO-S、PPO-M和PF-PPO对每个查询收集不同数量的响应，并使用不同样本量训练。为清晰起见，表6列出算法计算复杂度。注意：所有算法均在评估集选择最佳检查点并报告其性能。结合表6和图2可得：首先，PPO-S和PPO-M的总计算复杂度几乎相同，区别在于PPO-M更易在相同/相邻批次中从同查询的不同响应学习，从而提升性能。其次，PF-PPO的计算复杂度低于PPO-S和PPO-M，但性能更优，这表明我们方法的有效性。</p>
+</div>
+
+<div class="table-container">
+  <table>
+    <tr>
+      <th>Metric</th>
+      <th>PPO-S</th>
+      <th>PPO-M</th>
+      <th>PF-PPO (BR / BW)</th>
+    </tr>
+    <tr>
+      <td>Queries sampled per iteration<br>每次迭代采样查询数</td>
+      <td>5n</td>
+      <td>n</td>
+      <td>n</td>
+    </tr>
+    <tr>
+      <td>Responses sampled per query<br>每查询采样响应数</td>
+      <td>1</td>
+      <td>5</td>
+      <td>5</td>
+    </tr>
+    <tr>
+      <td>#Query-response pairs per iteration<br>每次迭代查询-响应对数</td>
+      <td>5n</td>
+      <td>5n</td>
+      <td>5n</td>
+    </tr>
+    <tr>
+      <td>Reward model forward pass per iteration<br>每次迭代奖励模型前向计算</td>
+      <td>5n</td>
+      <td>5n</td>
+      <td>5n</td>
+    </tr>
+    <tr>
+      <td>Critic forward&backward pass per iteration<br>每次迭代评论家网络前向/反向传播</td>
+      <td>5nm</td>
+      <td>5nm</td>
+      <td>2nm</td>
+    </tr>
+    <tr>
+      <td>Policy forward&backward pass per iteration<br>每次迭代策略网络前向/反向传播</td>
+      <td>5nm</td>
+      <td>5nm</td>
+      <td>2nm</td>
+    </tr>
+    <tr>
+      <td>HumanEval</td>
+      <td>100%</td>
+      <td>+2.69%</td>
+      <td>+6.15% / +5.51%</td>
+    </tr>
+    <tr>
+      <td>MBPP</td>
+      <td>100%</td>
+      <td>+1.63%</td>
+      <td>+2.85% / +3.25%</td>
+    </tr>
+    <tr>
+      <td>LeetCode</td>
+      <td>100%</td>
+      <td>+18.25%</td>
+      <td>+30.95% / +20.63%</td>
+    </tr>
+  </table>
+  <p><em>表6. PPO-S、PPO-M和PF-PPO的计算复杂度与性能对比。n表示PPO查询数据集中的查询数量，m表示PPO训练轮数（即每个查询-响应对平均用于损失和梯度累积的次数）。PPO-M和PF-PPO每查询收集N=5个响应，PF-PPO从中平均选择2个响应用于网络更新。性能提升基于PPO-S基准。</em></p>
+</div>
+
+<!-- 摘要总结 -->
+<div class="section-title">摘要总结</div>
+<ol>
+  <li>提出基于BFS的<span class="term">拓扑排序算法</span>识别有向图安全节点，通过维护依赖字典和出度计数器，从终端节点迭代处理并更新依赖关系</li>
+  <li>对比三种RL算法：<span class="term">PPO-S</span>、<span class="term">PPO-M</span>和<span class="term">PF-PPO</span>的计算效率：
+    <ul>
+      <li>所有算法每迭代处理5n个查询-响应对</li>
+      <li>PF-PPO通过响应过滤将策略/评论家网络计算量降至2nm（对比PPO的5nm）</li>
+    </ul>
+  </li>
+  <li>实验验证：PF-PPO在HumanEval/MBPP/LeetCode基准上性能最优（最高+30.95%），证明其高效性与噪声抑制能力</li>
+</ol>
+
+<!-- 术语识别 -->
+<div class="section-title">术语解释</div>
+<dl>
+  <dt><span class="term">拓扑排序 (Topological Sort)</span></dt>
+  <dd>对有向无环图(DAG)的线性排序算法，保证每个节点出现在其依赖节点之后。本文使用BFS实现，用于识别安全节点（终端节点）。</dd>
+  
+  <dt><span class="term">出度 (Out-degree)</span></dt>
+  <dd>图论术语，指节点指向其他节点的边数。算法中出度归零的节点被标记为终端节点。</dd>
+  
+  <dt><span class="term">PPO-S (Proximal Policy Optimization-Single)</span></dt>
+  <dd>基础PPO算法，每查询采样1个响应，策略更新使用5nm次计算。</dd>
+  
+  <dt><span class="term">PF-PPO (Policy Filtration PPO)</span></dt>
+  <dd>改进算法，每查询采样5响应但仅选择2个更新网络，将策略计算量降至2nm，通过过滤噪声提升效果。</dd>
+  
+  <dt><span class="term">HumanEval/MBPP</span></dt>
+  <dd>代码生成评估基准：HumanEval测试函数级代码生成，MBPP(Mostly Basic Python Problems)测试基础编程能力。</dd>
+</dl>
+
+</body>
+</html>

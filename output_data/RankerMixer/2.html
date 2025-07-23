@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>RankMixer论文解析</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; }
+        .original { background-color: #f0f0f0; border: 1px solid #ccc; padding: 15px; margin: 10px 0; }
+        .translation { background-color: #e0f7e0; border: 1px solid #4CAF50; padding: 15px; margin: 10px 0; }
+        .figure { background-color: #fffde7; padding: 15px; margin: 20px 0; text-align: center; }
+        .term { color: red; font-weight: bold; }
+        .section-title { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 5px; }
+        .formula-container { text-align: center; margin: 20px 0; }
+        .formula-number { display: block; font-style: italic; }
+    </style>
+</head>
+<body>
+
+<!-- 内容理解 -->
+<h2 class="section-title">内容理解</h2>
+<div>
+    <p>本文提出<strong class="term">RankMixer</strong>模型，解决工业推荐系统中排序模型的扩展性问题。核心创新点包括：</p>
+    <ul>
+        <li><strong class="term">基于语义的令牌化(Tokenization)</strong>：将数百个特征嵌入分组为语义相关的簇，转化为固定维度的特征令牌，平衡计算效率与特征表达能力。</li>
+        <li><strong class="term">RankMixer块(RankMixer Block)</strong>：包含两个关键模块——<strong class="term">多头令牌混合(Multi-head Token Mixing)</strong>实现跨特征交互，<strong class="term">稀疏专家混合(SMoE)</strong>增强模型容量。</li>
+        <li>架构设计：通过令牌分割/重组机制（公式3-4）提升特征交叉能力，避免关键特征被主导特征掩盖。</li>
+    </ul>
+    <p>该设计解决了传统方法中特征令牌过多（GPU利用率低）或过少（退化为简单DNN）的两难问题。</p>
+</div>
+
+<!-- 内容翻译 -->
+<h2 class="section-title">内容翻译</h2>
+
+<div class="original">
+    RankMixer: Scaling Up Ranking Models in Industrial Recommenders<br>
+    Conference acronym ’XX, June 03–05, 2018, Woodstock, NY
+</div>
+<div class="translation">
+    RankMixer：工业推荐系统中排序模型的扩展<br>
+    会议缩写’XX，2018年6月3-5日，纽约州伍德斯托克
+</div>
+
+<div class="figure">
+    <strong>Figure 1:</strong> The architecture of a RankMixer block. A RankMixer block consists of two modules: Multi-head Token Mixing and SMoE based Per-token FFN. The token-mixing module divides each token’s embedding into 𝐻 smaller parts (heads), then recombines these parts across tokens to create new mixed tokens. This allows information from different features to interact with each other.
+    <br><br>
+    <strong>图1：</strong> RankMixer块架构。一个RankMixer块包含两个模块：多头令牌混合和基于SMoE的逐令牌FFN。令牌混合模块将每个令牌的嵌入划分为𝐻个较小部分（头），然后跨令牌重组这些部分以创建新的混合令牌，使不同特征的信息能够交互。
+</div>
+
+<div class="original">
+    To enable efficient parallel computation in later stages, embeddings of varying dimensions must be transformed into dimensional-aligned vectors, called feature-tokens. We refer to this embedding alignment process as tokenization. The simplest strategy is assigning one embedding per feature which introduces several challenges given typically hundreds of features. Having hundreds of tokens inevitably reduces the parameters and computation allocated per token to small fragments, resulting in insufficient modeling of important features and under-utilization of GPU cores. Conversely, too few tokens (e.g. a single token) degrade the model structure into a simple Deep Neural Network (DNN), unable to distinctly represent diverse feature spaces, which risks dominant features overshadowing others.
+</div>
+<div class="translation">
+    为实现后续阶段的高效并行计算，必须将不同维度的嵌入转换为维度对齐的向量，称为<strong class="term">特征令牌(feature-tokens)</strong>。我们将此嵌入对齐过程称为<strong class="term">令牌化(Tokenization)</strong>。最简单的策略是为每个特征分配一个嵌入，但当存在数百个特征时会带来挑战。过多的令牌会使每个令牌分配的参数量和计算量碎片化，导致重要特征建模不足和GPU核心利用率低下。反之，过少的令牌（如单个令牌）会使模型退化为简单<strong class="term">深度神经网络(DNN)</strong>，无法区分不同特征空间，且主导特征可能掩盖其他特征。
+</div>
+
+<div class="original">
+    To overcome these issues, we propose a semantic-based tokenization approach with domain knowledge and group features into several semantically coherent clusters. These grouped features are sequentially concatenated into one embedding vector 𝑒<sub>input</sub> =[𝑒<sub>1</sub>;𝑒<sub>2</sub>;...;𝑒<sub>𝑁</sub>], and subsequently partitioned into an appropriate number of tokens with fixed dimension sizes. Each feature token 𝑥<sub>𝑖</sub>∈ℝ<sup>𝐷</sup> captures a set of feature embeddings that represent a similar semantic aspect.
+</div>
+<div class="translation">
+    为克服这些问题，我们提出基于领域知识的<strong class="term">语义令牌化(semantic-based tokenization)</strong>方法，将特征分组为若干语义连贯的簇。这些分组特征被顺序拼接为嵌入向量𝑒<sub>input</sub> =[𝑒<sub>1</sub>;𝑒<sub>2</sub>;...;𝑒<sub>𝑁</sub>]，然后划分为固定维度的适量令牌。每个特征令牌𝑥<sub>𝑖</sub>∈ℝ<sup>𝐷</sup>捕获代表相似语义方面的一组特征嵌入。
+</div>
+
+<div class="formula-container">
+    $$x_i = \text{Proj}(e_{\text{input}}[d \cdot (i-1) : d \cdot i]), \quad i=1,\dots,T \tag{2}$$
+    <span class="formula-number">公式(2)：令牌生成函数。其中𝑒<sub>input</sub>为拼接嵌入向量，𝑑为令牌固定维度，𝑁为特征组数，𝑇为令牌数量，Proj函数将分割后的嵌入映射到𝐷维。</span>
+</div>
+
+<div class="original">
+    3.3 RankMixer Block<br>
+    3.3.1 Multi-head Token Mixing. To facilitate effective information exchange across tokens which is important for feature cross and global information modeling, we introduce the multi-head Token Mixing module. Each token is evenly divided into 𝐻 heads, with the ℎ-th head of token x<sub>𝑡</sub> denoted as 𝑥<sup>ℎ</sup><sub>𝑡</sub>:
+</div>
+<div class="translation">
+    3.3 RankMixer块<br>
+    3.3.1 多头令牌混合。为促进跨令牌的有效信息交换（对特征交叉和全局信息建模至关重要），我们引入<strong class="term">多头令牌混合(Multi-head Token Mixing)</strong>模块。每个令牌被均匀划分为𝐻个头，令牌x<sub>𝑡</sub>的第ℎ个头记为𝑥<sup>ℎ</sup><sub>𝑡</sub>：
+</div>
+
+<div class="formula-container">
+    $$[\mathbf{x}^{(1)}_t \| \mathbf{x}^{(2)}_t \| \dots \| \mathbf{x}^{(H)}_t] = \text{SplitHead}(\mathbf{x}_t) \tag{3}$$
+    <span class="formula-number">公式(3)：令牌分割操作</span>
+</div>
+
+<div class="original">
+    These heads can be seen as projections of the token x<sub>𝑡</sub> into a lower-dimensional feature subspace since recommendation is task taking different perspectives into considerations. Token Mixing is used to fuse these sub-space vector for global feature interactions. Formally, the ℎ-th token s<sup>ℎ</sup> corresponding to the ℎ-th head after the multi-head Token Mixing is constructed as:
+</div>
+<div class="translation">
+    这些头可视为令牌x<sub>𝑡</sub>在低维特征子空间的投影（推荐任务需考虑不同视角）。令牌混合用于融合这些子空间向量以实现全局特征交互。形式化地，混合后第ℎ个令牌s<sup>ℎ</sup>的构建方式为：
+</div>
+
+<div class="formula-container">
+    $$\mathbf{s}^h = \text{Concat}(\mathbf{x}^h_1, \mathbf{x}^h_2, \dots, \mathbf{x}^h_T) \tag{4}$$
+    <span class="formula-number">公式(4)：跨令牌重组操作</span>
+</div>
+
+<!-- 摘要总结 -->
+<h2 class="section-title">摘要总结</h2>
+<div>
+    <p>本文提出<strong class="term">RankMixer</strong>模型解决工业推荐系统排序模型的扩展瓶颈：</p>
+    <ol>
+        <li>提出<strong class="term">语义令牌化(semantic-based tokenization)</strong>方法，通过特征分组和投影（公式2）将数百维特征转化为维度对齐的令牌，平衡计算效率与特征表达能力</li>
+        <li>设计核心组件<strong class="term">RankMixer块(RankMixer Block)</strong>：
+            <ul>
+                <li><strong class="term">多头令牌混合(Multi-head Token Mixing)</strong>：分割令牌为子空间（公式3），跨令牌重组实现特征交叉（公式4）</li>
+                <li><strong class="term">稀疏专家混合(SMoE)</strong>：通过条件路由增强模型容量</li>
+            </ul>
+        </li>
+        <li>解决传统方案中特征令牌过多（GPU利用率低）或过少（退化为DNN）的矛盾，提升重要特征建模能力</li>
+    </ol>
+</div>
+
+<!-- 术语识别 -->
+<h2 class="section-title">术语解释</h2>
+<div>
+    <dl>
+        <dt><strong class="term">令牌化(Tokenization)</strong></dt>
+        <dd>将不同维度的原始特征嵌入转换为统一维度的特征令牌的过程。核心挑战是平衡令牌数量与计算效率，本文提出基于语义分组的优化方案。</dd>
+        
+        <dt><strong class="term">特征令牌(Feature-tokens)</strong></dt>
+        <dd>维度对齐的向量表示（𝑥<sub>𝑖</sub>∈ℝ<sup>𝐷</sup>），每个令牌捕获一个语义相关的特征子集。通过公式(2)的投影函数生成。</dd>
+        
+        <dt><strong class="term">多头令牌混合(Multi-head Token Mixing)</strong></dt>
+        <dd>RankMixer的核心组件：1) 将每个令牌分割为𝐻个低维子空间（公式3） 2) 跨令牌重组同索引的子空间（公式4） 3) 实现全局特征交互，避免主导特征掩盖次要特征。</dd>
+        
+        <dt><strong class="term">稀疏专家混合(SMoE, Sparse Mixture of Experts)</strong></dt>
+        <dd>条件计算架构：每个输入仅激活少数专家网络（如𝑃𝐹𝐹𝑁<sub>#</sub>）。通过路由机制(gate)实现，显著提升模型容量而不增加计算开销。</dd>
+        
+        <dt><strong class="term">RankMixer块(RankMixer Block)</strong></dt>
+        <dd>模型基础单元（图1），包含令牌混合（特征交叉）和SMoE-FFN（特征变换）两个模块。通过残差连接(Add & Norm)堆叠𝐿层形成完整模型。</dd>
+    </dl>
+</div>
+
+</body>
+</html>

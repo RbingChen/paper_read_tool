@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset='UTF-8'>
+<title>算法论文分析报告</title>
+<script src='https://polyfill.io/v3/polyfill.min.js?features=es6'></script>
+<script id='MathJax-script' async src='https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'></script>
+<style>
+  body { font-family: 'Segoe UI', sans-serif; line-height: 1.6; }
+  .original { background-color: #f0f0f0; border: 1px solid #cccccc; padding: 15px; margin-bottom: 10px; }
+  .translation { background-color: #e0f7e0; border: 1px solid #4CAF50; padding: 15px; margin-bottom: 20px; }
+  .figure { background-color: #fffde7; padding: 15px; border-left: 4px solid #ffd600; margin: 15px 0; }
+  .term { color: red; font-weight: bold; }
+  table { width: 100%; border-collapse: collapse; margin: 15px 0; }
+  th, td { border: 1px solid #ddd; padding: 8px; text-align: center; }
+  th { background-color: #f5f5f5; }
+  h2 { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 5px; }
+  .section { margin-bottom: 30px; }
+</style>
+</head>
+<body>
+
+<div class='section'>
+  <h2>内容理解</h2>
+  <p>该文本探讨了在固定计算资源下优化深度神经网络训练效率的方法。核心发现是：在长思维链（CoT）模型训练中，<span class='term'>推出时间（rollout time）</span>占总训练时间的72%以上，成为主要瓶颈。研究通过调整<span class='term'>SGD步数（NSGD）</span>、<span class='term'>小批量数量（DR/DT）</span>和<span class='term'>数据重用因子（Nreuse）</span>来优化效率，但发现增加SGD步数会降低模型性能。表格数据量化了Skywork-OR1-32B模型的训练时间分布，图23则概述了实验设计框架。</p>
+</div>
+
+<div class='section'>
+  <h2>内容翻译</h2>
+  
+  <div class='original'>
+    Given a fixed context length, the rollout time tR is primarily influenced by the rollout batch size DR and the group size (gs). As analyzed in Section 4.4, the policy update time tT depends on the number of SGD steps NSGD, which is determined by the number of mini-batches DR/DT and the data reuse factor Nreuse. In the following subsections, we investigate how these factors impact both training efficiency and final performance.
+  </div>
+  <div class='translation'>
+    在固定上下文长度下，<span class='term'>推出时间（rollout time）tR</span>主要受<span class='term'>推出批次大小（rollout batch size）DR</span>和<span class='term'>组大小（group size）gs</span>影响。如第4.4节分析，<span class='term'>策略更新时间（policy update time）tT</span>取决于<span class='term'>SGD步数（number of SGD steps）NSGD</span>，而NSGD又由<span class='term'>小批量数量（number of mini-batches）DR/DT</span>和<span class='term'>数据重用因子（data reuse factor）Nreuse</span>决定。后续小节将研究这些因素如何影响训练效率和最终性能。
+  </div>
+  
+  <div class='original'>
+    <h3>5.1 Improving Training Efficiency with Fixed Computational Resources</h3>
+  </div>
+  <div class='translation'>
+    <h3>5.1 在固定计算资源下提升训练效率</h3>
+  </div>
+  
+  <div class='original'>
+    In this section, we aim to answer the first question: Given fixed computational resources, how can training efficiency be improved?
+  </div>
+  <div class='translation'>
+    本节旨在回答第一个问题：在固定计算资源下，如何提升训练效率？
+  </div>
+  
+  <div class='figure'>
+    <div class='original'>
+      Figure 23: Overview of empirical studies on improving training efficiency given fixed computational resources. Grey blocks: Potential approaches to enhance training efficiency and their underlying principles. Yellow blocks: Experimental variables in the empirical studies
+    </div>
+    <div class='translation'>
+      图23：固定计算资源下提升训练效率的实证研究概览。灰色块：提升训练效率的潜在方法及其原理。黄色块：实证研究中的实验变量
+    </div>
+  </div>
+  
+  <div class='original'>
+    Rollout Time tR Dominates the Total Training Time ttotal. A fundamental observation regarding long CoT models (e.g. Deepseek-R1-Distill model series) is that the total training time is primarily determined by the rollout time. Table 7 presents the values of ttotal, tR, tT and tO of Skywork-OR1-32B over 1000 training steps. Clearly, tR dominates ttotal.
+  </div>
+  <div class='translation'>
+    <span class='term'>推出时间（Rollout Time）tR主导总训练时间ttotal</span>。对长思维链模型（如Deepseek-R1-Distill系列）的核心观察是：总训练时间主要由推出时间决定。表7展示了Skywork-OR1-32B模型在1000次训练步骤中ttotal、tR、tT和tO的值，清楚表明tR占ttotal的主导地位。
+  </div>
+  
+  <div class='original'>
+    <table>
+      <tr><th>Time Usage</th><th>total<br>ttotal</th><th>rollout<br>tR</th><th>policy update<br>tT</th><th>others<br>tO</th><th>tR/ttotal</th><th>tT/ttotal</th></tr>
+      <tr><td>Hours</td><td>309</td><td>223</td><td>27</td><td>59</td><td>72.1%</td><td>8.7%</td></tr>
+    </table>
+    Table 7: Analysis of training time usage of Skywork-OR1-32B for 1000 training steps.
+  </div>
+  <div class='translation'>
+    <table>
+      <tr><th>时间用途</th><th>总计<br>ttotal</th><th>推出<br>tR</th><th>策略更新<br>tT</th><th>其他<br>tO</th><th>tR/ttotal</th><th>tT/ttotal</th></tr>
+      <tr><td>小时</td><td>309</td><td>223</td><td>27</td><td>59</td><td>72.1%</td><td>8.7%</td></tr>
+    </table>
+    表7：Skywork-OR1-32B模型1000次训练步骤的时间消耗分析
+  </div>
+  
+  <div class='original'>
+    Since the primary bottleneck for ttotal in long CoT training is tR, it is reasonable to expect that appropriately increasing the number of SGD steps per training step, i.e., NSGD, will have minimal impact on ttotal while improving training efficiency. Therefore, in the following, we investigate the impact of the number of mini-batches (DR/DT) and the data reuse times (Nreuse) on both the total training time ttotal and test performance. The overall idea of our study is illustrated in Figure 23.
+  </div>
+  <div class='translation'>
+    由于长思维链训练中ttotal的主要瓶颈是tR，合理推测：适当增加每次训练步骤的<span class='term'>SGD步数（SGD steps）NSGD</span>可在提升训练效率的同时对ttotal影响最小。因此，下文将研究<span class='term'>小批量数量（number of mini-batches）DR/DT</span>和<span class='term'>数据重用次数（data reuse times）Nreuse</span>对总训练时间ttotal和测试性能的影响，研究框架如图23所示。
+  </div>
+  
+  <div class='original'>
+    More SGD Steps, More Training Efficiency but Worse Performance. We have already examined the impact of increasing NSGD on entropy dynamics, as discussed in Ablation Experiments 6 (Section 4.4). Consider
+  </div>
+  <div class='translation'>
+    更多SGD步数提升效率但降低性能。我们已在消融实验6（第4.4节）中检验了增加NSGD对熵动态的影响。需考虑
+  </div>
+</div>
+
+<div class='section'>
+  <h2>摘要总结</h2>
+  <p>本研究聚焦固定计算资源下深度神经网络训练效率优化。核心发现是：在长思维链模型（如Deepseek-R1-Distill）训练中，<span class='term'>推出时间（tR）</span>占总训练时间72%以上（表7数据），成为主要瓶颈。通过调整<span class='term'>SGD步数（NSGD）</span>、<span class='term'>小批量数量（DR/DT）</span>和<span class='term'>数据重用因子（Nreuse）</span>可提升效率，但增加NSGD会降低模型性能（图23实验框架）。关键结论：优化应优先针对推出阶段，而非策略更新阶段。</p>
+</div>
+
+<div class='section'>
+  <h2>术语识别</h2>
+  <dl>
+    <dt><span class='term'>推出时间（Rollout Time, tR）</span></dt>
+    <dd>模型生成输出序列（如思维链推理步骤）所需时间，受推出批次大小（DR）和组大小（gs）直接影响。占Skywork-OR1-32B总训练时间的72.1%（表7）。</dd>
+    
+    <dt><span class='term'>策略更新时间（Policy Update Time, tT）</span></dt>
+    <dd>通过随机梯度下降（SGD）更新模型参数的时间，计算公式：\( tT \\propto N_{SGD} \)。仅占总训练时间的8.7%（表7）。</dd>
+    
+    <dt><span class='term'>SGD步数（Number of SGD Steps, NSGD）</span></dt>
+    <dd>每次训练迭代中参数更新次数，由 \( N_{SGD} = \\frac{D_R}{D_T} \\times N_{reuse} \) 决定。增加可提升数据利用率但可能损害性能。</dd>
+    
+    <dt><span class='term'>小批量数量（Number of Mini-batches, DR/DT）</span></dt>
+    <dd>推出数据批次大小（DR）与训练小批量大小（DT）的比值，决定每次迭代中参数更新的粒度。</dd>
+    
+    <dt><span class='term'>数据重用因子（Data Reuse Factor, Nreuse）</span></dt>
+    <dd>同一批推出数据被重复用于参数更新的次数，可放大NSGD但可能导致过拟合。</dd>
+    
+    <dt><span class='term'>长思维链模型（Long CoT Models）</span></dt>
+    <dd>需生成多步推理路径的模型（如Deepseek-R1-Distill系列），其训练瓶颈在推出阶段而非参数更新阶段。</dd>
+    
+    <dt><span class='term'>训练效率（Training Efficiency）</span></dt>
+    <dd>固定计算资源下单位时间内的训练进度，通过优化tR和NSGD平衡实现。</dd>
+  </dl>
+</div>
+
+</body>
+</html>

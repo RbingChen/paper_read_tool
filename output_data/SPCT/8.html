@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>论文解析与翻译</title>
+  <style>
+    body { font-family: Arial, sans-serif; line-height: 1.6; margin: 20px; }
+    .section { margin-bottom: 30px; }
+    h1 { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 5px; }
+    h2 { color: #2980b9; margin-top: 20px; }
+    .original { background-color: #f0f0f0; border: 1px solid #cccccc; padding: 15px; margin: 10px 0; border-radius: 5px; }
+    .translation { background-color: #e0ffe0; border: 1px solid #00cc00; padding: 15px; margin: 10px 0; border-radius: 5px; }
+    .figure { background-color: #ffffcc; padding: 15px; margin: 10px 0; border-radius: 5px; text-align: center; font-style: italic; }
+    .term { color: red; font-weight: bold; }
+    .formula { text-align: center; margin: 15px 0; font-family: monospace; }
+    .formula-number { font-size: 0.9em; color: #7f8c8d; }
+  </style>
+  <!-- 加载 MathJax 以支持 LaTeX 公式渲染 -->
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <h1>论文解析与翻译</h1>
+  
+  <div class="section">
+    <h1>内容理解</h1>
+    <p>该文本是一篇预印本论文（Under review）的片段，主要研究 <span class="term">DeepSeek-GRM</span> 模型的性能，特别是在 <span class="term">推理时缩放（inference-time scaling）</span> 和 <span class="term">训练时缩放（training-time scaling）</span> 方面的实验分析。核心内容包括：</p>
+    <ul>
+      <li><strong>实验设置</strong>：在 <span class="term">Reward Bench</span> 基准上测试不同规模的模型（如 DeepSeek-GRM-16B 和 DeepSeek-GRM-27B），使用 <span class="term">元奖励模型（Meta RM）</span> 引导的投票机制进行推理时缩放，并与训练时缩放（增加模型参数大小）对比。</li>
+      <li><strong>关键发现</strong>：<span class="term">推理时缩放</span> 通过少量样本（如 8 个样本的元 RM 投票）就能达到高性能，优于扩展模型大小（如 671B <span class="term">MoE（Mixture of Experts）</span> 模型）。具体地，32 样本直接投票可媲美大型模型，而扩展长 <span class="term">思维链（chain-of-thoughts）</span> 对通用 <span class="term">生成式奖励模型（GRM）</span> 性能提升有限。</li>
+      <li><strong>影响因素</strong>：通用指令数据和原则生成对 GRM 性能至关重要；元 RM 引导投票在不同 \( k_{\\text{meta}} \) 下表现出鲁棒性。</li>
+      <li><strong>相关工作</strong>：回顾了 <span class="term">GRM</span> 的演变（从标量奖励模型转向文本反馈），以及 <span class="term">推理时缩放</span> 技术（如采样、RM 引导聚合和思维链）。研究还讨论了效率挑战和未来潜力。</li>
+    </ul>
+    <p>整体上，本文强调了推理时缩放在成本效益上的优势，为构建更通用的奖励系统提供了见解。</p>
+  </div>
+  
+  <div class="section">
+    <h1>内容翻译</h1>
+    <p>以下为文本的英文原文与中文翻译对照。原文使用浅灰色背景，翻译使用浅绿色背景；图示（Figure）使用黄色背景；关键术语以<span class="term">红色粗体</span>高亮显示，并包含英文原文。</p>
+    
+    <div class="original">
+      Preprint. Under review.
+    </div>
+    <div class="translation">
+      预印本。正在审阅中。
+    </div>
+    
+    <div class="figure">
+      <div class="original">
+        81.083.085.087.089.091.0<br>
+        1 2 4 8 16 32<br>
+        k: #sampled rewards (logscale)DeepSeek -GRM -<br>
+        27B ( MetaRM@ k)<br>
+        DeepSeek -GRM -<br>
+        27B ( Voting@ k)<br>
+        DeepSeek -GRM -<br>
+        16B ( Voting@ k)<br>
+        (a) Inference-time scaling results of<br>
+        DeepSeek-GRM-16B and DeepSeek-<br>
+        GRM-27B ( kmeta=1<br>
+        2k).<br>
+        81.083.085.087.089.091.0<br>
+        8 24 72 216 648<br>
+        #model parameters (B) (logscale)DeepSeek -V3<br>
+        (Greedy)<br>
+        DeepSeek -R1<br>
+        RL RFT(b) Training-time scaling results with<br>
+        different model sizes, using greedy<br>
+        decoding except DeepSeek-R1.<br>
+        Figure 4: Inference-time scaling performance v.s. training-time scaling performance on the<br>
+        Reward Bench benchmark.
+      </div>
+      <div class="translation">
+        81.083.085.087.089.091.0<br>
+        1 2 4 8 16 32<br>
+        k: 采样奖励数量（对数尺度）<span class="term">DeepSeek-GRM-27B（元奖励模型@k, Meta RM@k）</span><br>
+        <span class="term">DeepSeek-GRM-27B（投票@k, Voting@k）</span><br>
+        <span class="term">DeepSeek-GRM-16B（投票@k, Voting@k）</span><br>
+        (a) <span class="term">DeepSeek-GRM-16B</span> 和 <span class="term">DeepSeek-GRM-27B</span> 的<span class="term">推理时缩放（inference-time scaling）</span>结果（\( k_{\\text{meta}} = \\frac{1}{2}k \))。<br>
+        81.083.085.087.089.091.0<br>
+        8 24 72 216 648<br>
+        模型参数数量（B）（对数尺度）<span class="term">DeepSeek-V3（贪婪解码, Greedy）</span><br>
+        <span class="term">DeepSeek-R1</span><br>
+        <span class="term">强化学习微调（RL RFT, Reinforcement Fine-Tuning）</span>(b) 不同模型大小的<span class="term">训练时缩放（training-time scaling）</span>结果，除 DeepSeek-R1 外均使用贪婪解码。<br>
+        图4：在<span class="term">Reward Bench</span>基准上的<span class="term">推理时缩放</span>性能与<span class="term">训练时缩放</span>性能对比。
+      </div>
+    </div>
+    
+    <div class="original">
+      for <span class="term">GRMs</span> . Aligned with previous works (Cao et al., 2024), we confirm that the general instruction data is essential for the performance of <span class="term">GRMs</span>. We find that the principle generation is crucial for the performance of both greedy decoding and <span class="term">inference-time scaling</span> of <span class="term">DeepSeek-GRM-27B</span> . For <span class="term">inference-time scaling</span>, the <span class="term">meta RM</span> guided voting shows robustness with different <span class="term">kmeta</span>. Further analysis on the generalist <span class="term">RM</span> performance, including input flexibility, domain generalization of training data, etc., is discussed in Appendix E.
+    </div>
+    <div class="translation">
+      对于<span class="term">生成式奖励模型（GRMs, Generative Reward Models）</span>。与先前工作（Cao et al., 2024）一致，我们确认通用指令数据对<span class="term">GRMs</span>的性能至关重要。我们发现原则生成对<span class="term">DeepSeek-GRM-27B</span>的贪婪解码和<span class="term">推理时缩放（inference-time scaling）</span>性能都至关重要。对于<span class="term">推理时缩放</span>，<span class="term">元奖励模型（meta RM）</span>引导的投票在不同<span class="term">k_{\\text{meta}}</span>下表现出鲁棒性。关于通用<span class="term">奖励模型（RM

@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>OneRec技术报告解析</title>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    body { font-family: Arial, sans-serif; line-height: 1.6; }
+    .original { 
+      background-color: #f0f0f0; 
+      border: 1px solid #cccccc;
+      padding: 15px;
+      margin-bottom: 5px;
+    }
+    .translation {
+      background-color: #e0f7e0;
+      border: 1px solid #4caf50;
+      padding: 15px;
+      margin-bottom: 20px;
+    }
+    .figure {
+      background-color: #fffde7;
+      padding: 15px;
+      margin: 20px 0;
+      text-align: center;
+    }
+    .formula-container {
+      text-align: center;
+      margin: 20px 0;
+    }
+    .formula-number {
+      display: block;
+      margin-top: 5px;
+      font-style: italic;
+    }
+    .term {
+      color: red;
+      font-weight: bold;
+    }
+    h1, h2, h3 { color: #2c3e50; }
+    section { margin-bottom: 30px; }
+    dl { margin-left: 20px; }
+    dt { font-weight: bold; margin-top: 10px; }
+  </style>
+</head>
+<body>
+  <h1>OneRec技术报告解析</h1>
+  
+  <section id="content-understanding">
+    <h2>内容理解</h2>
+    <p>该文本描述了OneRec推荐系统的两个核心技术组件：Tokenization方法和Encoder架构。Tokenization部分详细介绍了<strong class="term">RQ-Kmeans（残差量化K均值）</strong>算法，这是一种分层量化方法，通过迭代的K-means聚类生成由粗到细的语义ID。Encoder部分则提出了多尺度特征工程框架，使用四条专用通路处理用户行为数据。Figure 4展示了编码器-解码器架构的可视化表示。</p>
+  </section>
+  
+  <section id="translation">
+    <h2>内容翻译</h2>
+    
+    <div class="figure">
+      <div class="original">
+        OneRec Technical Report<br>
+        FullyVisibleSelf-AttentionFeedForwardAdd&RMSNormEncoderCasualSelf-AttentionAdd&RMSNormFullyVisibleCross-Attentionkey/valueRouter⊗⊕⊗Expert2MoELayer⋯<br>
+        Decoder⋯⋯⋯𝒔𝒎𝟏𝒔𝒎𝟐𝒔𝒎𝑳𝒕𝑩𝑶𝑺User StaticPathwayShort-term PathwayPositive-FeedbackPathwayLifelong PathwayUser InterestCompression×𝐿$%&×𝐿'$&Expert1Expert3Expert4ExpertNExperts𝒔𝒎𝟏𝒔𝒎𝟐𝒔𝒎𝑳𝒕EncoderCasualSelf-AttentionFullyVisibleCross-Attentionkey/valueDecoder⋯⋯⋯𝒔𝒎𝟏𝒔𝒎𝟐𝒔𝒎𝑳𝒕𝑩𝑶𝑺User StaticPathwayShort-term PathwayPositive-FeedbackPathwayLifelong PathwayUser InterestCompression×𝐿$%&×𝐿'$&<br>
+        Figure 4|Illustration of our encoder-decoder architecture.
+      </div>
+      <div class="translation">
+        OneRec技术报告<br>
+        [架构图组件：全可见自注意力→前馈网络→加法&RMS归一化→编码器→因果自注意力→加法&RMS归一化→全可见交叉注意力(key/value)→路由器⊗⊕⊗→专家2→MoE层⋯]<br>
+        [解码器组件⋯⋯⋯𝒔𝒎𝟏𝒔𝒎𝟐𝒔𝒎𝑳𝒕𝑩𝑶𝑺用户静态通路→短期通路→正反馈通路→终身通路→用户兴趣压缩×𝐿$%&×𝐿'$&专家1/3/4/N]<br>
+        [编码器组件：𝒔𝒎𝟏𝒔𝒎𝟐𝒔𝒎𝑳𝒕→因果自注意力→全可见交叉注意力(key/value)→解码器⋯⋯⋯𝒔𝒎𝟏𝒔𝒎𝟐𝒔𝒎𝑳𝒕𝑩𝑶𝑺用户静态通路→短期通路→正反馈通路→终身通路→用户兴趣压缩×𝐿$%&×𝐿'$&]<br>
+        <strong>图4|我们的编码器-解码器架构示意图</strong>
+      </div>
+    </div>
+    
+    <div class="original">
+      2.1.2. Tokenization<br>
+      We utilize RQ-Kmeans (Luo et al., 2024) for tokenization, which employs residual quantization to generate semantic IDs in a coarse-to-fine manner. This method constructs codebooks by applying K-means clustering directly on the residuals. An illustration of the RQ-Kmeans process is provided in Figure 3 (right).
+    </div>
+    <div class="translation">
+      <strong>2.1.2. 标记化</strong><br>
+      我们采用<strong class="term">RQ-Kmeans（残差量化K均值）</strong>(Luo et al., 2024)进行标记化，该方法利用<strong class="term">残差量化（Residual Quantization）</strong>以<strong class="term">由粗到细（Coarse-to-fine）</strong>的方式生成<strong class="term">语义ID（Semantic IDs）</strong>。该方法直接在残差上应用<strong class="term">K均值聚类（K-means clustering）</strong>来构建<strong class="term">码本（Codebooks）</strong>。RQ-Kmeans过程的图示见图3（右）。
+    </div>
+    
+    <div class="original">
+      Formally, the initial residual at layer 𝑙=1 is defined as:<br>
+      R(1)=˜M𝑖∈ℝ𝑁˜𝑀×𝑑𝑡|∀video𝑖	. (5)
+    </div>
+    <div class="formula-container">
+      \\[ \\mathbf{R}^{(1)} = \\{ \\tilde{\\mathbf{M}}_i \\in \\mathbb{R}^{N_{\\tilde{M}} \\times d_t} \\mid \\forall \\text{ video } i \\} \\]
+      <span class="formula-number">(5)</span>
+    </div>
+    <div class="translation">
+      形式化定义，第𝑙=1层的初始残差为：
+    </div>
+    
+    <div class="original">
+      For each layer 𝑙, the codebook C(𝑙) is derived from K-means centroids of R(𝑙):<br>
+      C(𝑙)=K-means(R(𝑙),𝑁𝑡), (6)<br>
+      where C(𝑙)=n 𝒄(𝑙)𝑘∈ℝ𝑁˜𝑀×𝑑𝑡|𝑘=1,...,𝑁𝑡o and 𝑁𝑡 is the codebook size.
+    </div>
+    <div class="formula-container">
+      \\[ \\mathbf{C}^{(l)} = \\text{K-means}(\\mathbf{R}^{(l)}, N_t) \\]
+      <span class="formula-number">(6)</span>
+    </div>
+    <div class="translation">
+      对于每个层级𝑙，码本C(𝑙)从R(𝑙)的K-means质心导出：<br>
+      其中C(𝑙) = { 𝒄<sub>𝑘</sub><sup>(𝑙)</sup> ∈ ℝ<sup>𝑁̃<sub>𝑀</sub>×𝑑<sub>𝑡</sub></sup> | 𝑘=1,...,𝑁𝑡 }，𝑁𝑡表示码本大小。
+    </div>
+    
+    <div class="original">
+      The nearest centroid index for item 𝑖 is computed as:<br>
+      𝑠𝑙𝑖=arg min𝑘‖R(𝑙)𝑖−𝒄(𝑙)𝑘‖, (7)<br>
+      where ∥·∥ denotes the Euclidean norm.
+    </div>
+    <div class="formula-container">
+      \\[ s_i^l = \\arg\\min_k \\left\\| \\mathbf{R}_i^{(l)} - \\mathbf{c}_k^{(l)} \\right\\| \\]
+      <span class="formula-number">(7)</span>
+    </div>
+    <div class="translation">
+      项目𝑖的最邻近质心索引计算如下：<br>
+      其中∥·∥表示<strong class="term">欧几里得范数（Euclidean norm）</strong>。
+    </div>
+    
+    <div class="original">
+      The residual of video 𝑖 for layer 𝑙+1 is then updated:<br>
+      R(𝑙+1)𝑖=R(𝑙)𝑖−𝒄(𝑙)𝑠𝑙𝑖. (8)
+    </div>
+    <div class="formula-container">
+      \\[ \\mathbf{R}_i^{(l+1)} = \\mathbf{R}_i^{(l)} - \\mathbf{c}_{s_i^l}^{(l)} \\]
+      <span class="formula-number">(8)</span>
+    </div>
+    <div class="translation">
+      随后更新视频𝑖在𝑙+1层的残差：
+    </div>
+    
+    <div class="original">
+      This quantization iterates across 𝐿𝑡=3 layers.<br>
+      As demonstrated in Section 4.4, RQ-Kmeans offers enhanced reconstruction quality, better codebook utilization, and improved balance compared to the widely used RQ-VAE (Lee et al., 2022; Rajput et al., 2024). At this stage, each video 𝑚 can be represented by 𝐿𝑡 coarse-to-fine semantic identifiers: {𝑠1𝑚,𝑠2𝑚,...,𝑠𝐿𝑡𝑚}, which will serve as the output of the OneRec recommendation system, enabling progressive item generation.
+    </div>
+    <div class="translation">
+      此量化过程迭代𝐿<sub>𝑡</sub>=3层。<br>
+      如第4.4节所示，与广泛使用的RQ-VAE相比，RQ-Kmeans提供更好的重建质量、更高的码本利用率和更优的平衡性。此时，每个视频𝑚可由𝐿<sub>𝑡</sub>个由粗到细的语义标识符表示：{𝑠<sup>1</sup><sub>𝑚</sub>, 𝑠<sup>2</sup><sub>𝑚</sub>, ..., 𝑠<sup>𝐿<sub>𝑡</sub></sup><sub>𝑚</sub>}，这些将作为OneRec推荐系统的输出，实现渐进式项目生成。
+    </div>
+    
+    <div class="original">
+      2.2. Encoder<br>
+      2.2.1. Multi-Scale Feature Engineering<br>
+      This section presents the feature engineering component of OneRec. We process user behavior data through four specialized embedding pathways, each designed to capture distinct scales of user
+    </div>
+    <div class="translation">
+      <strong>2.2. 编码器</strong><br>
+      <strong>2.2.1. 多尺度特征工程</strong><br>
+      本节介绍OneRec的特征工程组件。我们通过四条专用<strong class="term">嵌入通路（Embedding Pathways）</strong>处理用户行为数据，每条通路设计用于捕捉不同尺度的用户特征。
+    </div>
+  </section>
+  
+  <section id="summary">
+    <h2>摘要总结</h2>
+    <p>本文介绍了OneRec推荐系统的两大核心技术：1) 使用<strong class="term">RQ-Kmeans（残差量化K均值）</strong>进行分层语义ID生成，通过3层迭代的残差量化（公式5-8）构建由粗到细的视频表示；2) 编码器采用<strong class="term">多尺度特征工程（Multi-Scale Feature Engineering）</strong>，通过四条专用通路处理用户行为。Figure 4展示了编码器-解码器架构，其中包含MoE层和用户兴趣通路。RQ-Kmeans相比RQ-VAE在重建质量和码本利用率方面有显著提升。</p>
+  </section>
+  
+  <section id="terms">
+    <h2>术语识别</h2>
+    <dl>
+      <dt>RQ-Kmeans (残差量化K均值)</dt>
+      <dd>一种分层量化方法，通过迭代应用K-means聚类于残差向量生成语义ID。相比RQ-VAE具有更好的重建质量和码本利用率。</dd>
+      
+      <dt>Residual Quantization (残差量化)</dt>
+      <dd>分层向量量化技术，每一层对前一层量化后的残差进行再量化，形成由粗到细的表示（公式5-8）。</dd>
+      
+      <dt>Semantic IDs (语义ID)</dt>
+      <dd>通过分层量化生成的标识符序列{𝑠<sup>1</sup><sub>𝑚</sub>, ..., 𝑠<sup>𝐿<sub>𝑡</sub></sup><sub>𝑚</sub>}，表示视频的语义内容，用于渐进式推荐。</dd>
+      
+      <dt>Codebooks (码本)</dt>
+      <dd>由K-means聚类生成的质心集合C<sup>(𝑙)</sup> = {𝒄<sub>1</sub><sup>(𝑙)</sup>, ..., 𝒄<sub>𝑁<sub>𝑡</sub></sub><sup>(𝑙)</sup>}，用于残差量化（公式6）。</dd>
+      
+      <dt>Euclidean norm (欧几里得范数)</dt>
+      <dd>向量距离度量方式∥𝐱−𝐲∥ = √Σ(𝑥<sub>𝑖</sub>−𝑦<sub>𝑖</sub>)²，用于计算残差向量到质心的距离（公式7）。</dd>
+      
+      <dt>Encoder-Decoder Architecture (编码器-解码器架构)</dt>
+      <dd>OneRec的核心框架（Figure 4），包含全可见自注意力、MoE层和用户行为处理通路。</dd>
+      
+      <dt>Multi-Scale Feature Engineering (多尺度特征工程)</dt>
+      <dd>通过四条专用通路（用户静态通路、短期通路、正反馈通路、终身通路）提取不同时间尺度的用户特征。</dd>
+      
+      <dt>Embedding Pathways (嵌入通路)</dt>
+      <dd>特化的特征处理通道，包括User Static Pathway、Short-term Pathway等，用于不同尺度用户兴趣建模。</dd>
+      
+      <dt>MoE Layer (混合专家层)</dt>
+      <dd>Figure 4中的⊗⊕⊗模块，通过路由器动态选择专家模型处理不同特征。</dd>
+      
+      <dt>Coarse-to-fine (由粗到细)</dt>
+      <dd>分层生成策略，首层生成粗略语义表示，后续层逐步细化（𝐿<sub>𝑡</sub>=3层）。</dd>
+    </dl>
+  </section>
+</body>
+</html>

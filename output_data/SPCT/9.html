@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>论文解析报告</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; line-height: 1.6; max-width: 900px; margin: 0 auto; padding: 20px; }
+        h1 { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 10px; }
+        h2 { color: #2980b9; margin-top: 30px; }
+        .original { background-color: #f8f9fa; border: 1px solid #ced4da; padding: 15px; margin: 10px 0; border-radius: 5px; }
+        .translation { background-color: #e8f5e9; border: 1px solid #81c784; padding: 15px; margin: 10px 0 25px 0; border-radius: 5px; }
+        .term { color: #e53935; font-weight: bold; }
+        .section { margin-bottom: 30px; }
+        .reference { font-style: italic; margin: 5px 0; }
+        .formula-container { text-align: center; margin: 20px 0; background-color: #fffde7; padding: 15px; border-radius: 5px; }
+        .formula-number { display: block; font-size: 0.9em; color: #7f8c8d; }
+    </style>
+</head>
+<body>
+    <h1>论文解析报告：Self-Principled Critique Tuning (SPCT)</h1>
+    
+    <!-- 内容理解部分 -->
+    <div class="section">
+        <h2>1. 内容理解</h2>
+        <p>本文介绍了一种名为<strong class="term">自原则批判调优（Self-Principled Critique Tuning, SPCT）</strong>的创新方法，旨在提升<strong class="term">生成式奖励模型（Generative Reward Models, GRMs）</strong>在推理时的可扩展性。核心创新点在于：</p>
+        <ul>
+            <li>通过<strong class="term">基于规则的在线强化学习（rule-based online RL）</strong>框架实现原则和批判的自适应生成</li>
+            <li>显著提升<strong class="term">DeepSeek-GRM</strong>在多领域任务中的奖励质量和推理效率</li>
+            <li>验证了<strong class="term">推理时扩展（inference-time scaling）</strong>技术对模型性能的增强作用</li>
+        </ul>
+        <p>伦理部分强调：尽管模型在减少偏见方面表现良好，仍需警惕训练数据毒性导致的偏见放大风险，主张保持<strong class="term">人在回路（human-in-the-loop）</strong>的监督框架。</p>
+    </div>
+    
+    <!-- 内容翻译部分 -->
+    <div class="section">
+        <h2>2. 内容翻译</h2>
+        
+        <div class="original">
+            Preprint. Under review.
+            Thus, the development of inference-time scalable generalist RMs in this work might also
+            contributes to the general performance of policy models by inference-time co-scaling.
+        </div>
+        <div class="translation">
+            预印本。正在评审中。<br>
+            因此，本研究开发的<strong class="term">推理时可扩展通用奖励模型（inference-time scalable generalist RMs）</strong>也可能通过<strong class="term">推理时协同扩展（inference-time co-scaling）</strong>提升策略模型的整体性能。
+        </div>
+        
+        <div class="original">
+            <h3>7 Conclusion and Future Work</h3>
+            We introduced Self-Principled Critique Tuning (SPCT), a method that enhances the scala-
+            bility of inference time for generalist reward modeling. With rule-based online RL, SPCT
+            enables adaptive generation of principles and critiques, significantly boosting reward quality
+            and inference-time scalability for GRMs in diverse domains. Empirical results demonstrate
+            that DeepSeek-GRM surpass baseline methods and a few strong public RMs, and show
+            notable improvement through inference-time scaling, particularly with the guidance of
+            the meta RM. Future directions could include integrating GRMs into online RL pipelines
+            as versatile interfaces of reward systems, exploring inference-time co-scaling with policy
+            models, or serving as robust offline evaluators for foundation models.
+        </div>
+        <div class="translation">
+            <h3>7 结论与未来工作</h3>
+            我们提出了<strong class="term">自原则批判调优（Self-Principled Critique Tuning, SPCT）</strong>方法，用于增强通用奖励建模的推理时间可扩展性。通过<strong class="term">基于规则的在线强化学习（rule-based online RL）</strong>，SPCT实现了原则和批判的自适应生成，显著提升了<strong class="term">生成式奖励模型（GRMs）</strong>在多领域的奖励质量和推理时扩展性。实证结果表明，DeepSeek-GRM超越了基线方法和多个强大的公共奖励模型，并通过<strong class="term">推理时扩展（inference-time scaling）</strong>展现出显著改进，特别是在<strong class="term">元奖励模型（meta RM）</strong>的指导下。未来方向包括：将GRMs作为奖励系统的通用接口集成到在线强化学习流程中；探索与策略模型的推理时协同扩展；或作为基础模型的鲁棒离线评估器。
+        </div>
+        
+        <div class="original">
+            <h3>Ethics Statement</h3>
+            Our proposed method, Self-Principled Critique Tuning (SPCT), aims to enhance inference-
+            time scalability of generative reward models (GRMs) for general domains. While this
+            advancement promotes accuracy and consistency in reward modeling, several ethical impli-
+            cations might warrant explicit consideration.
+            
+            Firstly, even though through our empirical analysis that DeepSeek-GRM shows less biases
+            on different domains, the automated generation of principles and critiques can inadver-
+            tently perpetuate or amplify biases when the training data is toxic. We argue that further
+            investigation in the meta RM and other bias mitigation strategies should be prioritized to
+            ensure equitable outcomes. Also, our approach does not aim to diminish human oversight.
+            Instead, we advocate maintaining human-in-the-loop frameworks, and developing reliable
+            proxy methods, like SPCT, to scale human oversight more efficiently and effectively.
+            
+            Secondly, expanded applicability of the inference-time scalable GRMs across diverse do-
+            mains might raise concerns regarding transparency, accountability, etc. We demonstrate
+            model capabilities in Section 5.2 and limitations in Appendix B, and open-source the model
+            under public supervision, which is essential for maintaining trust and ensuring responsible
+            deployment of the artifact.
+            
+            Finally, robust validation and ongoing vigilance across varied RM benchmarks and practical
+            scenarios remain crucial. Ethical use of DeepSeek-GRM necessitates proactive management
+            of risks and continuous evaluation against biases, requiring efforts in researches about RM
+            evaluation.
+        </div>
+        <div class="translation">
+            <h3>伦理声明</h3>
+            我们提出的<strong class="term">自原则批判调优（SPCT）</strong>方法旨在提升通用领域<strong class="term">生成式奖励模型（GRMs）</strong>的推理时扩展性。虽然该进展促进了奖励建模的准确性和一致性，但若干伦理影响需要明确考虑：
+            
+            首先，尽管实证分析表明DeepSeek-GRM在不同领域表现出较少偏见，但当训练数据存在毒性时，原则和批判的自动生成可能无意中延续或放大偏见。我们认为应优先研究<strong class="term">元奖励模型（meta RM）</strong>和其他<strong class="term">偏见缓解策略（bias mitigation strategies）</strong>以确保公平结果。此外，我们的方法并非旨在削弱人类监督，而是主张维持<strong class="term">人在回路（human-in-the-loop）</strong>框架，并开发如SPCT等可靠代理方法，以更高效地扩展人类监督。
+            
+            其次，推理时可扩展GRMs在多领域的广泛应用可能引发透明度、问责制等方面的担忧。我们在第5.2节展示了模型能力，在附录B中说明了局限性，并在公共监督下开源模型，这对维护信任和确保负责任部署至关重要。
+            
+            最后，在不同奖励模型基准和实际场景中进行鲁棒验证和持续监控仍然关键。DeepSeek-GRM的伦理使用需要主动管理风险并持续评估偏见，这要求加强奖励模型评估研究。
+        </div>
+        
+        <div class="original">
+            <h3>References</h3>
+            Andrei Alexandru, Antonia Calvi, Henry Broomfield, Jackson Golden, Kyle Dai, Mathias
+            Leys, Maurice Burger, Max Bartolo, Roman Engeler, Sashank Pisupati, Toby Drane, and
+            Young Sun Park. Atla selene mini: A general purpose evaluation model. Computing
+            Research Repository , arXiv:2501.17195, 2025. URL https://arxiv.org/abs/2501.17195 .
+            
+            Wei An, Xiao Bi, Guanting Chen, Shanhuang Chen, Chengqi Deng, Honghui Ding, Kai
+            Dong, Qiushi Du, Wenjun Gao, Kang Guan, Jianzhong Guo, Yongqiang Guo, Zhe Fu, Ying
+            He, Panpan Huang, Jiashi Li, Wenfeng Liang, Xiaodong Liu, Xin Liu, Yiyuan Liu, Yuxuan
+            Liu, Shanghao Lu, Xuan Lu, Xiaotao Nie, Tian Pei, Junjie Qiu, Hui Qu, Zehui Ren, Zhangli
+            Sha, Xuecheng Su, Xiaowen Sun, Yixuan Tan, Minghui Tang, Shiyu Wang, Yaohui Wang,
+            Yongji Wang, Ziwei Xie, Yiliang Xiong, Yanhong Xu, Shengfeng Ye, Shuiping Yu, Yukun
+            Zha, Liyue Zhang, Haowei Zhang, Mingchuan Zhang, Wentao Zhang, Yichao Zhang,
+            Chenggang Zhao, Yao Zhao, Shangyan Zhou, Shunfeng Zhou, and Yuheng Zou. Fire-
+            flyer ai-hpc: A cost-effective software-hardware co-design for deep learning. Computing
+            Research Repository , arXiv:2408.14158, 2024. URL https://arxiv.org/abs/2408.14158 .
+        </div>
+        <div class="translation">
+            <h3>参考文献</h3>
+            <p class="reference">Andrei Alexandru等. Atla selene mini: 通用评估模型. 计算研究仓库, arXiv:2501.17195, 2025. URL https://arxiv.org/abs/2501.17195</p>
+            <p class="reference">Wei An等. Fireflyer AI-HPC: 一种经济高效的深度学习软硬件协同设计. 计算研究仓库, arXiv:2408.14158, 2024. URL https://arxiv.org/abs/2408.14158</p>
+        </div>
+    </div>
+    
+    <!-- 摘要总结部分 -->
+    <div class="section">
+        <h2>3. 摘要总结</h2>
+        <p>本文核心贡献是提出<strong class="term">自原则批判调优（SPCT）</strong>框架，通过<strong class="term">基于规则的在线强化学习（rule-based online RL）</strong>实现原则和批判的自适应生成，显著提升<strong class="term">生成式奖励模型（GRMs）</strong>的推理效率和跨领域适应性。关键发现包括：</p>
+        <ul>
+            <li>DeepSeek-GRM在多个基准测试中超越现有公共奖励模型</li>
+            <li><strong class="term">推理时扩展（inference-time scaling）</strong>技术结合<strong class="term">元奖励模型（meta RM）</strong>指导可显著提升性能</li>
+            <li>伦理方面强调需防范训练数据毒性导致的偏见放大，主张<strong class="term">人在回路（human-in-the-loop）</strong>监督</li>
+        </ul>
+        <p>未来工作聚焦三个方向：GRMs与在线强化学习的深度集成、策略模型的推理时协同扩展、以及作为基础模型的离线评估框架。</p>
+    </div>
+    
+    <!-- 术语识别部分 -->
+    <div class="section">
+        <h2>4. 术语识别</h2>
+        <dl>
+            <dt><strong class="term">自原则批判调优（Self-Principled Critique Tuning, SPCT）</strong></dt>
+            <dd>本文提出的核心方法，通过自动化生成领域特定原则和批判反馈来优化奖励模型。结合规则引擎和在线强化学习，实现奖励模型在推理时的动态自适应。</dd>
+            
+            <dt><strong class="term">生成式奖励模型（Generative Reward Models, GRMs）</strong></dt>
+            <dd>能够生成奖励信号的AI模型，用于评估AI系统行为的质量。与传统奖励模型相比，具有更强的泛化能力和领域适应性。</dd>
+            
+            <dt><strong class="term">推理时扩展（inference-time scaling）</strong></dt>
+            <dd>在模型部署阶段动态调整模型复杂度或架构的技术。通过SPCT框架，GRMs可根据任务需求实时扩展能力，无需重新训练。</dd>
+            
+            <dt><strong class="term">元奖励模型（meta RM）</strong></dt>
+            <dd>高层指导模型，用于协调多个专业GRMs的工作。在推理时扩展过程中提供优化方向指导，显著提升扩展效率。</dd>
+            
+            <dt><strong class="term">基于规则的在线强化学习（rule-based online RL）</strong></dt>
+            <dd>SPCT的技术基础，结合预定义规则约束和实时环境交互。确保原则/批判生成过程同时满足安全性要求和领域适配性。</dd>
+            
+            <dt><strong class="term">人在回路（human-in-the-loop）</strong></dt>
+            <dd>关键伦理保障机制，在自动化决策中保留人类监督角色。SPCT通过生成高质量代理信号扩展而非取代人类监督能力。</dd>
+            
+            <dt><strong class="term">偏见缓解策略（bias mitigation strategies）</strong></dt>
+            <dd>应对训练数据偏见的专业技术，包括：元奖励模型的偏见检测模块、对抗性去偏训练、以及人类反馈的校准机制。</dd>
+        </dl>
+    </div>
+</body>
+</html>

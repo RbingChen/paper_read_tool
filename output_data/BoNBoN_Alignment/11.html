@@ -1,0 +1,57 @@
+<html>
+  <head>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.0/es5/tex-mml-chtml.js'></script>
+    <style>
+      .original { background: #f0f0f0; border: 1px solid #999; padding: 10px; margin: 10px 0; }
+      .translation { background: #e6ffe6; border: 1px solid #4CAF50; padding: 10px; margin: 10px 0; }
+      .term { color: red; font-weight: bold; }
+      .formula { background: #ffffcc; text-align: center; padding: 10px; margin: 15px 0; }
+    </style>
+  </head>
+  <body>
+
+    <h2>内容理解</h2>
+    <p>该文本为机器学习领域最新研究论文的引用列表，主要聚焦语言模型对齐技术：</p>
+    <ul>
+      <li>核心研究方向：<span class='term'>RLHF（Reinforcement Learning from Human Feedback）</span>、<span class='term'>偏好优化</span>、<span class='term'>奖励机制设计</span></li>
+      <li>关键技术挑战：<span class='term'>奖励攻击（Reward Hacking）</span>、<span class='term'>长度-质量解耦</span>、<span class='term'>推理时干预</span></li>
+      <li>主要算法创新：<span class='term'>DPO（Direct Preference Optimization）</span>、<span class='term'>统计拒绝采样</span>、<span class='term'>PPO改进</span></li>
+    </ul>
+
+    <h2>内容翻译</h2>
+    <div class='original'>
+      [LSD24] C. Laidlaw, S. Singhal, and A. Dragan. "Preventing reward hacking with occupancy measure regularization". In: arXiv preprint arXiv:2403.03185 (2024)
+    </div>
+    <div class='translation'>
+      [LSD24] C. Laidlaw, S. Singhal 与 A. Dragan. 《通过占用测度正则化防止奖励攻击》. 发表于: arXiv 预印本 arXiv:2403.03185 (2024)
+    </div>
+
+    <div class='original'>
+      [Raf+23] R. Rafailov et al. "Direct preference optimization: your language model is secretly a reward model". In: NeurIPS 2023
+    </div>
+    <div class='translation'>
+      [Raf+23] R. Rafailov 等. 《直接偏好优化：语言模型的奖励建模本质》. 发表于: 第三十七届神经信息处理系统大会 2023
+    </div>
+
+    <h2>摘要总结</h2>
+    <p>该文献集合揭示了三大前沿方向：</p>
+    <ol>
+      <li><span class='term'>对齐算法效率提升</span>：Santacroce 等提出<span class='term'>PPO内存优化</span>，Liu 团队开发<span class='term'>统计拒绝采样</span>方法</li>
+      <li><span class='term'>奖励机制理论突破</span>：Wang 等研究<span class='term'>奖励函数转换</span>，Laidlaw 提出<span class='term'>占用测度正则化</span>防攻击</li>
+      <li><span class='term'>模型行为控制技术</span>：Mudgal 等实现<span class='term'>受控解码</span>，Qin 提出<span class='term'>Langevin动力学约束生成</span></li>
+    </ol>
+
+    <h2>术语解释</h2>
+    <dl>
+      <dt class='term'>Occupancy Measure Regularization<br>（占用测度正则化）</dt>
+      <dd>通过约束状态-动作分布防止模型利用奖励函数漏洞的新正则化方法，数学表达：<div class='formula'>\( \Omega(\rho) = \mathbb{E}_{(s,a)\sim\rho}[\log\frac{\rho(s,a)}{\rho_0(s,a)}] \)</div></dd>
+
+      <dt class='term'>Inference-Time Intervention<br>（推理时干预）</dt>
+      <dd>Li 等提出的实时修正技术，通过梯度调整在生成过程中直接引导模型输出</dd>
+
+      <dt class='term'>Statistical Rejection Sampling<br>（统计拒绝采样）</dt>
+      <dd>Liu 团队改进的偏好优化方法，核心公式：<div class='formula'>\( p_{accept}(x) = \frac{\pi_{target}(x)}{M\pi_{proxy}(x)} \)</div></dd>
+    </dl>
+
+  </body>
+</html>

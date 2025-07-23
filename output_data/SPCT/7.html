@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>论文解析报告</title>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<style>
+  body { font-family: Arial, sans-serif; line-height: 1.6; }
+  .original { background-color: #f0f0f0; border: 1px solid #ccc; padding: 15px; margin-bottom: 20px; }
+  .translation { background-color: #e8f5e9; border: 1px solid #4caf50; padding: 15px; margin-bottom: 30px; }
+  .term { color: red; font-weight: bold; }
+  .section-title { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 5px; }
+  table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+  th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+  th { background-color: #f2f2f2; }
+  .formula-container { text-align: center; margin: 20px 0; }
+  .formula-number { display: block; font-style: italic; }
+</style>
+</head>
+<body>
+
+<!-- 内容理解 -->
+<h2 class="section-title">内容理解</h2>
+<p>该文本摘自AI研究论文的结果分析章节，核心聚焦于DeepSeek团队开发的GRM-27B系列奖励模型（Reward Model）的性能评估。主要包含三部分实验：</p>
+<ol>
+  <li><span class="term">基准性能比较（Benchmark Performance）</span>：对比GRM-27B与公开模型（Nemotron、GPT-4o）在奖励模型任务上的表现</li>
+  <li><span class="term">推理时扩展性（Inference-Time Scaling）</span>：通过<span class="term">投票集成（Voting@k）</span>技术提升模型性能</li>
+  <li><span class="term">消融研究（Ablation Study）</span>：分析SPCT方法中各组件（拒绝抽样、提示采样等）的贡献度</li>
+</ol>
+<p>关键结论：DeepSeek-GRM-27B结合MetaRM在Voting@32时达到72.8的最高分，证明其方法在减少模型偏差和提升扩展性方面显著优于传统标量/半标量奖励模型。</p>
+
+<!-- 内容翻译 -->
+<h2 class="section-title">内容翻译</h2>
+
+<div class="original">
+Preprint. Under review.
+
+Model Overall
+Reported Results of Public Models
+Nemotron-4-340B-Reward 70.5
+GPT-4o 71.3
+
+Results of Inference-Time Scaling (Voting@1)
+LLM-as-a-Judge 67.0
+CLoud-Gemma-2-27B 68.5
+DeepSeek-GRM-27B-RFT (Ours) 67.8
+DeepSeek-GRM-27B (Ours) 67.9
+
+Results of Inference-Time Scaling (Voting@8)
+LLM-as-a-Judge 67.6 (+0.6)
+LLM-as-a-Judge w/TokenProb 68.1 (+1.1)
+CLoud-Gemma-2-27B 68.8 (+0.3)
+DeepSeek-GRM-27B-RFT (Ours) 69.3 (+1.5)
+DeepSeek-GRM-27B (Ours) 70.6 (+2.7)
+DeepSeek-GRM-27B (MetaRM) (Ours) 72.0 (+4.1)
+
+Results of Further Inference-Time Scaling (Voting@32)
+DeepSeek-GRM-27B (Ours) 71.0 (+3.1)
+DeepSeek-GRM-27B (MetaRM) (Ours) 72.8 (+4.9)
+
+Table 3: Inference-time scalability results of different methods on RM benchmarks. Settings are the same as Table 2.
+
+Method Overall
+Results of Greedy Decoding
+DeepSeek-GRM-27B 69.9
+w/o Principle Generation 67.5
+w/o Rejective Sampling 68.7
+DeepSeek-GRM-27B-RFT 68.8
+w/o Hinted Sampling (①) 68.0
+w/o Non-Hinted Sampling (②) 67.4
+w/o Rejective Sampling (①&②) 66.1
+w/o General Instruction Data 63.3
+
+Results of Inference-Time Scaling (Voting@8)
+DeepSeek-GRM-27B 70.6
+w/o Principle Generation 68.0
+
+Results of Inference-Time Scaling (Voting@32)
+DeepSeek-GRM-27B 71.0
+DeepSeek-GRM-27B (kmeta=1) 71.5
+DeepSeek-GRM-27B (kmeta=8) 72.7
+DeepSeek-GRM-27B (kmeta=16) 72.8
+
+Table 4: Ablation studies for different components of the proposed SPCT. Bold numbers indicate the best performance.
+
+5.2 Results and Analysis
+Performance on RM Benchmarks The overall results of different methods and models on RM benchmarks are shown in Table 2. We compare the performance of DeepSeek-GRM-27B with the reported results of public models and the reproduced results of baseline methods. We find that DeepSeek-GRM-27B outperforms the baseline methods in overall performance, and achieves competitive performance with strong public RMs, such as Nemotron-4-340B-Reward and GPT-4o; with inference-time scaling, DeepSeek-GRM-27B could further improve and achieve the best overall results. For detailed comparisons, scalar (DeepSeek-BTRM-27B, DeepSeek-PairRM-27B) and semi-scalar (CLoud-Gemma-2-27B) RMs demonstrate biased results on different benchmarks, with significant better performance on verifiable tasks (PPE Correctness) than all generative RMs, but fail in different other benchmarks, respectively. Nonetheless, most public scalar RMs also exhibit severe domain biases. LLM-as-a-Judge shows similar trends with DeepSeek-GRM-27B with lower performance, potentially due to the lack of training on rating single responses. In conclusion, SPCT improves the generalist reward generation capability of GRMs, with significantly less biases compared to scalar and semi-scalar RMs.
+
+Inference-Time Scalability The inference-time scaling results of different methods are shown in Table 3, and the whole trends are demonstrated in Figure 1. Details are in Appendix D.3. With up to 8 samples, we find that DeepSeek-GRM-27B has the highest performance increase to the greedy decoding and sampling results. DeepSeek-GRM-27B further shows a strong potential to increase the performance with larger inference compute, up to 32 samples. The meta RM also reveals its validity in filtering low-quality trajectories for DeepSeek-GRM on each benchmark. Voted with token probabilities, LLM-as-a-Judge also shows a significant performance increase, indicating that the token probability as quantitative weights could help the reliability of mere majority voting. For CLoud-Gemma-2-27B, the performance increase is limited, mainly due to the lack of variance in scalar reward generation, even though the critique has changed a lot. In summary, SPCT improves the inference-time scalability of GRMs, and the meta RM further boosts the scaling performance in general.
+
+Ablation Study Table 4 shows the ablation study results of different components of the proposed SPCT, detailed results are listed in Appendix D.3. Surprisingly, without the cold start with rejective sampled critique data, general instruction tuned GRMs still improve significantly after undergoing the online RL (66.1→68.7). Also, the non-hinted sampling seems more important than the hinted sampling, potentially because of the shortcuts appeared in hinted sampled trajectories. These indicate the importance of online training
+</div>
+
+<div class="translation">
+预印本。正在审阅中。
+
+模型 综合得分
+公开模型报告结果
+Nemotron-4-340B-Reward 70.5
+GPT-4o 71.3
+
+推理时扩展结果（Voting@1）
+LLM-as-a-Judge 67.0
+CLoud-Gemma-2-27B 68.5
+DeepSeek-GRM-27B-RFT（本团队） 67.8
+DeepSeek-GRM-27B（本团队） 67.9
+
+推理时扩展结果（Voting@8）
+LLM-as-a-Judge 67.6 (+0.6)
+LLM-as-a-Judge w/TokenProb 68.1 (+1.1)
+CLoud-Gemma-2-27B 68.8 (+0.3)
+DeepSeek-GRM-27B-RFT（本团队） 69.3 (+1.5)
+DeepSeek-GRM-27B（本团队） 70.6 (+2.7)
+DeepSeek-GRM-27B（MetaRM）（本团队） 72.0 (+4.1)
+
+进一步推理时扩展结果（Voting@32）
+DeepSeek-GRM-27B（本团队） 71.0 (+3.1)
+DeepSeek-GRM-27B（MetaRM）（本团队） 72.8 (+4.9)
+
+表3：不同方法在<span class="term">奖励模型（Reward Model）</span>基准上的推理时扩展性结果。设置与表2相同。
+
+方法 综合得分
+贪婪解码结果
+DeepSeek-GRM-27B 69.9
+w/o <span class="term">原则生成（Principle Generation）</span> 67.5
+w/o <span class="term">拒绝抽样（Rejective Sampling）</span> 68.7
+DeepSeek-GRM-27B-RFT 68.8
+w/o <span class="term">提示采样（Hinted Sampling）</span> (①) 68.0
+w/o <span class="term">非提示采样（Non-Hinted Sampling）</span> (②) 67.4
+w/o 拒绝抽样 (①&②) 66.1
+w/o 通用指令数据 63.3
+
+推理时扩展结果（Voting@8）
+DeepSeek-GRM-27B 70.6
+w/o 原则生成 68.0
+
+推理时扩展结果（Voting@32）
+DeepSeek-GRM-27B 71.0
+DeepSeek-GRM-27B (kmeta=1) 71.5
+DeepSeek-GRM-27B (kmeta=8) 72.7
+DeepSeek-GRM-27B (kmeta=16) 72.8
+
+表4：对提出的<span class="term">SPCT方法</span>各组件进行的<span class="term">消融研究（Ablation Study）</span>。粗体数字表示最佳性能。
+
+5.2 结果与分析
+<span class="term">奖励模型基准性能（Performance on RM Benchmarks）</span> 不同方法和模型在奖励模型基准上的综合结果如表2所示。我们将DeepSeek-GRM-27B的性能与公开模型的报告结果以及基线方法的复现结果进行比较。我们发现DeepSeek-GRM-27B在综合性能上优于基线方法，并与强大的公开奖励模型（如Nemotron-4-340B-Reward和GPT-4o）具有竞争力；通过<span class="term">推理时扩展（Inference-Time Scaling）</span>，DeepSeek-GRM-27B能进一步提升并取得最佳综合结果。详细对比显示，<span class="term">标量奖励模型（Scalar RMs）</span>和<span class="term">半标量奖励模型（Semi-scalar RMs）</span>在不同基准上表现出偏差，在可验证任务（如PPE正确性）上显著优于生成式奖励模型，但在其他基准中表现不佳。尽管如此，大多数公开标量奖励模型也表现出严重的领域偏差。LLM-as-a-Judge与DeepSeek-GRM-27B趋势相似但性能较低，可能源于缺乏对单响应评分的训练。总之，SPCT提升了通用奖励模型的奖励生成能力，相比标量和半标量奖励模型显著减少了偏差。
+
+<span class="term">推理时扩展性（Inference-Time Scalability）</span> 不同方法的推理时扩展结果如表3所示，整体趋势如图1所示（详见附录D.3）。在最多8个样本时，DeepSeek-GRM-27B相比贪婪解码和采样结果展现出最高的性能提升。DeepSeek-GRM-27B进一步显示出在更大推理计算量（最多32样本）下提升性能的潜力。<span class="term">元奖励模型（Meta RM）</span>也验证了其在各基准上为DeepSeek-GRM过滤低质量轨迹的有效性。结合<span class="term">词元概率（Token Probability）</span>投票的LLM-as-a-Judge同样表现出显著性能提升，表明词元概率作为量化权重可提升纯多数投票的可靠性。对于CLoud-Gemma-2-27B，性能提升有限，主要因为标量奖励生成缺乏方差，即使评论变化很大。总之，SPCT提升了通用奖励模型的推理时扩展性，而元奖励模型进一步增强了扩展性能。
+
+<span class="term">消融研究（Ablation Study）</span> 表4展示了提出的SPCT方法中不同组件的消融研究结果（详见附录D.3）。出乎意料的是，即使没有使用拒绝抽样评论数据进行冷启动，经过<span class="term">在线强化学习（Online RL）</span>的通用指令调优奖励模型仍有显著改进（66.1→68.7）。此外，非提示采样似乎比提示采样更重要，可能因提示采样轨迹中存在捷径。这些表明在线训练的重要性
+</div>
+
+<!-- 摘要总结 -->
+<h2 class="section-title">摘要总结</h2>
+<p>本文核心研究DeepSeek团队提出的<span class="term">SPCT方法</span>在通用奖励模型（GRM）中的应用效果，主要发现：</p>
+<ol>
+  <li>DeepSeek-GRM-27B在基准测试中超越基线模型，与顶级模型（GPT-4o, Nemotron）性能相当</li>
+  <li>通过<span class="term">推理时扩展技术（Inference-Time Scaling）</span>，使用<span class="term">Voting@32</span>结合<span class="term">元奖励模型（MetaRM）</span>可将性能提升至72.8分（+4.9）</li>
+  <li>消融研究证明<span class="term">拒绝抽样（Rejective Sampling）</span>和<span class="term">非提示采样（Non-Hinted Sampling）</span>对模型性能贡献最大</li>
+  <li>SPCT方法显著降低传统标量/半标量奖励模型的领域偏差，提升扩展性和泛化能力</li>
+</ol>
+
+<!-- 术语识别 -->
+<h2 class="section-title">术语解释</h2>
+<table>
+  <tr>
+    <th>术语</th>
+    <th>英文</th>
+    <th>详细解释</th>
+  </tr>
+  <tr>
+    <td><span class="term">推理时扩展</span></td>
+    <td>Inference-Time Scaling</td>
+    <td>在模型推理阶段通过集成多个输出（如投票机制）提升性能的技术，无需重新训练模型</td>
+  </tr>
+  <tr>
+    <td><span class="term">Voting@k</span></td>
+    <td>Voting@k</td>
+    <td>集成学习方法，生成k个候选输出并通过投票机制选择最优结果（如Voting@32表示生成32个样本投票）</td>
+  </tr>
+  <tr>
+    <td><span class="term">消融研究</span></td>
+    <td>Ablation Study</td>
+    <td>系统性移除模型组件以评估各部件贡献度的实验方法（如表4中的w/o Principle Generation）</td>
+  </tr>
+  <tr>
+    <td><span class="term">元奖励模型</span></td>
+    <td>Meta Reward Model (MetaRM)</td>
+    <td>用于筛选基础模型生成轨迹质量的二层模型架构，可提升投票集成的有效性</td>
+  </tr>
+  <tr>
+    <td><span class="term">拒绝抽样</span></td>
+    <td>Rejective Sampling</td>
+    <td>主动学习技术，通过拒绝低质量样本提升训练数据质量</td>
+  </tr>
+  <tr>
+    <td><span class="term">标量奖励模型</span></td>
+    <td>Scalar Reward Models</td>
+    <td>输出单一分数值的奖励模型，易受领域偏差影响（对比：生成式奖励模型输出多维评估）</td>
+  </tr>
+  <tr>
+    <td><span class="term">SPCT方法</span></td>
+    <td>SPCT Method</td>
+    <td>论文提出的核心框架（具体全称需参考原文），整合原则生成、拒绝抽样等技术提升奖励模型性能</td>
+  </tr>
+  <tr>
+    <td><span class="term">词元概率</span></td>
+    <td>Token Probability</td>
+    <td>语言模型预测下一个词元的概率分布，用作投票权重可提升集成可靠性（如LLM-as-a-Judge w/TokenProb）</td>
+  </tr>
+</table>
+
+</body>
+</html>

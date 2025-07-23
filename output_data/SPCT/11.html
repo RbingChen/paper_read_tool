@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>算法专家论文处理报告</title>
+  <style>
+    body { font-family: Arial, sans-serif; line-height: 1.6; margin: 20px; }
+    h1, h2 { color: #333; }
+    .original { background-color: #f0f0f0; border: 1px solid #ccc; padding: 15px; margin-bottom: 10px; border-radius: 5px; }
+    .translation { background-color: #e0ffe0; border: 1px solid #0f0; padding: 15px; margin-bottom: 20px; border-radius: 5px; }
+    .term { color: red; font-weight: bold; }
+    .section { margin-bottom: 30px; }
+    ul { list-style-type: none; padding-left: 0; }
+    li { margin-bottom: 10px; }
+  </style>
+</head>
+<body>
+  <h1>算法专家论文处理报告</h1>
+  
+  <div class="section">
+    <h2>内容理解</h2>
+    <p>输入文本是一个学术参考文献列表，包含12篇论文的引用信息。这些引用主要来自人工智能、机器学习和自然语言处理领域，特别是大语言模型（LLMs）的研究。文本结构包括作者列表、论文标题、出版信息（如会议名称、arXiv预印本编号、年份）和URL链接。所有论文均为预印本或会议论文，涉及主题包括模型开发、评估、优化、代码生成、强化学习和数据集分析。整体上，这反映了当前AI研究的前沿进展，尤其聚焦于大语言模型的技术报告、评估方法和创新算法。</p>
+  </div>
+  
+  <div class="section">
+    <h2>内容翻译</h2>
+    <p>以下是英文原文与中文翻译的对照。每个引用作为一个整体段落处理，原文和翻译分块展示。</p>
+    
+    <!-- 引用1 -->
+    <div class="original">
+      Preprint. Under review.<br>
+      Chuyu Zhang, Li Zhang, Pan Zhang, Peng Zhang, Ruijie Zhang, Shuo Zhang, Songyang Zhang, Wenjian Zhang, Wenwei Zhang, Xingcheng Zhang, Xinyue Zhang, Hui Zhao, Qian Zhao, Xiaomeng Zhao, Fengzhe Zhou, Zaida Zhou, Jingming Zhuo, Yicheng Zou, Xipeng Qiu, Yu Qiao, and Dahua Lin. <span class="term">Internlm2 technical report</span>. Computing Research Repository , arXiv:2403.17297, 2024. URL https://arxiv.org/abs/2403.17297 .
+    </div>
+    <div class="translation">
+      预印本。正在审阅中。<br>
+      张楚瑜、李张、潘张、彭张、瑞杰张、硕张、宋阳张、文建张、文伟张、星辰张、新月张、慧赵、倩赵、小萌赵、风哲周、扎伊达周、景明卓、一诚邹、启鹏邱、于乔和大华林。<span class="term">Internlm2技术报告</span>。计算研究仓库，arXiv:2403.17297，2024年。URL https://arxiv.org/abs/2403.17297。
+    </div>
+    
+    <!-- 引用2 -->
+    <div class="original">
+      Maosong Cao, Alexander Lam, Haodong Duan, Hongwei Liu, Songyang Zhang, and Kai Chen. <span class="term">Compassjudger-1</span>: All-in-one judge model helps model evaluation and evolution. Computing Research Repository , arXiv:2410.16256, 2024. URL https://arxiv.org/abs/2410.16256 .
+    </div>
+    <div class="translation">
+      曹茂松、Alexander Lam、段浩东、刘宏伟、张宋阳和陈凯。<span class="term">Compassjudger-1</span>：全能法官模型助力模型评估与进化。计算研究仓库，arXiv:2410.16256，2024年。URL https://arxiv.org/abs/2410.16256。
+    </div>
+    
+    <!-- 引用3 -->
+    <div class="original">
+      Bei Chen, Fengji Zhang, Anh Nguyen, Daoguang Zan, Zeqi Lin, Jian-Guang Lou, and Weizhu Chen. <span class="term">Codet</span>: Code generation with generated tests. In The Eleventh International Conference on Learning Representations , 2023. URL https://openreview.net/forum?id=ktrw68Cmu9c .
+    </div>
+    <div class="translation">
+      陈贝、张峰吉、Anh Nguyen、赞道广、林泽琪、娄建光和Weizhu Chen。<span class="term">Codet</span>：通过生成测试实现代码生成。发表于第十一届国际学习表征会议，2023年。URL https://openreview.net/forum?id=ktrw68Cmu9c。
+    </div>
+    
+    <!-- 引用4 -->
+    <div class="original">
+      Yinlam Chow, Guy Tennenholtz, Izzeddin Gur, Vincent Zhuang, Bo Dai, Aviral Kumar, Rishabh Agarwal, Sridhar Thiagarajan, Craig Boutilier, and Aleksandra Faust. <span class="term">Inference-aware fine-tuning</span> for best-of-n sampling in large language models. In The Thirteenth International Conference on Learning Representations , 2025. URL https://openreview.net/forum?id=77gQUdQhE7 .
+    </div>
+    <div class="translation">
+      Yinlam Chow、Guy Tennenholtz、Izzeddin Gur、Vincent Zhuang、戴博、Aviral Kumar、Rishabh Agarwal、Sridhar Thiagarajan、Craig Boutilier和Aleksandra Faust。<span class="term">推理感知微调</span>用于大语言模型的最佳N采样。发表于第十三届国际学习表征会议，2025年。URL https://openreview.net/forum?id=77gQUdQhE7。
+    </div>
+    
+    <!-- 引用5 -->
+    <div class="original">
+      Karl Cobbe, Vineet Kosaraju, Mohammad Bavarian, Mark Chen, Heewoo Jun, Lukasz Kaiser, Matthias Plappert, Jerry Tworek, Jacob Hilton, Reiichiro Nakano, Christopher Hesse, and John Schulman. <span class="term">Training verifiers</span> to solve math word problems. Computing Research Repository , arXiv:2110.14168, 2021. URL https://arxiv.org/abs/2110.14168 .
+    </div>
+    <div class="translation">
+      Karl Cobbe、Vineet Kosaraju、Mohammad Bavarian、Mark Chen、Heewoo Jun、Lukasz Kaiser、Matthias Plappert、Jerry Tworek、Jacob Hilton、Reiichiro Nakano、Christopher Hesse和John Schulman。<span class="term">训练验证器</span>解决数学应用题。计算研究仓库，arXiv:2110.14168，2021年。URL https://arxiv.org/abs/2110.14168。
+    </div>
+    
+    <!-- 引用6 -->
+    <div class="original">
+      Ganqu Cui, Lifan Yuan, Ning Ding, Guanming Yao, Bingxiang He, Wei Zhu, Yuan Ni, Guo-tong Xie, Ruobing Xie, Yankai Lin, Zhiyuan Liu, and Maosong Sun. <span class="term">ULTRAFEEDBACK</span>: Boosting language models with scaled AI feedback. In Ruslan Salakhutdinov, Zico Kolter, Katherine Heller, Adrian Weller, Nuria Oliver, Jonathan Scarlett, and Felix Berkenkamp (eds.), Proceedings of the 41st International Conference on Machine Learning , volume 235 ofProceedings of Machine Learning Research , pp. 9722–9744. PMLR, 21–27 Jul 2024. URL https://proceedings.mlr.press/v235/cui24f.html .
+    </div>
+    <div class="translation">
+      崔甘渠、袁立凡、丁宁、姚冠明、何炳祥、朱伟、倪渊、谢国彤、谢若冰、林彦凯、刘志远和孙茂松。<span class="term">ULTRAFEEDBACK</span>：通过规模化AI反馈提升语言模型。载于Ruslan Salakhutdinov、Zico Kolter、Katherine Heller、Adrian Weller、Nuria Oliver、Jonathan Scarlett和Felix Berkenkamp编辑的《第41届国际机器学习会议论文集》，机器学习研究论文集第235卷，第9722–9744页。PMLR，2024年7月21–27日。URL https://proceedings.mlr.press/v235/cui24f.html。
+    </div>
+    
+    <!-- 引用7 -->
+    <div class="original">
+      DeepSeek-AI. <span class="term">Deepseek-v2</span>: A strong, economical, and efficient mixture-of-experts language model. Computing Research Repository , arXiv:2405.04434, 2024a. URL https://arxiv.org/abs/2405.04434 .
+    </div>
+    <div class="translation">
+      DeepSeek-AI。<span class="term">Deepseek-v2</span>：一个强大、经济且高效的混合专家语言模型。计算研究仓库，arXiv:2405.04434，2024a年。URL https://arxiv.org/abs/2405.04434。
+    </div>
+    
+    <!-- 引用8 -->
+    <div class="original">
+      DeepSeek-AI. <span class="term">Deepseek-v3 technical report</span>. Computing Research Repository , arXiv:2412.19437, 2024b. URL https://arxiv.org/abs/2412.19437 .
+    </div>
+    <div class="translation">
+      DeepSeek-AI。<span class="term">Deepseek-v3技术报告</span>。计算研究仓库，arXiv:2412.19437，2024b年。URL https://arxiv.org/abs/2412.19437。
+    </div>
+    
+    <!-- 引用9 -->
+    <div class="original">
+      DeepSeek-AI. <span class="term">Deepseek-r1</span>: Incentivizing reasoning capability in llms via reinforcement learning. Computing Research Repository , arXiv:2501.12948, 2025. URL https://arxiv.org/abs/2501.12948 .
+    </div>
+    <div class="translation">
+      DeepSeek-AI。<span class="term">Deepseek-r1</span>：通过强化学习激励大语言模型的推理能力。计算研究仓库，arXiv:2501.12948，2025年。URL https://arxiv.org/abs/2501.12948。
+    </div>
+    
+    <!-- 引用10 -->
+    <div class="original">
+      Kawin Ethayarajh, Yejin Choi, and Swabha Swayamdipta. Understanding dataset difficulty with<span class="term">V-usable information</span>. In Kamalika Chaudhuri, Stefanie Jegelka, Le Song, Csaba Szepesvari, Gang Niu, and Sivan Sabato (eds.), Proceedings of the 39th International Conference on Machine Learning , volume 162 of Proceedings of Machine Learning Research , pp. 5988–6008. PMLR, 17–23 Jul 2022. URL https://proceedings.mlr.press/v162/ethayarajh22a.html .
+    </div>
+    <div class="translation">
+      Kawin Ethayarajh、Yejin Choi和Swabha Swayamdipta。利用<span class="term">V-可用信息</span>理解数据集难度。载于Kamalika Chaudhuri、Stefanie Jegelka、Le Song、Csaba Szepesvari、Gang Niu和Sivan Sabato编辑的《第39届国际机器学习会议论文集》，机器学习研究论文集第162卷，第5988–6008页。PMLR，2022年7月17–23日。URL https://proceedings.mlr.press/v162/ethayarajh22a.html。
+    </div>
+    
+    <!-- 引用11 -->
+    <div class="original">
+      Jan-Philipp Fränken, Eric Zelikman, Rafael Rafailov, Kanishk Gandhi, Tobias Gerstenberg, and Noah Goodman. <span class="term">Self-supervised alignment</span> with mutual information: Learning to follow principles without preference labels. In The Thirty-eighth Annual Conference on Neural Information Processing Systems , 2024. URL https://openreview.net/forum?id=UvbpbEhGaw .
+    </div>
+    <div class="translation">
+      Jan-Philipp Fränken、Eric Zelikman、Rafael Rafailov、Kanishk Gandhi、Tobias Gerstenberg和Noah Goodman。基于互信息的<span class="term">自监督对齐</span>：学习遵循原则而无需偏好标签。发表于第三十八届神经信息处理系统年会，2024年。URL https://openreview.net/forum?id=UvbpbEhGaw。
+    </div>
+    
+    <!-- 引用12 -->
+    <div class="original">
+      Evan Frick, Tianle Li, Connor Chen, Wei-Lin Chiang, Anastasios Nikolas Angelopoulos, Jiantao Jiao, Banghua Zhu, Joseph E. Gonzalez, and Ion Stoica. How to evaluate <span class="term">reward models</span> for RLHF. In The Thirteenth International Conference on Learning Representations , 2025. URL https://openreview.net/forum?id=cbttLtO94Q .
+    </div>
+    <div class="translation">
+      Evan Frick、李天乐、Connor Chen、Wei-Lin Chiang、Anastasios Nikolas Angelopoulos、Jiantao Jiao、朱邦华、Joseph E. Gonzalez和Ion Stoica。如何评估强化学习人类反馈中的<span class="term">奖励模型</span>。发表于第十三届国际学习表征会议，2025年。URL https://openreview.net/forum?id=cbttLtO94Q。
+    </div>
+  </div>
+  
+  <div class="section">
+    <h2>摘要总结</h2>
+    <p>文本摘要了12篇AI领域的学术论文引用，核心内容聚焦于大语言模型（LLMs）的开发、评估和优化。关键主题包括：1) 大语言模型技术报告（如<span class="term">Internlm2</span>、<span class="term">Deepseek-v2</span>、<span class="term">Deepseek-v3</span>），强调高效架构；2) 模型评估方法（如<span class="term">Compassjudger-1</span>和<span class="term">How to evaluate reward models</span>），提升评估效率；3) 创新算法如代码生成（<span class="term">Codet</span>）、强化学习优化（<span class="term">Inference-aware fine-tuning</span>和<span class="term">Deepseek-r1</span>）；4) 理论分析（如<span class="term">V-usable information</span>和<span class="term">Self-supervised alignment</span>）。这些工作来自顶级会议（ICLR、ICML、NeurIPS）和arXiv，展示了AI研究的最新进展。</p>
+  </div>
+  
+  <div class="section">
+    <h2>术语识别</h2>
+    <ul>
+      <li><span class="term">Internlm2 (Internlm2)</span>: 一个技术报告，详细介绍大语言模型的架构、训练和性能，由多个作者合作完成，发表于arXiv预印本。</li>
+      <li><span class="term">Compassjudger-1 (Compassjudger-1)</span>: 一个全能法官模型，用于自动化评估AI模型的性能并促进其进化，特别针对大语言模型的基准测试。</li>
+      <li><span class="term">Codet (Codet)</span>: 一种代码生成方法，结合生成测试用例来提升代码质量和可靠性，应用于编程辅助工具。</li>
+      <li><span class="term">Inference-aware fine-tuning (Inference-aware fine-tuning)</span>: 一种微调技术，针对大语言模型的最佳N采样（Best-of-N Sampling）优化推理过程，以提高输出质量。</li>
+      <li><span class="term">Training verifiers (Training verifiers)</span>: 训练验证器模型来解决数学应用题，增强语言模型的推理和验证能力。</li>
+      <li><span class="term">ULTRAFEEDBACK (ULTRAFEEDBACK)</span>: 一种反馈机制，通过规模化AI生成的反馈数据提升语言模型的性能，减少对人类标注的依赖。</li>
+      <li><span class="term">Deepseek-v2 (Deepseek-v2)</span>: DeepSeek-AI开发的经济高效混合专家（Mixture-of-Experts）语言模型，平衡性能与资源消耗。</li>
+      <li><span class="term">Deepseek-v3 technical report (Deepseek-v3 technical report)</span>: DeepSeek-v2的后续版本，提供更新的技术细节和实验结果。</li>
+      <li><span class="term">Deepseek-r1 (Deepseek-r1)</span>: 通过强化学习（Reinforcement Learning）激励大语言模型推理能力的模型，专注于提升复杂任务的表现。</li>
+      <li><span class="term">V-usable information (V-usable information)</span>: 一个信息理论概念，用于量化数据集的难度，帮助理解模型在特定任务上的泛化能力。</li>
+      <li><span class="term">Self-supervised alignment (Self-supervised alignment)</span>: 一种对齐方法，利用互信息（Mutual Information）使模型行为符合原则，无需人工偏好标签。</li>
+      <li><span class="term">How to evaluate reward models (How to evaluate reward models)</span>: 一种评估框架，针对强化学习人类反馈（RLHF）中的奖励模型，确保其可靠性和公平性。</li>
+    </ul>
+  </div>
+</body>
+</html>

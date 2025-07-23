@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>文本处理结果</title>
+<style>
+  body { font-family: Arial, sans-serif; line-height: 1.6; margin: 20px; }
+  h2 { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 5px; }
+  .section { margin-bottom: 30px; }
+  .translation-block { margin-bottom: 15px; }
+  .original { background-color: #f0f0f0; border: 1px solid #cccccc; padding: 10px; border-radius: 5px; margin-bottom: 5px; }
+  .translated { background-color: #e0f7e0; border: 1px solid #4caf50; padding: 10px; border-radius: 5px; }
+  .term { color: red; font-weight: bold; } /* 术语高亮样式 */
+  .summary, .explanation { padding: 10px; background-color: #f9f9f9; border-left: 4px solid #3498db; }
+  .term-list { list-style-type: none; padding: 0; }
+  .term-list li { margin-bottom: 10px; padding: 8px; background-color: #fff8e1; border-left: 3px solid #ff9800; }
+  .formula { text-align: center; margin: 15px 0; font-family: 'Cambria Math', serif; } /* 公式样式，但文本中无公式 */
+</style>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+
+<h1>文本处理报告</h1>
+
+<!-- 内容理解部分 -->
+<div class="section">
+  <h2>内容理解</h2>
+  <div class="explanation">
+    <p>该文本描述了一个分类任务的模板，用于根据给定的“问题”和“答案”内容，将主题分类到预定义的学科类别中。核心机制是：用户提供问题和答案作为输入，系统输出对应的学科ID（数字标识符）；如果分类不确定，则返回999。文本包含一个详尽的学科列表，覆盖数学、信息科学、医学、工程、人文等多个领域（如 <span class="term">Computer Science and Technology (计算机科学与技术)</span> 和 <span class="term">Mathematics (数学)</span>），这些类别参考自 Yu et al., 2021 的研究。标题“Expanding RL with Verifiable Rewards Across Diverse Domains”暗示了上下文可能与强化学习（RL）相关，但文本主体聚焦于分类框架，强调实用性和标准化（如使用ID简化输出）。整体上，这是一个结构化模板，适用于自动化主题分类系统。</p>
+  </div>
+</div>
+
+<!-- 内容翻译部分 -->
+<div class="section">
+  <h2>内容翻译</h2>
+  <p>以下为英文原文与中文翻译的对照，按逻辑段落分组。关键技术术语已用<span class="term">红色粗体</span>高亮显示，并包含英文原文。</p>
+  
+  <div class="translation-block">
+    <div class="original">Expanding RL with Verifiable Rewards Across Diverse Domains</div>
+    <div class="translated">在多样化领域中扩展具有<span class="term">可验证奖励 (Verifiable Rewards)</span>的<span class="term">强化学习 (Reinforcement Learning, RL)</span></div>
+  </div>
+  
+  <div class="translation-block">
+    <div class="original">Based on the content of ’Question ’ and ’Answer ’ classify the subject into one of the following categories. Return only the corresponding subject ID. If classification is uncertain, return 999.</div>
+    <div class="translated">基于“问题”和“答案”的内容，将主题分类到以下类别之一。仅返回相应的<span class="term">主题ID (Subject ID)</span>。如果<span class="term">分类 (Classification)</span>不确定，返回999。</div>
+  </div>
+  
+  <div class="translation-block">
+    <div class="original">** Question :**
+{ question }</div>
+    <div class="translated">**问题：**
+{问题}</div>
+  </div>
+  
+  <div class="translation-block">
+    <div class="original">** Answer :**
+{ answer }</div>
+    <div class="translated">**答案：**
+{答案}</div>
+  </div>
+  
+  <div class="translation-block">
+    <div class="original">110 Mathematics
+120 Information Science and System Science
+130 Mechanics
+140 Physics
+150 Chemistry
+170 Earth Science
+180 Biology
+190 Psychology
+210 Agronomy
+230 Animal Husbandry and Veterinary Science
+310 Basic Medicine
+320 Clinical Medicine
+330 Preventive Medicine and Public Health
+350 Pharmacy
+360 Chinese Medicine and Chinese Materia Medica
+413 Information and System Science Related Engineering and Technology
+416 Natural Science Related Engineering and Technology
+420 Surveying and Mapping Science and Technology
+430 Materials Science
+460 Mechanical Engineering
+470 Power and Electrical Engineering
+510 Electronics and Communications Technology
+520 Computer Science and Technology
+530 Chemical Engineering
+550 Food Science and Technology
+560 Civil Engineering
+570 Water Conservancy Engineering
+580 Transportation Engineering
+610 Environmental / Resource Science and Technology
+620 Safety Science and Technology
+630 Management
+710 Marxism
+720 Philosophy
+730 Religious Studies
+740 Linguistics
+750 Literature
+760 Art
+770 History
+790 Economics
+810 Political Science
+820 Law
+840 Sociology
+850 Ethnology and Cultural Studies
+860 Journalism and Communication
+870 Library , Information , and Documentation
+880 Education
+890 Sports Science
+910 Statistics
+999 Unclassified</div>
+    <div class="translated">110 <span class="term">数学 (Mathematics)</span>
+120 <span class="term">信息科学与系统科学 (Information Science and System Science)</span>
+130 <span class="term">力学 (Mechanics)</span>
+140 <span class="term">物理学 (Physics)</span>
+150 <span class="term">化学 (Chemistry)</span>
+170 <span class="term">地球科学 (Earth Science)</span>
+180 <span class="term">生物学 (Biology)</span>
+190 <span class="term">心理学 (Psychology)</span>
+210 <span class="term">农学 (Agronomy)</span>
+230 <span class="term">畜牧兽医学 (Animal Husbandry and Veterinary Science)</span>
+310 <span class="term">基础医学 (Basic Medicine)</span>
+320 <span class="term">临床医学 (Clinical Medicine)</span>
+330 <span class="term">预防医学与公共卫生 (Preventive Medicine and Public Health)</span>
+350 <span class="term">药学 (Pharmacy)</span>
+360 <span class="term">中医学与中药学 (Chinese Medicine and Chinese Materia Medica)</span>
+413 <span class="term">信息与系统科学相关工程与技术 (Information and System Science Related Engineering and Technology)</span>
+416 <span class="term">自然科学相关工程与技术 (Natural Science Related Engineering and Technology)</span>
+420 <span class="term">测绘科学与技术 (Surveying and Mapping Science and Technology)</span>
+430 <span class="term">材料科学 (Materials Science)</span>
+460 <span class="term">机械工程 (Mechanical Engineering)</span>
+470 <span class="term">动力与电气工程 (Power and Electrical Engineering)</span>
+510 <span class="term">电子与通信技术 (Electronics and Communications Technology)</span>
+520 <span class="term">计算机科学与技术 (Computer Science and Technology)</span>
+530 <span class="term">化学工程 (Chemical Engineering)</span>
+550 <span class="term">食品科学与技术 (Food Science and Technology)</span>
+560 <span class="term">土木工程 (Civil Engineering)</span>
+570 <span class="term">水利工程 (Water Conservancy Engineering)</span>
+580 <span class="term">交通运输工程 (Transportation Engineering)</span>
+610 <span class="term">环境/资源科学与技术 (Environmental / Resource Science and Technology)</span>
+620 <span class="term">安全科学与技术 (Safety Science and Technology)</span>
+630 <span class="term">管理学 (Management)</span>
+710 <span class="term">马克思主义 (Marxism)</span>
+720 <span class="term">哲学 (Philosophy)</span>
+730 <span class="term">宗教学 (Religious Studies)</span>
+740 <span class="term">语言学 (Linguistics)</span>
+750 <span class="term">文学 (Literature)</span>
+760 <span class="term">艺术学 (Art)</span>
+770 <span class="term">历史学 (History)</span>
+790 <span class="term">经济学 (Economics)</span>
+810 <span class="term">政治学 (Political Science)</span>
+820 <span class="term">法学 (Law)</span>
+840 <span class="term">社会学 (Sociology)</span>
+850 <span class="term">民族学与文化研究 (Ethnology and Cultural Studies)</span>
+860 <span class="term">新闻学与传播学 (Journalism and Communication)</span>
+870 <span class="term">图书馆、情报与文献学 (Library, Information, and Documentation)</span>
+880 <span class="term">教育学 (Education)</span>
+890 <span class="term">体育科学 (Sports Science)</span>
+910 <span class="term">统计学 (Statistics)</span>
+999 <span class="term">未分类 (Unclassified)</span></div>
+  </div>
+  
+  <div class="translation-block">
+    <div class="original">Table 5: Template for the classification task, with subject names and IDs referenced from (Yu et al., 2021).</div>
+    <div class="translated">表5：<span class="term">分类任务 (Classification Task)</span>的模板，主题名称和ID参考自(Yu et al., 2021)。</div>
+  </div>
+  
+  <div class="translation-block">
+    <div class="original">15</div>
+    <div class="translated">15</div>
+  </div>
+</div>
+
+<!-- 摘要总结部分 -->
+<div class="section">
+  <h2>摘要总结</h2>
+  <div class="summary">
+    <p>该文本提供了一个标准化分类任务的模板，用于基于输入的问题和答案内容，将主题分配到预定义的学科类别中，并输出对应的数字ID（如不确定则返回999）。核心内容包括：分类指令、问题/答案占位符、一个涵盖数学、工程、医学、人文等广泛领域的学科列表（共45个类别，ID从110到910），以及引用自 Yu et al., 2021 的说明。摘要强调这是一个实用框架，旨在实现自动化主题分类，适用于跨学科系统。</p>
+  </div>
+</div>
+
+<!-- 术语识别部分 -->
+<div class="section">
+  <h2>术语识别</h2>
+  <p>识别文本中的关键术语，并给出详细解释（术语已用<span class="term">红色粗体</span>高亮显示）。</p>
+  <ul class="term-list">
+    <li><span class="term">Classification (分类)</span>: 指将主题或内容分配到预定义类别的过程。在文本中，这是核心任务，基于问题和答案的内容进行决策。</li>
+    <li><span class="term">Subject ID (主题ID)</span>: 数字标识符（如110、520），用于唯一代表一个学科类别。在分类输出中，仅返回此ID以简化结果。</li>
+    <li><span class="term">Unclassified (未分类)</span>: 当分类不确定时返回的ID（999）。表示系统无法将主题匹配到任何预定义类别。</li>
+    <li><span class="term">Reinforcement Learning (RL) (强化学习)</span>: 一种机器学习方法，代理通过与环境互动学习最优策略，以最大化累积奖励。文本标题中提及，暗示分类任务可能应用于RL上下文。</li>
+    <li><span class="term">Verifiable Rewards (可验证奖励)</span>: 在强化学习中，指可被验证或证明有效的奖励信号。标题中强调其在跨领域应用中的重要性。</li>
+    <li><span class="term">Diverse Domains (多样化领域)</span>: 指多个不同学科或应用领域。文本的学科列表覆盖科学、工程、人文等，体现多样性。</li>
+    <li><span class="term">Yu et al., 2021</span>: 参考来源，可能是一个研究论文或数据集，提供学科分类标准。用于验证模板的权威性。</li>
+    <li><span class="term">Template (模板)</span>: 结构化框架，用于标准化分类任务。文本中描述为Table 5，包含固定格式的指令和类别列表。</li>
+    <li><span class="term">Question (问题)</span> 和 <span class="term">Answer (答案)</span>: 输入内容，作为分类依据。在模板中以占位符 {question} 和 {answer} 表示。</li>
+  </ul>
+</div>
+
+</body>
+</html>

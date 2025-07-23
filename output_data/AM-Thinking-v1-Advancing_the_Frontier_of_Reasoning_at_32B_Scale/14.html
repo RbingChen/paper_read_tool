@@ -1,0 +1,70 @@
+<html>
+<head>
+<style>
+  .original { background: #f0f0f0; border: 1px solid #999; padding: 10px; margin: 10px 0; }
+  .translation { background: #e8f5e9; border: 1px solid #4CAF50; padding: 10px; margin: 10px 0; }
+  .term { color: red; font-weight: bold; }
+  .section-title { color: #2c3e50; font-size: 1.2em; margin-top: 20px; }
+</style>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.0/es5/tex-mml-chtml.js'></script>
+</head>
+<body>
+
+<section>
+  <h2 class='section-title'>📚 内容理解</h2>
+  <p>该文本为人工智能领域最新研究成果的参考文献列表，聚焦于：</p>
+  <ul>
+    <li>大语言模型（<span class='term'>LLM</span>）的高效推理与后训练优化</li>
+    <li>复杂指令跟随能力的提升方法</li>
+    <li>数学推理能力的边界突破</li>
+    <li>新型强化学习框架（如<span class='term'>HybridFlow</span>）与训练策略</li>
+    <li>大规模合成数据集（如<span class='term'>OpenOrca</span>）的构建与应用</li>
+  </ul>
+</section>
+
+<section>
+  <h2 class='section-title'>🌐 内容翻译</h2>
+  <div class='original'>
+    [38] Akhiad Bercovich... Llama-nemotron: Efficient reasoning models, 2025.
+  </div>
+  <div class='translation'>
+    [38] Akhiad Bercovich等. Llama-nemotron：高效推理模型，2025
+  </div>
+
+  <div class='original'>
+    [52] Zhihong Shao... Deepseekmath: Pushing the limits of mathematical reasoning..., 2024.
+  </div>
+  <div class='translation'>
+    [52] 邵志宏等. Deepseekmath：突破开源语言模型的数学推理极限，2024
+  </div>
+</section>
+
+<section>
+  <h2 class='section-title'>🔍 摘要总结</h2>
+  <p>2023-2025年间的核心突破：</p>
+  <ol>
+    <li>模型架构：<span class='term'>Llama-Nemotron</span>实现高效推理，<span class='term'>Tülu 3</span>推进后训练优化</li>
+    <li>训练范式：<span class='term'>难度分级数据训练</span>（DeepDistill）与<span class='term'>分阶段强化学习</span></li>
+    <li>评估体系：<span class='term'>Instruction-following Evaluation</span>建立指令跟随评估标准</li>
+    <li>开源生态：<span class='term'>OpenOrca</span>等百万级数据集推动社区发展</li>
+  </ol>
+</section>
+
+<section>
+  <h2 class='section-title'>📖 术语解释</h2>
+  <dl>
+    <dt class='term'>RLHF (Reinforcement Learning from Human Feedback)</dt>
+    <dd>通过人类反馈信号优化语言模型的技术，核心组件包括奖励建模与策略优化</dd>
+
+    <dt class='term'>Instruction Tuning</dt>
+    <dd>使用指令-响应对微调预训练模型，显著提升模型的任务泛化能力</dd>
+
+    <dt class='term'>PPO (Proximal Policy Optimization)</dt>
+    <dd>Schulman等人提出的策略梯度算法，公式表达：<br>
+      $$J(\theta) = \mathbb{E}[\min(r_t(\theta)A_t, \text{clip}(r_t(\theta), 1-\epsilon, 1+\epsilon)A_t)]$$
+    </dd>
+  </dl>
+</section>
+
+</body>
+</html>

@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>算法专家分析报告</title>
+  <style>
+    body { font-family: Arial, sans-serif; line-height: 1.6; margin: 20px; }
+    h1 { color: #333; text-align: center; }
+    h2 { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 5px; }
+    .section { margin-bottom: 30px; }
+    .original { background-color: #f0f0f0; border: 1px solid #cccccc; padding: 10px; margin-bottom: 10px; border-radius: 5px; }
+    .translation { background-color: #e0f7e0; border: 1px solid #4caf50; padding: 10px; margin-bottom: 20px; border-radius: 5px; }
+    .figure { background-color: #fffde7; padding: 2px 5px; border-radius: 3px; font-weight: bold; }
+    .formula-container { text-align: center; margin: 15px 0; }
+    .formula { display: inline-block; margin: 0 auto; padding: 10px; font-size: 1.1em; }
+    .term { color: red; font-weight: bold; }
+    .term-list dt { font-weight: bold; margin-top: 10px; }
+    .term-list dd { margin-left: 20px; margin-bottom: 10px; }
+  </style>
+  <!-- MathJax 脚本支持 LaTeX 公式渲染 -->
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <h1>算法专家分析报告</h1>
+  
+  <!-- 内容理解部分 -->
+  <div class="section">
+    <h2>内容理解</h2>
+    <p>本文本讨论了在强化学习（RL）优化过程中，策略外（off-policy）数据如何导致梯度方差增加和过早熵崩溃的问题。作者通过设计消融实验7，比较策略内（on-policy）和策略外更新的效果，重点考察四元组参数（NSGD, DR, DT, Nreuse）的影响。实验结果表明，策略内更新（NSGD=1）即使数据大小（DT）较小，也能避免过早熵崩溃，并在训练步数足够大时优于策略外更新。进一步实验探究了增加rollout批量大小（DR）是否能缓解熵崩溃，但结果显示更大的DR反而加速了崩溃。核心结论是策略外数据引入是性能下降的主因，这为优化RL算法提供了重要洞见。</p>
+  </div>
+  
+  <!-- 内容翻译部分：英文与中文对照 -->
+  <div class="section">
+    <h2>内容翻译</h2>
+    
+    <!-- 段落 1 -->
+    <div class="original">
+      leading to greater <span class="term">gradient variance</span> – and the presence of <span class="term">off-policy data</span>. To better understand which factor contributes more significantly, we conducted the following <span class="term">ablation experiments</span>.
+    </div>
+    <div class="translation">
+      导致更大的<span class="term">梯度方差（gradient variance）</span>——以及<span class="term">策略外数据（off-policy data）</span>的存在。为了更好地理解哪个因素贡献更大，我们进行了以下<span class="term">消融实验（ablation experiments）</span>。
+    </div>
+    
+    <!-- 标题段落 -->
+    <div class="original">
+      <h3>Ablation Experiments 7: On-policy vs. Off-policy with the Same SGD Data Size DT</h3>
+    </div>
+    <div class="translation">
+      <h3>消融实验7：策略内与策略外比较，具有相同的SGD数据大小DT</h3>
+    </div>
+    
+    <!-- 段落 2 -->
+    <div class="original">
+      Consider the quadruple <div class="formula-container"><div class="formula">\( (N_{\text{SGD}}, D_R, D_T, N_{\text{reuse}}) \)</div></div> (Equation 1).
+    </div>
+    <div class="translation">
+      考虑四元组 <div class="formula-container"><div class="formula">\( (N_{\text{SGD}}, D_R, D_T, N_{\text{reuse}}) \)</div></div>（公式 1）。
+    </div>
+    
+    <!-- 列表项 1 -->
+    <div class="original">
+      1. <span class="term">Off-policy update</span>: We considered two off-policy experiments in Ablation Experiments 6 with the quadruples <div class="formula-container"><div class="formula">\( (2,64,32,1) \)</div></div> and <div class="formula-container"><div class="formula">\( (4,64,16,1) \)</div></div>, which have smaller <span class="term">DT</span> compared to the baseline <div class="formula-container"><div class="formula">\( (1,64,64,1) \)</div></div>.
+    </div>
+    <div class="translation">
+      1. <span class="term">策略外更新（off-policy update）</span>：我们考虑了消融实验6中的两个策略外实验，四元组为 <div class="formula-container"><div class="formula">\( (2,64,32,1) \)</div></div> 和 <div class="formula-container"><div class="formula">\( (4,64,16,1) \)</div></div>，这些具有比基线 <div class="formula-container"><div class="formula">\( (1,64,64,1) \)</div></div> 更小的<span class="term">DT</span>。
+    </div>
+    
+    <!-- 列表项 2 -->
+    <div class="original">
+      2. <span class="term">On-policy update</span>: We ran two experiments, configured with the quadruples <div class="formula-container"><div class="formula">\( (1,32,32,1) \)</div></div> and <div class="formula-container"><div class="formula">\( (1,16,16,1) \)</div></div> respectively as the on-policy counterparts to the off-policy update. These were based on the baseline configuration from Section 4.1.
+    </div>
+    <div class="translation">
+      2. <span class="term">策略内更新（on-policy update）</span>：我们运行了两个实验，配置为四元组 <div class="formula-container"><div class="formula">\( (1,32,32,1) \)</div></div> 和 <div class="formula-container"><div class="formula">\( (1,16,16,1) \)</div></div>，分别作为策略外更新的策略内对应。这些基于第4.1节的基线配置。
+    </div>
+    
+    <!-- 段落 3 -->
+    <div class="original">
+      The experimental results are reported in <span class="figure">Figure 17</span>.
+    </div>
+    <div class="translation">
+      实验结果报告在<span class="figure">图17</span>中。
+    </div>
+    
+    <!-- 图标题 -->
+    <div class="original">
+      <span class="figure">Figure 17</span>: Results of Ablation Experiments 7. <span class="term">On-policy experiments</span>, i.e. <span class="term">NSGD</span>= 1, do not exhibit <span class="term">premature entropy collapse</span> and finally outperform the off-policy counterparts with the same <span class="term">DT</span> when training step is sufficiently large. Left: Entropy of generated responses during RL training. Right: Test performance at temperature 1 during RL training.
+    </div>
+    <div class="translation">
+      <span class="figure">图17</span>：消融实验7的结果。<span class="term">策略内实验（on-policy experiments）</span>，即<span class="term">NSGD</span>=1，没有表现出<span class="term">过早熵崩溃（premature entropy collapse）</span>，并且当训练步数足够大时，最终优于具有相同<span class="term">DT</span>的策略外对应。左：RL训练期间生成响应的熵。右：RL训练期间温度1下的测试性能。
+    </div>
+    
+    <!-- 段落 4 -->
+    <div class="original">
+      The experimental results shown in <span class="figure">Figure 17</span> indicate that the on-policy update with a smaller <span class="term">DT</span> – relative to the baseline experiment – still yields steady improvements in test performance, and <span class="term">premature entropy collapse</span> does not occur. Ultimately, the on-policy update outperforms the off-policy update with the same <span class="term">DT</span> when the number of training steps is sufficiently large. Based on these observations, we hypothesize that the degraded test performance in the off-policy update is primarily caused by the introduction of <span class="term">off-policy data</span> in each <span class="term">SGD</span> step.
+    </div>
+    <div class="translation">
+      <span class="figure">图17</span>所示的实验结果表明，相对于基线实验，具有较小<span class="term">DT</span>的策略内更新仍然在测试性能上产生稳定改进，并且<span class="term">过早熵崩溃（premature entropy collapse）</span>没有发生。最终，当训练步数足够大时，策略内更新优于具有相同<span class="term">DT</span>的策略外更新。基于这些观察，我们假设策略外更新中测试性能下降主要是由于在每个<span class="term">SGD（Stochastic Gradient Descent）</span>步骤中引入了<span class="term">策略外数据（off-policy data）</span>。
+    </div>
+    
+    <!-- 段落 5 -->
+    <div class="original">
+      Can a Large <span class="term">DR</span> in Off-Policy Updates Prevent <span class="term">Premature Entropy Collapse</span>? Consider the off-policy experiment in Ablation Experiments 6 with the quadruple <div class="formula-container"><div class="formula">\( (N_{\text{SGD}}, D_R, D_T, N_{\text{reuse}}) = (4,64,16,1) \)</div></div> (Equation 2). We attempted to increase the <span class="term">rollout batch size</span> <span class="term">DR</span> from 64 to 256 while keeping <span class="term">NSGD</span>= 4 fixed (i.e., resulting in the configuration <div class="formula-container"><div class="formula">\( (N_{\text{SGD}}, D_R, D_T, N_{\text{reuse}}) = (4,256,64,1) \)</div></div>), with the expectation that this would introduce more diverse samples and prevent convergence on single trajectory. However, our results in <span class="figure">Figure 18</span> indicates that even with a larger <span class="term">DR</span>, <span class="term">premature entropy collapse</span> not only still occurs but may even do so more rapidly.
+    </div>
+    <div class="translation">
+      在策略外更新中，较大的<span class="term">DR</span>能否防止<span class="term">过早熵崩溃（premature entropy collapse）</span>？考虑消融实验6中的策略外实验，四元组 <div class="formula-container"><div class="formula">\( (N_{\text{SGD}}, D_R, D_T, N_{\text{reuse}}) = (4,64,16,1) \)</div></div>（公式 2）。我们尝试将<span class="term">rollout批量大小（rollout batch size）</span><span class="term">DR</span>从64增加到256，同时保持<span class="term">NSGD</span>=4固定（即，导致配置 <div class="formula-container"><div class="formula">\( (N_{\text{SGD}}, D_R, D_T, N_{\text{reuse}}) = (4,256,64,1) \)</div></div>），期望这会引入更多样化的样本并防止收敛到单一轨迹。然而，我们在<span class="figure">图18</span>中的结果表明，即使有更大的<span class="term">DR</span>，<span class="term">过早熵崩溃（premature entropy collapse）</span>不仅仍然发生，而且可能更快发生。
+    </div>
+  </div>
+  
+  <!-- 摘要总结部分 -->
+  <div class="section">
+    <h2>摘要总结</h2>
+    <p>本文的核心内容是通过消融实验7探究策略内（on-policy）和策略外（off-policy）更新在强化学习中的影响。实验使用四元组参数（NSGD, DR, DT, Nreuse）配置，结果显示策略内更新（NSGD=1）能避免过早熵崩溃，并在训练步数足够大时优于策略外更新，性能下降主要归因于策略外数据的引入。进一步实验表明，增加rollout批量大小（DR）无法防止熵崩溃，反而可能加速其发生。这突显了策略外数据在优化过程中的负面作用，为算法设计提供了关键见解。</p>
+  </div>
+  
+  <!-- 术语识别部分 -->
+  <div class="section">
+    <h2>术语识别</h2>
+    <dl class="term-list">
+      <dt><span class="term">Gradient Variance (梯度方差)</span></dt>
+      <dd>在优化算法中，梯度方差指随机梯度下降（SGD）过程中梯度估计的波动程度。高方差可能导致训练不稳定、收敛缓慢或性能下降。本文中，策略外数据增加了梯度方差。</dd>
+      
+      <dt><span class="term">Off-policy Data (策略外数据)</span></dt>
+      <dd>在强化学习中，策略外数据指由不同于当前学习策略的行为策略生成的经验数据。使用这类数据可能导致偏差和方差问题，本文实验显示其是性能下降的主因。</dd>
+      
+      <dt><span class="term">On-policy Update (策略内更新)</span></dt>
+      <dd>策略内更新使用当前策略生成的数据进行模型优化。本文中，策略内实验（NSGD=1）避免了过早熵崩溃并提升了性能。</dd>
+      
+      <dt><span class="term">Off-policy Update (策略外更新)</span></dt>
+      <dd>策略外更新利用历史或其他策略的数据进行优化。本文实验表明，它易导致过早熵崩溃和性能下降。</dd>
+      
+      <dt><span class="term">Ablation Experiments (消融实验)</span></dt>
+      <dd>消融实验是一种研究方法，通过系统性地移除或修改模型组件（如参数），以分析其对性能的贡献。本文中实验7比较了不同更新策略。</dd>
+      
+      <dt><span class="term">Premature Entropy Collapse (过早熵崩溃)</span></dt>
+      <dd>在强化学习中，熵崩溃指策略过早收敛到单一动作，导致探索不足。本文中，策略外更新引发了此问题，而策略内更新能有效避免。</dd>
+      
+      <dt><span class="term">SGD (Stochastic Gradient Descent, 随机梯度下降)</span></dt>
+      <dd>SGD是一种优化算法，通过随机采样数据计算梯度来更新模型参数。本文中，每个SGD步骤引入策略外数据导致性能下降。</dd>
+      
+      <dt><span class="term">NSGD (Number of SGD steps, SGD步数)</span></dt>
+      <dd>NSGD表示每次迭代中执行的随机梯度下降步骤数量。本文中，策略内更新对应NSGD=1。</dd>
+      
+      <dt><span class="term">DR (Rollout Batch Size, rollout批量大小)</span></dt>
+      <dd>DR指在强化学习rollout阶段采样的轨迹批量大小。本文实验尝试增加DR以增加样本多样性，但未能防止熵崩溃。</dd>
+      
+      <dt><span class="term">DT (SGD Data Size, SGD数据大小)</span></dt>
+      <dd>DT表示每个SGD步骤使用的数据量。实验中，策略内更新在较小DT下仍表现良好。</dd>
+      
+      <dt><span class="term">Nreuse (Data Reuse Factor, 数据重用因子)</span></dt>
+      <dd>Nreuse指数据在训练中被重用的次数。本文中所有实验设置Nreuse=1，表示无重用。</dd>
+      
+      <dt><span class="term">Rollout Batch Size (rollout批量大小)</span></dt>
+      <dd>同DR，指在策略评估阶段采样的批量大小。增加DR旨在提升样本多样性。</dd>
+    </dl>
+  </div>
+</body>
+</html>

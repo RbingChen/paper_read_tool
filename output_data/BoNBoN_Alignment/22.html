@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<style>
+  body { font-family: Arial, sans-serif; line-height: 1.6; }
+  .original { background-color: #f0f0f0; border: 1px solid #ccc; padding: 15px; margin-bottom: 5px; }
+  .translation { background-color: #e0f7e0; border: 1px solid #4CAF50; padding: 15px; margin-bottom: 20px; }
+  .term { color: red; font-weight: bold; }
+  .figure { background-color: #fffde7; padding: 15px; margin: 20px 0; text-align: center; font-style: italic; }
+  .section { margin-bottom: 30px; }
+  h2 { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 5px; }
+</style>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+
+<div class="section">
+  <h2>内容理解</h2>
+  <p>该文本是论文附录中的图表说明（Figure 5），展示<strong class="term">BoNBoN</strong>方法在不同<strong class="term">β参数</strong>下的性能评估结果。核心内容包含：</p>
+  <ul>
+    <li>两个任务场景：<strong class="term">单轮对话任务（single-turn dialogue）</strong>和<strong class="term">摘要任务（summarization）</strong></li>
+    <li>三个评估指标：<strong class="term">胜率（Win Rate）</strong>、<strong class="term">KL散度（KL Divergence）</strong>和<strong class="term">平均响应长度（Average Length of Responses）</strong></li>
+    <li>关键结论：理论推导的β值能稳定输出最优结果，其他β值会导致胜率下降或响应长度异常</li>
+  </ul>
+</div>
+
+<div class="section">
+  <h2>内容翻译</h2>
+  <div class="original">
+    D Additional results<br>
+    758085<br>
+    3 6 9<br>
+    KL Div ergenceWin Rate (%)KL Div ergence v s. Win Rate<br>
+    758085<br>
+    75 80 85 90<br>
+    Average Length of ResponsesWin Rate (%)Average Length (Response) vs. Win Rate<br>
+    (a)The single-turn dialogue task<br>
+    758085<br>
+    3 6 9<br>
+    KL Div ergenceWin Rate (%)KL Div ergence v s. Win Rate<br>
+    8183858789<br>
+    4 6 8 10<br>
+    KL DivergenceWin Rate (%)KL Divergence vs. Win Rate<br>
+    8183858789<br>
+    52 56 60<br>
+    Average Length of ResponsesWin Rate (%)Average Length (Response) vs. Win Rate<br>
+    (b)The summarization task<br>
+    758085<br>
+    3 6 9<br>
+    KL Div ergenceWin Rate (%)KL

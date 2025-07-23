@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>RankMixer 论文分析</title>
+  <style>
+    body { font-family: Arial, sans-serif; line-height: 1.6; margin: 20px; }
+    h1, h2, h3 { color: #333; }
+    .section { margin-bottom: 30px; }
+    .section-title { background-color: #e0f7fa; padding: 10px; border-left: 4px solid #0097a7; margin-top: 20px; }
+    .original { background-color: #f5f5f5; border: 1px solid #cccccc; padding: 15px; margin-bottom: 10px; }
+    .translation { background-color: #e8f5e9; border: 1px solid #4caf50; padding: 15px; margin-bottom: 20px; }
+    .figure { background-color: #fffde7; padding: 15px; margin: 15px 0; text-align: center; } /* 用于表格等图示 */
+    table { width: 100%; border-collapse: collapse; margin: 10px 0; }
+    table, th, td { border: 1px solid #ddd; }
+    th, td { padding: 8px; text-align: left; }
+    .term { color: red; font-weight: bold; } /* 术语高亮样式 */
+    .formula { text-align: center; margin: 15px 0; font-style: italic; } /* 公式居中 */
+    .formula-number { display: block; text-align: right; font-size: 0.9em; } /* 公式编号 */
+  </style>
+  <!-- 包括 MathJax 以支持 LaTeX 公式渲染 -->
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <h1>RankMixer 论文分析报告</h1>
+  <p>作为算法专家，我已对输入文本进行深入分析。文本源自会议论文摘要，描述了 RankMixer 模型在工业推荐系统中的扩展性优化和在线性能。以下整合了四个任务：内容理解、内容翻译、摘要总结和术语识别。关键技术术语已用<span class="term">红色粗体</span>高亮显示，并包含英文原文。</p>
+
+  <!-- 内容理解部分 -->
+  <div class="section">
+    <h2 class="section-title">内容理解</h2>
+    <p>文本描述了 <span class="term">RankMixer</span> 模型，这是一个用于工业推荐系统的可扩展排名框架。核心认知包括：</p>
+    <ul>
+      <li><strong>模型设计</strong>：RankMixer 通过 <span class="term">Dense-training</span>（密集训练）和 <span class="term">ReLU routing</span>（ReLU 路由）机制解决专家饥饿问题，并适应推荐数据的动态分布。</li>
+      <li><strong>效率优化</strong>：在参数规模扩大 100 倍时，通过模型-系统协同设计（如优化 <span class="term">FLOPs-to-parameter ratio</span>（FLOPs-参数比）和提升 <span class="term">MFU (Model FLOPs Utilization)</span>（模型 FLOPs 利用率）），将推理延迟增长控制在 3 倍以内。工程优化包括操作融合、混合精度推理和稀疏 MoE 加速。</li>
+      <li><strong>在线性能</strong>：在三个核心场景（Feed 推荐、广告、搜索）中部署 RankMixer-1B 模型，并通过 A/B 测试验证了显著提升。关键指标包括活跃天数、停留时长、点赞率等，结果展示在表格中。</li>
+      <li><strong>实验结果</strong>：表格数据显示，RankMixer 在所有用户组和应用中均带来正向提升，尤其在低活跃用户中效果更佳。模型在延迟和资源效率上优于基线（如 DLRM）。</li>
+    </ul>
+    <p>总体而言，文本强调了 RankMixer 作为通用框架的实用性，通过高效设计解决了大规模推荐模型的扩展瓶颈。</p>
+  </div>
+
+  <!-- 内容翻译部分：英文与中文对照 -->
+  <div class="section">
+    <h2 class="section-title">内容翻译</h2>
+    <p>以下为文本的英文原文与中文翻译对照。翻译区分了标题、段落、表格和关键元素。原文使用浅灰色背景，翻译使用浅绿色背景。</p>
+
+    <!-- 标题部分 -->
+    <div class="original">
+      <h3>RankMixer: Scaling Up Ranking Models in Industrial Recommenders Conference acronym ’XX, June 03–05, 2018, Woodstock, NY</h3>
+    </div>
+    <div class="translation">
+      <h3>RankMixer：在工业推荐系统中扩展排名模型，会议缩写 'XX，2018年6月03–05日，Woodstock, NY</h3>
+    </div>
+
+    <!-- 表4部分 -->
+    <div class="original">
+      <h3>Table 4: Online AB test result lasting 5 months for Feed Recommendation Scenarios on different activeness user groups in both Douyin and Douyin lite app</h3>
+      <div class="figure">
+        <table>
+          <tr>
+            <th rowspan="2">User Group</th>
+            <th colspan="5">Douyin app</th>
+            <th colspan="5">Douyin lite</th>
+          </tr>
+          <tr>
+            <th>Active Day↑</th><th>Duration↑</th><th>Like↑</th><th>Finish↑</th><th>Comment↑</th>
+            <th>Active Day↑</th><th>Duration↑</th><th>Like↑</th><th>Finish↑</th><th>Comment↑</th>
+          </tr>
+          <tr>
+            <td>Low-active</td>
+            <td>+0.457%</td><td>+0.8594%</td><td>+0.6564%</td><td>+1.7523%</td><td>+0.951%</td>
+            <td>+0.4248%</td><td>+2.1946%</td><td>+1.327%</td><td>+3.2622%</td><td>+0.6988%</td>
+          </tr>
+          <tr>
+            <td>Middle-active</td>
+            <td>+0.4318%</td><td>+1.1855%</td><td>+0.6778%</td><td>+1.9561%</td><td>+0.972%</td>
+            <td>+0.4115%</td><td>+1.8366%</td><td>+1.738%</td><td>+2.31%</td><td>+1.0317%</td>
+          </tr>
+          <tr>
+            <td>High-active</td>
+            <td>+0.1239%</td><td>+0.4917%</td><td>+0.272%</td><td>+1.3125%</td><td>+0.37%</td>
+            <td>+0.0666%</td><td>+0.8427%</td><td>+2.187%</td><td>+1.556%</td><td>+2.5246%</td>
+          </tr>
+          <tr>
+            <td>Overall</td>
+            <td>+0.2008%</td><td>+0.4996%</td><td>+0.2862%</td><td>+1.6016%</td><td>+0.3827%</td>
+            <td>+0.1648%</td><td>+0.726%</td><td>+0.8401%</td><td>+1.319%</td><td>+0.8269%</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+    <div class="translation">
+      <h3>表4：在抖音和抖音轻量版应用上，针对不同活跃度用户组的Feed推荐场景进行的为期5个月的在线AB测试结果</h3>
+      <div class="figure">
+        <table>
+          <tr>
+            <th rowspan="2">用户组</th>
+            <th colspan="5">抖音应用</th>
+            <th colspan="5">抖音轻量版</th>
+          </tr>
+          <tr>
+            <th>活跃天数↑</th><th>停留时长↑</th><th>点赞率↑</th><th>完成率↑</th><th>评论率↑</th>
+            <th>活跃天数↑</th><th>停留时长↑</th><th>点赞率↑</th><th>完成率↑</th><th>评论率↑</th>
+          </tr>
+          <tr>
+            <td>低活跃</td>
+            <td>+0.457%</td><td>+0.8594%</td><td>+0.6564%</td><td>+1.7523%</td><td>+0.951%</td>
+            <td>+0.4248%</td><td>+2.1946%</td><td>+1.327%</td><td>+3.2622%</td><td>+0.6988%</td>
+          </tr>
+          <tr>
+            <td>中活跃</td>
+            <td>+0.4318%</td><td>+1.1855%</td><td>+0.6778%</td><td>+1.9561%</td><td>+0.972%</td>
+            <td>+0.4115%</td><td>+1.8366%</td><td>+1.738%</td><td>+2.31%</td><td>+1.0317%</td>
+          </tr>
+          <tr>
+            <td>高活跃</td>
+            <td>+0.1239%</td><td>+0.4917%</td><td>+0.272%</td><td>+1.3125%</td><td>+0.37%</td>
+            <td>+0.0666%</td><td>+0.8427%</td><td>+2.187%</td><td>+1.556%</td><td>+2.5246%</td>
+          </tr>
+          <tr>
+            <td>总体</td>
+            <td>+0.2008%</td><td>+0.4996%</td><td>+0.2862%</td><td>+1.6016%</td><td>+0.3827%</td>
+            <td>+0.1648%</td><td>+0.726%</td><td>+0.8401%</td><td>+1.319%</td><td>+0.8269%</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+    <!-- 表5部分 -->
+    <div class="original">
+      <h3>Table 5: Online lift of RankMixer in Advertising and Search scenarios</h3>
+      <div class="figure">
+        <table>
+          <tr>
+            <th rowspan="2">Scenario</th>
+            <th colspan="2">Advertising</th>
+            <th colspan="3">Search</th>
+          </tr>
+          <tr>
+            <th>Metric</th><th>Lift</th>
+            <th>Metric</th><th>Lift</th><th>Metric</th>
+          </tr>
+          <tr>
+            <td rowspan="2">Results</td>
+            <td>ΔAUC↑</td><td>+0.73%</td>
+            <td>ΔAUC↑</td><td>+1.75%</td>
+            <td>Active Days↑</td>
+          </tr>
+          <tr>
+            <td>ADVV↑</td><td>+3.90%</td>
+            <td>Query change↓</td><td>−1.0%</td>
+            <td>+0.1414%</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+    <div class="translation">
+      <h3>表5：RankMixer在广告和搜索场景中的在线提升</h3>
+      <div class="figure">
+        <table>
+          <tr>
+            <th rowspan="2">场景</th>
+            <th colspan="2">广告</th>
+            <th colspan="3">搜索</th>
+          </tr>
+          <tr>
+            <th>指标</th><th>提升</th>
+            <th>指标</th><th>提升</th><th>指标</th>
+          </tr>
+          <tr>
+            <td rowspan="2">结果</td>
+            <td>ΔAUC↑</td><td>+0.73%</td>
+            <td>ΔAUC↑</td><td>+1.75%</td>
+            <td>活跃天数↑</td>
+          </tr>
+          <tr>
+            <td>ADVV↑</td><td>+3.90%</td>
+            <td>查询变更率↓</td><td>−1.0%</td>
+            <td>+0.1414%</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+    <!-- 描述段落1 -->
+    <div class="original">
+      <p><span class="term">Dense-training</span> guarantees that most expert receives sufficient gradient updates, preventing <span class="term">expert starvation</span>. <span class="term">ReLU routing</span> makes the activation ratio dynamic across tokens—the activation proportion shows in the figure varies adaptively according to its information content, which aligns well with the diverse and highly dynamic distribution of recommendation data.</p>
+    </div>
+    <div class="translation">
+      <p><span class="term">Dense-training（密集训练）</span>确保大多数专家获得足够的梯度更新，防止<span class="term">expert starvation（专家饥饿）</span>。<span class="term">ReLU routing（ReLU 路由）</span>使令牌间的激活比率动态化——激活比例根据信息内容自适应变化，这与推荐数据多样且高度动态的分布高度一致。</p>
+    </div>
+
+    <!-- 小标题和表6部分 -->
+    <div class="original">
+      <h3>4.6 Online Serving cost</h3>
+      <h3>Table 6: Case Study on Model Efficiency</h3>
+      <div class="figure">
+        <table>
+          <tr>
+            <th>Model</th><th>#Param</th><th>Flops</th><th>GFlops/#Param(M)</th><th>MFU</th><th>Latency</th>
+          </tr>
+          <tr>
+            <td>Base-DLRM-8.7M</td><td>8.7M</td><td>52G</td><td>5.9</td><td>4.51%</td><td>16.12ms</td>
+          </tr>
+          <tr>
+            <td>Wukong(l=8,nL=32)</td><td>122M</td><td>442G</td><td>3.6</td><td>18.51%</td><td>33.7ms</td>
+          </tr>
+          <tr>
+            <td>RankMixer-1B</td><td>1B</td><td>2106 G</td><td>2.1</td><td>44.57%</td><td>14.3ms</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+    <div class="translation">
+      <h3>4.6 在线服务成本</h3>
+      <h3>表6：模型效率案例研究</h3>
+      <div class="figure">
+        <table>
+          <tr>
+            <th>模型</th><th>参数量</th><th>Flops</th><th>GFlops/参数(M)</th><th>MFU</th><th>延迟</th>
+          </tr>
+          <tr>
+            <td>Base-DLRM-8.7M</td><td>8.7M</td><td>52G</td><td>5.9</td><td>4.51%</td><td>16.12ms</td>
+          </tr>
+          <tr>
+            <td>Wukong(l=8,nL=32)</td><td>122M</td><td>442G</td><td>3.6</td><td>18.51%</td><td>33.7ms</td>
+          </tr>
+          <tr>
+            <td>RankMixer-1B</td><td>1B</td><td>2106 G</td><td>2.1</td><td>44.57%</td><td>14.3ms</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+    <!-- 描述段落2 -->
+    <div class="original">
+      <p>How can we prevent inference latency from scaling linearly with a 100× increase in parameters? In practical systems, latency is inversely proportional to throughput and directly proportional to additional machine resources. We take advantage of two key levers in the model-system co-design to decouple the parameter growth from inference cost:</p>
+      <p>(1)<span class="term">FLOPs-to-parameter ratio</span>. The fourth column of Table 6 reports the number of floating-point operations (<span

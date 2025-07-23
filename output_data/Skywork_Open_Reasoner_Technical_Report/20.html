@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>文本分析报告</title>
+  <style>
+    body { font-family: Arial, sans-serif; line-height: 1.6; margin: 20px; }
+    h1 { color: #333; text-align: center; }
+    h2 { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 5px; }
+    .original { background-color: #f0f0f0; border: 1px solid #ccc; padding: 15px; margin-bottom: 10px; border-radius: 5px; }
+    .translation { background-color: #e0ffe0; border: 1px solid #00cc00; padding: 15px; margin-bottom: 20px; border-radius: 5px; }
+    .figure { background-color: #ffffcc; padding: 15px; margin: 15px 0; border-radius: 5px; }
+    .term { color: red; font-weight: bold; }
+    .formula { text-align: center; margin: 15px 0; padding: 10px; background-color: #f9f9f9; border: 1px dashed #aaa; }
+    .formula-number { font-style: italic; margin-top: 5px; }
+    ul { list-style-type: none; padding: 0; }
+    li { margin-bottom: 10px; padding: 8px; background-color: #f8f8f8; border-left: 4px solid #3498db; }
+  </style>
+  <!-- 加载MathJax以支持LaTeX公式渲染 -->
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <h1>算法论文文本分析报告</h1>
+  
+  <!-- 内容理解部分 -->
+  <h2>内容理解</h2>
+  <p>文本主要讨论了强化学习中策略更新（on-policy）与离策略更新（off-policy）的对比，重点分析了在PPO（Proximal Policy Optimization）风格策略损失下，通过批量分解和重用来增加SGD（随机梯度下降）步骤数的影响。核心内容包括：Figure 14展示了不同rollout批量大小和组大小下生成响应的熵动态，所有实验显示出相似趋势；Figure 15通过图示详细解释了策略更新与离策略更新的机制差异，策略更新使用整个rollout缓冲区执行一次SGD步骤，而离策略更新则将缓冲区划分为小批量并多次重用，从而执行多个SGD步骤；Section 4.4则定量分析了离策略更新中SGD步骤数（NSGD）的计算公式（NSGD = (DR / DT) × Nreuse），并强调其在MAGIC算法框架中的重要性。整体上，文本旨在说明通过调整参数（如DR、DT、Nreuse）可以优化训练效率，离策略更新能通过数据重用提高计算利用率。</p>
+  
+  <!-- 内容翻译部分 -->
+  <h2>内容翻译</h2>
+  
+  <!-- 段落1: Figure 14描述 -->
+  <div class="original">Figure 14: Entropy of generated responses during on-policy updates with different rollout batch sizes DR (left) and group size gs (right). All the experiments exhibit similar entropy dynamics.</div>
+  <div class="translation">图14：在不同rollout批量大小DR（左）和组大小gs（右）下，策略更新期间生成响应的熵。所有实验都表现出相似的熵动态。</div>
+  
+  <!-- 段落2: Figure 15图例（图示部分，使用.figure类） -->
+  <div class="figure">
+    <div class="original">On Policy: One SGD step is performed using the whole rollout buffer.
+Off Policy: Rollout buffer is partitioned into DR/DT mini-batches and reused by Nreuse times. Total NSGD = (DR/DT) × Nreuse SGD steps are performed in one training step.</div>
+    <div class="translation">策略更新：使用整个rollout缓冲区执行一个SGD步骤。
+离策略更新：Rollout缓冲区被划分为DR/DT个小批量，并通过Nreuse次重用。每个小批量经历独立的SGD步骤。在一个训练步骤中执行的总SGD步骤数为NSGD = (DR/DT) × Nreuse。</div>
+  </div>
+  
+  <!-- 段落3: Figure 15描述 -->
+  <div class="original">Figure 15: Illustration of on-policy vs. off-policy update in PPO-style policy loss. On-policy update applies a single SGD step to the entire rollout batch, whereas off-policy update implements multiple SGD steps through rollout batch decomposition and reuse. The rollout batch is partitioned into DR/DT mini-batches, with each mini-batch undergoing an independent SGD step. Then, one can iterate over the rollout batch Nreuse times. Thus, the total number of SGD steps performed on one rollout batch is (DR/DT) × Nreuse.</div>
+  <div class="translation">图15：PPO风格策略损失中策略更新与离策略更新的图示。策略更新将单个SGD步骤应用于整个rollout批量，而离策略更新则通过rollout批量分解和重用实现多个SGD步骤。rollout批量被划分为DR/DT个小批量，每个小批量经历一个独立的SGD步骤。然后，可以迭代rollout批量Nreuse次。因此，在一个rollout批量上执行的总SGD步骤数为(DR/DT) × Nreuse。</div>
+  
+  <!-- 段落4: Section 4.4描述 -->
+  <div class="original">4.4 The Impact of Off-policy Update by Increasing NSGD
+Note that the policy loss (3.1) in MAGIC is PPO-style, which naturally allows for performing multiple SGD steps through rollout batch decomposition and reuse (as illustrated in Figure 15). Recalling the definitions of DR, DT and Nreuse from Section 4.1, it is clear that the number of SGD steps performed in one training step, i.e. NSGD, satisfies NSGD = (DR / DT) * Nreuse. (4.1)</div>
+  <div class="translation">4.4 通过增加NSGD的离策略更新的影响
+注意，MAGIC中的策略损失(3.1)是PPO风格的，这自然允许通过rollout批量分解和重用执行多个SGD步骤（如图15所示）。回顾第4.1节中DR、DT和Nreuse的定义，显然，在一个训练步骤中执行的SGD步骤数，即NSGD，满足NSGD = (DR / DT) * Nreuse。(4.1)</div>
+  
+  <!-- 公式渲染，使用.formula类 -->
+  <div class="formula">
+    \( \displaystyle NSGD = \frac{DR}{DT} \times Nreuse \)
+    <div class="formula-number">公式 (4.1)</div>
+  </div>
+  
+  <!-- 摘要总结部分 -->
+  <h2>摘要总结</h2>
+  <p>文本的核心内容聚焦于强化学习中的策略更新机制：Figure 14展示了不同rollout批量大小（DR）和组大小（gs）下生成响应的熵动态，所有实验显示出相似模式；Figure 15通过图示对比策略更新（on-policy）与离策略更新（off-policy），前者使用整个rollout缓冲区执行一次SGD步骤，后者通过将缓冲区划分为小批量（DR/DT）并重用（Nreuse次）实现多个SGD步骤（总步骤数NSGD = (DR/DT) × Nreuse）；Section 4.4在MAGIC算法的PPO风格策略损失背景下，定量分析了增加NSGD（SGD步骤数）对离策略更新的影响，并给出关键公式NSGD = (DR / DT) * Nreuse。整体上，文本强调了批量分解和重用如何提升训练效率，为优化算法参数提供依据。</p>
+  
+  <!-- 术语识别部分 -->
+  <h2>术语识别</h2>
+  <ul>
+    <li><span class="term">熵 (Entropy)</span>: 在信息论中，熵衡量随机变量的不确定性；在强化学习中，它常用于评估策略的随机性，高熵表示策略更探索性。本文中，它指生成响应的不确定性动态。</li>
+    <li><span class="term">策略更新 (On-policy update)</span>: 使用当前策略生成的数据进行模型更新，确保数据与策略一致。本文中，它涉及单次SGD步骤应用于整个rollout缓冲区。</li>
+    <li><span class="term">离策略更新 (Off-policy update)</span>: 使用历史或不同策略生成的数据进行更新，允许数据重用。本文中，它通过分解rollout批量并多次重用（Nreuse次）实现多个SGD步骤。</li>
+    <li><span class="term">rollout批量大小 (Rollout batch size, DR)</span>: 在策略评估中，单次rollout过程收集的样本数量。本文中，它是影响熵动态和SGD步骤数的关键参数。</li>
+    <li><span class="term">组大小 (Group size, gs)</span>: 可能指在并行计算或分组处理中样本的分组大小。本文中，它与DR一起影响熵实验。</li>
+    <li><span class="term">SGD步骤 (SGD step)</span>: 随机梯度下降（Stochastic Gradient Descent）的优化迭代步骤，用于更新模型参数。本文中，策略更新执行一次SGD步骤，离策略更新执行多次。</li>
+    <li><span class="term">rollout缓冲区 (Rollout buffer)</span>: 存储策略rollout过程中生成的数据（如状态、动作、奖励）的缓冲区。本文中，它在策略更新中被整体使用，在离策略更新中被分解。</li>
+    <li><span class="term">小批量 (Mini-batches)</span>: 将大批量数据划分为更小的子集，用于高效SGD计算。本文中，rollout缓冲区被划分为DR/DT个小批量。</li>
+    <li><span class="term">重用次数 (Reuse times, Nreuse)</span>: 在离策略更新中，相同rollout数据被重复使用的次数。本文中，它直接影响总SGD步骤数NSGD。</li>
+    <li><span class="term">PPO风格策略损失 (PPO-style policy loss)</span>: 基于Proximal Policy Optimization算法的损失函数，确保更新步幅受限以提高稳定性。本文中，它是MAGIC算法的基础，支持批量分解。</li>
+    <li><span class="term">MAGIC</span>: 可能指特定强化学习算法或框架的名称（未在文本中全称展开），其策略损失采用PPO风格。本文中，它用于演示离策略更新机制。</li>
+    <li><span class="term">小批量大小 (Mini-batch size, DT)</span>: 每个小批量中包含的样本数量。本文中，它与DR共同决定小批量数量（DR/DT）。</li>
+    <li><span class="term">SGD步骤数 (Number of SGD steps, NSGD)</span>: 在一个训练步骤中执行的SGD迭代总数。本文中，它由公式NSGD = (DR / DT) * Nreuse计算，是离策略更新的核心指标。</li>
+  </ul>
+</body>
+</html>

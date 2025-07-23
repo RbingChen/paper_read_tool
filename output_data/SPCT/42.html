@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>文本处理结果</title>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    body { font-family: Arial, sans-serif; line-height: 1.6; margin: 20px; }
+    h1 { text-align: center; color: #333; }
+    h2 { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 5px; }
+    .section { margin-bottom: 30px; }
+    .original { background-color: #f0f0f0; border: 1px solid #cccccc; padding: 15px; margin-bottom: 10px; border-radius: 5px; }
+    .translation { background-color: #e0f7e0; border: 1px solid #4caf50; padding: 15px; margin-bottom: 20px; border-radius: 5px; }
+    .term { color: red; font-weight: bold; }
+    .formula { background-color: #ffffcc; padding: 10px; text-align: center; margin: 10px 0; border-radius: 5px; }
+    ul { list-style-type: none; padding-left: 0; }
+    li { margin-bottom: 10px; }
+  </style>
+</head>
+<body>
+  <h1>文本处理报告</h1>
+  
+  <section class="section" id="understanding">
+    <h2>内容理解</h2>
+    <p>输入文本分为两个主要部分：第一部分是状态声明“<strong class="term">Preprint (预印本)</strong>. <strong class="term">Under review (正在审查中)</strong>.”，表示这是一个学术文档的预印本版本，目前正在接受同行评审，尚未正式出版。第二部分是“#### Output Format Requirements ####”开头的输出格式规范，定义了响应输出的结构化要求：输出必须分为三行，分别对应“<strong class="term">Specific Criteria (具体标准)</strong>”、“<strong class="term">Analysis (分析)</strong>”和“<strong class="term">Scores (分数)</strong>”。其中：</p>
+    <ul>
+      <li>“Specific Criteria”部分需描述与查询和上下文相关的其他潜在标准及其权重。</li>
+      <li>“Analysis”部分要求基于给定标准比较不同响应。</li>
+      <li>“Scores”部分指定以数学公式格式 <span class="math">\( \boxed{x} \)</span> 输出最佳响应的索引（如末尾的“43”可能是一个示例索引）。</li>
+    </ul>
+    <p>整体上，文本强调文档的临时状态（预印本）并提供明确的输出指南，适用于算法或评审场景。</p>
+  </section>
+  
+  <section class="section" id="translation">
+    <h2>内容翻译</h2>
+    <div class="original">Preprint. Under review.</div>
+    <div class="translation">预印本。正在审查中。</div>
+    
+    <div class="original">#### Output Format Requirements ####</div>
+    <div class="translation">#### 输出格式要求 ####</div>
+    
+    <div class="original">Output with three lines</div>
+    <div class="translation">输出分为三行</div>
+    
+    <div class="original">Specific Criteria: &lt;Other potential criteria specific to the query and the context, and the weights of each criteria&gt;.</div>
+    <div class="translation">具体标准：&lt;其他潜在标准，特定于查询和上下文，以及每个标准的权重&gt;。</div>
+    
+    <div class="original">Analysis: &lt;Compare different responses based on given Criteria&gt;.</div>
+    <div class="translation">分析：&lt;基于给定标准比较不同响应&gt;。</div>
+    
+    <div class="original">Scores: &lt;the index of the best response based on the judgement, in the format of \boxed{x}&gt;.</div>
+    <div class="translation">分数：&lt;基于判断的最佳响应索引，格式为 \boxed{x}&gt;。</div>
+    
+    <div class="original">43</div>
+    <div class="translation">43</div>
+    
+    <div class="formula">
+      <p>数学公式：<span class="math">\( \boxed{x} \)</span></p>
+      <p>说明：这是一个 LaTeX 公式，用于表示框出的索引值（如示例中的 43）。</p>
+    </div>
+  </section>
+  
+  <section class="section" id="summary">
+    <h2>摘要总结</h2>
+    <p>文本核心内容分为两部分：</p>
+    <ul>
+      <li>第一部分声明文档状态为“<strong class="term">Preprint (预印本)</strong>”且“<strong class="term">Under review (正在审查中)</strong>”，表明这是一个尚未正式出版的学术草稿。</li>
+      <li>第二部分详细定义输出格式要求：输出必须结构化分为三行，包括“<strong class="term">Specific Criteria (具体标准)</strong>”（描述相关标准及权重）、“<strong class="term">Analysis (分析)</strong>”（比较不同响应）和“<strong class="term">Scores (分数)</strong>”（以公式 <span class="math">\( \boxed{x} \)</span> 格式输出最佳响应索引，如示例“43”）。</li>
+    </ul>
+    <p>整体摘要：文本简要标识文档状态，并提供清晰的输出规范，用于指导算法或评审响应。</p>
+  </section>
+  
+  <section class="section" id="terminology">
+    <h2>术语识别</h2>
+    <ul>
+      <li><strong class="term">Preprint (预印本)</strong>: 指学术论文在正式出版前发布的草稿版本，通常用于快速分享研究成果，但尚未经过完整同行评审。</li>
+      <li><strong class="term">Under review (正在审查中)</strong>: 表示论文正处于同行评审过程，由专家评估其质量和有效性，尚未获得最终接受。</li>
+      <li><strong class="term">Output Format (输出格式)</strong>: 定义响应输出的结构和样式要求，确保内容以标准化方式呈现（如分为三行）。</li>
+      <li><strong class="term">Specific Criteria (具体标准)</strong>: 指用于评估响应的详细标准，包括与查询和上下文相关的潜在因素（如相关性、准确性），以及每个标准的权重（表示其重要性）。</li>
+      <li><strong class="term">Analysis (分析)</strong>: 指比较不同响应基于给定标准的评估过程，涉及优缺点对比和综合判断。</li>
+      <li><strong class="term">Scores (分数)</strong>: 表示评估结果的量化输出，此处特指最佳响应的索引（位置编号），用于标识最优选项。</li>
+      <li><strong class="term">\boxed{x} (框出公式)</strong>: 一个 LaTeX 数学公式命令，用于将内容（如索引 x）放入方框中，常用于突出显示最终答案或关键结果。</li>
+    </ul>
+  </section>
+</body>
+</html>

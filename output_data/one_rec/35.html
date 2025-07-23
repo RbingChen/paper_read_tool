@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>OneRec技术报告分析</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; }
+        h1 { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 10px; }
+        h2 { color: #2980b9; margin-top: 25px; }
+        .original {
+            background-color: #f5f5f5;
+            border: 1px solid #cccccc;
+            padding: 15px;
+            margin-bottom: 5px;
+            border-radius: 5px;
+        }
+        .translation {
+            background-color: #e8f5e9;
+            border: 1px solid #4caf50;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+        .figure {
+            background-color: #fffde7;
+            padding: 15px;
+            margin: 20px 0;
+            text-align: center;
+            border: 1px solid #ffd600;
+            border-radius: 5px;
+        }
+        .term { color: #e53935; font-weight: bold; }
+        .formula-container {
+            text-align: center;
+            margin: 20px 0;
+        }
+        .formula-number {
+            display: block;
+            font-style: italic;
+            margin-top: 5px;
+        }
+        ul { padding-left: 20px; }
+        li { margin-bottom: 10px; }
+    </style>
+</head>
+<body>
+    <h1>OneRec技术报告分析</h1>
+    
+    <!-- 内容理解 -->
+    <section>
+        <h2>内容理解</h2>
+        <p>该文本是<b class="term">OneRec</b>技术报告片段，主要展示视频内容标签体系：</p>
+        <ul>
+            <li>核心结构为<b class="term">层级分类（Hierarchical Classification）</b>，如“美食→吃播→面条”</li>
+            <li>包含<b class="term">多语言标签（Multilingual Tags）</b>（中英文对照）和<b class="term">语义标识符（Semantic Identifiers）</b>（如1501, 3656）</li>
+            <li>突出<b class="term">吃播（Mukbang）</b>内容，涵盖螺蛳粉、火鸡面等特色食品</li>
+            <li>图17展示<b class="term">RQ-Kmeans算法</b>生成的层级语义标识符（当层级深度 \(L_t=5\) 时）</li>
+        </ul>
+    </section>
+    
+    <!-- 内容翻译 -->
+    <section>
+        <h2>内容翻译</h2>
+        
+        <div class="original">OneRec Technical Report</div>
+        <div class="translation">OneRec技术报告</div>
+        
+        <div class="original">家常菜 / home-cooked dishes家常菜/ HomeCookedDished</div>
+        <div class="translation">家常菜 / 家庭烹饪菜肴</div>
+        
+        <div class="original">1501, *, *, *, *纯⼿⼯⾃制美⻝ / Handmade homemade food自制面食/ HomemadePasta</div>
+        <div class="translation">1501, *, *, *, *纯手工自制美食 / 手工自制食品 自制面食/ 自制意面</div>
+        
+        <div class="original">吃播 / Mukbang羊肉吃播/ LampMukbang</div>
+        <div class="translation">吃播 / 吃播 羊肉吃播/ 羊肉吃播</div>
+        
+        <div class="original">年夜饭第⼗四道菜 / The 14th dish of the New Year's Eve dinner虾仁豆腐/ Shrimp and Tofu</div>
+        <div class="translation">年夜饭第十四道菜 / 年夜饭第十四道菜 虾仁豆腐/ 虾仁豆腐</div>
+        
+        <div class="original">黏黏糊糊的爆辣芝⼠⽕鸡⾯ / Sticky and spicy cheese turkey noodles火鸡面/ TurkeyNoodles番茄⽕锅底料⼝感酸甜 / Tomato hot pot base has a sweet and sour taste火锅/ HotPot⾃制流汁⼤宽粉/ Homemade wide noodles with flowing sauce宽粉吃播/ WideNoodlesMukbang我是吃货，记录⽣活的点滴 / I’m a foodie刀削面吃播/ Knife-Cut NoodlesMukbang</div>
+        <div class="translation">黏黏糊糊的爆辣芝士火鸡面 / 粘稠辛辣的芝士火鸡面 火鸡面/ 火鸡面 番茄火锅底料口感酸甜 / 番茄火锅底料酸甜口感 火锅/ 火锅 自制流汁大宽粉/ 自制流汁宽粉 宽粉吃播/ 宽粉吃播 我是吃货，记录生活的点滴 / 我是吃货 刀削面吃播/ 刀削面吃播</div>
+        
+        <div class="original">美食 / Foods</div>
+        <div class="translation">美食 / 食物</div>
+        
+        <div class="original">爆辣⾦针菇和⽩象⽕鸡⾯/ the super spicy enoki mushrooms and Baixiangturkey noodles火鸡面吃播/ TurkeyNoodlesMukbang1501, 3656, *, *, *你们都喜欢怎么煮螺蛳粉呢？/ How do you like to cook snail noodles?螺蛳粉吃播/ SnailNoodlesMukbang我是吃货，记录⽣活的点滴 / I’m a foodie馒头吃播/ SteamedBunMukbang好久没吃⽶饭啦，这么吃还真挺⾹ / I haven't had rice for a long time, and it tastes good.米饭吃播/ RiceMukbang家常吃播 / Home-style Mukbang吃家常菜喜欢点赞关注 / If you enjoy home-cooked dishes, please like and follow.把⽑肚贡菜当⾯条吃！/ Eating omasum and tribute vegetables as noodles! 湖南的特产真的是这些吗？/ Are these really the specialties of Hunan?</div>
+        <div class="translation">爆辣金针菇和白象火鸡面/ 超级辣的金针菇和白象火鸡面 火鸡面吃播/ 火鸡面吃播 1501, 3656, *, *, *你们都喜欢怎么煮螺蛳粉呢？/ 你们喜欢怎么煮螺蛳粉？ 螺蛳粉吃播/ 螺蛳粉吃播 我是吃货，记录生活的点滴 / 我是吃货 馒头吃播/ 馒头吃播 好久没吃米饭啦，这么吃还真挺香 / 好久没吃米饭了，这样吃很香 米饭吃播/ 米饭吃播 家常吃播 / 家庭式吃播 吃家常菜喜欢点赞关注 / 喜欢家常菜请点赞关注 把毛肚贡菜当面条吃！/ 把毛肚和贡菜当面条吃！ 湖南的特产真的是这些吗？/ 这些真的是湖南特产吗？</div>
+        
+        <div class="original">家常吃播 / HomeStyleMukbang家常吃播 / HomeStyleMukbang毛肚吃播/ Omasum Mukbang湖南特产吃播/ SpecialtiesOfHunanMukbang</div>
+        <div class="translation">家常吃播 / 家庭式吃播 家常吃播 / 家庭式吃播 毛肚吃播/ 毛肚吃播 湖南特产吃播/ 湖南特产吃播</div>
+        
+        <div class="original">美食à吃播 / FoodsàMukbang</div>
+        <div class="translation">美食→吃播 / 食物→吃播</div>
+        
+        <div class="original">加臭加辣柳州螺蛳粉 / Liuzhou Luosifenwith extra stink and spice螺蛳粉吃播/ SnailNoodlesMukbang1501, 3656, 65, *, *麻酱⽶线 / Sesame Paste Rice Noodles米线吃播/ RiceNoodlesMukbang⼀起来嗦粉 / Let‘s enjoy some snail noodlestogether.螺蛳粉吃播/ SnailNoodlesMukbang双倍腐⽵加量酸笋！/ Double the dried beancurd!螺蛳粉吃播/ SnailNoodlesMukbang终于等到双⼗⼆热⼲⾯活动了/ The Double 12 Hot Dry Noodles promotion is here!热干面吃播 / HotDryNoodlesMukbang</div>
+        <div class="translation">加臭加辣柳州螺蛳粉 / 加臭加辣柳州螺蛳粉 螺蛳粉吃播/ 螺蛳粉吃播 1501, 3656, 65, *, *麻酱米线 / 麻酱米线 米线吃播/ 米线吃播 一起来嗦粉 / 一起来吃螺蛳粉 螺蛳粉吃播/ 螺蛳粉吃播 双倍腐竹加量酸笋！/ 双倍腐竹加量酸笋！ 螺蛳粉吃播/ 螺蛳粉吃播 终于等到双十二热干面活动了/ 双十二热干面促销来了！ 热干面吃播 / 热干面吃播</div>
+        
+        <div class="original">美食à吃播à面条 / Foods àMukbangàNoodles</div>
+        <div class="translation">美食→吃播→面条 / 食物→吃播→面条</div>
+        
+        <div class="figure">
+            Figure 17 | Cases of coarse-to-fine item semantic identifiers generated by RQ-Kmeans when \(L_t=5\).
+            <br>图17 | 当层级深度 \(L_t=5\) 时，由RQ-Kmeans算法生成的从粗到细的项目语义标识符案例。
+        </div>
+        
+        <div class="original">36</div>
+        <div class="translation">36</div>
+    </section>
+    
+    <!-- 摘要总结 -->
+    <section>
+        <h2>摘要总结</h2>
+        <p>本技术报告片段展示了<b class="term">OneRec</b>系统的视频内容标签体系：</p>
+        <ul>
+            <li>采用<b class="term">层级分类结构（Hierarchical Classification）</b>（如美食→吃播→面条）</li>
+            <li>包含丰富的<b class="term">吃播（Mukbang）</b>内容标签（螺蛳粉/火鸡面/热干面等）</li>
+            <li>使用<b class="term">语义标识符（Semantic Identifiers）</b>（如1501, 3656）和通配符(*)</li>
+            <li>通过<b class="term">RQ-Kmeans算法</b>实现从粗到细的语义标识符生成（图17）</li>
+            <li>突出<b class="term">多语言支持（Multilingual Support）</b>（系统化中英文标签对照）</li>
+        </ul>
+    </section>
+    
+    <!-- 术语识别 -->
+    <section>
+        <h2>术语识别</h2>
+        <ul>
+            <li><span class="term">吃播（Mukbang）</span>：一种网络直播形式，主播在镜头前大量进食并与观众互动，源自韩国（"muk-ja"吃饭 + "bang-song"直播）</li>
+            <li><span class="term">RQ-Kmeans算法</span>：改进的K-means聚类算法，支持递归量化（Recursive Quantization），用于生成层级化语义标识符</li>
+            <li><span class="term">语义标识符（Semantic Identifiers）</span>：如"1501, 3656"的数字编码，代表特定内容类别的机器可读标识</li>
+            <li><span class="term">层级深度 \(L_t\)</span

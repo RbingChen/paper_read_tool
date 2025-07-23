@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>OneRec技术报告分析</title>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    body { font-family: Arial, sans-serif; line-height: 1.6; max-width: 900px; margin: 0 auto; padding: 20px; }
+    h1, h2, h3 { color: #2c3e50; }
+    .section { margin-bottom: 30px; border-bottom: 1px solid #eee; padding-bottom: 20px; }
+    .original { background-color: #f0f0f0; border: 1px solid #cccccc; padding: 15px; margin-bottom: 5px; border-radius: 4px; }
+    .translation { background-color: #e0ffe0; border: 1px solid #4CAF50; padding: 15px; margin-bottom: 20px; border-radius: 4px; }
+    .figure { background-color: #fffde7; padding: 15px; margin: 15px 0; border-radius: 4px; text-align: center; font-style: italic; }
+    .term { color: red; font-weight: bold; }
+    .formula-container { text-align: center; margin: 20px 0; }
+    .formula { display: inline-block; padding: 10px; }
+    .formula-number { display: block; font-size: 0.9em; color: #666; }
+  </style>
+</head>
+<body>
+  <h1>OneRec技术报告分析</h1>
+  
+  <div class="section">
+    <h2>内容理解</h2>
+    <p>该文本展示了OneRec推荐系统的查询触发检索案例。核心是通过三种不同的表示类型（<span class="term">协同行为（CollaborativeBehaviors）</span>、<span class="term">多模态行为（MultimodalBehaviors）</span>和<span class="term">对齐协同感知多模态行为（Aligned Collaborative-Aware Multimodal Behaviors）</span>），从用户历史中检索与查询相关的视频。查询示例为生活妙招和美食主题，系统根据<span class="term">协同相似性（collaborative similarity）</span>和<span class="term">视觉相似性（visual similarity）</span>返回匹配结果（如开瓶技巧、米酒制作等），最终通过Figure 16可视化展示。</p>
+  </div>
+  
+  <div class="section">
+    <h2>内容翻译</h2>
+    <div class="original">OneRec Technical Report</div>
+    <div class="translation">OneRec技术报告</div>
+    
+    <div class="original">不⽤开瓶器，就能把啤酒瓶塞拿出来 / Remove the cork without a corkscrew 啤酒开瓶妙招 / BearOpeningHacks</div>
+    <div class="translation">不用开瓶器就能取出啤酒瓶塞 / 不用开瓶器取出软木塞 啤酒开瓶妙招 / 啤酒开瓶技巧</div>
+    
+    <div class="original">生活妙招 / LifeHacks</div>
+    <div class="translation">生活妙招 / 生活技巧</div>
+    
+    <div class="original">Query</div>
+    <div class="translation">查询</div>
+    
+    <div class="original">今晚吃⽔煮菜/ We're having boiled vegetables tonight. 水煮菜 / BoiledVegetables ⼀百多的⽉饼 / 100 yuan for mooncakes 月饼 / Moocakes 吃播 / Mukbang 龙虾 / Lobster</div>
+    <div class="translation">今晚吃水煮菜/ 今晚我们吃水煮蔬菜 水煮菜 / 水煮蔬菜 一百多的月饼 / 100元买月饼 月饼 / 月饼 吃播 / 吃播 龙虾 / 龙虾</div>
+    
+    <div class="original">美食 / Foods</div>
+    <div class="translation">美食 / 食物</div>
+    
+    <div class="original">CollaborativeBehaviors with collaborative similarity to the query</div>
+    <div class="translation">具有与查询<span class="term">协同相似性（collaborative similarity）</span>的<span class="term">协同行为（CollaborativeBehaviors）</span></div>
+    
+    <div class="original">只有⽔，糯⽶和酒曲的⽶酒/ Rice wine made with just water, glutinous rice, and koji starter 米酒/ RiceWine 喝中国劲酒 / Enjoy Chinese Jinjiu 中国劲酒/ ChineseJinjiu 五粮液⼩酒破价/ Wuliangye mini bottles hit rock-bottom price 五粮液/ Wuliangye</div>
+    <div class="translation">只有水、糯米和酒曲的米酒/ 只用清水、糯米和酒曲酿造的米酒 米酒/ 米酒 喝中国劲酒 / 享用中国劲酒 中国劲酒/ 中国劲酒 五粮液小酒破价/ 五粮液小瓶酒降至底价 五粮液/ 五粮液</div>
+    
+    <div class="original">酒/ Wine</div>
+    <div class="translation">酒/ 酒类</div>
+    
+    <div class="original">MultimodalBehaviors with visual similarity to the query</div>
+    <div class="translation">具有与查询<span class="term">视觉相似性（visual similarity）</span>的<span class="term">多模态行为（MultimodalBehaviors）</span></div>
+    
+    <div class="original">绳⼦这么短也能挂上钥匙扣 / Short cords can attach to keychains 打结妙招 / KnottingHacks 这些⽅法真的好使吗？/ Do these methods really work? 妙招测评 / HacksReviews 防困⼩妙招 / Anti-sleep hacks 防困妙招 / Anti-SleepHacks</div>
+    <div class="translation">绳子这么短也能挂上钥匙扣 / 短绳也能连接到钥匙扣 打结妙招 / 打结技巧 这些方法真的好使吗？/ 这些方法真的有效吗？ 妙招测评 / 技巧评测 防困小妙招 / 防困技巧 防困妙招 / 防困技巧</div>
+    
+    <div class="original">生活妙招 / LifeHacks</div>
+    <div class="translation">生活妙招 / 生活技巧</div>
+    
+    <div class="original">Aligned Collaborative-Aware Multimodal Behaviors with both collaborative & visual similarity to the query</div>
+    <div class="translation">具有与查询<span class="term">协同和视觉相似性（collaborative & visual similarity）</span>的<span class="term">对齐协同感知多模态行为（Aligned Collaborative-Aware Multimodal Behaviors）</span></div>
+    
+    <div class="figure">
+      <div class="original">Figure 16 | Cases of top-ranked videos

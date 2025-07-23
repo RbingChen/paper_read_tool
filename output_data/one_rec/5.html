@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<style>
+  body { font-family: Arial, sans-serif; line-height: 1.6; }
+  .original { background-color: #f0f0f0; border: 1px solid #cccccc; padding: 15px; margin-bottom: 10px; }
+  .translation { background-color: #e0ffe0; border: 1px solid #00cc00; padding: 15px; margin-bottom: 20px; }
+  .figure { background-color: #ffffcc; padding: 15px; margin: 20px 0; }
+  .formula-container { text-align: center; margin: 20px 0; }
+  .formula-number { display: block; text-align: right; font-style: italic; margin-top: 5px; }
+  .term { color: red; font-weight: bold; }
+  h2 { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 5px; }
+  h3 { color: #2980b9; }
+  dt { font-weight: bold; margin-top: 10px; }
+</style>
+</head>
+<body>
+
+<h2>内容理解</h2>
+<div>
+  <p>该技术报告介绍了<strong class="term">OneRec</strong>推荐系统中的多模态表示学习框架。核心是通过<strong class="term">QFormer</strong>压缩多模态特征，并利用<strong class="term">协同过滤</strong>构建项目对数据集。系统整合视频的<strong class="term">标题（Caption）</strong>、<strong class="term">标签（Tag）</strong>、<strong class="term">OCR</strong>、<strong class="term">ASR</strong>、封面和帧信息，通过<strong class="term">miniCPM-V-8B</strong>生成初始表示，再经<strong class="term">QFormer</strong>压缩为低维向量。训练采用双目标：1) <strong class="term">项目间对比损失（Item-to-Item Loss）</strong>对齐相似项目；2) <strong class="term">标题生成损失（Caption Loss）</strong>防止模型幻觉。最终通过<strong class="term">RQ-Kmeans</strong>将表示离散化为语义ID。</p>
+</div>
+
+<h2>内容翻译</h2>
+
+<h3>报告标题</h3>
+<div class="original">OneRec Technical Report</div>
+<div class="translation">OneRec技术报告</div>
+
+<h3>图3说明</h3>
+<div class="original figure">
+  Figure 3|Illustration of our tokenizer implementation. We first align multimodal representations of item pairs with high collaborative similarity to obtain collaborative multimodal representations, then tokenize these representations into discrete semantic IDs using RQ-Kmeans.
+  <br><br>
+  Caption + Tag + OCR + ASR#extremesports#skiing Skiing Showcase miniCPM-V-8B…QFormerLLaMA3<br>
+  ×𝑁!<br>
+  miniCPM-V-8B…QFormerLLaMA3<br>
+  Caption + Tag + OCR + ASR#skiing #extremesports#snowboarding<br>
+  Item Pairs 𝒟! 1 Cover + 5 Frames1 Cover + 5 Frames<br>
+  K / VK / VQQ×𝑁!-=Codebook 1Codebook 2Codebook 3-=-=Item semantic identifiers (3, 4, 1)centroidK-means Clustering𝑵! query tokens 𝐐𝒊<br>
+  𝑵! query tokens 𝐐𝒊𝒄$$𝒄%$𝒄&$𝒄'$Nearest Code Search<br>
+  Nearest Code SearchNearest Code Search𝒄$%𝒄%%𝒄&%𝒄'%𝒄$&𝒄%&𝒄&&𝒄'&<br>
+  𝒄##𝒄$#𝒄%#𝒄&#<br>
+  𝒄$%𝒄#%𝒄%%𝒄&%compressed tokens &𝐌compressed tokens &𝐌<br>
+  𝒄&&𝒄#&𝒄%&𝒄$&<br>
+  ℒ!&'_)*'ℒ!&'_)*'ℒ+,+𝐌𝐌
+</div>
+<div class="translation figure">
+  图3|我们的分词器实现示意图。首先对齐具有高协同相似性的项目对的多模态表示以获得协同多模态表示，然后使用RQ-Kmeans将这些表示标记为离散语义ID。<br><br>
+  标题 + 标签 + OCR + ASR#极限运动#滑雪 滑雪展示 miniCPM-V-8B…QFormerLLaMA3<br>
+  ×𝑁!<br>
+  miniCPM-V-8B…QFormerLLaMA3<br>
+  标题 + 标签 + OCR + ASR#滑雪 #极限运动#滑雪板<br>
+  项目对 𝒟! 1封面+5帧 1封面+5帧<br>
+  K/V K/V Q Q×𝑁! -=码本1 码本2 码本3 -= -=项目语义标识符(3,4,1)质心K均值聚类𝑵!查询令牌𝐐𝒊<br>
+  𝑵!查询令牌𝐐𝒊 𝒄$$𝒄%$𝒄&$𝒄'$最近码搜索<br>
+  最近码搜索 最近码搜索 𝒄$%𝒄%%𝒄&%𝒄'%𝒄$&𝒄%&𝒄&&𝒄'&<br>
+  𝒄##𝒄$#𝒄%#𝒄&#<br>
+  𝒄$%𝒄#%𝒄%%𝒄&%压缩令牌&𝐌压缩令牌&𝐌<br>
+  𝒄&&𝒄#&𝒄%&𝒄$&<br>
+  ℒ!&'_)*'ℒ!&'_)*'ℒ+,+𝐌𝐌
+</div>
+
+<h3>多模态表示</h3>
+<div class="original">
+  •Multimodal Representations. We incorporate multimodal inputs for each video: the caption, tag, ASR (speech-to-text), OCR (image-to-text), the cover image, and 5 uniformly sampled frames. These inputs are processed using miniCPM-V-8B (Hu et al., 2024), generating \(N_M=1280\) token vectors \(\mathbf{M} \in \mathbb{R}^{N_M \times d_t}\) (\(d_t=512\)). A Querying Transformer (QFormer) (Li et al., 2023) then compresses these tokens with \(\tilde{N}_M=4\) learnable query tokens \(\mathbf{Q}^{(1)} \in \mathbb{R}^{\tilde{N}_M \times d_t}\):
+  \[\mathbf{Q}^{(i+1)} = \text{CrossAttn}\left( \mathbf{Q}^{(i)}, \mathbf{M}, \mathbf{M} \right),\quad (1)\]
+  \[\mathbf{Q}^{(i+1)} = \text{FFN}\left( \text{RMSNorm}\left( \mathbf{Q}^{(i+1)} \right) \right), \quad \text{for } i \in \{1,2,...,N_c\},\quad (2)\]
+  where \(\tilde{\mathbf{M}} = \mathbf{Q}^{(N_c+1)} \in \mathbb{R}^{\tilde{N}_M \times d_t}\) denotes the compressed version of \(\mathbf{M}\), and \(N_c=4\) denotes the number of QFormer layers.
+</div>
+<div class="translation">
+  •多模态表示。我们整合每个视频的多模态输入：标题、标签、ASR（语音

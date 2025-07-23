@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Algorithm Expert Analysis</title>
+  <style>
+    body { font-family: Arial, sans-serif; line-height: 1.6; margin: 20px; }
+    .section { margin-bottom: 30px; padding: 15px; border-radius: 5px; background-color: #f9f9f9; border: 1px solid #ddd; }
+    .section-title { font-size: 20px; font-weight: bold; color: #333; margin-bottom: 15px; padding-bottom: 5px; border-bottom: 2px solid #007bff; }
+    .original { background-color: #f0f0f0; border: 1px solid #ccc; padding: 15px; margin: 10px 0; border-radius: 5px; }
+    .translation { background-color: #e0ffe0; border: 1px solid #00cc00; padding: 15px; margin: 10px 0; border-radius: 5px; }
+    .figure { background-color: #ffffcc; padding: 15px; margin: 15px 0; border-radius: 5px; text-align: center; font-style: italic; }
+    .term { color: red; font-weight: bold; }
+    .formula { text-align: center; margin: 15px 0; padding: 10px; }
+    .formula-number { display: block; font-size: 0.9em; margin-top: 5px; }
+    ul { list-style-type: none; padding-left: 0; }
+    li { margin-bottom: 10px; padding: 8px; background-color: #f8f9fa; border-left: 3px solid #007bff; }
+  </style>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <h1 style="text-align: center; color: #0056b3;">Algorithm Expert Analysis Report</h1>
+
+  <div class="section">
+    <div class="section-title">Content Understanding</div>
+    <p>This text presents an evaluation of the <strong class="term">WebSailor</strong> large language model (LLM) across multiple benchmarks, focusing on its performance in question-answering tasks. Key aspects include:</p>
+    <ul>
+      <li><strong>Context</strong>: The model is assessed on tasks of varying difficulty, from simple (level-1) to complex (level-2/3), using benchmarks like <strong class="term">SimpleQA</strong> and <strong class="term">BrowseComp-en/zh</strong>. The text compares <strong class="term">WebSailor</strong> against other models (e.g., <strong class="term">WebDancer</strong>, <strong class="term">DeepSeek</strong>, <strong class="term">Qwen</strong>) and methods (e.g., direct answering vs. agent-based approaches).</li>
+      <li><strong>Core Findings</strong>: <strong class="term">WebSailor</strong> outperforms competitors on the <strong class="term">SimpleQA benchmark</strong> (Figure 4), demonstrating high compatibility even on simpler tasks. Reinforcement Learning (<strong class="term">RL</strong>) training significantly boosts performance metrics like <strong class="term">Pass@1</strong> and <strong class="term">Pass@3</strong>, particularly in complex benchmarks such as <strong class="term">BrowseComp</strong> (Figure 5). The analysis highlights that <strong class="term">RL</strong> reduces the gap between <strong class="term">Pass@1</strong> and <strong class="term">Pass@3</strong>, indicating improved stability in handling intricate trajectories.</li>
+      <li><strong>Methodology</strong>: Evaluations involve sampling subsets (e.g., 200 QA pairs from <strong class="term">SimpleQA</strong>'s 4,326 pairs) for efficiency. Metrics emphasize correctness and task-solving efficiency, with visualizations (Figures 4 and 5) quantifying results.</li>
+      <li><strong>Purpose</strong>: The text aims to validate <strong class="term">WebSailor</strong>'s robustness across task difficulties and showcase the efficacy of <strong class="term">RL</strong> training in enhancing agent-based methods for LLMs.</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Content Translation</div>
+    
+    <div class="figure">
+      <p><strong>Figure 4 Data Reference:</strong> WebSsailor-72BwebSailor-32B WebDancer-QwQWebDancer-32BWebThinker-rl DeepSeek-R1-ReActr1-searcher-7bGPT-4.1 GPT-4o DeepSeek-R1o4-mini Qwen-2.5-72BQwQ-32B Qwen-2.5-32B020406080100Pass@1 (%)93.5 92.890.587.5 77.572.2 52.0 41.638.2 27.8 20.015.812.79.0</p>
+    </div>
+    <div class="original">
+      <p>Figure 4: Performance on the SimpleQA benchmark. can ensure the correctness of the conditions relative to the answer, i.e., the answer always satisfies the constraints specified in the question.</p>
+    </div>
+    <div class="translation">
+      <p>图 4：SimpleQA 基准测试上的性能。可以确保条件相对于答案的正确性，即答案始终满足问题中指定的约束。</p>
+    </div>
+    
+    <div class="original">
+      <p>Compatibility with simple tasks <strong class="term">WebSailor</strong> is trained exclusively on high-difficulty data, while <strong class="term">BrowseComp-en/zh</strong>, <strong class="term">GAIA</strong>, and <strong class="term">Xbench</strong> can all be considered as level-2 or level-3 tasks according to our definition. To verify whether <strong class="term">WebSailor</strong> still performs strongly on simpler level-1 tasks, we evaluate its performance on a subset of <strong class="term">SimpleQA benchmark</strong> (Wei et al., 2024). The complete <strong class="term">SimpleQA</strong> dataset contains 4,326 QA pairs. Since testing on the entire set would be too time-consuming, we randomly sample 200 QA pairs for evaluation. This benchmark is characterized by high correctness and fact-based questions with simple conditions, and it is challenging for frontier LLMs to answer directly. The results, as shown in Figure 4, indicate that almost all agent-based methods outperform direct answering. <strong class="term">WebSailor</strong> surpasses all other methods, demonstrating its compatibility and effectiveness even on simpler tasks.</p>
+    </div>
+    <div class="translation">
+      <p>与简单任务的兼容性：<strong class="term">WebSailor</strong> 仅在高难度数据上训练，而根据我们的定义，<strong class="term">BrowseComp-en/zh</strong>、<strong class="term">GAIA</strong> 和 <strong class="term">Xbench</strong> 均可视为 level-2 或 level-3 任务。为验证 <strong class="term">WebSailor</strong> 在更简单的 level-1 任务上是否仍表现强劲，我们在 <strong class="term">SimpleQA 基准测试</strong>（Wei 等人，2024）的子集上评估其性能。完整的 <strong class="term">SimpleQA</strong> 数据集包含 4,326 个问答对。由于在整个数据集上测试过于耗时，我们随机抽样 200 个问答对进行评估。该基准测试以高正确性和基于事实的简单条件问题为特点，前沿大语言模型（LLMs）难以直接回答。结果如图 4 所示，表明几乎所有基于代理的方法都优于直接回答。<strong class="term">WebSailor</strong> 超越所有其他方法，证明其在更简单任务上的兼容性和有效性。</p>
+    </div>
+    
+    <div class="figure">
+      <p><strong>Figure 5 Data Reference:</strong> 32B-P@1 32B-P@3 72B-P@1 72B-P@3 32B-P@1 32B-P@3 72B-P@1 72B-P@3 32B-P@1 32B-P@3 72B-P@1 72B-P@3 32B-P@1 32B-P@3 72B-P@1 72B-P@30204060Accuracy (%) +3.3+2.2 +3.7+3.4 BrowseComp-en+6.3+6.5 +8.3+4.9 BrowseComp-zh+6.6+4.7 +3.0+3.6 GAIA+7.6+8.0 +3.7+2.0 XBenchRFT RL</p>
+    </div>
+    <div class="original">
+      <p>Figure 5: Detailed evaluation results using <strong class="term">Pass@1</strong>, <strong class="term">Pass@3</strong>. <strong class="term">Pass@1</strong> vs <strong class="term">Pass@3</strong> We analyze the impact of our <strong class="term">RL</strong> training by comparing the <strong class="term">Pass@1</strong> and <strong class="term">Pass@3</strong> performance of <strong class="term">WebSailor</strong> before and after the <strong class="term">RL</strong> stage (Fig. 5). The results reveal that <strong class="term">RL</strong> brings notable improvements across all benchmarks, with the most significant gains observed on the highly difficult <strong class="term">BrowseComp-en/zh</strong> tasks. This disparity is telling: the extreme complexity of <strong class="term">BrowseComp</strong> requires agents to generate exceptionally long and intricate trajectories, making stable, repeatable success challenging (Sun et al., 2025). This instability is evident in the wide initial gap between <strong class="term">Pass@1</strong> and <strong class="term">Pass@3</strong> scores for <strong class="term">BrowseComp</strong>. <strong class="term">RL</strong> training directly addresses this issue by reinforcing successful</p>
+    </div>
+    <div class="translation">
+      <p>图 5：使用 <strong class="term">Pass@1</strong> 和 <strong class="term">Pass@3</strong> 的详细评估结果。<strong class="term">Pass@1</strong> 与 <strong class="term">Pass@3</strong> 对比：我们通过比较 <strong class="term">WebSailor</strong> 在 <strong class="term">RL</strong> 阶段前后的 <strong class="term">Pass@1</strong> 和 <strong class="term">Pass@3</strong> 性能来分析 <strong class="term">RL</strong> 训练的影响（图 5）。结果表明，<strong class="term">RL</strong> 在所有基准测试上带来显著改进，在高难度的 <strong class="term">BrowseComp-en/zh</strong> 任务上增益最为明显。这种差异说明：<strong class="term">BrowseComp</strong> 的极端复杂性要求代理生成异常长且复杂的轨迹，使得稳定、可重复的成功具有挑战性（Sun 等人，2025）。这种不稳定性在 <strong class="term">BrowseComp</strong> 的 <strong class="term">Pass@1</strong> 和 <strong class="term">Pass@3</strong> 分数初始大差距中显而易见。<strong class="term">RL</strong> 训练通过强化成功（轨迹）直接解决此问题。</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Summary</div>
+    <p>该文本摘要总结了 <strong class="term">WebSailor</strong> 大型语言模型在多个基准测试上的评估核心内容：</p>
+    <ul>
+      <li><strong class="term">WebSailor</strong> 在 <strong class="term">SimpleQA 基准测试</strong>（包含简单 level-1 任务）上表现卓越，优于其他基于代理的方法和直接回答方法，证明其在简单任务上的兼容性和有效性（Figure 4）。</li>
+      <li>在更复杂的基准测试（如 <strong class="term">BrowseComp-en/zh</strong>、<strong class="term">GAIA</strong> 和 <strong class="term">XBench</strong>）上，<strong class="term">强化学习（RL）</strong>训练显著提升了性能指标 <strong class="term">Pass@1</strong> 和 <strong class="term">Pass@3</strong>，尤其在 <strong class="term">BrowseComp</strong> 上增益最大（Figure 5）。</li>
+      <li><strong class="term">RL</strong> 训练减少了 <strong class="term">Pass@1</strong> 和 <strong class="term">Pass@3</strong> 之间的差距，表明模型在处理复杂轨迹时的稳定性增强，解决了初始不稳定性问题。</li>
+      <li>评估方法包括数据抽样（如从 4,326 个 <strong class="term">SimpleQA</strong> 对中随机选取 200 个），强调高效性和指标驱动分析。</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Terminology Identification</div>
+    <ul>
+      <li><strong class="term">WebSailor</strong> (WebSailor): 一个大型语言模型（LLM），在文本中被评估其在各种任务上的性能。它通过高难度数据训练，并在基准测试中展示出优越性。</li>
+      <li><strong class="term">SimpleQA benchmark</strong> (SimpleQA benchmark): 一个问答数据集，包含 4,326 个问答对，用于评估模型在简单条件问题上的性能。特点包括高正确性、基于事实的问题，常用于测试前沿 LLMs 的直接回答能力。</li>
+      <li><strong class="term">Pass@1</strong> (Pass@1): 评估指标，表示模型在第一次尝试中正确解决任务的百分比。它衡量即时准确性和效率，值越高表示性能越好（例如，93.5% 表示高成功率）。</li>
+      <li><strong class="term">Pass@3</strong> (Pass@3): 评估指标，表示模型在前三次尝试中至少有一次正确解决任务的百分比。它反映鲁棒性和容错能力，通常用于复杂任务以减少随机性影响。</li>
+      <li><strong class="term">RL (Reinforcement Learning)</strong> (RL): 强化学习，一种机器学习训练方法，通过奖励成功行为来优化模型。在文本中，RL 训练显著提升 <strong class="term">WebSailor</strong> 的性能，尤其在减少 <strong class="term">Pass@1</strong> 和 <strong class="term">Pass@3</strong> 差距上效果突出。</li>
+      <li><strong class="term">BrowseComp-en/zh</strong> (BrowseComp-en/zh): 基准测试，针对英语（en）和中文（zh）的浏览与理解任务，被分类为高难度（level-2 或 level-3）。其复杂性要求模型生成长轨迹，导致 <strong class="term">Pass@1</strong> 和 <strong class="term">Pass@3</strong> 分数初始差距大。</li>
+      <li><strong class="term">GAIA</strong> (GAIA): 一个基准测试，用于评估 AI 系统的推理和问题解决能力，通常涉及多步任务，属于 level-2 或 level-3 难度。</li>
+      <li><strong class="term">XBench</strong> (XBench): 另一个基准测试，可能用于跨领域评估，同样被归类为较难任务（level-2 或 level-3），在文本中与 <strong class="term">RL</strong> 训练效果对比。</li>
+      <li><strong class="term">Agent-based methods</strong> (Agent-based methods): 基于代理的方法，模型通过模拟代理行为（如多步推理）来解决问题。在文本中，这些方法在 <strong class="term">SimpleQA</strong> 上优于直接回答。</li>
+    </ul>
+  </div>
+</body>
+</html>

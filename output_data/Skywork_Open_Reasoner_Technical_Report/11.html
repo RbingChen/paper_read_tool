@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>算法专家解读报告</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; }
+        .section { margin-bottom: 30px; }
+        h2 { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 5px; }
+        .original { 
+            background-color: #f8f9fa; 
+            border: 1px solid #ced4da; 
+            padding: 15px; 
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+        .translation { 
+            background-color: #e8f5e9; 
+            border: 1px solid #c8e6c9; 
+            padding: 15px;
+            border-radius: 5px;
+        }
+        .formula-container { 
+            background-color: #fffde7; 
+            padding: 15px; 
+            margin: 15px 0; 
+            text-align: center;
+            border-radius: 5px;
+        }
+        .term { color: red; font-weight: bold; }
+        .formula-label { display: block; font-style: italic; margin-top: 5px; }
+    </style>
+</head>
+<body>
+    <h1>算法专家解读报告</h1>
+    
+    <!-- 内容理解 -->
+    <div class="section">
+        <h2>内容理解</h2>
+        <p>本文分析了强化学习训练中响应截断对模型精度的影响：</p>
+        <ol>
+            <li>在Math-7B模型训练中，设置上下文长度T=8K导致约40%响应被截断，截断响应因缺失最终答案获得0奖励</li>
+            <li>训练初期（0-100步），非截断样本精度急剧下降，整体精度提升主要源于截断率降低</li>
+            <li>从理论视角证明：目标函数J(π)可分解为<span class="term">非截断概率</span>和<span class="term">非截断精度</span>的乘积</li>
+            <li>提出<span class="term">优势掩码策略</span>，引导模型优先优化上下文长度内的响应质量而非单纯缩短响应</li>
+            <li>通过消融实验验证不同掩码策略对噪声训练信号的抑制效果</li>
+        </ol>
+    </div>
+    
+    <!-- 内容翻译 -->
+    <div class="section">
+        <h2>内容翻译</h2>
+        
+        <div class="original">
+            <p>Math-7B, we set the context length to T= 8K, and approximately 40% of responses were truncated at the initial steps. Although overall training accuracy continued to increase during RL training, we observed that the accuracy of non-truncated samples initially declined sharply within the first 100 training steps before showing a slight upward trend. See Figure 6 for details. A <span class="term">truncated response</span> typically receives an <span class="term">accuracy reward</span> of 0 because the final answer is missing due to truncation, even if it would be correct if fully generated. Therefore, reducing the number of truncated responses improves achievable accuracy. Figure 6 shows that the initial increase in training accuracy (steps 0-100) is primarily due to a sharp decrease in the clip ratio. After step 100, the algorithm begins to improve accuracy for non-truncated responses as well.</p>
+        </div>
+        <div class="translation">
+            <p>在Math-7B模型中，我们将上下文长度设置为T=8K，初始阶段约有40%的响应被截断。尽管强化学习训练期间整体训练精度持续提升，但我们观察到非截断样本的精度在前100个训练步内急剧下降，之后才呈现小幅上升趋势（详见图6）。<span class="term">截断响应</span>（truncated response）通常获得0<span class="term">准确率奖励</span>（accuracy reward），因为截断导致最终答案缺失，即使完整生成本应正确。因此，减少截断响应数量可提升可达精度。图6显示，训练精度初期提升（0-100步）主要源于截断率的急剧下降。100步后，算法开始提升非截断响应的精度。</p>
+        </div>
+        
+        <div class="original">
+            <p>A Brief Explanation from a Theoretical Perspective. We now use mathematical language to clarify this phenomenon further in a formal way. Recall the <span class="term">objective</span> of RL training in (2.1),</p>
+            <div class="formula-container">
+                \\[ \\pi^{*} \\in \\arg\\max_{\\pi} \\{ J(\\pi) := \\mathbb{E}_{x\\sim D} \\mathbb{E}_{y\\sim \\pi(\\cdot|x)} [r(x, y)] \\} \\]
+                <span class="formula-label">公式2.1：强化学习目标函数</span>
+            </div>
+            <p>where \( x \) is the prompt, \( D \) is the distribution of prompts, \( y \) is the response sampled from actor \( \\pi \), \( r(x, y) \\in \\{0,1\\} \) is the binary accuracy reward. Note that the response \( y \) is sampled under the context length \( T \). For these truncated responses whose lengths are greater than \( T \), i.e. \( |y| > T \), the accuracy reward is \( r(x, y) = 0 \) since the outcome can not be derived from the response. Based on this observation, one can easily shows that the <span class="term">objective function</span> \( J(\\pi) \) satisfies</p>
+            <div class="formula-container">
+                \\[ J(\\pi) = \\mathbb{E}_{x\\sim D} \\mathbb{E}_{y\\sim \\pi(\\cdot|x)} [r(x, y)] = \\mathbb{E}_{x\\sim D} \\mathbb{E}_{y\\sim \\pi(\\cdot|x)} [r(x, y) \\mathbb{I}\\{|y| \\leq T\\}] \\]
+                \\[ = \\mathbb{E}_{x\\sim D} \\left[ p^{\\pi}_{\\text{non-trunc}}(x) \\mathbb{E}_{y\\sim \\pi(\\cdot|x)} \\left[ \\frac{\\mathbb{I}\\{|y| \\leq T\\}}{p^{\\pi}_{\\text{non-trunc}}(x)} r(x, y) \\right] \\right] \\]
+                \\[ = \\mathbb{E}_{x\\sim D} \\left[ p^{\\pi}_{\\text{non-trunc}}(x) \\mathbb{E}_{y\\sim \\hat{\\pi}_T(\\cdot|x)} [r(x, y)] \\right] \\]
+                \\[ = \\mathbb{E}_{x\\sim D} \\left[ p^{\\pi}_{\\text{non-trunc}}(x) \\bar{r}^{\\pi}_{\\text{non-trunc}}(x) \\right] \\]
+                <span class="formula-label">目标函数分解定理</span>
+            </div>
+            <p>where \( p^{\\pi}_{\\text{non-trunc}}(x) := \\mathbb{P}_{y\\sim \\pi(\\cdot|x)}(|y| \\leq T) \) is the probability that a response \( y \) is not truncated by the limit of context length \( T \) (we assume \( p^{\\pi}_{\\text{non-trunc}}(x) > 0 \) for simplicity), \( \\bar{r}^{\\pi}_{\\text{non-trunc}}(x) := \\mathbb{E}_{y\\sim \\hat{\\pi}_T(\\cdot|x)} [r(x, y)] \) is the accuracy of the non-truncated responses output by policy \( \\pi \) and \( \\hat{\\pi}_T(y|x) := \\frac{\\pi(y|x)}{p^{\\pi}_{\\text{non-trunc}}(x)} \\mathbb{I}\\{|y| \\leq T\\} \). This implies that the accuracy on training distribution, i.e. \( J(\\pi) \), can be increased by:</p>
+            <ul>
+                <li>increasing \( p^{\\pi}_{\\text{non-trunc}}(x) \), which means the number of the responses that receive accuracy reward of 0 erroneously decreases.</li>
+                <li>increasing \( r^{\\pi}_{\\text{non-trunc}}(x) \), which means the response quality within the context length will be improved.</li>
+            </ul>
+        </div>
+        <div class="translation">
+            <p><strong>理论视角的简要解释</strong>。现用数学语言形式化解释该现象。回顾(2.1)中强化学习的<span class="term">目标函数</span>（objective）：</p>
+            <div class="formula-container">
+                \\[ \\pi^{*} \\in \\arg\\max_{\\pi} \\{ J(\\pi) := \\mathbb{E}_{x\\sim D} \\mathbb{E}_{y\\sim \\pi(\\cdot|x)} [r(x, y)] \\} \\]
+                <span class="formula-label">公式2.1：强化学习目标函数</span>
+            </div>
+            <p>其中\( x \)为提示词，\( D \)为提示词分布，\( y \)为从策略\( \\pi \)采样的响应，\( r(x, y) \\in \\{0,1\\} \)为二元<span class="term">准确率奖励</span>。响应\( y \)在上下文长度\( T \)限制下采样。对于长度超过\( T \)的截断响应（即\( |y| > T \)），由于无法从响应导出结果，其奖励\( r(x, y) = 0 \)。由此可推导<span class="term">目标函数</span>（objective function）\( J(\\pi) \)满足：</p>
+            <div class="formula-container">
+                \\[ J(\\pi) = \\mathbb{E}_{x\\sim D} \\mathbb{E}_{y\\sim \\pi(\\cdot|x)} [r(x, y)] = \\mathbb{E}_{x\\sim D} \\mathbb{E}_{y\\sim \\pi(\\cdot|x)} [r(x, y) \\mathbb{I}\\{|y| \\leq T\\}] \\]
+                \\[ = \\mathbb{E}_{x\\sim D} \\left[ p^{\\pi}_{\\text{non-trunc}}(x) \\mathbb{E}_{y\\sim \\pi(\\cdot|x)} \\left[ \\frac{\\mathbb{I}\\{|y| \\leq T\\}}{p^{\\pi}_{\\text{non-trunc}}(x)} r(x, y) \\right] \\right] \\]
+                \\[ = \\mathbb{E}_{x\\sim D} \\left[ p^{\\pi}_{\\text{non-trunc}}(x) \\mathbb{E}_{y\\sim \\hat{\\pi}_T(\\cdot|x)} [r(x, y)] \\right] \\]
+                \\[ = \\mathbb{E}_{x\\sim D} \\left[ p^{\\pi}_{\\text{non-trunc}}(x) \\bar{r}^{\\pi}_{\\text{non-trunc}}(x) \\right] \\]
+                <span class="formula-label">目标函数分解定理</span>
+            </div>
+            <p>其中\( p^{\\pi}_{\\text{non-trunc}}(x) := \\mathbb{P}_{y\\sim \\pi(\\cdot|x)}(|y| \\leq T) \)表示响应未被\( T \)截断的概率（简设\( p^{\\pi}_{\\text{non-trunc}}(x) > 0 \)），\( \\bar{r}^{\\pi}_{\\text{non-trunc}}(x) := \\mathbb{E}_{y\\sim \\hat{\\pi}_T(\\cdot|x)} [r(x, y)] \)是策略\( \\pi \)输出的非截断响应精度，且\( \\hat{\\pi}_T(y|x) := \\frac{\\pi(y|x)}{p^{\\pi}_{\\text{non-trunc}}(x)} \\mathbb{I}\\{|y| \\leq T\\} \)。这表明训练分布上的精度\( J(\\pi) \)可通过以下方式提升：</p>
+            <ul>
+                <li>增大\( p^{\\pi}_{\\text{non-trunc}}(x) \)：错误获得0奖励的响应数量减少</li>
+                <li>增大\( r^{\\pi}_{\\text{non-trunc}}(x) \)：上下文长度内的响应质量提升</li>
+            </ul>
+        </div>
+        
+        <div class="original">
+            <p><span class="term">Advantage Mask</span> for Truncated Responses. To encourage the algorithm to focus on optimizing accuracy within the context length – i.e., increasing \( r^{\\pi}_{\\text{non-trunc}}(x) \) – rather than merely shortening responses to avoid erroneously receiving a zero accuracy reward – i.e., increasing \( p^{\\pi}_{\\text{non-trunc}}(x) \) – we explored various <span class="term">advantage mask</span> strategies. These strategies were designed to mitigate the impact of noisy training signals introduced by truncated samples. We conducted ablation experiments using DeepSeek-R1-Distill-Qwen-7B in Stage I to evaluate the effects of different advantage mask strategies.</p>
+        </div>
+        <div class="translation">
+            <p><span class="term">截断响应的优势掩码</span>（Advantage Mask）。为使算法优先优化上下文长度内的精度（即提升\( r^{\\pi}_{\\text{non-trunc}}(x) \)），而非仅通过缩短响应避免错误获得0奖励（即提升\( p^{\\pi}_{\\text{non-trunc}}(x) \)），我们探索了多种<span class="term">优势掩码策略</span>（advantage mask）。这些策略旨在减轻截断样本引入的噪声训练信号影响。我们在第一阶段使用DeepSeek-R1-Distill-Qwen-7B进行消融实验，评估不同掩码策略的效果。</p>
+        </div>
+    </div>
+    
+    <!-- 摘要总结 -->
+    <div class="section">
+        <h2>摘要总结</h2>
+        <p>本文核心内容聚焦于强化学习训练中响应截断对模型精度的影响机制及优化策略：</p>
+        <ul>
+            <li><strong>问题发现</strong>：当上下文长度T=8K时，40%响应被截断导致奖励归零，造成非截断样本精度在前100步反常下降</li>
+            <li><strong>理论建模</strong>：通过目标函数分解证明整体精度J(π) = E[ p<sub>non-trunc</sub><sup>π</sup>(x) · r̄<sub>non-trunc</sub><sup>π</sup>(x) ]，揭示精度受非截断概率和响应质量共同影响</li>
+            <li><strong>关键矛盾</strong>：模型可能通过缩短响应提升p<sub>non-trunc</sub><sup>π</sup>(x)而牺牲r̄<sub>non-trunc</sub><sup>π</sup>(x)，形成优化偏差</li>
+            <li><strong>解决方案</strong>：提出优势掩码策略，抑制截断样本的噪声信号，引导模型聚焦上下文长度内的响应质量优化</li>
+            <li><strong>实验验证</strong>：基于DeepSeek-R1模型进行消融实验，评估不同掩码策略的有效性</li>
+        </ul>
+    </div>
+    
+    <!-- 术语识别 -->
+    <div class="section">
+        <h2>术语识别</h2>
+        <dl>
+            <dt><span class="term">Truncated Response</span> (截断响应)</dt>
+            <dd>因超出预设上下文长度T而被截断的模型输出，导致最终答案缺失。即使响应内容部分正确，系统仍强制赋予0奖励。</dd>
+            
+            <dt><span class="term">Accuracy Reward</span> (准确率奖励)</dt>
+            <dd>二元评估函数r(x,y)∈{0,1}，当响应y正确回答提示x时奖励为1，反之为0。是强化学习训练的核心优化目标。</dd>
+            
+            <dt><span class="term">Objective Function</span> (目标函数)</dt>
+            <dd>强化学习的优化目标J(π) = E<sub>x∼D</sub>E<sub>y∼π(·|x)</sub>[r(x,y)]，表示策略π在数据分布D上的期望奖励。</dd>
+            
+            <dt><span class="term">Non-truncation Probability</span> (非截断概率)</dt>
+            <dd>p<sup>π</sup><sub>non-trunc</sub>(x) = P(|y|≤T)，表示策略π生成响应时未超出上下文长度T的概率，直接影响有效奖励样本量。</dd>
+            
+            <dt><span class="term">Conditional Policy</span> (条件策略)</dt>
+            <dd>ĥ<sub>T</sub>(y|x) = π(y|x)/p<sup>π</sup><sub>non-trunc</sub>(x) · I{|y|≤T}，在给定非截断条件下的策略分布，用于计算非截断响应精度。</dd>
+            
+            <dt><span class="term">Advantage Mask</span> (优势掩码)</dt>
+            <dd>通过修改优势函数权重，抑制截断样本的梯度信号，解决模型为规避截断而过度缩短响应的问题。</dd>
+        </dl>
+    </div>
+</body>
+</html>

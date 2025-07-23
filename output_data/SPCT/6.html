@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>算法专家论文解析</title>
+  <style>
+    body { font-family: Arial, sans-serif; line-height: 1.6; margin: 20px; }
+    h1 { color: #2c3e50; text-align: center; }
+    h2 { color: #3498db; border-bottom: 2px solid #3498db; padding-bottom: 5px; }
+    .original { background-color: #f0f0f0; border: 1px solid #cccccc; padding: 10px; margin-bottom: 10px; border-radius: 5px; }
+    .translation { background-color: #e0f7e0; border: 1px solid #4caf50; padding: 10px; margin-bottom: 20px; border-radius: 5px; }
+    .figure { background-color: #fffde7; padding: 15px; margin: 20px 0; border-radius: 5px; text-align: center; }
+    .term { font-weight: bold; color: red; }
+    .formula { text-align: center; margin: 20px 0; font-size: 1.2em; }
+    table { width: 100%; border-collapse: collapse; margin: 10px 0; }
+    th, td { border: 1px solid #ddd; padding: 8px; text-align: center; }
+    th { background-color: #f2f2f2; }
+    .section { margin-bottom: 30px; }
+  </style>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <h1>论文解析报告：奖励建模基准结果分析</h1>
+  
+  <div class="section">
+    <h2>内容理解</h2>
+    <p>本文是预印本，处于审阅阶段，主要报告了不同模型在奖励建模（Reward Modeling, RM）基准测试上的性能比较。核心内容包括：一个综合结果表格（Table 2），展示了公共模型、基线方法和作者提出方法（DeepSeek-GRM）在多个基准（如 <span class="term">Reward Bench</span>、<span class="term">PPE</span>、<span class="term">RMB</span>）上的得分；实验设置细节，涉及基准定义、评估指标（如准确率和 <span class="term">ROC-AUC</span>）以及方法实现；关键算法描述，如基于 <span class="term">Equation 4</span> 的标签识别和元奖励模型（<span class="term">MetaRM</span>）引导的投票机制。文本强调作者的方法（DeepSeek-GRM）通过推理时缩放（如 Voting@32）和元模型优化，显著提升性能，整体得分优于基线。公式（如 \( \\arg\\max_i S_i \)) 用于处理预测奖励的平局情况，数据集结合了 RFT 阶段采样和 DeepSeek-GRM 轨迹，以减少训练-推理差距。</p>
+  </div>
+  
+  <div class="section">
+    <h2>内容翻译</h2>
+    <div class="original">Preprint. Under review.</div>
+    <div class="translation">预印本。正在审阅中。</div>
+    
+    <div class="figure">
+      <table>
+        <caption>Table 2: Overall results of different methods and models on RM benchmarks. Underlined numbers indicate the best performance, bold numbers indicate the best performance among baseline and our methods, and italicized font denotes scalar or semi-scalar RMs. For meta RM guided voting (MetaRM), \( k_{\\text{meta}} = \\frac{1}{2} k \).</caption>
+        <tr>
+          <th>Model</th>
+          <th>Reward Bench</th>
+          <th>PPE Preference</th>
+          <th>PPE Correctness</th>
+          <th>RMB</th>
+          <th>Overall</th>
+        </tr>
+        <tr>
+          <td colspan="6"><strong>Reported Results of Public Models</strong></td>
+        </tr>
+        <tr>
+          <td>Skywork-Reward-Gemma-2-27B</td>
+          <td>94.1</td>
+          <td>56.6</td>
+          <td>56.6</td>
+          <td>60.2</td>
+          <td>66.9</td>
+        </tr>
+        <tr>
+          <td>DeepSeek-V2.5-0905</td>
+          <td>81.5</td>
+          <td>62.8</td>
+          <td>58.5</td>
+          <td>65.7</td>
+          <td>67.1</td>
+        </tr>
+        <tr>
+          <td>Gemini-1.5-Pro</td>
+          <td>86.8</td>
+          <td>66.1</td>
+          <td>59.8</td>
+          <td>56.5</td>
+          <td>67.3</td>
+        </tr>
+        <tr>
+          <td>ArmoRM-8B-v0.1</td>
+          <td>90.4</td>
+          <td>60.6</td>
+          <td>61.2</td>
+          <td>64.6</td>
+          <td>69.2</td>
+        </tr>
+        <tr>
+          <td>InternLM2-20B-Reward</td>
+          <td>90.2</td>
+          <td>61.0</td>
+          <td>63.0</td>
+          <td>62.9</td>
+          <td>69.3</td>
+        </tr>
+        <tr>
+          <td>LLaMA-3.1-70b-Instruct</td>
+          <td>84.1</td>
+          <td>65.3</td>
+          <td>59.2</td>
+          <td>68.9</td>
+          <td>69.4</td>
+        </tr>
+        <tr>
+          <td>Claude-3.5-sonnet</td>
+          <td>84.2</td>
+          <td>65.3</td>
+          <td>58.8</td>
+          <td>70.6</td>
+          <td>69.7</td>
+        </tr>
+        <tr>
+          <td>Nemotron-4-340B-Reward</td>
+          <td>92.0</td>
+          <td>59.3</td>
+          <td>60.8</td>
+          <td>69.9</td>
+          <td>70.5</td>
+        </tr>
+        <tr>
+          <td>GPT-4o</td>
+          <td>86.7</td>
+          <td>67.1</td>
+          <td>57.6</td>
+          <td>73.8</td>
+          <td>71.3</td>
+        </tr>
+        <tr>
+          <td colspan="6"><strong>Reproduced Results of Baseline Methods</strong></td>
+        </tr>
+        <tr>
+          <td>LLM-as-a-Judge</td>
+          <td>83.4</td>
+          <td>64.2</td>
+          <td>58.8</td>
+          <td>64.8</td>
+          <td>67.8</td>
+        </tr>
+        <tr>
+          <td>DeepSeek-BTRM-27B</td>
+          <td>81.7</td>
+          <td>68.3</td>
+          <td>66.7</td>
+          <td>57.9</td>
+          <td>68.6</td>
+        </tr>
+        <tr>
+          <td>CLoud-Gemma-2-27B</td>
+          <td>82.0</td>
+          <td>67.1</td>
+          <td>62.4</td>
+          <td>63.4</td>
+          <td>68.7</td>
+        </tr>
+        <tr>
+          <td>DeepSeek-PairRM-27B</td>
+          <td>87.1</td>
+          <td>65.8</td>
+          <td>64.8</td>
+          <td>58.2</td>
+          <td>69.0</td>
+        </tr>
+        <tr>
+          <td colspan="6"><strong>Results of Our Method</strong></td>
+        </tr>
+        <tr>
+          <td>DeepSeek-GRM-27B-RFT (Ours)</td>
+          <td>84.5</td>
+          <td>64.1</td>
+          <td>59.6</td>
+          <td>67.0</td>
+          <td>68.8</td>
+        </tr>
+        <tr>
+          <td>DeepSeek-GRM-27B (Ours)</td>
+          <td>86.0</td>
+          <td>64.7</td>
+          <td>59.8</td>
+          <td>69.0</td>
+          <td>69.9</td>
+        </tr>
+        <tr>
+          <td colspan="6"><strong>Results of Inference-Time Scaling (Voting@32)</strong></td>
+        </tr>
+        <tr>
+          <td>DeepSeek-GRM-27B (Ours)</td>
+          <td>88.5</td>
+          <td>65.3</td>
+          <td>60.4</td>
+          <td>69.0</td>
+          <td>71.0</td>
+        </tr>
+        <tr>
+          <td>DeepSeek-GRM-27B (MetaRM) (Ours)</td>
+          <td>90.4</td>
+          <td>67.2</td>
+          <td>63.2</td>
+          <td>70.3</td>
+          <td>72.8</td>
+        </tr>
+      </table>
+    </div>
+    
+    <div class="original">where the label is identified based on Equation 4. The dataset comprises trajectories from non-hinted sampling in the RFT stage, and also trajectories sampled from the DeepSeek-GRM to be guided, to both provide enough positive and negative rewards and alleviate the gap between training and inference policy as suggested by Chow et al. (2025). The guided voting is simple: The meta RM outputs meta rewards for k sampled rewards, and the final outcome is voted by rewards with top k_meta ≤ k_meta rewards, so that filtering out low-quality samples.</div>
+    <div class="translation">其中，标签基于 <span class="term">Equation 4</span>（公式4）进行识别。数据集包含来自 <span class="term">RFT</span>（Reinforcement Fine-Tuning，强化微调）阶段的非提示采样轨迹，以及从待引导的 DeepSeek-GRM 采样的轨迹，这既能提供足够的正负奖励，又能缓解训练与推理策略之间的差距（如 Chow 等人, 2025 年所建议）。引导投票机制很简单：元奖励模型（<span class="term">MetaRM</span>）为 k 个采样奖励输出元奖励，最终结果由前 k_meta ≤ k_meta 个最高奖励投票决定，从而过滤低质量样本。</div>
+    
+    <div class="original">5 Results on Reward Modeling Benchmarks</div>
+    <div class="translation">5 奖励建模基准结果</div>
+    
+    <div class="original">5.1 Experiment Settings</div>
+    <div class="translation">5.1 实验设置</div>
+    
+    <div class="original">Benchmarks and Evaluation Metrics We evaluate the performance of different methods on various RM benchmarks of different domains: Reward Bench (Lambert et al., 2024), PPE (Frick et al., 2025), RMB (Zhou et al., 2025), ReaLMistake (Kamoi et al., 2024). We use the standard evaluation metrics for each benchmark: accuracy of picking the best response from a set of responses in Reward Bench, PPE, and RMB, and ROC-AUC for ReaLMistake. To deal with ties of the predicted rewards for multiple responses, we shuffle the responses and determine the best response by arg max_i S_i, where S_i is the predicted reward for the i-th response after shuffling. Details are in Appendix D.</div>
+    <div class="translation">基准与评估指标：我们在不同领域的多个 <span class="term">RM</span>（Reward Modeling，奖励建模）基准上评估不同方法的性能，包括：<span class="term">Reward Bench</span>（Lambert 等人, 2024）、<span class="term">PPE</span>（Frick 等人, 2025）、<span class="term">RMB</span>（Zhou 等人, 2025）和 <span class="term">ReaLMistake</span>（Kamoi 等人, 2024）。每个基准使用标准评估指标：在 <span class="term">Reward Bench</span>、<span class="term">PPE</span> 和 <span class="term">RMB</span> 中，指标为从一组响应中选取最佳响应的准确率；在 <span class="term">ReaLMistake</span> 中，指标为 <span class="term">ROC-AUC</span>。为处理多个响应预测奖励的平局情况，我们随机打乱响应，并通过 \( \\arg\\max_i S_i \) 确定最佳响应，其中 \( S_i \) 是打乱后第 i 个响应的预测奖励。细节见附录 D。</div>
+    
+    <div class="original">Method Implementation For the baseline methods, we re-implement LLM-as-a-Judge (Zheng et al., 2023), DeepSeek-BTRM-27B (Kendall & Smith, 1940), CLoud-Gemma-2-27B (Ankner et al., 2024), and DeepSeek-PairRM-27B (Jiang et al., 2023) based on Gemma-2-27B (Team, 2024) and with all compatible training data and settings as DeepSeek-GRM. For our methods, we implement DeepSeek-GRM-27B-RFT based on Gemma-2-27B, and DeepSeek-GRM on different sizes of LLMs, including DeepSeek-V2-Lite (16B MoE) (DeepSeek-AI, 2024a), Gemma-2-27B, DeepSeek-V2.5 (236B MoE), and DeepSeek-V3 (671B MoE) (DeepSeek-AI, 2024b). The meta RM is trained on Gemma-2-27B. Default results are reported with greedy decoding, and the inference-time scaling uses temperature =0.5. Other details are provided in Appendix C.2.</div>
+    <div class="translation">方法实现：对于基线方法，我们基于 <span class="term">Gemma-2-27B</span>（Team, 2024）重新实现了 <span class="term">LLM-as-a-Judge</span>（Zheng 等人, 2023）、<span class="term">DeepSeek-BTRM-27B</span>（Kendall & Smith, 1940）、<span class="term">CLoud-Gemma-2-27B</span>（Ankner 等人, 2024）和 <span class="term">DeepSeek-PairRM-27B</span>（Jiang 等人, 2023），并使用与 DeepSeek-GRM 兼容的所有训练数据和设置。对于我们的方法，我们基于 Gemma-2-27B 实现了 DeepSeek-GRM-27B-RFT，并在不同规模的大语言模型（<span class="term">LLM</span>）上实现了 DeepSeek-GRM，包括 DeepSeek-V2-Lite（16B <span class="term">MoE</span>, Mixture of Experts，专家混合）（DeepSeek-AI, 2024a）、Gemma-2-27B、DeepSeek-V2.5（236B MoE）和 DeepSeek-V3（671B MoE）（DeepSeek-AI, 2024b）。元奖励模型（<span class="term">MetaRM</span>）在 Gemma-2-27B 上训练。默认结果使用贪婪解码报告，推理时缩放使用温度 =0.5。其他细节见附录 C.2。</div>
+    
+    <div class="original">7</div>
+    <div class="translation">7（页码）</div>
+  </div>
+  
+  <div class="section">
+    <h2>摘要总结</h2>
+    <p>本文是预印本，报告了多个模型在奖励建模（RM）基准上的性能评估。核心内容包括：Table 2 展示了公共模型（如 GPT-4o、Gemini-1.5-Pro）、基线方法（如 LLM-as-a-Judge）和作者提出的 DeepSeek-GRM 方法在 Reward Bench、PPE、RMB 等基准上的得分，整体性能以 Overall 列汇总。作者的方法通过推理时缩放（Voting@32）和元奖励模型（MetaRM）引导投票，显著提升性能（最高 Overall 72.8）。实验设置详细描述了基准定义（Reward Bench、PPE、RMB、ReaLMistake）、评估指标（准确率、ROC-AUC）和方法实现（基于 Gemma-2-27B 等模型）。关键算法涉及基于 Equation 4 的标签识别和投票机制（\( k_{\\text{meta}} = \\frac{1}{2} k \))，数据集结合 RFT 阶段采样以减少训练-推理差距。整体上，DeepSeek-GRM 在 MetaRM 优化下表现最佳，突显了元模型在奖励建模中的有效性。</p>
+  </div>
+  
+  <div class="section">
+    <h2>术语识别</h2>
+    <ul>
+      <li><span class="term">Reward Bench</span>：奖励建模基准之一，由 Lambert 等人（2024）提出，用于评估模型从一组响应中选取最佳响应的能力，指标为准确率。</li>
+      <li><span class="term">PPE</span>（Preference PPE）：偏好性能评估基准，由 Frick 等人（2025）提出，包含“PPE Preference”和“PPE Correctness”两个子指标，衡量模型在偏好和正确性方面的表现。</li>
+      <li><span class="term">RMB</span>（Reward Modeling Benchmark）：奖励建模基准，由 Zhou 等人（2025）提出，评估模型奖励预测的准确率。</li>
+      <li><span class="term">ReaLMistake</span>：真实错误检测基准，由 Kamoi 等人（2024）提出，使用 ROC-AUC 作为评估指标，衡量模型区分正确和错误响应的能力。</li>
+      <li><span class="term">ROC-AUC</span>（Receiver Operating Characteristic - Area Under Curve）：评估分类模型性能的指标，值域为 [0,1]，越高表示模型区分正负样本的能力越强。</li>
+      <li><span class="term">MetaRM</span>（Meta Reward Model）：元奖励模型，用于在推理时引导投票；输出元奖励，筛选高质量样本（如取前 \( k_{\\text{meta}} \) 个奖励），参数 \( k_{\\text{meta}} = \\frac{1}{2} k \)。</li>
+      <li><span class="term">RFT</span>（Reinforcement Fine-Tuning）：强化微调阶段，涉及非提示采样轨迹，用于生成数据集以减少训练与推理的策略差距。</li>
+      <li><span class="term">MoE</

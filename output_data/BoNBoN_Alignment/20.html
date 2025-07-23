@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>算法专家论文解析</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; }
+        .original { background-color: #f0f0f0; border: 1px solid #cccccc; padding: 15px; margin-bottom: 20px; }
+        .translation { background-color: #e0ffe0; border: 1px solid #00cc00; padding: 15px; margin-bottom: 30px; }
+        .formula-container { background-color: #ffffcc; padding: 15px; text-align: center; margin: 20px 0; }
+        .term { color: red; font-weight: bold; }
+        h2 { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 5px; }
+        .section { margin-bottom: 30px; }
+        .explanation { margin: 15px 0; }
+        .term-list li { margin: 8px 0; }
+    </style>
+</head>
+<body>
+    <h1>算法专家论文解析报告</h1>
+    
+    <!-- 内容翻译 -->
+    <div class="section">
+        <h2>内容翻译</h2>
+        
+        <div class="original">
+            <p>Proof. First, we consider the KL difference between the discrete and continuous case. For simplicity, denote \( g(u) := \\frac{f(u)}{F(1)-F(0)} \) and \( G(u) := \\frac{F(u)}{F(1)-F(0)} \). Then the KL difference is</p>
+            <div class="formula-container">
+                \\[ \\int_{0}^{1} g(u) \\log(g(u))  du - \\mathbb{E}_{x \\sim \\mathcal{D}} \\left[ \\sum_{i=1}^{L} \\left( G(p_{1:i}) - G(p_{1:(i-1)}) \\right) \\log \\left( \\frac{G(p_{1:i}) - G(p_{1:(i-1)})}{p_i} \\right) \\right] \\]
+                <div>(公式1)</div>
+            </div>
+            <p>\[ = \\mathbb{E}_{x \\sim \\mathcal{D}} \\left[ \\sum_{i=1}^{L} \\left( \\int_{p_{1:(i-1)}}^{p_{1:i}} g(u) \\log(g(u))  du - \\left( G(p_{1:i}) - G(p_{1:(i-1)}) \\right) \\log \\left( \\frac{G(p_{1:i}) - G(p_{1:(i-1)})}{p_i} \\right) \\right) \\right] \]</p>
+            <p>\[ = \\mathbb{E}_{x \\sim \\mathcal{D}} \\left[ \\sum_{i=1}^{L} \\left( G(p_{1:i}) - G(p_{1:(i-1)}) \\right) \\int_{p_{1:(i-1)}}^{p_{1:i}} \\frac{g(u)}{G(p_{1:i}) - G(p_{1:(i-1)})} \\log \\left( \\frac{g(u) / \\left( G(p_{1:i}) - G(p_{1:(i-1)}) \\right)}{1/p_i} \\right) du \\right] \]</p>
+            <p>\[ \\leq \\mathbb{E}_{x \\sim \\mathcal{D}} \\left[ \\sum_{i=1}^{L} \\left( G(p_{1:i}) - G(p_{1:(i-1)}) \\right) \\log \\left( \\frac{g(p_{1:i}) / \\left( G(p_{1:i}) - G(p_{1:(i-1)}) \\right)}{1/p_i} \\right) \\right] \]</p>
+            <p>\[ = \\mathbb{E}_{x \\sim \\mathcal{D}} \\left[ \\sum_{i=1}^{L} \\left( G(p_{1:i}) - G(p_{1:(i-1)}) \\right) \\frac{1}{\\xi} \\left( g(p_{1:i}) - \\frac{G(p_{1:i}) - G(p_{1:(i-1)})}{p_i} \\right) \\right] \]</p>
+            <p>\[ \\leq \\mathbb{E}_{x \\sim \\mathcal{D}} \\left[ \\sum_{i=1}^{L} p_i \\left( g(p_{1:i}) - \\frac{G(p_{1:i}) - G(p_{1:(i-1)})}{p_i} \\right) \\right] \]</p>
+            <p>\[ \\leq \\mathbb{E}_{x \\sim \\mathcal{D}} \\left[ \\sum_{i=1}^{L} p_i^2 \\max_{x \\in [p_{1:(i-1)}, p_{1:i}]} g'(x) \\right] \]</p>
+            <p>\[ \\leq 2 \\max_{x \\in [0,1]} g'(x) \\cdot \\text{Area}_{\\text{diff}}, \]</p>
+            <p>where the first inequality uses the fact that \( \\log(x) \) is increasing. The fourth equality applies the mean value theorem and \( \\xi \) is some value in \( \\left[ \\frac{G(p_{1:i}) - G(p_{1:(i-1)})}{p_i}, g(p_{1:i}) \\right] \). Since \( g \) is not always 0, \( \\xi > 0 \). The second inequality is due to \( \\frac{1}{\\xi} \\leq \\frac{p_i}{G(p_{1:i}) - G(p_{1:(i-1)})} \). The third inequality again uses the mean value theorem. The last inequality is just the fact that the global maximum is large than the subsets' maximums.</p>
+        </div>
+        <div class="translation">
+            <p>证明：首先，我们考虑离散情况与连续情况之间的<strong class="term">KL差异（KL difference）</strong>。为简便起见，记 \( g(u) := \\frac{f(u)}{F(1)-F(0)} \) 和 \( G(u) := \\frac{F(u)}{F(1)-F(0)} \)。则KL差异为：</p>
+            <div class="formula-container">
+                \\[ \\int_{0}^{1} g(u) \\log(g(u))  du - \\mathbb{E}_{x \\sim \\mathcal{D}} \\left[ \\sum_{i=1}^{L} \\left( G(p_{1:i}) - G(p_{1:(i-1)}) \\right) \\log \\left( \\frac{G(p_{1:i}) - G(p_{1:(i-1)})}{p_i} \\right) \\right] \\]
+                <div>(公式1)</div>
+            </div>
+            <p>\[ = \\mathbb{E}_{x \\sim \\mathcal{D}} \\left[ \\sum_{i=1}^{L} \\left( \\int_{p_{1:(i-1)}}^{p_{1:i}} g(u) \\log(g(u))  du - \\left( G(p_{1:i}) - G(p_{1:(i-1)}) \\right) \\log \\left( \\frac{G(p_{1:i}) - G(p_{1:(i-1)})}{p_i} \\right) \\right) \\right] \]</p>
+            <p>\[ = \\mathbb{E}_{x \\sim \\mathcal{D}} \\left[ \\sum_{i=1}^{L} \\left( G(p_{1:i}) - G(p_{1:(i-1)}) \\right) \\int_{p_{1:(i-1)}}^{p_{1:i}} \\frac{g(u)}{G(p_{1:i}) - G(p_{1:(i-1)})} \\log \\left( \\frac{g(u) / \\left( G(p_{1:i}) - G(p_{1:(i-1)}) \\right)}{1/p_i} \\right) du \\right] \]</p>
+            <p>\[ \\leq \\mathbb{E}_{x \\sim \\mathcal{D}} \\left[ \\sum_{i=1}^{L} \\left( G(p_{1:i}) - G(p_{1:(i-1)}) \\right) \\log \\left( \\frac{g(p_{1:i}) / \\left( G(p_{1:i}) - G(p_{1:(i-1)}) \\right)}{1/p_i} \\right) \\right] \]</p>
+            <p>\[ = \\mathbb{E}_{x \\sim \\mathcal{D}} \\left[ \\sum_{i=1}^{L} \\left( G(p_{1:i}) - G(p_{1:(i-1)}) \\right) \\frac{1}{\\xi} \\left( g(p_{1:i}) - \\frac{G(p_{1:i}) - G(p_{1:(i-1)})}{p_i} \\right) \\right] \]</p>
+            <p>\[ \\leq \\mathbb{E}_{x \\sim \\mathcal{D}} \\left[ \\sum_{i=1}^{L} p_i \\left( g(p_{1:i}) - \\frac{G(p_{1:i}) - G(p_{1:(i-1)})}{p_i} \\right) \\right] \]</p>
+            <p>\[ \\leq \\mathbb{E}_{x \\sim \\mathcal{D}} \\left[ \\sum_{i=1}^{L} p_i^2 \\max_{x \\in [p_{1:(i-1)}, p_{1:i}]} g'(x) \\right] \]</p>
+            <p>\[ \\leq 2 \\max_{x \\in [0,1]} g'(x) \\cdot \\text{Area}_{\\text{diff}}, \]</p>
+            <p>其中第一个不等式利用了 \( \\log(x) \) 的单调递增性。第四个等式应用了<strong class="term">中值定理（mean value theorem）</strong>，且 \( \\xi \) 是区间 \( \\left[ \\frac{G(p_{1:i}) - G(p_{1:(i-1)})}{p_i}, g(p_{1:i}) \\right] \) 内的某个值。由于 \( g \) 不恒为零，故 \( \\xi > 0 \)。第二个不等式源于 \( \\frac{1}{\\xi} \\leq \\frac{p_i}{G(p_{1:i}) - G(p_{1:(i-1)})} \)。第三个不等式再次使用了中值定理。最后一个不等式基于全局最大值大于子集最大值的事实。</p>
+        </div>
+        
+        <div class="original">
+            <p>For win rate, due to (B.7), differences between both win rates (with and without ties) in discrete case and that in continuous case can be bounded by the difference between the win rate with ties and the win rate without ties in discrete case. The difference is</p>
+            <p>\[ \\mathbb{P}_{\\substack{x \\sim \\mathcal{D}, \\\\ y \\sim \\pi_{r,\\text{discrete}}^{f}(y|x), \\\\ y' \\sim \\pi^{0}(y|x)}} (r(x,y) \\geq r(x,y')) - \\mathbb{P}_{\\substack{x \\sim \\mathcal{D}, \\\\ y \\sim \\pi_{r,\\text{discrete}}^{f}(y|x), \\\\ y' \\sim \\pi^{0}(y|x)}} (r(x,y) > r(x,y')) \]</p>
+            <p>\[ = \\mathbb{E}_{x \\sim \\mathcal{D}} \\left[ \\sum_{i=1}^{L} p_i \\frac{F(p_{1:i}) - F(p_{1:(i-1)})}{F(1)-F(0)} \\right] \]</p>
+            <p>\[ = \\frac{1}{F(1)-F(0)} \\mathbb{E}_{x \\sim \\mathcal{D}} \\left[ \\sum_{i=1}^{L} p_i^2 \\frac{F(p_{1:i}) - F(p_{1:(i-1)})}{p_i} \\right] \]</p>
+            <p>\[ = \\frac{1}{F(1)-F(0)} \\mathbb{E}_{x \\sim \\mathcal{D}} \\left[ \\sum_{i=1}^{L} p_i^2 f(q_i) \\right] \]</p>
+            <p>\[ \\leq \\frac{f(1)}{F(1)-F(0)} \\mathbb{E}_{x \\sim \\mathcal{D}} \\left[ \\sum_{i=1}^{L} p_i^2 \\right] \]</p>
+            <p>\[ = \\frac{2f(1)}{F(1)-F(0)} \\cdot \\text{Area}_{\\text{diff}}, \]</p>
+            <p>where the third equation is the mean value theorem and \( q_i \\in (p_{1:(i-1)}, p_{1:i}) \). The inequality is due to the fact that \( f \) is non-decreasing and \( \\forall q_i \\leq 1 \).</p>
+        </div>
+        <div class="translation">
+            <p>对于<strong class="term">胜率（win rate）</strong>，根据(B.7)，离散情况下的两种胜率（含平局与不含平局）与连续情况胜率的差异，可由离散情况下含平局胜率与不含平局胜率的差异界定。该差异为：</p>
+            <p>\[ \\mathbb{P}_{\\substack{x \\sim \\mathcal{D}, \\\\ y \\sim \\pi_{r,\\text{discrete}}^{f}(y|x), \\\\ y' \\sim \\pi^{0}(y|x)}} (r(x,y) \\geq r(x,y')) - \\mathbb{P}_{\\substack{x \\sim \\mathcal{D}, \\\\ y \\sim \\pi_{r,\\text{discrete}}^{f}(y|x), \\\\ y' \\sim \\pi^{0}(y|x)}} (r(x,y) > r(x,y')) \]</p>
+            <p>\[ = \\mathbb{E}_{x \\sim \\mathcal{D}} \\left[ \\sum_{i=1}^{L} p_i \\frac{F(p_{1:i}) - F(p_{1:(i-1)})}{F(1)-F(0)} \\right] \]</p>
+            <p>\[ = \\frac{1}{F(1)-F(0)} \\mathbb{E}_{x \\sim \\mathcal{D}} \\left[ \\sum_{i=1}^{L} p_i^2 \\frac{F(p_{1:i}) - F(p_{1:(i-1)})}{p_i} \\right] \]</p>
+            <p>\[ = \\frac{1}{F(1)-F(0)} \\mathbb{E}_{x \\sim \\mathcal{D}} \\left[ \\sum_{i=1}^{L} p_i^2 f(q_i) \\right] \]</p>
+            <p>\[ \\leq \\frac{f(1)}{F(1)-F(0)} \\mathbb{E}_{x \\sim \\mathcal{D}} \\left[ \\sum_{i=1}^{L} p_i^2 \\right] \]</p>
+            <p>\[ = \\frac{2f(1)}{F(1)-F(0)} \\cdot \\text{Area}_{\\text{diff}}, \]</p>
+            <p>其中第三个等式应用了中值定理，且 \( q_i \\in (p_{1:(i-1)}, p_{1:i}) \)。不等式成立是因为 \( f \) 非递减且 \( \\forall q_i \\leq 1 \)。</p>
+        </div>
+        
+        <div class="original">
+            <h3>C Experimental Details</h3>
+            <p>Training details for baseline methods:</p>
+            <p>1. We ensure that human preference labels for the examples in the Antrophic HH and OpenAI TL;DR datasets are in line with the preferences of the reward model<sup>6</sup>. Therefore, we first score the chosen and rejected responses for each prompt using this reward model, then we use the obtained data along with reward preference labels for training the <strong class="term">DPO</strong> and <strong class="term">IPO</strong> algorithms. Below we present our hyper-parameter selection for these methods.</p>
+            <p>• Antrophic HH dataset</p>
+            <p>– <strong class="term">DPO</strong>: \( \\beta = \\{0.00333, 0.01, 0.05, 0.1, 1, 5 \\} \)</p>
+            <p><sup>6</sup>https://huggingface.co/OpenAssistant/reward-model-deberta-v3-large-v2</p>
+        </div>
+        <div class="translation">
+            <h3>C 实验细节</h3>
+            <p>基线方法的训练细节：</p>
+            <p>1. 我们确保Anthropic HH和OpenAI TL;DR数据集中的<strong class="term">人类偏好标签（human preference labels）</strong>与奖励模型的偏好一致<sup>6</sup>。因此，我们首先使用该奖励模型对每个提示（prompt）的选定（chosen）和拒绝（rejected）响应进行评分，随后将获得的数据与奖励偏好标签共同用于训练<strong class="term">DPO（Direct Preference Optimization）</strong>和<strong class="term">IPO（Identity Preference Optimization）</strong>算法。下文列出这些方法的超参数选择。</p>
+            <p>• Anthropic HH数据集</p>
+            <p>– <strong class="term">DPO</strong>: \( \\beta = \\{0.00333, 0.01, 0.05, 0.1, 1, 5 \\} \)</p>
+            <p><sup>6</sup>https://huggingface.co/OpenAssistant/reward-model-deberta-v3-large-v2</p>
+        </div>
+    </div>
+    
+    <!-- 内容理解 -->
+    <div class="section">
+        <h2>内容理解</h2>
+        <div class="explanation">
+            <p>1. <strong>KL差异证明</strong>：通过定义标准化函数 \( g(u) \) 和 \( G(u) \)，推导离散与连续分布的KL差异上界。证明核心步骤包括：</p>
+            <ul>
+                <li>将积分转化为期望求和形式</li>
+                <li>应用对数函数的单调性建立不等式</li>
+                <li>三次使用<strong class="term">中值定理（mean value theorem）</strong>简化表达式</li>
+                <li>最终得到与 \( g'(x) \) 最大值和面积差异相关的上界 \( 2 \\max g'(x) \\cdot \\text{Area}_{\\text{diff}} \)</li>
+            </ul>
+        </div>
+        <div class="explanation">
+            <p>2. <strong>胜率差异分析</strong>：证明离散与连续胜率差异的界限：</p>
+            <ul>
+                <li>将胜率差异转化为期望求和形式</li>
+                <li>利用<strong class="term">中值定理（mean value theorem）</strong>引入 \( f(q_i) \)</li>
+                <li>基于 \( f \) 的非递减特性推导上界 \( \\frac{2f(1)}{F(1)-F(0)} \\cdot \\text{Area}_{\\text{diff}} \)</li>
+            </ul>
+        </div>
+        <div class="explanation">
+            <p>3. <strong>实验设计</strong>：描述<strong class="term">DPO</strong>和<strong class="term">IPO</strong>算法的训练流程：</p>
+            <ul>
+                <li>使用奖励模型对Anthropic HH和OpenAI TL;DR数据集进行响应评分</li>
+                <li>将评分结果转化为偏好标签用于训练</li>
+                <li>列举DPO在Anthropic HH数据集上的 \( \\beta \) 超参数搜索空间</li>
+            </ul>
+        </div>
+    </div>
+    
+    <!-- 摘要总结 -->
+    <div class="section">
+        <h2>摘要总结</h2>
+        <p>本文核心内容分为理论证明与实验设计两部分：</p>
+        <ul>
+            <li><strong>理论证明</strong>：严格推导了离散与连续概率分布的<strong class="term">KL差异（KL difference）</strong>上界（\( 2 \\max g'(x) \\cdot \\text{Area}_{\\text{diff}} \)）和<strong class="term">胜率（win rate）</strong>差异上界（\( \\frac{2f(1)}{F(1)-F(0)} \\cdot \\text{Area}_{\\text{diff}} \)），核心工具包括中值定理和函数单调性分析。</li>
+            <li><strong>实验设计</strong>：详述了<strong class="term">DPO（Direct Preference Optimization）</strong>和<strong class="term">IPO（Identity Preference Optimization）</strong>的训练流程，包括使用奖励模型处理人类偏好数据，以及在Anthropic HH数据集上的超参数配置（如 \( \\beta \) 的取值集合）。</li>
+        </ul>
+    </div>
+    
+    <!-- 术语识别 -->
+    <div class="section">
+        <h2>术语识别</h2>
+        <ul class="term-list">
+            <li><strong class="term">KL差异（KL Divergence）</strong>：衡量两个概率分布差异的信息论度量，定义为 \( D_{KL}(P \\| Q) = \\sum P(x) \\log \\frac{P(x)}{Q(x)} \)。</li>
+            <li><strong class="term">中值定理（Mean Value Theorem）</strong>：微积分基本定理，指出若函数在闭区间连续、开区间可导，则存在点使导数等于区间端点连线的斜率。</li>
+            <li><strong class="term">胜率（Win Rate）</strong>：在偏好学习中，模型生成响应优于基线响应的概率，含平局指 \( r(x,y) \\geq r(x,y') \)，不含平局指 \( r(x,y) > r(x,y') \)。</li>
+            <li><strong class="term">DPO（Direct Preference Optimization）</strong>：直接偏好优化算法，利用人类偏好数据直接优化策略模型，避免显式奖励模型训练。</li>
+            <li><strong class="term">IPO（Identity Preference Optimization）</strong>：身份偏好优化算法，通过偏好数据调整策略模型（具体方法未在片段中详述）。</li>
+            <li><strong class="term">人类偏好标签（Human Preference Labels）</strong>：标注人员对模型输出的偏好选择（如chosen/rejected响应对）。</li>
+            <li><strong class="term">奖励模型（Reward Model）</strong>：学习人类偏好信号的模型，为响应生成标量奖励值。</li>
+            <li><strong class="term">Anthropic HH 数据集</strong>：包含人类对话和偏好标注的数据集，用于训练对齐算法。</li>
+        </ul>
+    </div>
+</body>
+</html>

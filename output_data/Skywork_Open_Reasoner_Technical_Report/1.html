@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>论文解析报告</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; line-height: 1.6; }
+        .section { margin-bottom: 30px; }
+        h2 { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 5px; }
+        .original { 
+            background-color: #f0f0f0; 
+            border: 1px solid #cccccc; 
+            padding: 15px; 
+            margin: 10px 0; 
+            border-radius: 5px;
+        }
+        .translation { 
+            background-color: #e0ffe0; 
+            border: 1px solid #2ecc71; 
+            padding: 15px; 
+            margin: 10px 0; 
+            border-radius: 5px;
+        }
+        .term { 
+            color: #e74c3c; 
+            font-weight: bold; 
+        }
+        .formula-container { 
+            text-align: center; 
+            margin: 20px 0; 
+            padding: 15px; 
+            background-color: #fffde7; 
+            border-radius: 5px;
+        }
+        .formula-label { 
+            display: block; 
+            font-style: italic; 
+            margin-top: 5px;
+        }
+        .summary-box { 
+            background-color: #f8f9fa; 
+            padding: 15px; 
+            border-left: 4px solid #3498db; 
+            margin: 15px 0;
+        }
+        .term-list { padding-left: 20px; }
+        .term-list li { margin-bottom: 12px; }
+    </style>
+</head>
+<body>
+
+<!-- 内容理解 -->
+<div class="section">
+    <h2>内容理解</h2>
+    <p>该目录来自一篇关于大语言模型(LLM)训练优化的技术论文，核心贡献是提出了名为<span class="term">MAGIC</span>的训练框架。论文结构清晰：</p>
+    <ol>
+        <li>第3章详细解构<span class="term">MAGIC</span>的六大核心技术组件</li>
+        <li>第4-5章实证研究两大关键挑战：策略熵崩溃和资源分配</li>
+        <li>第6-7章聚焦数据工程与验证系统</li>
+        <li>第8章展示<span class="term">Skywork-OR1</span>模型的实验结果</li>
+    </ol>
+    <p>核心创新点体现在：通过<span class="term">自适应熵控制</span>和<span class="term">优势掩码</span>解决强化学习中的策略崩溃问题，采用<span class="term">多阶段训练</span>和<span class="term">模型感知难度评估</span>优化训练效率。</p>
+</div>
+
+<!-- 内容翻译 -->
+<div class="section">
+    <h2>内容翻译</h2>
+    
+    <div class="original">Contents</div>
+    <div class="translation">目录</div>
+    
+    <div class="original">1 Introduction</div>
+    <div class="translation">1 引言</div>
+    
+    <div class="original">2 Preliminaries</div>
+    <div class="translation">2 预备知识</div>
+    
+    <div class="original">3 MAGIC in Skywork-OR1</div>
+    <div class="translation">3 Skywork-OR1中的MAGIC框架</div>
+    
+    <div class="original">3.1 MAGIC</div>
+    <div class="translation">3.1 MAGIC框架</div>
+    
+    <div class="original">3.2 Effectiveness of MAGIC Components</div>
+    <div class="translation">3.2 MAGIC组件的有效性</div>
+    
+    <div class="original">3.2.1 Data Mixture</div>
+    <div class="translation">3.2.1 数据混合</div>
+    
+    <div class="original">3.2.2 Multi-Stage Training</div>
+    <div class="translation">3.2.2 多阶段训练</div>
+    
+    <div class="original">3.2.3 Advantage Mask for Truncated Responses</div>
+    <div class="translation">3.2.3 截断响应的优势掩码</div>
+    
+    <div class="original">3.2.4 High-temperature Sampling</div>
+    <div class="translation">3.2.4 高温采样</div>
+    
+    <div class="original">3.2.5 Adaptive Entropy Control</div>
+    <div class="translation">3.2.5 自适应熵控制</div>
+    
+    <div class="original">3.2.6 No KL Loss</div>
+    <div class="translation">3.2.6 无KL散度损失</div>
+    
+    <div class="original">4 Empirical Studies on Mitigating Policy Entropy Collapse</div>
+    <div class="translation">4 缓解策略熵崩溃的实证研究</div>
+    
+    <div class="original">4.1 Ablation Setup</div>
+    <div class="translation">4.1 消融实验设置</div>
+    
+    <div class="original">4.2 Premature Entropy Collapse Generally Manifests as Worse Performance</div>
+    <div class="translation">4.2 过早熵崩溃通常表现为性能下降</div>
+    
+    <div class="original">4.3 The Impact of Rollout-Diversity-Related Hyperparameters</div>
+    <div class="translation">4.3 轨迹多样性相关超参数的影响</div>
+    
+    <div class="original">4.4 The Impact of Off-policy Update by Increasing NSGD</div>
+    <div class="translation">4.4 通过增加NSGD实现非策略更新的影响</div>
+    
+    <div class="original">4.5 Preventing Premature Entropy Collapse</div>
+    <div class="translation">4.5 预防过早熵崩溃</div>
+    
+    <div class="original">5 Empirical Studies on Training Resource Allocation</div>
+    <div class="translation">5 训练资源分配的实证研究</div>
+    
+    <div class="original">5.1 Improving Training Efficiency with Fixed Computational Resources</div>
+    <div class="translation">5.1 固定计算资源下的训练效率提升</div>
+    
+    <div class="original">5.2 Improving Test Performance with More Computational Resources</div>
+    <div class="translation">5.2 更多计算资源下的测试性能提升</div>
+    
+    <div class="original">6 Dataset Preparation</div>
+    <div class="translation">6 数据集准备</div>
+    
+    <div class="original">6.1 Data Source Selection and Preprocessing</div>
+    <div class="translation">6.1 数据源选择与预处理</div>
+    
+    <div class="original">6.2 Model-Aware Difficulty Estimation</div>
+    <div class="translation">6.2 模型感知难度评估</div>
+    
+    <div class="original">6.3 Quality Assessment via Human and LLM-as-a-Judge</div>
+    <div class="translation">6.3 通过人工和LLM即评委的质量评估</div>
+    
+    <div class="original">7 Math & Code Verifiers</div>
+    <div class="translation">7 数学与代码验证器</div>
+    
+    <div class="original">7.1 Math Verifiers</div>
+    <div class="translation">7.1 数学验证器</div>
+    
+    <div class="original">7.2 Code Sandboxes</div>
+    <div class="translation">7.2 代码沙盒</div>
+    
+    <div class="original">8 Experiments</div>
+    <div class="translation">8 实验</div>
+    
+    <div class="original">8.1 Training and Evaluation Details</div>
+    <div class="translation">8.1 训练与评估细节</div>
+    
+    <div class="original">8.2 Evaluation Results of Skywork-OR1 models</div>
+    <div class="translation">8.2 Skywork-OR1模型评估结果</div>
+    
+    <div class="original">9 Conclusion</div>
+    <div class="translation">9 结论</div>
+</div>
+
+<!-- 摘要总结 -->
+<div class="section">
+    <h2>摘要总结</h2>
+    <div class="summary-box">
+        <p>本文提出<span class="term">MAGIC</span>训练框架用于优化<span class="term">Skywork-OR1</span>大语言模型，核心创新包括：</p>
+        <ul>
+            <li>六大关键技术：<span class="term">数据混合(Data Mixture)</span>、<span class="term">多阶段训练(Multi-Stage Training)</span>、<span class="term">截断响应优势掩码(Advantage Mask)</span>、<span class="term">高温采样(High-temperature Sampling)</span>、<span class="term">自适应熵控制(Adaptive Entropy Control)</span>和无KL损失设计</li>
+            <li>解决强化学习中的<span class="term">策略熵崩溃(Policy Entropy Collapse)</span>问题，通过调整<span class="term">NSGD</span>参数优化<span class="term">非策略更新(Off-policy Update)</span></li>
+            <li>创新数据工程：<span class="term">模型感知难度评估(Model-Aware Difficulty Estimation)</span>和<span class="term">LLM即评委(LLM-as-a-Judge)</span>质量评估</li>
+            <li>验证系统：<span class="term">数学验证器(Math Verifiers)</span>与<span class="term">代码沙盒(Code Sandboxes)</span>确保输出可靠性</li>
+        </ul>
+        <p>实验表明，该方法显著提升训练效率和模型性能，为解决大语言模型训练中的策略崩溃和资源优化问题提供了系统方案。</p>
+    </div>
+</div>
+
+<!-- 术语识别 -->
+<div class="section">
+    <h2>术语识别</h2>
+    <ul class="term-list">
+        <li><span class="term">MAGIC</span>：Skywork-OR1模型的核心训练框架，包含数据混合、多阶段训练等六大技术创新</li>
+        <li><span class="term">策略熵崩溃(Policy Entropy Collapse)</span>：强化学习中策略过早收敛导致探索能力丧失的现象，表现为熵值急剧下降</li>
+        <li><span class="term">非策略更新(Off-policy Update)</span>：使用历史策略生成的数据更新当前策略的技术，提高数据利用率</li>
+        <li><span class="term">NSGD</span>：噪声随机梯度下降(Noisy Stochastic Gradient Descent)，通过增加梯度噪声防止过拟合</li>
+        <li><span class="term">高温采样(High-temperature Sampling)</span>：增大softmax温度参数τ(τ>1)使概率分布更均匀，增加输出多样性</li>
+        <li><span class="term">自适应熵控制(Adaptive Entropy Control)</span>：动态调整策略熵正则化强度，平衡探索与利用</li>
+        <li><span class="term">优势掩码(Advantage Mask)</span>：处理截断响应的技术，对未完成序列屏蔽优势计算</li>
+        <li><span class="term">模型感知难度评估(Model-Aware Difficulty Estimation)</span>：根据当前模型能力动态评估样本难度</li>
+        <li><span class="term">LLM即评委(LLM-as-a-Judge)</span>：使用大

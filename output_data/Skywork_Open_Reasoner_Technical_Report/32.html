@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>文本分析报告：质量评估方法</title>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    body { font-family: Arial, sans-serif; line-height: 1.6; margin: 20px; }
+    h1 { color: #2c3e50; text-align: center; }
+    h2 { color: #3498db; border-bottom: 2px solid #3498db; padding-bottom: 5px; }
+    .section { margin-bottom: 30px; }
+    .original { background-color: #f0f0f0; border: 1px solid #cccccc; padding: 15px; margin-bottom: 10px; border-radius: 5px; }
+    .translation { background-color: #e0f7e0; border: 1px solid #4caf50; padding: 15px; margin-bottom: 20px; border-radius: 5px; }
+    .highlight { color: red; font-weight: bold; }
+    .formula-container { text-align: center; margin: 15px 0; }
+    .formula { display: inline-block; padding: 10px; background-color: #ffffcc; border: 1px solid #ffcc00; border-radius: 5px; }
+    .term-list { list-style-type: none; padding: 0; }
+    .term-list li { margin-bottom: 10px; padding: 10px; background-color: #f9f9f9; border-left: 4px solid #3498db; }
+  </style>
+</head>
+<body>
+  <h1>文本分析报告：质量评估方法</h1>
+  
+  <section class="section">
+    <h2>内容理解</h2>
+    <p>该文本描述了在数据处理阶段对数学问题数据集进行质量评估的过程。核心是采用人类评估员和大型语言模型（<span class="highlight">LLM-as-a-Judge</span>）结合的方法，以确保问题质量。文本指出，许多数学问题存在不完整或格式差的问题，因此进行了严格抽样评估。人类评估员基于四个标准（清晰表述、完整信息、良好格式、无干扰信息）检查问题，并提供了问题示例（如不完整问题和无关信息问题）。有趣的是，一些无效问题仍能通过模型难度估计，表明模型可能在训练中见过类似示例或答案可猜测。最后，为高效处理整个数据集，使用两个LLM模型（Llama-3.3-70B-Instruct 和 Qwen2.5-72B-Instruct）自动化过滤过程，基于类似标准提供<span class="highlight">binary rating</span>（二元评级），并通过多轮评估（每个问题32票）移除低质量条目。整个过程强调人类-LLM协作在提升数据质量中的效率和可靠性。</p>
+  </section>
+  
+  <section class="section">
+    <h2>内容翻译</h2>
+    <div class="original">
+      <h3>6.3 Quality Assessment via Human and LLM-as-a-Judge</h3>
+      <p>During the data processing stage, we identified that many problems in the math portion were either incomplete or poorly formatted. Consequently, we conducted an additional round of strict human-LLM-combined inspection to ensure data quality. We sampled a few hundred questions from the remaining pool and asked human evaluators to assess whether each problem met the following criteria:</p>
+      <ol>
+        <li>Clear Wording: Is the problem stated in a way that is easy to understand?</li>
+        <li>Complete Information: Does the problem provide all necessary details?</li>
+        <li>Good Formatting: Are the numbers, symbols, and equations clear and appropriately formatted?</li>
+        <li>No Distractions: Is the problem free of irrelevant information?</li>
+      </ol>
+      <p>We provide below examples of original problem statements that human evaluators identified as problematic:</p>
+      <p>Incomplete Problems:</p>
+      <ul>
+        <li>6. Five spherical surfaces can divide space int parts. (NuminaMath-1.5, Olympiads)</li>
+        <li>Which of the following numbers is equal to 33 million? (STILL-3-Preview-RL-Data)</li>
+        <li>Which number is greater than 0.7 (STILL-3-Preview-RL-Data)</li>
+        <li>Example 27 Find σ2(28) =? (NuminaMath-1.5, Number Theory)</li>
+      </ul>
+      <p>Irrelevant Information:</p>
+      <ul>
+        <li>250. y=ln(x³−1).
+
+250. y=ln(x³−1).
+
+The above text has been translated into English, retaining the original text’s line breaks and format. However, since the original text is a mathematical expression, the translation is identical to the original as mathematical expressions are generally universal and do not change between languages. (NuminaMath-1.5, Olympiads)</li>
+        <li>1. (12 points) The figure is composed of 5 identical squares. The number of triangles that can be formed using the 12 points in the figure as vertices is.10. (12 points) The figure is composed of 5 identical squares. The number of triangles that can be formed using the 12 points in the figure as vertices is. (NuminaMath-1.5, Olympiads)</li>
+      </ul>
+      <p>Interestingly, these problems passed the difficulty estimation procedure (i.e., a model can produce a correct answer even when the problem is invalid or incomplete). This indicates that the models answered these problems correctly at least once during the 16 rollouts, suggesting they may have been trained on similar examples or that the answers were trivially guessable.</p>
+      <p>To efficiently curate the entire dataset, we employed Llama-3.3-70B-Instruct and Qwen2.5-72B-Instruct to automatically filter out low-quality problems. Each model was prompted to evaluate a given math problem based on clarity, completeness, formatting, and relevance, and to identify reasons a problem might be considered low quality, ultimately providing a binary rating. This process mimics human assessment while being significantly more efficient. For each problem and each LLM judge, we collected 16 evaluations, resulting in a total of 32 votes per problem. We retained problems that received at least 9 valid votes and removed approximately 1K-2K math questions in total.</p>
+    </div>
+    
+    <div class="translation">
+      <h3>6.3 通过人类和LLM作为评判员的质量评估</h3>
+      <p>在数据处理阶段，我们发现数学部分的许多问题要么不完整，要么格式不佳。因此，我们进行了额外一轮严格的人类-LLM结合检查，以确保数据质量。我们从剩余池中抽样了几百个问题，并要求人类评估员评估每个问题是否满足以下标准：</p>
+      <ol>
+        <li>清晰表述：问题是否以易于理解的方式陈述？</li>
+        <li>完整信息：问题是否提供了所有必要细节？</li>
+        <li>良好格式：数字、符号和方程是否清晰且格式适当？</li>
+        <li>无干扰信息：问题是否没有无关信息？</li>
+      </ol>
+      <p>我们提供了以下人类评估员识别出的问题示例：</p>
+      <p>不完整问题：</p>
+      <ul>
+        <li>6. 五个球面可以将空间分成若干部分。(NuminaMath-1.5, Olympiads)</li>
+        <li>以下哪个数字等于3300万？(STILL-3-Preview-RL-Data)</li>
+        <li>哪个数字大于0.7？(STILL-3-Preview-RL-Data)</li>
+        <li>示例27 求 σ₂(28) =？(NuminaMath-1.5, Number Theory)</li>
+      </ul>
+      <p>无关信息：</p>
+      <ul>
+        <li>250. y=ln(x³−1).
+
+250. y=ln(x³−1).
+
+上述文本已翻译成英文，保留了原始文本的换行和格式。然而，由于原始文本是数学表达式，翻译与原始内容相同，因为数学表达式通常是通用的，不会因语言而改变。(NuminaMath-1.5, Olympiads)</li>
+        <li>1. (12分) 该图由5个相同的正方形组成。使用图中12个点作为顶点可以形成的三角形数量是。10. (12分) 该图由5个相同的正方形组成。使用图中12个点作为顶点可以形成的三角形数量是。(NuminaMath-1.5, Olympiads)</li>
+      </ul>
+      <p>有趣的是，这些问题通过了难度估计过程（即，模型即使在问题无效或不完整时也能产生正确答案）。这表明模型在16次rollouts中至少正确回答了这些问题一次，表明它们可能在类似示例上训练过，或者答案是可轻易猜测的。</p>
+      <p>为了高效整理整个数据集，我们采用了Llama-3.3-70B-Instruct和Qwen2.5-72B-Instruct来自动过滤低质量问题。每个模型被提示基于清晰度、完整性、格式和相关性评估给定的数学问题，并识别问题可能被视为低质量的原因，最终提供二元评级。这个过程模仿了人类评估，同时显著更高效。对于每个问题和每个LLM评判员，我们收集了16次评估，导致每个问题总共有32票。我们保留了至少获得9票有效票的问题，并总共移除了大约1K-2K个数学问题。</p>
+    </div>
+    
+    <div class="formula-container">
+      <div class="formula">
+        <p>数学公式示例（公式1）：</p>
+        <p>\[ \\ln(x^3 - 1) \]</p>
+        <p>数学公式示例（公式2）：</p>
+        <p>\[ \\sigma_2(28) \]</p>
+      </div>
+    </div>
+  </section>
+  
+  <section class="section">
+    <h2>摘要总结</h2>
+    <p>文本核心内容概括：在数学问题数据集处理中，通过人类和LLM结合的方法进行质量评估。人类评估员基于四个标准（清晰表述、完整信息、良好格式、无干扰信息）检查抽样问题，识别出不完整和无关信息的示例问题。有趣的是，一些无效问题仍能通过模型难度估计，暗示模型可能依赖训练数据或可猜测性。为提升效率，使用LLM模型（Llama-3.3-70B-Instruct 和 Qwen2.5-72B-Instruct）自动化过滤过程，基于类似标准提供二元评级，并通过多轮投票（每个问题32票）移除低质量条目，最终删除了约1K-2K个问题。整个过程突出了人类-LLM协作在确保数据质量中的优势。</p>
+  </section>
+  
+  <section class="section">
+    <h2>术语识别</h2>
+    <ul class="term-list">
+      <li><span class="highlight">Human-LLM-combined inspection（人类-LLM结合检查）</span>: 指结合人类评估员和大型语言模型（LLM）的协作过程，用于严格审查数据质量。在文本中，它用于识别数学问题的不完整或格式问题，通过抽样和标准评估来提升数据集可靠性。</li>
+      <li><span class="highlight">LLM-as-a-Judge（LLM作为评判员）</span>: 指使用大型语言模型充当质量评判员的角色。在文本中，LLM（如Llama-3.3-70B-Instruct）被提示基于清晰度、完整性等标准自动评估问题，提供高效过滤。</li>
+      <li><span class="highlight">Clear Wording（清晰表述）</span>: 评估标准之一，指问题陈述是否易于理解。在人类评估中，它是四个关键指标之一，确保问题没有歧义或复杂语言。</li>
+      <li><span class="highlight">Complete Information（完整信息）</span>: 评估标准之一，指问题是否包含所有必要细节。例如，在示例中，不完整问题如“Five spherical surfaces can divide space int parts”缺少关键信息。</li>
+      <li><span class="highlight">Good Formatting（良好格式）</span>: 评估标准之一，指数字、符号和方程的呈现是否清晰且规范。文本强调这能避免混淆，如数学公式的适当格式化。</li>
+      <li><span class="highlight">No Distractions（无干扰信息）</span>: 评估标准之一，指问题是否没有无关内容。示例中，如重复文本或多余描述被视为干扰。</li>
+      <li><span class="highlight">Difficulty estimation procedure（难度估计过程）</span>: 指模型评估问题难度的机制。文本指出，即使问题无效，模型有时也能正确回答，表明该过程可能受训练数据影响。</li>
+      <li><span class="highlight">Rollouts（多次运行）</span>: 在模型评估上下文中，指多次独立尝试或运行。文本提到“16 rollouts”，表示模型对每个问题进行了16次评估以收集答案。</li>
+      <li><span class="highlight">Binary rating（二元评级）</span>: 指简化的评级系统，输出是二元的（例如，通过/失败）。在LLM过滤中，模型基于标准提供“是/否”评级，用于高效决策。</li>
+      <li><span class="highlight">Model training on similar examples（模型在类似示例上训练）</span>: 解释模型行为的概念，指模型可能因训练数据中包含类似问题而能回答无效问题，导致评估偏差。</li>
+    </ul>
+  </section>
+</body>
+</html>

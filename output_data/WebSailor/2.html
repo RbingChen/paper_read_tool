@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>论文解析报告</title>
+  <style>
+    body { font-family: Arial, sans-serif; line-height: 1.6; }
+    .original { background-color: #f0f0f0; border: 1px solid #cccccc; padding: 15px; margin-bottom: 20px; }
+    .translation { background-color: #e0f8e0; border: 1px solid #4CAF50; padding: 15px; margin-bottom: 20px; }
+    .figure { background-color: #ffffcc; padding: 10px; text-align: center; font-style: italic; margin: 15px 0; }
+    .formula-container { text-align: center; margin: 20px 0; }
+    .formula { display: inline-block; padding: 10px; }
+    .term { color: red; font-weight: bold; }
+    h2, h3 { color: #2c3e50; }
+    .section { margin-bottom: 30px; }
+  </style>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+
+<h1>论文解析报告</h1>
+
+<!-- 内容理解 -->
+<div class="section">
+  <h2>内容理解</h2>
+  <p>本文提出了一种名为<strong class="term">复制采样策略优化（Duplicating Sampling Policy Optimization, DUPO）</strong>的新方法，用于解决智能体在需要多轮推理和大量工具使用的任务中强化学习训练效率低下的问题。DUPO通过训练前和训练中两种动态采样策略提升效果和效率。作者开发的<strong class="term">WebSailor模型家族</strong>（3B/7B/32B/72B）在BrowseComp-en/zh基准测试中超越了所有开源模型及Grok-3、DouBao等专有模型（需结合浏览能力）。研究还发现，基于复杂不确定性驱动推理模式的后训练具有向下兼容性，在GAIA、XBench-DeepSearch等简单任务中表现优异。</p>
+  <p>问题定义基于<strong class="term">ReAct框架</strong>，智能体通过<strong class="term">思考-行动-观察（Thought-Action-Observation）</strong>多轮迭代解决问题。在<strong class="term">WebTraverseX</strong>环境中，行动空间包括生成最终答案、搜索（调用搜索引擎）和访问（获取网页内容）。完整轨迹定义为公式(1)所示的序列。与只需1-2轮迭代的多跳问答不同，BrowseComp任务需要智能体在非结构化信息空间中执行自适应搜索策略，通过动态信息合成、路径剪枝和事实整合实现高效求解，这体现了<strong class="term">思维链（chain of thought）</strong>的复杂推理模式。</p>
+  <p>最后，作者从问答构建和推理轨迹生成两个角度，提出基于不确定性降低复杂度的<strong class="term">SailorFog-QA</strong>数据合成方法，为复杂推理任务构建训练数据。</p>
+</div>
+
+<!-- 内容翻译 -->
+<div class="section">
+  <h2>内容翻译</h2>
+  
+  <div class="original">
+    <p>examples proves effective. The RL training of agents for such tasks is extremely slow due to multi-turn reasoning and heavy tool use. To address this, we propose <span class="term">Duplicating Sampling Policy Optimization (DUPO)</span>, which incorporates two dynamic sampling strategies—one before training and one during training—to improve both effectiveness and efficiency.</p>
+    <p>Our family of <span class="term">WebSailor models</span> (3B, 7B, 32B, and 72B) outperform all open-source models and agentic methods on <span class="term">BrowseComp-en/zh</span>, and also surpass proprietary LRMs such as Grok-3 (x.ai, 2025) and DouBao (Doubao, 2025) when they are combined with browsing capabilities, as shown in <span class="figure">Fig. 1</span>. Additionally, we find that post-training based on complex, uncertainty-driven reasoning patterns exhibits downward compatibility, achieving promising performance on simpler tasks such as GAIA (Mialon et al., 2023), XBench-DeepSearch (Xbench-Team, 2025), and SimpleQA (OpenAI, 2025d).</p>
+  </div>
+  <div class="translation">
+    <p>示例证明有效。由于多轮推理和大量工具使用，针对此类任务的智能体强化学习训练极其缓慢。为解决此问题，我们提出<span class="term">复制采样策略优化（Duplicating Sampling Policy Optimization, DUPO）</span>，该方法结合两种动态采样策略——训练前采样和训练中采样——以提升效果和效率。</p>
+    <p>我们的<span class="term">WebSailor模型家族</span>（3B/7B/32B/72B）在<span class="term">BrowseComp-en/zh</span>基准测试中超越所有开源模型和智能体方法，当结合浏览能力时，还超越了Grok-3（x.ai, 2025）和DouBao（Doubao, 2025）等专有LRMs，如<span class="figure">图1</span>所示。此外，我们发现基于复杂不确定性驱动推理模式的后训练表现出向下兼容性，在GAIA（Mialon等人, 2023）、XBench-DeepSearch（Xbench团队, 2025）和SimpleQA（OpenAI, 2025d）等简单任务中实现了良好性能。</p>
+  </div>
+
+  <div class="original">
+    <h3>2 Problem Definition</h3>
+    <p>We adopt the <span class="term">ReAct (Yao et al., 2023)</span> as the agent’s framework. Upon receiving a question, the agent performs several iterations of <span class="term">Thought-Action-Observation</span>. Specifically, in each iteration, based on the existing context, the LLM generates a Thought and executes a parsable Action (tool call), then awaits the environment to return an Observation. In <span class="term">WebTraverseX</span>, the action space consists of generating final answer and two tools, search and visit, which correspond to invoking a search engine with several queries and accessing several webpages via URLs to retrieve their content, respectively. The details of these two tools are provided in the Appendix A.1 The observation returned by the search action consists of 10 titles, snippets, and their corresponding URLs for each search query. In contrast, the observation of the visit action is a summary of the webpages, tailored to the "goal" specified in the LLM’s action. The iteration terminates when the LLM selects "final answer" as the action. A complete trajectory with T iterations can be defined as:</p>
+    <div class="formula-container">
+      <div class="formula">
+        \\[ H_T = (\\tau_0,a_0,o_0, \\ldots ,\\tau_i,a_i,o_i, \\ldots ,\\tau_T,a_T) \\tag{1} \\]
+      </div>
+    </div>
+    <p>where \\(\\tau_i,a_i,o_i\\) represent thought, action, and observation in the i-th round, respectively. At step t, the thought \\(\\tau_t\\) and \\(a_t\\) are sampled from a policy based on all previous context, i.e., \\(\\pi(a_t|H_{t-1})\\).</p>
+    <p>Completing <span class="term">multi-hop QA (Yang et al., 2018; Ho et al., 2020)</span> typically requires only one or two rounds of ReAct, as the actions at each step are quite clear and do not involve much strategic planning. In stark contrast, <span class="term">BrowseComp</span> immerses the agent in a vast, unstructured information space where the solution path is not predefined. A naive, brute-force search is computationally infeasible, potentially requiring thousands of tool calls that would overwhelm the context window of any modern LLM. Success, therefore, hinges not on following a simple script, but on executing a highly adaptive search

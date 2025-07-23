@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='UTF-8'>
+    <style>
+        .original { background-color: #f5f5f5; border: 1px solid #999; padding: 15px; margin: 10px 0; }
+        .translation { background-color: #e8f5e9; border: 1px solid #4CAF50; padding: 15px; margin: 10px 0; }
+        .term { color: red; font-weight: bold; }
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        .formula { text-align: center; margin: 20px 0; }
+    </style>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.0/es5/tex-mml-chtml.js'></script>
+</head>
+<body>
+
+    <section>
+        <h2>内容理解</h2>
+        <p>本文主要比较AM-Thinking-v1模型与多个前沿大语言模型的性能表现，涵盖数学推理、编程能力和通用对话三个维度。研究使用AIME、LiveCodeBench和Arena-Hard等基准测试，对比模型包括DeepSeek-R1、Qwen3系列、Seed1.5-Thinking等知名模型。</p>
+    </section>
+
+    <section>
+        <h2>内容翻译</h2>
+        <div class='original'>
+            <h3>5.1.4 Baselines</h3>
+            <p>We compare AM-Thinking-v1 against a set of strong baseline models...</p>
+        </div>
+        <div class='translation'>
+            <h3>5.1.4 基线模型</h3>
+            <p>我们将AM-Thinking-v1与多个强力基线模型进行对比...</p>
+        </div>
+        
+        <div class='original'>
+            <h3>5.2 Results</h3>
+            <p>Table 1: Comparison across reasoning benchmarks...</p>
+        </div>
+        <div class='translation'>
+            <h3>5.2 实验结果</h3>
+            <p>表1: 推理基准测试对比...</p>
+        </div>
+    </section>
+
+    <section>
+        <h2>摘要总结</h2>
+        <p>研究通过三大类基准测试对比了AM-Thinking-v1与9个前沿模型的性能：<br>
+        1. 数学推理：在AIME2024/AIME2025分别取得85.3/74.4分，优于DeepSeek-R1<br>
+        2. 编程能力：LiveCodeBench测试70.3分，接近Qwen3-235B-A22B<br>
+        3. 通用对话：Arena-Hard得分92.5，稍逊于Qwen3-235B-A22B的95.6分</p>
+    </section>
+
+    <section>
+        <h2>术语解释</h2>
+        <ul>
+            <li><span class='term'>MoE模型（Mixture of Experts）</span>: 混合专家架构，通过动态激活子网络提升模型效率</li>
+            <li><span class='term'>参数规模（235B/32B）</span>: 表示模型总参数量（2350亿/320亿）</li>
+            <li><span class='term'>强化学习框架（Reinforcement Learning Framework）</span>: 通过奖励机制优化模型输出的训练方法</li>
+        </ul>
+    </section>
+
+    <section>
+        <h3>性能对比表</h3>
+        <table>
+            <tr>
+                <th>模型</th><th>AIME2024</th><th>AIME2025</th><th>LiveCodeBench</th>
+            </tr>
+            <tr>
+                <td>AM-Thinking-v1</td><td>85.3</td><td>74.4</td><td>70.3</td>
+            </tr>
+            <tr>
+                <td>Gemini2.5-Pro</td><td>92.0</td><td>86.7</td><td>70.4</td>
+            </tr>
+        </table>
+    </section>
+
+    <div class='formula'>
+        $$ \text{模型评分} = \alpha \cdot \text{数学} + \beta \cdot \text{编程} + \gamma \cdot \text{对话} \quad (1) $$
+        <p>公式说明：综合评分计算公式，αβγ为各维度权重系数</p>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>论文分析与翻译</title>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    body { font-family: Arial, sans-serif; line-height: 1.6; margin: 20px; }
+    h1 { text-align: center; color: #333; }
+    h2 { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 5px; }
+    .original { background-color: #f0f0f0; border: 1px solid #cccccc; padding: 15px; margin-bottom: 20px; border-radius: 5px; }
+    .translation { background-color: #e0ffe0; border: 1px solid #2ecc71; padding: 15px; margin-bottom: 20px; border-radius: 5px; }
+    .term { color: red; font-weight: bold; }
+    .summary, .understanding, .terms-list { margin: 20px 0; padding: 15px; background-color: #f9f9f9; border: 1px solid #ddd; border-radius: 5px; }
+    .terms-list ul { list-style-type: none; padding: 0; }
+    .terms-list li { margin-bottom: 10px; }
+  </style>
+</head>
+<body>
+  <h1>论文内容分析与翻译</h1>
+  
+  <h2>内容理解</h2>
+  <div class="understanding">
+    <p>该文本讨论了强化学习（RL）训练中的关键优化策略，重点关注数据收集、训练策略、损失函数设计以及熵崩溃的实证研究。在数据收集方面，作者强调从多样化来源获取数据并进行严格质量过滤的重要性，以避免模型在扩大规模时出现失败模式。训练策略部分指出，多阶段训练能提升初始效率，但需处理噪声信号；高温采样虽在早期降低测试精度，但最终能带来更大性能提升；同策略训练则能有效减轻熵崩溃。损失函数设计中，自适应熵控制成功维持模型探索能力，而KL惩罚被证明阻碍性能改进。熵崩溃研究揭示，熵崩溃速度与测试性能负相关，同策略训练优于异策略训练，且熵损失对数据和系数高度敏感。整体上，文本的核心认知是：通过优化数据质量、训练阶段性和熵控制，可以防止策略过早收敛，从而增强探索并提升测试性能。</p>
+  </div>
+  
+  <h2>内容翻译</h2>
+  <div class="original">
+    <h3>Data Collection</h3>
+    <p>1. To ensure stable and effective training, it is crucial to incorporate problems from a diverse set of sources. We observe that, in the absence of consistent quality assessment and filtering procedures, previously successful datasets exhibit several failure modes with larger models (Section 6).</p>
+    <p>2. Rigorous filtering and quality control of training data significantly accelerate learning. Our proposed data mixture, constructed with stringent filtering criteria, outperforms a baseline mixture assembled with looser quality thresholds (Section 3.2.1).</p>
+  </div>
+  <div class="translation">
+    <h3>数据收集</h3>
+    <p>1. 为确保稳定和有效的训练，从多样化的来源中纳入问题至关重要。我们观察到，在没有一致的质量评估和过滤程序的情况下，先前成功的数据集在较大模型上表现出多种失败模式（第6节）。</p>
+    <p>2. 对训练数据进行严格的过滤和质量控制显著加速学习。我们提出的数据混合，通过严格的过滤标准构建，优于使用较宽松质量阈值组装的基线混合（第3.2.1节）。</p>
+  </div>
+  
+  <div class="original">
+    <h3>Training Strategy</h3>
+    <p>1. Multi-stage training significantly improves training efficiency in the initial phase while preserving scalability for later stages (Section 3.2.2).</p>
+    <p>2. Addressing noisy training signals introduced by truncated trajectories in Stage I does not lead to better scaling at large context lengths, e.g., 32K (Section 3.2.3).</p>
+    <p>3. High-temperature sampling results in lower test accuracy during the early training steps but ultimately yields greater performance improvements (Section 3.2.4).</p>
+    <p>4. On-policy training mitigates entropy collapse and leads to higher test performance (Section 4).</p>
+  </div>
+  <div class="translation">
+    <h3>训练策略</h3>
+    <p>1. <strong class="term">多阶段训练 (Multi-stage training)</strong>显著提高了初始阶段的训练效率，同时保持了后期阶段的可扩展性（第3.2.2节）。</p>
+    <p>2. 解决第一阶段中由截断轨迹引入的噪声训练信号，并不会导致在大型上下文长度（例如32K）下更好的扩展（第3.2.3节）。</p>
+    <p>3. <strong class="term">高温采样 (High-temperature sampling)</strong>在早期训练步骤中导致较低的测试精度，但最终产生更大的性能改进（第3.2.4节）。</p>
+    <p>4. <strong class="term">同策略训练 (On-policy training)</strong>减轻<strong class="term">熵崩溃 (Entropy Collapse)</strong>并导致更高的测试性能（第4节）。</p>
+  </div>
+  
+  <div class="original">
+    <h3>Loss Function</h3>
+    <p>1. Adaptive entropy control effectively keeps the model’s entropy lower-bounded by the target entropy throughout training, maintaining the model’s exploration ability and high learning plasticity, with test performance steadily improving (Section 3.2.5).</p>
+    <p>2. The KL penalty hinders further improvements in test performance during multi-stage training. Therefore, we omit KL loss from our training pipeline (Section 3.2.6).</p>
+  </div>
+  <div class="translation">
+    <h3>损失函数</h3>
+    <p>1. <strong class="term">自适应熵控制 (Adaptive entropy control)</strong>在整个训练过程中有效地将模型的熵下界保持在目标熵，维持模型的探索能力和高学习可塑性，测试性能稳步提高（第3.2.5节）。</p>
+    <p>2. <strong class="term">KL惩罚 (KL penalty)</strong>在<strong class="term">多阶段训练 (Multi-stage training)</strong>中阻碍了测试性能的进一步改进。因此，我们从训练管道中省略了KL损失（第3.2.6节）。</p>
+  </div>
+  
+  <div class="original">
+    <h3>Empirical Results of Our Entropy Collapse Study</h3>
+    <p>1. Faster entropy collapse generally correlates with poorer test performance (Section 4.2). Appropriate entropy control that mitigates premature convergence can improve test outcomes (Section 4.5).</p>
+    <p>2. Increasing rollout diversity by enlarging the batch and group sizes has only minor effects on entropy dynamics (Section 4.3), whereas using a higher sampling temperature significantly impacts initial entropy and learning dynamics (Section 3.2.4).</p>
+    <p>3. Off-policy training – via increased mini-batches or data reuse – accelerates entropy collapse and generally leads to degraded test performance compared to on-policy updates, due to the introduction of off-policy data (Section 4.4).</p>
+    <p>4. The entropy loss exhibits high sensitivity to both the training data and the coefficient. By either adaptively adjusting the entropy loss coefficient or applying a clip-higher trick with an appropriate clip ratio, entropy dynamics become slower and more stable, leading to improved test performance. Nevertheless, entropy still converges faster than in on-policy training (Section 4.5).</p>
+  </div>
+  <div class="translation">
+    <h3>熵崩溃研究的经验结果</h3>
+    <p>1. 更快的<strong class="term">熵崩溃 (Entropy Collapse)</strong>通常与较差的测试性能相关（第4.2节）。减轻<strong class="term">过早收敛 (Premature Convergence)</strong>的适当熵控制可以改善测试结果（第4.5节）。</p>
+    <p>2. 通过扩大批次和组大小来增加<strong class="term">Rollout多样性 (Rollout Diversity)</strong>对<strong class="term">熵动态 (Entropy Dynamics)</strong>只有轻微影响（第4.3节），而使用更高的采样温度显著影响初始熵和学习动态（第3.2.4节）。</p>
+    <p>3. <strong class="term">异策略训练 (Off-policy Training)</strong>——通过增加小批次或数据重用——加速熵崩溃，并且通常导致比<strong class="term">同策略更新 (On-policy Updates)</strong>更差的测试性能，由于引入异策略数据（第4.4节）。</p>
+    <p>4. <strong class="term">熵损失 (Entropy Loss)</strong>对训练数据和系数都表现出高敏感性。通过自适应调整熵损失系数或应用具有适当裁剪比率的clip-higher技巧，熵动态变得更慢和更稳定，导致改进的测试性能。然而，熵仍然比在同策略训练中收敛得更快（第4.5节）。</p>
+  </div>
+  
+  <div class="original">
+    <h3>Organization</h3>
+    <p>In Section 2, we introduce the preliminaries of several important policy optimization methods in RL. Section 3 elaborates on our training pipeline, including comprehensive ablation studies that validate the effectiveness of its core components. A systematic investigation of entropy collapse is presented in Section 4, demonstrating that mitigating premature policy convergence is critical in RL training for enhancing exploration and achieving better test performance. We discuss training resource allocation in Section 5.</p>
+  </div>
+  <div class="translation">
+    <h3>组织结构</h3>
+    <p>在第2节，我们介绍了几种重要<strong class="term">策略优化方法 (Policy Optimization Methods)</strong>在RL中的预备知识。第3节详细阐述了我们的训练管道，包括验证其核心组件有效性的全面消融研究。第4节提出了对熵崩溃的系统调查，证明减轻策略过早收敛在RL训练中对于增强探索和实现更好测试性能至关重要。我们在第5节讨论训练资源分配。</p>
+  </div>
+  
+  <h2>摘要总结</h2>
+  <div class="summary">
+    <p>本文总结了强化学习训练中的关键优化方法。核心内容包括：在数据收集方面，强调从多样化来源获取数据并进行严格过滤，以提升训练稳定性和性能；在训练策略上，多阶段训练提高初始效率，高温采样虽早期精度低但最终有益，同策略训练有效减轻熵崩溃；损失函数设计中，自适应熵控制维持探索能力，而KL惩罚被省略；熵崩溃研究显示，熵崩溃速度与测试性能负相关，同策略训练优于异策略训练，且熵损失对数据和系数敏感。整体上，通过控制熵动态和防止过早收敛，可以显著增强模型探索能力和测试性能。</p>
+  </div>
+  
+  <h2>术语识别</h2>
+  <div class="terms-list">
+    <ul>
+      <li><strong class="term">熵崩溃 (Entropy Collapse)</strong>: 在强化学习中，策略的熵值迅速下降，导致模型过早停止探索并收敛到次优解。这会降低测试性能，因为模型失去多样性。</li>
+      <li><strong class="term">多阶段训练 (Multi-stage training)</strong>: 训练过程分为多个阶段（如初始阶段和后期阶段），每个阶段使用不同设置以提高整体效率和可扩展性。例如，初始阶段优化速度，后期阶段处理大规模上下文。</li>
+      <li><strong class="term">自适应熵控制 (Adaptive entropy control)</strong>: 一种损失函数技术，动态调整熵损失系数，确保模型熵值不低于目标下限，从而维持探索能力和学习可塑性。</li>
+      <li><strong class="term">KL惩罚 (KL penalty)</strong>: 基于Kullback-Leibler散度的正则化项，用于防止策略更新偏离参考策略太远。但文中发现它在多阶段训练中阻碍性能改进。</li>
+      <li><strong class="term">同策略训练 (On-policy training)</strong>: 使用当前策略生成的数据进行训练，有助于维持探索并减轻熵崩溃，从而提升测试性能。</li>
+      <li><strong class="term">异策略训练 (Off-policy training)</strong>: 使用旧策略或外部数据源的数据进行训练，可能引入噪声并加速熵崩溃，导致测试性能下降。</li>
+      <li><strong class="term">高温采样 (High-temperature sampling)</strong>: 在策略采样时使用高温参数（增加随机性），初期降低测试精度但最终提升整体性能，通过增强探索实现。</li>
+      <li><strong class="term">Rollout多样性 (Rollout diversity)</strong>: 通过增大批次大小或组大小来增加训练数据的多样性，但对熵动态影响较小。</li>
+      <li><strong class="term">熵动态 (Entropy dynamics)</strong>: 模型熵值随时间的变化过程，反映探索-利用平衡。稳定缓慢的熵动态关联更好性能。</li>
+      <li><strong class="term">过早收敛 (Premature convergence)</strong>: 策略在未充分探索前就收敛到局部最优，常由熵崩溃引起，可通过熵控制缓解。</li>
+      <li><strong class="term">熵损失 (Entropy loss)</strong>: 损失函数的一部分，用于鼓励策略多样性；它对训练数据和系数高度敏感，调整后可稳定熵动态。</li>
+      <li><strong class="term">策略优化方法 (Policy optimization methods)</strong>: 强化学习中用于更新策略的算法（如PPO、TRPO），在第2节作为预备知识介绍。</li>
+    </ul>
+  </div>
+</body>
+</html>

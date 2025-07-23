@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>算法专家论文解析：信息寻求任务分类与Level 3构建</title>
+  <style>
+    body { font-family: Arial, sans-serif; line-height: 1.6; max-width: 800px; margin: 0 auto; padding: 20px; }
+    h1 { text-align: center; color: #333; }
+    h2 { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 5px; }
+    .original { background-color: #f0f0f0; border: 1px solid #cccccc; padding: 15px; margin-bottom: 15px; border-radius: 5px; }
+    .translation { background-color: #e0ffe0; border: 1px solid #00cc00; padding: 15px; margin-bottom: 15px; border-radius: 5px; }
+    .figure { background-color: #ffffcc; padding: 15px; margin-bottom: 15px; border-radius: 5px; text-align: center; }
+    .term { color: red; font-weight: bold; }
+    .formula-container { text-align: center; margin: 20px 0; }
+    .formula { font-size: 1.2em; margin-bottom: 5px; }
+    .formula-caption { font-style: italic; color: #555; }
+    ul { list-style-type: none; padding-left: 0; }
+    li { margin-bottom: 10px; }
+    section { margin-bottom: 30px; }
+  </style>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <header>
+    <h1>论文解析：信息寻求任务分类与Level 3构建方法</h1>
+    <p>作为算法专家，我已对输入文本进行深入分析，完成内容理解、翻译、摘要总结和术语识别任务。</p>
+  </header>
+
+  <section id="understanding">
+    <h2>内容理解</h2>
+    <p>输入文本的核心是讨论信息寻求任务（Information Seeking Tasks）的分类框架，基于不确定性和减少难度的维度，将任务分为三个级别：<span class="term">Level 1（级别1）</span>、<span class="term">Level 2（级别2）</span>和<span class="term">Level 3（级别3）</span>。Level 1任务结构简单，可通过模型内部知识或单次搜索直接解决；Level 2任务类似于多跳问答，虽有高初始不确定性，但可通过固定推理路径系统化减少不确定性；Level 3任务则聚焦高不确定性和高减少难度，实体间关系复杂且缺乏预定义路径，需创造性探索。文本进一步详述了构建Level 3任务的方法：通过随机游走启发的过程，从<span class="term">Wikidata的SPARQL服务（Wikidata's SPARQL service）</span>获取模糊实体，构建非线性知识图谱，再通过迭代扩展形成密集互连结构。最后，基于此图谱，通过子图采样和混淆生成高不确定性问题。整体上，文本强调Level 3任务的独特挑战（如涌现关系和不确定性管理），并提供了可扩展的生成框架，体现了算法设计中处理复杂信息问题的创新思路。</p>
+  </section>
+
+  <section id="translation">
+    <h2>内容翻译</h2>
+    <p>以下为输入文本的英文原文与中文翻译对照。翻译按逻辑段落分组，保留原始结构（如标题、列表）。</p>
+
+    <div class="original">
+      <p>Task Level 1<br>Task Level 2<br>Task Level 3</p>
+    </div>
+    <div class="translation">
+      <p>任务级别1<br>任务级别2<br>任务级别3</p>
+    </div>
+
+    <div class="original">
+      <p>Example 1: Who received the Richard Dawkins Award in 2004?Fuzz<br>Sample</p>
+    </div>
+    <div class="translation">
+      <p>示例1：谁在2004年获得了理查德·道金斯奖？Fuzz<br>样本</p>
+    </div>
+
+    <div class="original">
+      <p>Example 2: Who was the most prominent figure of the 1986 People Power Revolution?Example 1: Who was the first academician of the Chinese Academy of Sciences from the alma mater of Alibaba’s current CEO?</p>
+    </div>
+    <div class="translation">
+      <p>示例2：1986年人民力量革命中最杰出的人物是谁？示例1：阿里巴巴现任CEO的母校中，谁是第一位中国科学院院士？</p>
+    </div>
+
+    <div class="original">
+      <p>Example 2: Which state is the hometown of the American athlete who won the most gold medals at the 2004 Olympic Games located in?</p>
+    </div>
+    <div class="translation">
+      <p>示例2：在2004年奥运会上获得最多金牌的美国运动员的家乡位于哪个州？</p>
+    </div>
+
+    <div class="figure">
+      <p>Figure 2: Information seeking tasks can be categorized into three levels. Level 1 features a relatively simple logical structure and can be answered directly or with a single, straightforward tool invocation. Level 2 resembles multi-hop questions, where solutions are obtained through a fixed sequence of reasoning steps. Level 3 exhibits the most complex and variable topology after obfuscation, making it difficult to define manually, and its inherent uncertainty is challenging to reduce.</p>
+    </div>
+    <div class="translation">
+      <p>图2：信息寻求任务可分为三个级别。级别1具有相对简单的逻辑结构，可直接或通过单一、直接的工具调用回答。级别2类似于多跳问题，其解决方案通过固定的推理步骤序列获得。级别3在混淆后展现出最复杂和多变的拓扑结构，使其难以手动定义，且其固有的不确定性难以减少。</p>
+    </div>
+
+    <div class="original">
+      <p>three levels based on these two dimensions.</p>
+      <ul>
+        <li>•Level 1: tasks exhibit low uncertainty that is easily reduced. These include questions answerable by the model’s internal knowledge or through a single, straightforward web search.</li>
+        <li>•Level 2: tasks, such as multi-hop QA, present high initial uncertainty but follow a clear path to resolution. Even with many steps, the entities are linked by well-defined logic, allowing uncertainty to be systematically reduced through a structured sequence of actions.</li>
+        <li>•Level 3: the focus of our work, involves problems with both high uncertainty and high difficulty in its reduction. Here, entities are coupled in complex, emergent ways, lacking a pre-defined reasoning path. Solving these problems demands creative exploration and novel reasoning patterns that are difficult to specify manually.</li>
+      </ul>
+    </div>
+    <div class="translation">
+      <p>基于这两个维度划分的三个级别。</p>
+      <ul>
+        <li>•级别1：任务表现出低不确定性且易于减少。这些包括可通过模型内部知识或单一、直接的网络搜索回答的问题。</li>
+        <li>•级别2：任务（如多跳问答）呈现高初始不确定性，但遵循清晰的解决路径。即使步骤众多，实体间也通过明确定义的逻辑链接，允许通过结构化行动序列系统化减少不确定性。</li>
+        <li>•级别3：我们工作的重点，涉及高不确定性和高减少难度的问题。在此，实体以复杂、涌现的方式耦合，缺乏预定义的推理路径。解决这些问题需要创造性探索和难以手动指定的新颖推理模式。</li>
+      </ul>
+    </div>
+
+    <div class="original">
+      <p>Constructing the Structural Foundation for Hard-to-Reduce Uncertainty To generate Level 3 tasks, we first construct a complex informational landscape where uncertainty is inherently difficult to reduce. Our process, inspired by random walks, builds knowledge graphs with emergent, non-linear structures. We begin by seeding the graph with a fuzzy entity retrieved from Wikidata’s SPARQL service to ensure a challenging starting point. Using simulated web browsing, we gather unstructured text and features about this entity from the internet. From this raw information, we extract related entities and the relationships connecting them, forming the initial nodes and edges. The crucial step is the iterative expansion: we probabilistically select existing nodes and seek out new, distinct entities to connect. This stochastic process discourages simple linear chains (characteristic of Level 2 tasks) and instead fosters a densely interconnected graph with intricate, overlapping relational paths. The resulting graph serves as a structural foundation for problems that lack a pre-defined reasoning path, compelling an agent to navigate a complex web of information rather than follow a straight line.</p>
+    </div>
+    <div class="translation">
+      <p>构建难以减少不确定性的结构基础 为生成级别3任务，我们首先构建一个复杂的信息景观，其中不确定性本质上难以减少。我们的过程受随机游走启发，构建具有涌现性、非线性结构的<span class="term">知识图谱（knowledge graphs）</span>。我们从通过<span class="term">Wikidata的SPARQL服务（Wikidata's SPARQL service）</span>检索的模糊实体开始，作为图的种子，以确保具有挑战性的起点。通过模拟网络浏览，我们从互联网收集关于该实体的非结构化文本和特征。从这些原始信息中，我们提取相关实体及其连接关系，形成初始节点和边。关键步骤是迭代扩展：我们概率性地选择现有节点，并寻找新的、不同的实体进行连接。这一<span class="term">随机过程（stochastic process）</span>避免了简单线性链（级别2任务的特征），而是培育出具有复杂、重叠关系路径的密集互连图。生成的图谱作为缺乏预定义推理路径问题的结构基础，迫使代理在复杂信息网络中导航，而非遵循直线路径。</p>
+    </div>
+
+    <div class="original">
+      <p>Generating High-Uncertainty Questions via Subgraph Sampling and Obfuscation With these complex graphs as a foundation, we generate questions characterized by high initial uncertainty. This is 4</p>
+    </div>
+    <div class="translation">
+      <p>通过子图采样和混淆生成高不确定性问题 以这些复杂图谱为基础，我们生成具有高初始不确定性特征的问题。这是4</p>
+    </div>
+  </section>
+
+  <section id="summary">
+    <h2>摘要总结</h2>
+    <p>文本核心内容概括如下：信息寻求任务基于不确定性和减少难度分为三个级别：<span class="term">Level 1（级别1）</span>（低不确定性，可直接解决）、<span class="term">Level 2（级别2）</span>（高初始不确定性但有固定路径，如多跳问答）、和<span class="term">Level 3（级别3）</span>（高不确定性和高减少难度，需创造性探索）。重点详述了Level 3任务的生成方法：通过<span class="term">随机游走（random walks）</span>启发的过程，从<span class="term">Wikidata的SPARQL服务（Wikidata's SPARQL service）</span>获取模糊实体，构建非线性知识图谱，再通过迭代扩展形成密集互连结构；最后，基于此图谱，利用子图采样和混淆技术生成高不确定性问题。该方法强调处理复杂信息景观的算法创新，以支持代理在缺乏预定义路径时的决策。</p>
+  </section>
+
+  <section id="terminology">
+    <h2>术语识别</h2>
+    <p>识别文本中的关键术语，并提供详细解释（术语以<span class="term">红色粗体</span>显示，包含英文原文）：</p>
+    <ul>
+      <li><span class="term">Level 1（级别1）</span>：信息寻求任务的最低级别，特征为低不确定性和易于减少。任务可通过单一工具（如直接搜索或模型内部知识）解决，无需复杂推理。</li>
+      <li><span class="term">Level 2（级别2）</span>：信息寻求任务的中等级别，特征为高初始不确定性但有清晰解决路径（如多跳问答）。实体间通过明确定义逻辑链接，不确定性可通过结构化步骤序列系统化减少。</li>
+      <li><span class="term">Level 3（级别3）</span>：信息寻求任务的最高级别，特征为高不确定性和高减少难度。实体关系复杂、涌现，缺乏预定义路径，需创造性探索和新颖推理模式解决。</li>
+      <li><span class="term">Uncertainty（不确定性）</span>：在信息寻求任务中，指问题解决过程中的未知性或模糊性。Level 1不确定性低，易于减少；Level 2和Level 3不确定性高，但Level 3的减少难度更大。</li>
+      <li><span class="term">Multi-hop QA（多跳问答）</span>：一种问答任务，需通过多个推理步骤（hops）整合信息才能得出答案，是Level 2任务的典型示例。</li>
+      <li><span class="term">Knowledge graphs（知识图谱）</span>：结构化知识表示形式，由实体（节点）和关系（边）组成。文本中用于构建Level 3任务的基础，强调非线性、涌现性结构。</li>
+      <li><span class="term">Random walks（随机游走）</span>：一种数学过程，通过概率性步骤探索图结构。文本中受此启发，用于构建知识图谱的迭代扩展过程，以避免线性路径。</li>
+      <li><span class="term">Wikidata’s SPARQL service（Wikidata的SPARQL服务）</span>：Wikidata提供的查询服务，使用SPARQL语言检索结构化数据。文本中用于获取初始模糊实体，作为知识图谱的种子。</li>
+      <li><span class="term">Iterative expansion（迭代扩展）</span>：知识图谱构建的关键步骤，通过概率性选择现有节点并连接新实体，逐步扩展图结构，促进复杂互连而非线性链。</li>
+      <li><span class="term">Stochastic process（随机过程）</span>：涉及随机性的数学过程。文本中描述迭代扩展的随机性，确保图谱结构复杂多变，区别于Level 2的确定性路径。</li>
+      <li><span class="term">Obfuscation（混淆）</span>：在任务生成中，指有意增加复杂性和模糊性的技术，使问题拓扑多变，难以手动定义（常用于Level 3任务）。</li>
+      <li><span class="term">Subgraph sampling（子图采样）</span>：从大型图谱中抽取子图的技术。文本中用于基于复杂图谱生成高不确定性问题。</li>
+    </ul>
+  </section>
+
+  <footer>
+    <p>解析完成：算法专家基于论文文本提供全面分析，涵盖理解、翻译、摘要和术语解释。</p>
+  </footer>
+</body>
+</html>

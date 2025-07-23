@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>OneRec Technical Report Analysis</title>
+  <style>
+    body { font-family: Arial, sans-serif; line-height: 1.6; margin: 20px; }
+    h1 { color: #333; text-align: center; }
+    h2 { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 5px; }
+    .original { background-color: #f0f0f0; border: 1px solid #cccccc; padding: 15px; margin-bottom: 15px; border-radius: 5px; }
+    .translation { background-color: #e0ffe0; border: 1px solid #00cc00; padding: 15px; margin-bottom: 15px; border-radius: 5px; }
+    .figure { background-color: #ffffcc; padding: 10px; margin: 15px 0; text-align: center; font-style: italic; }
+    .term { color: red; font-weight: bold; }
+    .paragraph { margin-bottom: 20px; }
+    .section-title { font-weight: bold; margin-top: 20px; }
+    dl { margin-left: 20px; }
+    dt { font-weight: bold; margin-top: 10px; }
+    dd { margin-bottom: 10px; }
+  </style>
+</head>
+<body>
+  <h1>OneRec 技术报告分析</h1>
+
+  <!-- 内容理解部分 -->
+  <section id="understanding">
+    <h2>内容理解</h2>
+    <p>本文是 OneRec 技术报告的核心部分，重点介绍了 OneRec 架构的设计、实现和优化。OneRec 是快手开发的生成式推荐系统，旨在解决大规模视频推荐中的计算和架构挑战。关键创新包括：使用 <span class="term">Tokenizer（分词器）</span>将视频转换为分层语义 ID，以支持知识转移和泛化；采用编码器-解码器结构进行序列预测；并集成 <span class="term">Reinforcement Learning (RL，强化学习)</span>框架优化推荐结果。报告强调，传统架构中 RL 效果有限，但在 OneRec 框架下潜力显著，通过离线/在线实验和工业实践提升了系统适应性和性能。架构分为训练和推理阶段：训练时结合 token 预测和 RL 对齐，推理时生成语义 ID 并映射回视频推荐。Tokenizer 部分改进了现有方案，通过融合协作信号和多模态特征（如图 3 所示），使用 RQ-Kmeans 算法生成高质量语义 ID。整体上，OneRec 实现了模型规模与资源的可扩展优化，确保在各种场景中高效部署。</p>
+  </section>
+
+  <!-- 内容翻译部分 -->
+  <section id="translation">
+    <h2>内容翻译</h2>
+    
+    <div class="paragraph">
+      <div class="original">
+        <p>OneRec Technical Report optimized as model size and computational resources are scaled, ensuring efficient and effective deployment in various operational contexts.</p>
+      </div>
+      <div class="translation">
+        <p>OneRec 技术报告：随着模型规模和计算资源的扩展而优化，确保在各种操作环境中高效且有效的部署。</p>
+      </div>
+    </div>
+    
+    <div class="paragraph">
+      <div class="original">
+        <p>■Reinforcement learning (RL) techniques, which previously had shown limited impact in traditional architectures, now demonstrate substantial potential within our framework. We have conducted extensive experiments with both offline and online performance comparisons and have developed specific application practices tailored to meet real-world industrial iteration requirements. These implementations enable the system to leverage RL, resulting in improved adaptability and performance.</p>
+      </div>
+      <div class="translation">
+        <p>■强化学习（RL）技术：在传统架构中先前影响有限，但在我们的框架中展现出巨大潜力。我们进行了广泛的离线和在线性能对比实验，并开发了特定应用实践，以满足现实工业迭代需求。这些实现使系统能够利用 RL，从而提升适应性和性能。</p>
+      </div>
+    </div>
+    
+    <div class="paragraph">
+      <div class="original">
+        <p>In the remainder of this paper, we first elaborate on the OneRec architecture (Section 2), detailing our tokenization pipeline for short videos, the encoder’s design for user interest modeling and compression, and scalable decoder optimization for precise output generation; we also introduce our reinforcement learning framework for recommendation optimization, discussing the impact of sampling space design, policy, and reward function on recommendation outcomes, along with empirical insights from production deployment. Next, we present the pre-training and post-training pipeline (Section 3), covering training data construction, hyperparameter configurations, and critical implementation discussions, followed by a description of the evaluation framework (Section 4), including offline metric systems and online performance/efficiency optimizations. Lastly, we conclude this work, discuss the existing limitations of OneRec, and propose potential directions for future research (Section 5).</p>
+      </div>
+      <div class="translation">
+        <p>在本文剩余部分，我们首先详细阐述 OneRec 架构（第 2 节），包括短视频的 tokenization 流水线、用于用户兴趣建模和压缩的编码器设计，以及可扩展解码器优化以实现精确输出生成；我们还介绍了用于推荐优化的强化学习框架，讨论采样空间设计、策略和奖励函数对推荐结果的影响，以及生产部署中的经验见解。接下来，我们展示预训练和后训练流水线（第 3 节），涵盖训练数据构建、超参数配置和关键实现讨论，随后描述评估框架（第 4 节），包括离线指标系统和在线性能/效率优化。最后，我们总结本工作，讨论 OneRec 的现有局限性，并提出未来研究的潜在方向（第 5 节）。</p>
+      </div>
+    </div>
+    
+    <div class="section-title">2. Architecture</div>
+    <div class="paragraph">
+      <div class="original">
+        <p>In this section, we present the OneRec architecture (as illustrated in the bottom part of Figure 2). The architecture first employs a tokenizer (Section 2.1) to convert videos into semantic IDs which serve as the prediction targets for the model. During the training phase, the encoder-decoder structure (Section 2.2 and Section 2.3) performs next token prediction to forecast target items, while simultaneously undergoing reinforcement learning alignment through the reward system (Section 2.4). In the inference phase, the model first generates semantic IDs and then maps these tokens back to video recommendations, with an optional reward-based selection step for further refinement.</p>
+      </div>
+      <div class="translation">
+        <p>在本节中，我们介绍 OneRec 架构（如图 2 底部所示）。该架构首先使用 <span class="term">tokenizer（分词器）</span>（第 2.1 节）将视频转换为语义 ID，作为模型的预测目标。在训练阶段，<span class="term">encoder-decoder structure（编码器-解码器结构）</span>（第 2.2 和 2.3 节）执行下一个 token 预测以预测目标项目，同时通过奖励系统（第 2.4 节）进行强化学习对齐。在推理阶段，模型首先生成语义 ID，然后将这些 token 映射回视频推荐，并可选择基于奖励的步骤进行进一步优化。</p>
+      </div>
+    </div>
+    
+    <div class="figure">Figure 2: OneRec architecture diagram (illustrative).</div>
+    
+    <div class="section-title">2.1. Tokenizer</div>
+    <div class="paragraph">
+      <div class="original">
+        <p>OneRec is a generative recommendation system at Kuaishou, while its billion-scale, ever-growing item space prevents generating atomic identifiers due to computational and architectural constraints. To resolve these, OneRec tokenizes items into coarse-to-fine semantic IDs using a reduced and fixed vocabulary, enabling knowledge transfer among similar items and better generalization to new items (Rajput et al., 2024). However, prior solutions (Rajput et al., 2024; Zheng et al., 2024) generate semantic IDs exclusively from context features, neglecting collaborative signals and yielding suboptimal reconstruction quality, as demonstrated in Section 4.4. Consequently, our solution integrates collaborative signals with multimodal features and then leverages RQ-Kmeans (Luo et al., 2024) to generate higher-quality hierarchical semantic IDs.</p>
+      </div>
+      <div class="translation">
+        <p>OneRec 是快手的生成式推荐系统，其十亿级且不断增长的项目空间因计算和架构限制而无法生成原子标识符。为解决此问题，OneRec 使用缩减的固定词汇表将项目 tokenize 为粗到细的<span class="term">semantic IDs（语义 ID）</span>，实现相似项目间的知识转移和更好泛化到新项目（Rajput et al., 2024）。然而，先前解决方案（Rajput et al., 2024; Zheng et al., 2024）仅从上下文特征生成语义 ID，忽略了协作信号，导致次优重建质量（如第 4.4 节所示）。因此，我们的解决方案整合协作信号与多模态特征，然后利用 <span class="term">RQ-Kmeans</span>（Luo et al., 2024）生成更高质量的分层语义 ID。</p>
+      </div>
+    </div>
+    
+    <div class="section-title">2.1.1. Aligned Collaborative-Aware Multimodal Representation</div>
+    <div class="paragraph">
+      <div class="original">
+        <p>We integrate multimodal content with collaborative signals by aligning multimodal representations of collaboratively similar item pairs, as shown in Figure 3 (left). Therefore, we require the preparation of multimodal representations, item pairs, and an alignment strategy:</p>
+      </div>
+      <div class="translation">
+        <p>我们通过对齐协作相似项目对的多模态表示，将多模态内容与协作信号集成，如图 3（左）所示。因此，我们需要准备多模态表示、项目对和一种对齐策略：</p>
+      </div>
+    </div>
+    
+    <div class="figure">Figure 3: Illustration of aligned collaborative-aware multimodal representation (left) and alignment strategy (right).</div>
+  </section>
+
+  <!-- 摘要总结部分 -->
+  <section id="summary">
+    <h2>摘要总结</h2>
+    <p>本报告核心内容聚焦于 OneRec 推荐系统架构的设计与优化。OneRec 是快手开发的生成式推荐系统，通过 <span class="term">Tokenizer（分词器）</span>将视频转换为分层<span class="term">semantic IDs（语义 ID）</span>，解决大规模项目空间的计算挑战。架构采用<span class="term">encoder-decoder structure（编码器-解码器结构）</span>进行序列预测，并集成<span class="term">Reinforcement Learning (RL，强化学习)</span>框架，显著提升推荐适应性和性能。关键创新包括：改进 Tokenizer 以融合协作信号和多模态特征，使用 <span class="term">RQ-Kmeans</span> 算法生成高质量语义 ID；在训练阶段结合 token 预测和 RL 对齐，推理阶段通过语义 ID 映射生成推荐。报告还概述了预训练/后训练流水线、评估框架（含离线/在线优化），并讨论了系统局限性与未来研究方向。整体上，OneRec 实现了模型规模与资源的可扩展优化，确保高效工业部署。</p>
+  </section>
+
+  <!-- 术语识别部分 -->
+  <section id="terminology">
+    <h2>术语识别</h2>
+    <dl>
+      <dt><span class="term">Tokenizer (分词器)</span></dt>
+      <dd>OneRec 架构中的核心组件，用于将视频项目转换为语义 ID。它使用分级词汇表（coarse-to-fine）生成标识符，支持知识转移和泛化。在本文中，Tokenizer 整合协作信号和多模态特征，改进现有方案，以提升重建质量。</dd>
+      
+      <dt><span class="term">Reinforcement Learning (RL，强化学习)</span></dt>
+      <dd>一种机器学习方法，系统通过奖励机制学习优化决策。在 OneRec 中，RL 用于推荐优化，通过采样空间设计、策略和奖励函数提升适应性和性能。报告指出，RL 在传统架构中效果有限，但在 OneRec 框架下潜力显著。</dd>
+      
+      <dt><span class="term">semantic IDs (语义 ID)</span></dt>
+      <dd>项目（如视频）的标识符，由 Tokenizer 生成。这些 ID 是分层的（hierarchical），基于语义相似性，允许相似项目间的知识共享和泛化到新项目。OneRec 使用 RQ-Kmeans 算法生成高质量语义 ID，作为模型的预测目标。</dd>
+      
+      <dt><span class="term">encoder-decoder structure (编码器-解码器结构)</span></dt>
+      <dd>一种神经网络架构，编码器处理输入数据（如用户兴趣），解码器生成输出（如下一个 token 预测）。在 OneRec 中，该结构用于训练阶段的序列预测，并与 RL 奖励系统结合，实现端到端优化。</dd>
+      
+      <dt><span class="term">RQ-Kmeans</span></dt>
+      <dd>一种聚类算法，用于生成分层语义 ID。在 OneRec 中，它被应用于整合协作信号和多模态特征后的数据处理，以产生更优的标识符。该算法基于 Luo et al., 2024 的研究，提升了重建质量。</dd>
+      
+      <dt><span class="term">collaborative signals (协作信号)</span></dt>
+      <dd>基于用户-项目交互数据的信号（如相似项目对），反映集体行为模式。在 OneRec 的 Tokenizer 中，协作信号与多模态特征（如图像、文本）融合，通过对齐策略（如 Figure 3）提升语义 ID 质量，克服了仅依赖上下文特征的局限。</dd>
+    </dl>
+  </section>
+</body>
+</html>

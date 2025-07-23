@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>论文解析报告</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; }
+        .section { margin-bottom: 30px; }
+        h2 { border-bottom: 2px solid #333; padding-bottom: 5px; }
+        .original-text { 
+            background-color: #f0f0f0; 
+            border: 1px solid #ccc; 
+            padding: 15px; 
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+        .translated-text { 
+            background-color: #e0f7e0; 
+            border: 1px solid #4CAF50; 
+            padding: 15px;
+            border-radius: 5px;
+        }
+        .term-highlight { 
+            color: red; 
+            font-weight: bold; 
+        }
+        .image-caption {
+            background-color: #fffde7;
+            padding: 10px;
+            border: 1px dashed #ffd54f;
+            margin: 15px 0;
+            text-align: center;
+        }
+        .summary-box {
+            background-color: #e3f2fd;
+            padding: 15px;
+            border-left: 4px solid #2196F3;
+            margin: 20px 0;
+        }
+        .term-definition {
+            margin: 10px 0;
+            padding: 10px;
+            border-left: 3px solid #ff5252;
+        }
+    </style>
+</head>
+<body>
+
+<!-- 内容理解 -->
+<div class="section">
+    <h2>内容理解</h2>
+    <p>本文聚焦于提升开源LLM代理在复杂信息寻求任务中的推理能力。核心认知包括：</p>
+    <ul>
+        <li>人类信息寻求受限于<strong class="term-highlight">认知限制（cognitive limits）</strong>：有限记忆、脆弱注意力和单路径探索能力</li>
+        <li>专有代理系统（如Deep Research）通过<strong class="term-highlight">复杂推理（sophisticated reasoning）</strong>超越人类，但开源代理在BrowseComp等基准测试中表现接近零准确率</li>
+        <li>性能差距源于训练范式缺陷：现有方法仅覆盖<strong class="term-highlight">Level 1/2任务</strong>（低不确定性/结构化路径），缺乏<strong class="term-highlight">Level 3挑战</strong>所需的<strong class="term-highlight">组合泛化（compositional generalization）</strong></li>
+        <li>创新解决方案：
+            <ul>
+                <li>通过<strong class="term-highlight">随机游走（random walks）</strong>生成高不确定性训练数据</li>
+                <li>应用<strong class="term-highlight">信息混淆技术（information obfuscation）</strong>增强任务难度</li>
+                <li>重构<strong class="term-highlight">大型推理模型（Large Reasoning Models, LRMs）</strong>输出为简洁的<strong class="term-highlight">动作导向思维（action-oriented thoughts）</strong></li>
+                <li>采用<strong class="term-highlight">拒绝采样微调（rejection sampling fine-tuning, RFT）</strong>冷启动解决稀疏奖励问题</li>
+            </ul>
+        </li>
+    </ul>
+</div>
+
+<!-- 内容翻译 -->
+<div class="section">
+    <h2>内容翻译</h2>
+    
+    <div class="original-text">
+        <h3>1 Introduction</h3>
+        <p>Information seeking, the fundamental human drive to resolve uncertainty, has been revolutionized by the internet (Wilson, 1999; Jurado et al., 2015). Yet, human ability to navigate this vast digital landscape is constrained by cognitive limits: finite memory, fragile attention, and an inability to pursue multiple exploratory paths in parallel. Leading proprietary agentic systems, such as Deep Research (OpenAI, 2025a), show that Large Language Model (LLM) agents can transcend these human limitations. Their superhuman performance on complex web benchmarks like BrowseComp-en/zh (Wei et al., 2025; Zhou et al., 2025) stems from sophisticated reasoning—internal or tool-mediated—that systematically reduces uncertainty (Kapoor et al., 2024; Huang et al., 2023).</p>
+    </div>
+    <div class="translated-text">
+        <h3>1 引言</h3>
+        <p><strong class="term-highlight">信息寻求（Information seeking）</strong>——人类解决不确定性的基本驱动力——已被互联网彻底革新（Wilson, 1999; Jurado et al., 2015）。然而，人类在这片广阔数字领域中导航的能力受到<strong class="term-highlight">认知限制（cognitive limits）</strong>的制约：有限的记忆、脆弱的注意力以及无法并行探索多条路径。领先的专有代理系统（如Deep Research (OpenAI, 2025a)）表明，<strong class="term-highlight">大型语言模型（Large Language Model, LLM）</strong>代理能够超越这些人类局限。它们在复杂网络基准测试（如BrowseComp-en/zh (Wei et al., 2025; Zhou et al., 2025)）上的超人表现源于复杂的推理能力（内部或工具介导），这种能力系统地降低了<strong class="term-highlight">不确定性（uncertainty）</strong>（Kapoor et al., 2024; Huang et al., 2023）。</p>
+    </div>
+
+    <div class="original-text">
+        <p>However, instilling these advanced reasoning capabilities in open-source agents remains an unsolved problem. As shown in Fig. 1, existing open-source LLMs and web agents exhibit near-zero accuracy on BrowseComp-en (Wu et al., 2025a; Li et al., 2025c;b; Song et al., 2025). This stark performance gap arises because current training paradigms focus on what we classify as Level 1 and 2 tasks: problems with either low uncertainty (e.g., single-search) or a clear, structured path to resolution (e.g., standard multi-hop QA). These datasets do not expose models to the Level 3 challenges that dominate complex benchmarks—scenarios demanding robust compositional generalization (Wiedemer et al., 2023) over intricate information landscapes with no predefined solution path. Consequently, models fail to develop the complex, multi-step reasoning required to navigate them.</p>
+    </div>
+    <div class="translated-text">
+        <div class="image-caption">图示：Fig. 1 - 开源代理在BrowseComp-en上的性能对比</div>
+        <p>然而，为<strong class="term-highlight">开源代理（open-source agents）</strong>注入这些先进推理能力仍是未解难题。如图1所示，现有开源LLM和网络代理在BrowseComp-en上表现出接近零的准确率（Wu et al., 2025a; Li et al., 2025c;b; Song et al., 2025）。这种显著性能差距源于当前训练范式专注于我们分类为<strong class="term-highlight">Level 1和Level 2任务</strong>：即低不确定性问题（如单次搜索）或具有清晰结构化解决路径的问题（如标准多跳问答）。这些数据集未让模型接触主导复杂基准测试的<strong class="term-highlight">Level 3挑战</strong>——这些场景要求在无预定义解决路径的复杂信息环境中实现强大的<strong class="term-highlight">组合泛化（compositional generalization）</strong>（Wiedemer et al., 2023）。因此，模型无法发展出导航此类场景所需的复杂多步推理能力。</p>
+    </div>
+
+    <div class="original-text">
+        <p>To elicit these superhuman reasoning patterns, we generate training data characterized by high and hard-to-reduce intrinsic uncertainty. Our primary mechanism involves sampling subgraphs from interconnected knowledge structures generated by random walks across real-world websites. From a compositional generalization perspective (Google, 2020), these subgraphs present novel combinations of known entities and relationships, forcing the model to reason about previously unseen compositions and pushing it beyond simple heuristics. This process generates a diverse array of intricate, emergent structures that are difficult to pre-define, compelling the model to develop reasoning processes that may transcend established human patterns.</p>
+    </div>
+    <div class="translated-text">
+        <p>为激发这些超人推理模式，我们生成具有高内在不确定性且难以降低的训练数据。核心机制是通过在真实网站上进行<strong class="term-highlight">随机游走（random walks）</strong>生成互连知识结构，并从中采样子图。从<strong class="term-highlight">组合泛化</strong>视角（Google, 2020），这些子图呈现已知实体和关系的新颖组合，迫使模型对未见过的组合进行推理，突破简单启发式方法。该过程产生难以预定义的复杂涌现结构，促使模型开发可能超越人类既定模式的推理过程。</p>
+    </div>
+
+    <div class="original-text">
+        <p>We further amplify task difficulty using carefully designed information obfuscation techniques, which directly increase initial ambiguity. The combination of structural complexity and informational ambiguity creates tasks that demand exceptionally sophisticated reasoning. For instance, some of our generated questions are so challenging that even powerful proprietary models like o3 (OpenAI, 2025c) require up to 40 tool calls to arrive at a solution, underscoring the extreme uncertainty reduction involved.</p>
+    </div>
+    <div class="translated-text">
+        <p>我们通过精心设计的<strong class="term-highlight">信息混淆技术（information obfuscation techniques）</strong>进一步放大任务难度，直接增加初始模糊性。结构复杂性与信息模糊性的结合创造了需要异常复杂推理的任务。例如，我们生成的某些问题极具挑战性，即使如o3（OpenAI, 2025c）等强大专有模型也需多达40次工具调用才能求解，凸显了其中涉及的极端不确定性降低。</p>
+    </div>
+
+    <div class="original-text">
+        <p>After obtaining QAs, a key challenge is acquiring full supervision. While powerful open-source Large Reasoning Models (LRMs) like QwQ (Qwen Team, 2025) and DeepSeek-R1 (Guo et al., 2025) can solve some complex QAs, their native reasoning outputs are unsuitable for direct fine-tuning. These models exhibit highly stylized and verbose thought processes that, if imitated, could restrict the trainee agent’s ability to develop its own flexible, exploratory strategies. Furthermore, in long-horizon web tasks requiring dozens of tool calls Li et al. (2025a), their lengthy reasoning chains quickly overwhelm the context window, leading to performance degradation and poor readability (Yin et al., 2025). To overcome this, we propose a novel approach: we leverage these open-source LRMs to generate successful action-observation traces, but then reconstruct the reasoning. By inferring concise, action-oriented thoughts for each step, we create a clean, effective supervision signal that captures the solution logic without inheriting stylistic or verbosity-related drawbacks.</p>
+    </div>
+    <div class="translated-text">
+        <p>获取问答对（QAs）后，关键挑战在于获得完整监督信号。虽然强大的开源<strong class="term-highlight">大型推理模型（Large Reasoning Models, LRMs）</strong>如QwQ（Qwen Team, 2025）和DeepSeek-R1（Guo et al., 2025）能解决部分复杂问答，但其原生推理输出不适合直接微调。这些模型呈现高度风格化和冗长的思维过程，若被模仿会限制受训代理发展自主灵活探索策略的能力。此外，在需要数十次工具调用的长视野网络任务中（Li et al., 2025a），冗长的推理链会迅速超出上下文窗口，导致性能下降和可读性差（Yin et al., 2025）。为此，我们提出新方法：利用开源LRMs生成成功的动作-观察轨迹，但重构其推理过程。通过为每一步推断简洁的<strong class="term-highlight">动作导向思维（action-oriented thoughts）</strong>，我们创建了捕捉解决逻辑且规避风格/冗长缺陷的有效监督信号。</p>
+    </div>
+
+    <div class="original-text">
+        <p>In terms of training process optimization, although recent studies suggest skipping SFT (Guo et al., 2025; Chen et al., 2025; Hu et al., 2025), we demonstrate that a modest rejection sampling fine-tuning (RFT) cold start is indispensable for web agents navigating such complex tasks. On one hand, RL rewards for these scenarios are extremely sparse, often yielding near-zero feedback initially. On the other hand, our approach does not heavily rely on distillation; a minimal cold start with just over 2khigh-quality</p>
+    </div>
+    <div class="translated-text">
+        <p>在训练过程优化方面，尽管近期研究建议跳过监督微调（SFT）（Guo et al., 2025; Chen et al., 2025; Hu et al., 2025），但我们证明适度的<strong class="term-highlight">拒绝采样微调（rejection sampling fine-tuning, RFT）</strong><strong class="term-highlight">冷启动（cold start）</strong>对处理此类复杂任务的网络代理不可或缺。一方面，这些场景的<strong class="term-highlight">强化学习奖励（RL rewards）</strong>极其稀疏，初始反馈常接近零；另一方面，我们的方法不严重依赖<strong class="term-highlight">蒸馏（distillation）</strong>——仅需略超2000个高质量样本的极小冷启动。</p>
+    </div>
+</div>
+
+<!-- 摘要总结 -->
+<div class="section">
+    <h2>摘要总结</h2>
+    <div class="summary-box">
+        <p>本文针对开源LLM代理在复杂信息寻求任务（如BrowseComp基准测试）中的性能缺陷，提出创新训练框架：</p>
+        <ol>
+            <li><strong>问题诊断</strong>：现有训练范式局限于低不确定性（Level 1）和结构化路径（Level 2）任务，缺乏<strong class="term-highlight">Level 3挑战</strong>所需的组合泛化能力</li>
+            <li><strong>数据生成</strong>：通过<strong class="term-highlight">随机游走</strong>构建高不确定性知识子图，结合<strong class="term-highlight">信息混淆技术</strong>增强任务复杂性</li>
+            <li><strong>监督重构</strong>：将开源LRMs生成的冗长推理链转化为简洁<strong class="term-highlight">动作导向思维</strong>，避免风格模仿和上下文溢出</li>
+            <li><strong>训练优化</strong>：采用<strong class="term-highlight">RFT冷启动</strong>解决强化学习奖励稀疏性问题，仅需少量高质量样本</li>
+        </ol>
+        <p>核心贡献在于突破开源代理在非结构化、高不确定性环境中的推理瓶颈，为开发人类级信息寻求代理提供新范式。</p>
+    </div>
+</div>
+
+<!-- 术语识别 -->
+<div class="section">
+    <h2>术语识别</h2>
+    
+    <div class="term-definition">
+        <strong class="term-highlight">信息寻求（Information seeking）</strong>
+        <p>指人类为消除不确定性而主动获取信息的行为过程。在数字环境中表现为网络搜索、数据探索等，受认知能力限制。</p>
+    </div>
+    
+    <div class="term-definition">
+        <strong class="term-highlight">认知限制（Cognitive limits）</strong>
+        <p>人类信息处理能力的固有瓶颈，包括：有限工作记忆容量（约7±2个信息单元）、注意力易分散性、单线程任务处理机制。</p>
+    </div>
+    
+    <div class="term-definition">
+        <strong class="term-highlight">组合泛化（Compositional generalization）</strong>
+        <p>模型将已知组件（实体/关系）重新组合解决新问题的能力。数学表达：\( G = f(E_1 \\oplus R_{12} \\oplus E_2) \) 其中 \( E \) 为实体，\( R \) 为关系，\( \\oplus \) 表示新颖组合。</p>
+    </div>
+    
+    <div class="term-definition">
+        <strong class="term-highlight">Level 1/2/3任务（Level 1/2/3 tasks）</strong>
+        <p>
+            • Level 1: 低不确定性任务（如单次搜索）<br>
+            • Level 2: 结构化路径任务（如标准多跳QA）<br>
+            • Level 3: 无预定义路径的高不确定性任务（需组合泛化）
+        </p>
+    </div>
+    
+    <div class="term-definition">
+        <strong class="term-highlight">动作导向思维（Action-oriented thoughts）</strong>
+        <p>将复杂推理过程解耦为原子化决策单元：\[ T

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>论文解析报告</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; }
+        .section { margin-bottom: 30px; }
+        h2 { border-bottom: 2px solid #333; padding-bottom: 5px; }
+        .original { background-color: #f0f0f0; border: 1px solid #ccc; padding: 15px; margin: 10px 0; }
+        .translation { background-color: #e0f7e0; border: 1px solid #4CAF50; padding: 15px; margin: 10px 0; }
+        .figure { background-color: #fffde7; padding: 15px; margin: 20px 0; text-align: center; }
+        .figure img { max-width: 100%; }
+        .term { color: red; font-weight: bold; }
+        table { width: 100%; border-collapse: collapse; margin: 15px 0; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: center; }
+        th { background-color: #f2f2f2; }
+    </style>
+</head>
+<body>
+
+<div class="section">
+    <h2>内容理解</h2>
+    <p>本文核心论证了<strong class="term">WebSailor</strong>模型通过创新训练策略显著缩小了开源系统与专有系统的性能差距。核心发现包括：</p>
+    <ol>
+        <li>在<strong class="term">BrowseComp-zh</strong>基准测试中，<strong class="term">WebSailor-72B</strong>达到顶级专有代理<strong class="term">Doubao</strong>的同等水平，虽仍落后于<strong class="term">SOTA</strong>系统<strong class="term">DeepResearch</strong>，但标志开源模型的重大突破。</li>
+        <li>通过<strong class="term">DUPO</strong>数据合成策略生成的训练集<strong class="term">SailorFog-QA</strong>具有独特的长尾复杂度分布（图3），显著高于<strong class="term">WebDancer</strong>数据集（>50%样本仅需2次工具调用），并与<strong class="term">BrowseComp-en</strong>基准的复杂性高度一致。</li>
+        <li>过滤后（仅保留>5次工具调用的轨迹）的<strong class="term">SailorFog-QA</strong>数据使模型获得强大多步推理能力，但原始数据<strong class="term">pass@1准确率</strong>较低（表2），部分源于问题本身的模糊性（类似<strong class="term">BrowseComp-en</strong>）。</li>
+    </ol>
+</div>
+
+<div class="section">
+    <h2>内容翻译</h2>
+    
+    <div class="original">
+        <strong>Paragraph 1:</strong><br>
+        Achieving Parity with Proprietary Systems Perhaps the most significant finding is that WebSailor closes the gap between open-source and leading proprietary systems. On BrowseComp-zh, WebSailor-72B achieves performance on par with Doubao, a top-tier proprietary agent. While the SOTA system DeepResearch still holds a lead, WebSailor’s performance represents a major milestone, demonstrating that with sophisticated data synthesis and targeted training strategies like DUPO, open-source models can be elevated to a level of capability previously exclusive to closed, proprietary systems.
+    </div>
+    <div class="translation">
+        <strong>段落1：</strong><br>
+        实现与专有系统的性能持平 最重要的发现是<strong class="term">WebSailor</strong>缩小了开源系统与领先专有系统之间的差距。在<strong class="term">BrowseComp-zh</strong>基准测试中，<strong class="term">WebSailor-72B</strong>达到了与顶级专有代理<strong class="term">Doubao</strong>同等的性能。虽然<strong class="term">SOTA</strong>（最先进）系统<strong class="term">DeepResearch</strong>仍保持领先，但<strong class="term">WebSailor</strong>的表现标志着一个重要里程碑，证明通过复杂的数据合成和针对性训练策略（如<strong class="term">DUPO</strong>），开源模型可以提升到此前仅封闭专有系统才能达到的能力水平。
+    </div>
+    
+    <div class="original">
+        <strong>Section Header:</strong><br>
+        5.3 Analysis
+    </div>
+    <div class="translation">
+        <strong>章节标题：</strong><br>
+        5.3 分析
+    </div>
+    
+    <div class="figure">
+        <strong>Figure 3:</strong><br>
+        A comparison of the number of tool calls in our training set with those in the training sets of WebDancer and BrowseComp-en.<br>
+        <img src="placeholder_figure3.png" alt="Figure 3示意图">
+        <p><strong>(a) Comparison with BrowseComp-en</strong> | <strong>(b) Comparison with WebDancer</strong></p>
+    </div>
+    <div class="translation">
+        <strong>图3：</strong><br>
+        我们的训练集与<strong class="term">WebDancer</strong>及<strong class="term">BrowseComp-en</strong>训练集中工具调用次数的对比。<br>
+        <p><strong>(a) 与BrowseComp-en的对比</strong> | <strong>(b) 与WebDancer的对比</strong></p>
+    </div>
+    
+    <div class="original">
+        <strong>Paragraph 2:</strong><br>
+        Complexity of SailorFog-QA Figure 3 provides a quantitative analysis of task complexity by plotting the distribution of tool call counts for our expert-generated training data against both the BrowseComp-en benchmark and the WebDancer training set. We use the number of tool calls as a proxy for problem difficulty. This analysis is based on unfiltered but correct trajectories from rejection sampling. The WebDancer dataset is heavily skewed towards simplicity, with over 50% of its trajectories requiring only two tool calls and virtually none exceeding ten. In sharp contrast, our synthesized data exhibits a long-tail distribution, with a significant concentration of samples requiring more than five tool calls and extending to trajectories with over twenty interactions. Crucially, this distribution closely mirrors the complexity profile of the BrowseComp-en benchmark itself. It is important to note that the figure displays our data before our final filtering stage, where we retain only trajectories with more than five tool calls. This strategic data construction ensures that our model is trained on problems that are not only complex but also structurally representative of the hard reasoning tasks, thereby equipping it with the robust, multi-step reasoning capabilities necessary for success.
+    </div>
+    <div class="translation">
+        <strong>段落2：</strong><br>
+        <strong class="term">SailorFog-QA</strong>的复杂性 图3通过绘制专家生成的训练数据与<strong class="term">BrowseComp-en</strong>基准和<strong class="term">WebDancer</strong>训练集的工具调用次数分布，对任务复杂性进行了定量分析。我们使用工具调用次数作为问题难度的代理指标。该分析基于拒绝采样中未过滤但正确的轨迹。<strong class="term">WebDancer</strong>数据集严重偏向简单任务，超过50%的轨迹仅需两次工具调用，几乎没有超过十次的情况。与之形成鲜明对比的是，我们的合成数据呈现长尾分布，大量样本需要五次以上的工具调用，甚至延伸至超过二十次交互的轨迹。关键的是，该分布与<strong class="term">BrowseComp-en</strong>基准本身的复杂性高度一致。需注意图中显示的是最终过滤前的数据（我们仅保留工具调用超过五次的轨迹）。这种策略性数据构建确保模型训练不仅针对复杂问题，且结构上能代表困难推理任务，从而赋予其成功所需的强大<strong class="term">多步推理能力</strong>。
+    </div>
+    
+    <div class="original">
+        <strong>Table 2:</strong><br>
+        The pass@1 accuracy of the SailorFog-QA, the WebDancer training set, and BrowseComp-en under the ReAct framework.
+        <table>
+            <tr>
+                <th>Backbone</th>
+                <th>SailorFog-QA</th>
+                <th>WebDancer-QA</th>
+                <th>BrowseComp-en</th>
+            </tr>
+            <tr>
+                <td>o4-mini</td>
+                <td>47.3</td>
+                <td>90.2</td>
+                <td>26.3</td>
+            </tr>
+            <tr>
+                <td>DeepSeek-R1</td>
+                <td>38.9</td>
+                <td>84.4</td>
+                <td>9.5</td>
+            </tr>
+        </table>
+    </div>
+    <div class="translation">
+        <strong>表2：</strong><br>
+        <strong class="term">ReAct框架</strong>下<strong class="term">SailorFog-QA</strong>、<strong class="term">WebDancer</strong>训练集和<strong class="term">BrowseComp-en</strong>的<strong class="term">pass@1准确率</strong>。<br>
+        <table>
+            <tr>
+                <th>骨干模型</th>
+                <th>SailorFog-QA</th>
+                <th>WebDancer-QA</th>
+                <th>BrowseComp-en</th>
+            </tr>
+            <tr>
+                <td>o4-mini</td>
+                <td>47.3</td>
+                <td>90.2</td>
+                <td>26.3</td>
+            </tr>
+            <tr>
+                <td>DeepSeek-R1</td>
+                <td>38.9</td>
+                <td>84.4</td>
+                <td>9.5</td>
+            </tr>
+        </table>
+    </div>
+    
+    <div class="original">
+        <strong>Paragraph 3:</strong><br>
+        Pass rate of SailorFog-QA To further understand the difficulty of our synthetic data, Table 2 presents the pass@1 accuracy of SailorFog-QA before filtering. DeepSeek-R1 and o4-mini are equipped with browsing tools and ReAct framework. We observe that, before filtering, our data is significantly more difficult than the WebDancer training set. Although the difficulty is lower than BrowseComp-en, it is worth noting that BrowseComp-en filters out simple cases (Wei et al., 2025). Upon manual inspection, we find that the low accuracy in our data is partly due to its inherent difficulty, but also because there may not always be a unique answer. Ambiguity in the information can result in multiple intersections of conditions that do not yield a single definitive answer—this is similar to the situation in BrowseComp-en. However, we
+    </div>
+    <div class="translation">
+        <strong>段落3：</strong><br>
+        <strong class="term">SailorFog-QA</strong>的通过率 为进一步理解合成数据的难度，表2展示了过滤前<strong class="term">SailorFog-QA</strong>的<strong class="term">pass@1准确率</strong>。实验使用配备浏览工具和<strong class="term">ReAct框架</strong>的<strong class="term">DeepSeek-R1</strong>和<strong class="term">o4-mini</strong>模型。我们发现过滤前数据的难度显著高于<strong class="term">WebDancer</strong>训练集。虽难度低于<strong class="term">BrowseComp-en</strong>，但需注意后者过滤了简单案例（Wei等，2025）。经人工检查，数据准确率低的部分原因是其固有难度，另一部分源于问题可能不存在唯一答案——信息模糊性导致条件多重交集，无法产生单一确定答案（与<strong class="term">BrowseComp-en</strong>情况类似）。然而，我们
+    </div>
+</div>
+
+<div class="section">
+    <h2>摘要总结</h2>
+    <p>本文核心贡献是通过<strong class="term">DUPO</strong>数据合成策略使开源模型<strong class="term">WebSailor-72B</strong>在<strong class="term">BrowseComp-zh</strong>基准上达到顶级专有系统<strong class="term">Doubao</strong>的同等性能。关键分析表明：</p>
+    <ul>
+        <li>训练集<strong class="term">SailorFog-QA</strong>具有长尾复杂性分布（工具调用>5次），显著高于<strong class="term">WebDancer</strong>（>50%

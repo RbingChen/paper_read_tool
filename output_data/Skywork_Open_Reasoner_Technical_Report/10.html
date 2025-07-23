@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>论文内容解析</title>
+  <style>
+    body { font-family: Arial, sans-serif; line-height: 1.6; margin: 20px; }
+    h1 { text-align: center; color: #333; }
+    h2 { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 5px; }
+    .section { margin-bottom: 30px; }
+    .original { background-color: #f0f0f0; border: 1px solid #cccccc; padding: 15px; margin-bottom: 10px; border-radius: 5px; }
+    .translation { background-color: #e0ffe0; border: 1px solid #00cc00; padding: 15px; margin-bottom: 20px; border-radius: 5px; }
+    .figure { background-color: #ffffcc; padding: 15px; margin: 15px 0; border-radius: 5px; text-align: center; }
+    .term { color: red; font-weight: bold; }
+    table { width: 100%; border-collapse: collapse; margin: 10px 0; }
+    th, td { border: 1px solid #ddd; padding: 8px; text-align: center; }
+    th { background-color: #f2f2f2; }
+    .formula-container { text-align: center; margin: 15px 0; }
+    .formula { font-size: 1.2em; margin-bottom: 5px; }
+    .formula-label { font-style: italic; }
+  </style>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <h1>论文内容解析报告</h1>
+  
+  <!-- 内容理解部分 -->
+  <section id="understanding" class="section">
+    <h2>内容理解</h2>
+    <p>文本主要描述了一个多阶段训练实验，基于Deepseek-R1-Distill-Qwen-7B和Skywork-OR1-Math-7B模型，重点研究如何通过分阶段训练优化模型效率与性能。核心认知包括：在阶段I（Stage I）使用短上下文长度（如8K）显著缩短响应长度，减少推理和计算成本（节省约100训练小时），提高令牌效率；过渡到阶段II（Stage II）后，响应长度和AIME24准确度迅速提升，500步内达到与从头训练（from-scratch）相当的水平。同时，文本探讨了截断响应（truncated responses）的处理：在强化学习（RL）训练中，将其标记为负样本并分配负优势（negative advantages），这不仅能减少偏差，还保持了模型的扩展能力（scaling ability），因此未采用优势掩码（advantage mask）策略。整体上，多阶段训练在提升令牌效率的同时，不牺牲模型处理长上下文（如32K）的性能，体现了训练策略的创新性。</p>
+  </section>
+  
+  <!-- 内容翻译部分 -->
+  <section id="translation" class="section">
+    <h2>内容翻译</h2>
+    
+    <!-- 表格部分 -->
+    <div class="original">
+      <p><strong class="term">Batch Size</strong> <strong class="term">Mini-batch Size</strong> <strong class="term">Group Size</strong> <strong class="term">Entropy Control</strong> <strong class="term">KL Loss</strong></p>
+      <p>64 32 16 <strong class="term">target-entropy</strong> 0.2 No</p>
+      <p>Table 1: Shared hyperparameters in Ablation Experiments 1 based on <strong class="term">Deepseek-R1-Distill-Qwen-7B</strong>.</p>
+    </div>
+    <div class="translation">
+      <p><strong class="term">批量大小（Batch Size）</strong> <strong class="term">小批量大小（Mini-batch Size）</strong> <strong class="term">组大小（Group Size）</strong> <strong class="term">熵控制（Entropy Control）</strong> <strong class="term">KL损失（KL Loss）</strong></p>
+      <p>64 32 16 <strong class="term">目标熵（target-entropy）</strong> 0.2 否</p>
+      <p>表1：基于<strong class="term">Deepseek-R1-Distill-Qwen-7B</strong>的消融实验1中的共享超参数。</p>
+    </div>
+    
+    <!-- 段落1 -->
+    <div class="original">
+      <p>significantly shorter during <strong class="term">Stage I</strong> and the initial steps of <strong class="term">Stage II</strong>, leading to more efficient training due to reduced inference and computational costs (approximately 100 training hours are saved over 1000 training steps). After transitioning to <strong class="term">Stage II</strong>, both the response length and <strong class="term">AIME24 accuracy</strong> begin to increase immediately. Within roughly 500 training steps in <strong class="term">Stage II</strong>, the accuracy of the multi-stage experiment reaches the same level as that of the from-scratch experiment.</p>
+    </div>
+    <div class="translation">
+      <p>在<strong class="term">阶段I（Stage I）</strong>和<strong class="term">阶段II（Stage II）</strong>的初始步骤中响应长度显著缩短，从而实现了更高效的训练，因为减少了推理和计算成本（在1000个训练步骤中大约节省了100个训练小时）。过渡到<strong class="term">阶段II（Stage II）</strong>后，响应长度和<strong class="term">AIME24准确度（AIME24 accuracy）</strong>立即开始增加。在<strong class="term">阶段II（Stage II）</strong>的大约500个训练步骤内，多阶段实验的准确度达到了与从头训练实验相同的水平。</p>
+    </div>
+    
+    <!-- 小标题和段落2 -->
+    <div class="original">
+      <h3>Improving Token Efficiency While Preserving Scaling Potential.</h3>
+      <p><strong class="term">Truncated responses</strong> are labeled as negative samples in <strong class="term">RL training</strong> because they lack final answers. A potential concern with multi-stage training is that using short context windows may bias the model toward generating shorter responses, potentially limiting its exploratory capacity and reducing its ability to solve complex problems. Our findings demonstrate that multi-stage training not only improves <strong class="term">token efficiency</strong> in the initial stage but also preserves <strong class="term">scaling ability</strong>. In Figure 5(b), we observe that training with an 8 K context length in <strong class="term">Stage I</strong> maintains comparable <strong class="term">AIME24 accuracy</strong> under a 32 K context length while significantly improving <strong class="term">token efficiency</strong> (reducing the average response length from approximately 12.5 K to 5.4K tokens). In Stages II and III, <strong class="term">Skywork-OR1-Math-7B</strong> steadily increases response length while concurrently improving performance.</p>
+    </div>
+    <div class="translation">
+      <h3>在保持扩展潜力的同时提高令牌效率。</h3>
+      <p><strong class="term">截断响应（Truncated responses）</strong>在<strong class="term">强化学习训练（RL training）</strong>中被标记为负样本，因为它们缺乏最终答案。多阶段训练的一个潜在担忧是，使用短上下文窗口可能使模型偏向生成更短的响应，从而限制其探索能力并降低解决复杂问题的能力。我们的研究结果表明，多阶段训练不仅提高了初始阶段的<strong class="term">令牌效率（token efficiency）</strong>，还保留了<strong class="term">扩展能力（scaling ability）</strong>。在图5(b)中，我们观察到在<strong class="term">阶段I（Stage I）</strong>使用8K上下文长度训练时，在32K上下文长度下保持了可比的<strong class="term">AIME24准确度（AIME24 accuracy）</strong>，同时显著提高了<strong class="term">令牌效率（token efficiency）</strong>（将平均响应长度从约12.5K令牌减少到5.4K令牌）。在阶段II和III中，<strong class="term">Skywork-OR1-Math-7B</strong>稳步增加响应长度，同时提升性能。</p>
+    </div>
+    
+    <!-- 子标题和段落3 -->
+    <div class="original">
+      <h3>3.2.3 Advantage Mask for Truncated Responses</h3>
+      <p>In practice, responses are sampled within a fixed <strong class="term">context length</strong> T. When response lengths exceed T, the outcomes cannot be derived, and <strong class="term">accuracy rewards</strong> are set to 0, resulting in negative advantages for these <strong class="term">truncated responses</strong>, which may introduce bias. To mitigate this issue, we investigated several <strong class="term">advantage mask</strong> strategies aimed at reducing the influence of <strong class="term">truncated responses</strong>. However, our findings show that assigning negative advantages to truncated samples not only improves <strong class="term">token efficiency</strong> but also preserves the model’s <strong class="term">scaling ability</strong> in later stages. As a result, we did not apply any mask strategies in our final training pipeline.</p>
+    </div>
+    <div class="translation">
+      <h3>3.2.3 截断响应的优势掩码</h3>
+      <p>在实践中，响应在固定的<strong class="term">上下文长度（context length）</strong>T内采样。当响应长度超过T时，结果无法导出，<strong class="term">准确度奖励（accuracy rewards）</strong>被设为0，导致这些<strong class="term">截断响应（truncated responses）</strong>具有负优势，这可能引入偏差。为缓解此问题，我们研究了几种<strong class="term">优势掩码（advantage mask）</strong>策略，旨在减少<strong class="term">截断响应（truncated responses）</strong>的影响。然而，我们的研究结果表明，为截断样本分配负优势不仅提高了<strong class="term">令牌效率（token efficiency）</strong>，还保留了模型在后续阶段的<strong class="term">扩展能力（scaling ability）</strong>。因此，我们在最终训练流程中未采用任何掩码策略。</p>
+    </div>
+    
+    <!-- 图表标题 -->
+    <div class="figure">
+      <div class="original">
+        <p>Figure 6: Training accuracy and <strong class="term">clip ratio</strong> during <strong class="term">RL training</strong> of <strong class="term">Skywork-OR1-Math-7B</strong> in <strong class="term">Stage I</strong>. accuracy: Mean <strong class="term">accuracy reward</strong> on training batch. accuracy_nontruncated: Mean accuracy of non-truncated samples. <strong class="term">clip_ratio</strong>: Ratio of <strong class="term">truncated responses</strong>.</p>
+      </div>
+      <div class="translation">
+        <p>图6：<strong class="term">Skywork-OR1-Math-7B</strong>在<strong class="term">阶段I（Stage I）</strong>的<strong class="term">强化学习训练（RL training）</strong>中的训练准确度和<strong class="term">剪辑比率（clip ratio）</strong>。accuracy：训练批次上的平均<strong class="term">准确度奖励（accuracy reward）</strong>。accuracy_nontruncated：非截断样本的平均准确度。<strong class="term">clip_ratio</strong>：<strong class="term">截断响应（truncated responses）</strong>的比率。</p>
+      </div>
+    </div>
+    
+    <!-- 不完整部分（略作处理） -->
+    <div class="original">
+      <p>Two Optimization Directions in Short Context Length. In our Stage I training of Skywork-OR1-11</p>
+    </div>
+    <div class="translation">
+      <p>短上下文长度中的两个优化方向。在Skywork-OR1-11的阶段I训练中（注：文本不完整）。</p>
+    </div>
+  </section>
+  
+  <!-- 摘要总结部分 -->
+  <section id="summary" class="section">
+    <h2>摘要总结</h2>
+    <p>文本核心内容概括为：通过多阶段训练策略，在阶段I使用短上下文长度（8K）显著提升令牌效率（平均响应长度从12.5K降至5.4K令牌），节省约100训练小时的计算成本，同时保持AIME24准确度在长上下文（32K）下的可比性。阶段II在500步内恢复响应长度和准确度，达到与从头训练相当的水平。关键发现是，为截断响应分配负优势在强化学习中不仅提高效率，还保留模型扩展能力，因此无需优势掩码策略。整体上，多阶段训练优化了资源利用和性能扩展。</p>
+  </section>
+  
+  <!-- 术语识别部分 -->
+  <section id="terms" class="section">
+    <h2>术语识别</h2>
+    <ul>
+      <li><strong class="term">Batch Size</strong>（批量大小）: 训练中每次迭代使用的样本数量，影响训练稳定性和速度。本文中设置为64。</li>
+      <li><strong class="term">Mini-batch Size</strong>（小批量大小）: 在分布式训练中，每个设备处理的样本子集大小，用于并行计算。本文中设置为32。</li>
+      <li><strong class="term">Group Size</strong>（组大小）: 可能指在特定训练架构（如分组并行）中的设备分组大小，用于优化通信。本文中设置为16。</li>
+      <li><strong class="term">Entropy Control</strong>（熵控制）: 强化学习中用于调节策略随机性的技术，通过熵奖励平衡探索和利用。本文使用目标熵（target-entropy）。</li>
+      <li><strong class="term">KL Loss</strong>（KL散度损失）: Kullback-Leibler散度损失，衡量当前策略与参考策略之间的差异，用于防止策略偏离。本文中系数为0.2，未启用其他设置（No）。</li>
+      <li><strong class="term">target-entropy</strong>（目标熵）: 在熵控制中预设的熵值目标，用于指导策略的探索程度。</li>
+      <li><strong class="term">Stage I / Stage II</strong>（阶段I / 阶段II）: 训练过程的分阶段设计，阶段I使用短上下文以提升效率，阶段II过渡到长上下文以恢复性能。</li>
+      <li><strong class="term">AIME24 accuracy</strong>（AIME24准确度）: 一个评估指标，可能基于特定数据集（如AIME24）衡量模型响应的准确率，用于量化性能。</li>
+      <li><strong class="term">token efficiency</strong>（令牌效率）: 生成响应时令牌使用的效率，以平均响应长度衡量；减少长度可降低计算成本。</li>
+      <li><strong class="term">scaling ability</strong>（扩展能力）: 模型处理更大上下文或更复杂任务的能力，如从

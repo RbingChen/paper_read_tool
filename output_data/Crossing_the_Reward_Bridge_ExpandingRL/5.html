@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>算法专家论文解析</title>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<style>
+  body { font-family: Arial, sans-serif; line-height: 1.6; }
+  .original { 
+    background-color: #f0f0f0;
+    border: 1px solid #cccccc;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+  }
+  .translation { 
+    background-color: #e0f7e0;
+    border: 1px solid #4caf50;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+  }
+  .figure {
+    background-color: #fffde7;
+    padding: 15px;
+    margin: 20px 0;
+    border-radius: 5px;
+    overflow-x: auto;
+  }
+  .term {
+    color: red;
+    font-weight: bold;
+  }
+  h2 { color: #2c3e50; border-bottom: 2px solid #eee; padding-bottom: 5px; }
+  ul { padding-left: 20px; }
+  li { margin-bottom: 8px; }
+</style>
+</head>
+<body>
+
+<h2>1. 内容理解</h2>
+<p>该文本描述了一个跨学科评估系统的构建过程：
+<ol>
+  <li>从<b class="term">ExamQA</b>数据集中划分测试集（6,000题）与训练集</li>
+  <li>使用<b class="term">GPT-4o-mini</b>对未标注学科的问题进行分类（48个学科）</li>
+  <li>展示学科分布（Figure 2），高频学科包括基础医学、法学等，并归为四大领域</li>
+  <li>构建<b class="term">奖励模型（Reward Model）</b>训练数据：从两个数据集各取20k样本</li>
+  <li>使用<b class="term">Qwen2.5-7B</b>进行<b class="term">强化学习（Reinforcement Learning）</b>训练，采用<b class="term">RLOO算法</b></li>
+  <li>使用<b class="term">Qwen2.5-72B-Instruct</b>作为奖励模型生成160k训练样本</li>
+  <li>设立三种基线方法对比：Base、SFT、Rule-based reward</li>
+</ol>
+</p>
+
+<h2>2. 内容翻译</h2>
+
+<div class="original">
+<h3>Expanding RL with Verifiable Rewards Across Diverse Domains</h3>
+<p>For evaluation, we randomly sample 6,000 questions from ExamQA as the test set, while the remaining questions are used as the training pool. Since subject labels are not provided for each QA pair, we use GPT-4o-mini to classify them into one of 48 subjects or mark them as unclassified if uncertain. The detailed classification prompt is provided in Table 5. Excluding unclassified instances (15.8% of the test data), the most frequent subjects include basic medicine, law, economics, management, civil engineering, mathematics, computer science and technology, psychology, and chemistry, as shown in Figure 2. For ease of analysis, we further categorize these subjects into four broad fields (STEM, social sciences, humanities, and applied sciences) as detailed in Table 6. See examples in Table 10.</p>
+</div>
+<div class="translation">
+<h3>在不同领域扩展具有可验证奖励的强化学习</h3>
+<p>为进行评估，我们从<b class="term">ExamQA</b>中随机抽取6,000个问题作为测试集，其余问题作为训练池。由于每个问答对未提供学科标签，我们使用<b class="term">GPT-4o-mini</b>将其分类至48个学科之一，若不确定则标记为未分类。详细分类提示见表5。排除未分类实例（占测试数据15.8%）后，高频学科包括基础医学、法学、经济学、管理学、土木工程、数学、计算机科学与技术、心理学和化学，如图2所示。为便于分析，我们进一步将这些学科归类为四大领域（<b class="term">STEM</b>、社会科学、人文学科、应用科学），详见表6。示例见表10。</p>
+</div>
+
+<div class="figure">
+<h4>Figure 2: Distribution of subject occurrences in the test set of ExamQA (excluding unclassified)</h4>
+<pre>
+0 2 4 6 8 10
+Percentage (%)
+Basic Medicine 9.9
+Law 9.2
+Economics 6.7
+Management 5.9
+Civil Engineering 5.5
+...（其余学科数据省略）
+</pre>
+<p><b>图2：</b> ExamQA测试集中学科分布（不含未分类数据）</p>
+</div>
+
+<div class="original">
+<h3>Data for Training the Reward Model</h3>
+<p>We construct the data for training the reward model by extracting 20k samples from each training set of the two datasets, totaling 40k samples. Using the methodology in Section 3.3, we employ Qwen2.5-7B (Team, 2024) to conduct RL training. We use the RLOO (Kool et al., 2019; Ahmadian et al., 2024) algorithm and generate four online samples for each prompt. We use Qwen2.5-72B-Instruct as the reward model for hard label determination. By preserving all input-output pairs, this process yields 160k distilled training samples from Qwen2.5-72B-Instruct for reward model training.</p>
+<p>To verify the training approach’s validity, we exclude these 40k original samples from the final training dataset. This strict separation ensures that the reward model never encounters any data used in previous training stages, thereby guaranteeing evaluation objectivity.</p>
+</div>
+<div class="translation">
+<h3>奖励模型训练数据</h3>
+<p>我们通过从两个数据集的训练集中各提取20k样本（总计40k样本）构建<b class="term">奖励模型（Reward Model）</b>训练数据。采用第3.3节方法，使用<b class="term">Qwen2.5-7B</b>进行<b class="term">强化学习（Reinforcement Learning）</b>训练。采用<b class="term">RLOO算法</b>，为每个提示生成四个在线样本。使用<b class="term">Qwen2.5-72B-Instruct</b>作为硬标签确定的奖励模型。通过保留所有输入-输出对，该过程从Qwen2.5-72B-Instruct中蒸馏出160k训练样本用于奖励模型训练。</p>
+<p>为验证训练方法的有效性，我们将这40k原始样本从最终训练数据集中排除。这种严格分离确保奖励模型不会接触任何先前训练阶段使用的数据，从而保证评估客观性。</p>
+</div>
+
+<div class="original">
+<h3>4.2 Baselines and Notations</h3>
+<p>Base: Directly use the base model to generate the response of the question.<br>
+SFT: Directly use the label (without CoT) to fine-tune the base model.<br>
+Rule-based reward: RL with the reward determined by predefined rules.</p>
+</div>
+<div class="translation">
+<h3>4.2 基线方法与符号说明</h3>
+<p><b class="term">Base</b>：直接使用基础模型生成问题响应<br>
+<b class="term">SFT</b>：直接使用标签（无思维链）微调基础模型<br>
+<b class="term">Rule-based reward</b>：通过预定义规则确定奖励的强化学习</p>
+</div>
+
+<h2>3. 摘要总结</h2>
+<p>本文提出一个跨学科评估框架：
+<ol>
+  <li>构建<b class="term">ExamQA</b>数据集（含48学科），测试集6k问题，15.8%未分类</li>
+  <li>学科分布显示基础医学(9.9%)、法学(9.2%)、经济学(6.7%)占比最高</li>
+  <li>奖励模型训练采用<b class="term">蒸馏方法</b>：从40k原始样本生成160k训练样本</li>
+  <li>使用<b class="term">Qwen2.5-7B</b>进行<b class="term">RL训练</b>，<b class="term">Qwen2.5-72B-Instruct</b>作奖励模型</li>
+  <li>设计三种基线对比方法：Base/SFT/Rule-based reward</li>
+  <li>严格分离训练数据确保评估无偏差</li>
+</ol>
+</p>
+
+<h2>4. 术语识别</h2>
+<ul>
+  <li><span class="term">ExamQA</span>：跨学科问答数据集，包含48个学科领域的问题，用于评估模型性能</li>
+  <li><span class="term">GPT-4o-mini</span>：用于自动分类问题的语言模型，将未标注的QA对分类至48个学科或标记为未分类</li>
+  <li><span class="term">STEM</span>：科学(Science)、技术(Technology)、工程(Engineering)、数学(Mathematics)四大领域的统称</li>
+  <li><span class="term">Reward Model（奖励模型）</span>：在强化学习中用于评估动作质量的模型，本文使用Qwen2.5-72B-Instruct生成训练标签</li>
+  <li><span class="term">Reinforcement Learning/RL（强化学习）</span>：机器学习范式，智能体通过与环境交互学习最优策略，以最大化累积奖励</li>
+  <li><span class="term">RLOO（Reinforcement Learning from Online Optimization）</span>：一种RL算法，通过在线优化生成多个样本进行策略更新</li>
+  <li><span class="term">Qwen2.5-7B/Qwen2.5-72B-Instruct</span>：不同参数规模的语言模型（70亿/720亿参数），分别用于RL训练和奖励生成</li>
+  <li><span class="term">Base/SFT/Rule-based reward</span>：三种基线方法，分别为基础模型直接生成、监督微调、基于规则的奖励RL</li>
+  <li><span class="term">Distilled training samples（蒸馏训练样本）</span>：通过大模型生成标签转化的训练数据，本文从40k样本扩展至160k</li>
+</ul>
+
+</body>
+</html>

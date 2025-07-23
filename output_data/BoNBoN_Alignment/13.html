@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>论文解析：理论结果部分</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        body { font-family: 'Segoe UI', Arial, sans-serif; line-height: 1.6; max-width: 900px; margin: 0 auto; padding: 20px; }
+        h1 { color: #2c3e50; text-align: center; border-bottom: 2px solid #3498db; padding-bottom: 10px; }
+        h2 { color: #2980b9; border-left: 4px solid #3498db; padding-left: 10px; }
+        .section { margin-bottom: 30px; }
+        
+        /* 原文样式 */
+        .original {
+            background-color: #f0f0f0;
+            border: 1px solid #cccccc;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+        
+        /* 翻译样式 */
+        .translation {
+            background-color: #e0f2e0;
+            border: 1px solid #a0d0a0;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        
+        /* 公式样式 */
+        .formula-container {
+            text-align: center;
+            margin: 20px 0;
+            padding: 15px;
+            background-color: #fffde7;
+            border-radius: 5px;
+        }
+        .formula-number {
+            display: block;
+            font-style: italic;
+            margin-top: 5px;
+        }
+        
+        /* 术语样式 */
+        .term {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+        
+        /* 摘要样式 */
+        .summary {
+            background-color: #e3f2fd;
+            padding: 15px;
+            border-radius: 5px;
+        }
+        
+        /* 术语列表样式 */
+        .term-list {
+            list-style-type: none;
+            padding: 0;
+        }
+        .term-item {
+            margin-bottom: 15px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border-left: 3px solid #e74c3c;
+        }
+        .term-name {
+            font-weight: bold;
+            color: #c0392b;
+        }
+    </style>
+</head>
+<body>
+    <h1>论文解析：理论结果部分</h1>
+    
+    <!-- 内容翻译 -->
+    <div class="section">
+        <h2>内容翻译</h2>
+        
+        <div class="original">
+            <h3>A Theoretical Results</h3>
+            <p>This section contains all theoretical results of the paper. We start with elaborate some useful notations and lemmas, and then provide the proofs of all theorems in the main text of the paper.</p>
+        </div>
+        <div class="translation">
+            <h3>A 理论结果</h3>
+            <p>本节包含论文的所有理论结果。我们首先详细说明一些有用的<strong class="term">符号（Notations）</strong>和<strong class="term">引理（Lemmas）</strong>，然后提供论文正文中所有定理的证明。</p>
+        </div>
+        
+        <div class="original">
+            <p>For simplicity of proofs below, we first define a general <strong class="term">reward-aligned policy</strong>:</p>
+            <p><strong>Definition 4 (Reward aligned model π<sup>f</sup><sub>r</sub>)</strong>. For any prompt <em>x</em>, the reward aligned model π<sup>f</sup><sub>r</sub> satisfies</p>
+            <div class="formula-container">
+                \[
+                \pi_r(y|x) = \frac{1}{Z_r} \pi_0(y|x) f(Q_x(r(x,y)))
+                \]
+                <span class="formula-number">(A.1)</span>
+            </div>
+            <p>where <em>f</em> ∈ <em>F</em> = {<em>f</em> : ℝ → ℝ | <em>f</em> is increasing and <em>f</em> ≥ 0} and <em>Z<sub>r</sub></em> is the <strong class="term">normalizing constant</strong>.</p>
+        </div>
+        <div class="translation">
+            <p>为简化后续证明，我们首先定义一个通用的<strong class="term">奖励对齐策略（Reward-aligned policy）</strong>：</p>
+            <p><strong>定义 4 (奖励对齐模型 π<sup>f</sup><sub>r</sub>)</strong>。对于任意提示<em>x</em>，奖励对齐模型 π<sup>f</sup><sub>r</sub> 满足：</p>
+            <div class="formula-container">
+                \[
+                \pi_r(y|x) = \frac{1}{Z_r} \pi_0(y|x) f(Q_x(r(x,y)))
+                \]
+                <span class="formula-number">(A.1)</span>
+            </div>
+            <p>其中 <em>f</em> ∈ <em>F</em> = {<em>f</em> : ℝ → ℝ | <em>f</em> 单调递增且 <em>f</em> ≥ 0}，<em>Z<sub>r</sub></em> 为<strong class="term">归一化常数（Normalizing constant）</strong>。</p>
+        </div>
+        
+        <div class="original">
+            <p>This general policy class includes both the <strong class="term">optimal policy</strong> π<sup>optimal</sup><sub>r</sub> and the <strong class="term">best-of-n policy</strong>. More specifically, the optimal policy π<sup>optimal</sup><sub>r</sub> is with the choice of exponential functions and the best-of-n policy is with the choice of power functions.</p>
+        </div>
+        <div class="translation">
+            <p>该通用策略类同时包含<strong class="term">最优策略（Optimal policy）</strong> π<sup>optimal</sup><sub>r</sub> 和<strong class="term">n次最优策略（Best-of-n policy）</strong>。具体而言，最优策略 π<sup>optimal</sup><sub>r</sub> 对应指数函数选择，而n次最优策略对应幂函数选择。</p>
+        </div>
+        
+        <div class="original">
+            <p>Before proofs of the theorems, we first illustrate a useful lemma.</p>
+            <h3>A.1 A Useful Lemma</h3>
+            <p><strong>Lemma 5.</strong> For π<sub>r</sub> with the definition (A.1), the following conclusions hold:</p>
+            <ol>
+                <li><strong class="term">Context-conditional win rate</strong> is \( p_{\pi_r \succ \pi_0|x} = \frac{\int_0^1 u f(u) du}{\int_0^1 f(u) du} \).</li>
+                <li><strong class="term">Context-conditional KL divergence</strong> is \( D_{KL}(\pi_r \| \pi_0|x) = \frac{\int_0^1 f(u) \log(f(u)) du}{\int_0^1 f(u) du} - \log\left( \int_0^1 f(u) du \right) \).</li>
+            </ol>
+            <p>Furthermore, both win rate and KL divergence are independent of distribution of <em>x</em>.</p>
+        </div>
+        <div class="translation">
+            <p>在定理证明之前，我们首先说明一个有用的引理。</p>
+            <h3>A.1 有用引理</h3>
+            <p><strong>引理 5.</strong> 对于定义(A.1)中的 π<sub>r</sub>，以下结论成立：</p>
+            <ol>
+                <li><strong class="term">上下文条件获胜率（Context-conditional win rate）</strong>为 \( p_{\pi_r \succ \pi_0|x} = \frac{\int_0^1 u f(u) du}{\int_0^1 f(u) du} \)</li>
+                <li><strong class="term">上下文条件KL散度（Context-conditional KL divergence）</strong>为 \( D_{KL}(\pi_r \| \pi_0|x) = \frac{\int_0^1 f(u) \log(f(u)) du}{\int_0^1 f(u) du} - \log\left( \int_0^1 f(u) du \right) \)</li>
+            </ol>
+            <p>此外，获胜率和KL散度均与<em>x</em>的分布无关。</p>
+        </div>
+        
+        <div class="original">
+            <p><strong>Proof.</strong> The context-conditional win rate is</p>
+            \[
+            p_{\pi_r \succ \pi_0|x} = \mathbb{P}_{Y\sim\pi_r(y|x), Y_0\sim\pi_0(y|x)}(r(x,Y) \geq r(x,Y_0))
+            \]
+            \[
+            = \int \pi_r(y|x) \pi_0(y_0|x) \mathbf{1}\{r(x,y) \geq r(x,y_0)\} dy_0 dy
+            \]
+            \[
+            = \int \pi_r(y|x) Q_x(r(x,y)) dy = \int \frac{\pi_0(y|x) f(Q_x(r(x,y)))}{\int \pi_0(y|x) f(Q_x(r(x,y))) dy} Q_x(r(x,y)) dy
+            \]
+            \[
+            = \frac{\int \pi_0(y|x) f(Q_x(r(x,y))) Q_x(r(x,y)) dy}{\int \pi_0(y|x) f(Q_x(r(x,y))) dy} = \frac{\int_0^1 u f(u) du}{\int_0^1 f(u) du},
+            \]
+            <p>where the last equation is because \( Q_x(r(x,Y_0)) \sim \mathcal{U}(0,1) \) when \( Y_0 \sim \pi_0(y|x) \).</p>
+        </div>
+        <div class="translation">
+            <p><strong>证明：</strong> 上下文条件获胜率为</p>
+            \[
+            p_{\pi_r \succ \pi_0|x} = \mathbb{P}_{Y\sim\pi_r(y|x), Y_0\sim\pi_0(y|x)}(r(x,Y) \geq r(x,Y_0))
+            \]
+            \[
+            = \int \pi_r(y|x) \pi_0(y_0|x) \mathbf{1}\{r(x,y) \geq r(x,y_0)\} dy_0 dy
+            \]
+            \[
+            = \int \pi_r(y|x) Q_x(r(x,y)) dy = \int \frac{\pi_0(y|x) f(Q_x(r(x,y)))}{\int \pi_0(y|x) f(Q_x(r(x,y))) dy} Q_x(r(x,y)) dy
+            \]
+            \[
+            = \frac{\int \pi_0(y|x) f(Q_x(r(x,y))) Q_x(r(x,y)) dy}{\int \pi_0(y|x) f(Q_x(r(x,y))) dy} = \frac{\int_0^1 u f(u) du}{\int_0^1 f(u) du},
+            \]
+            <p>其中最后一个等式成立是因为当 \( Y_0 \sim \pi_0(y|x) \) 时，\( Q_x(r(x,Y_0)) \sim \mathcal{U}(0,1) \)。</p>
+        </div>
+        
+        <div class="original">
+            <p>The context-conditional KL divergence is</p>
+            \[
+            D_{KL}(\pi_r \| \pi_0|x) = \int \pi_r(y|x) \log \left( \frac{\pi_r(y|x)}{\pi_0(y|x)} \right) dy
+            \]
+            \[
+            = \int \frac{\pi_0(y|x) f(Q_x(r(x,y)))}{\int \pi_0(y|x) f(Q_x(r(x,y))) dy} \log \left( \frac{f(Q_x(r(x,y)))}{\int \pi_0(y|x) f(Q_x(r(x,y))) dy} \right) dy
+            \]
+            \[
+            = \int_0^1 \frac{f(u)}{\int_0^1 f(u) du} \log \left( \frac{f(u)}{\int_0^1 f(u) du} \right) du = \frac{\int_0^1 f(u) \log(f(u)) du}{\int_0^1 f(u) du} - \log\left( \int_0^1 f(u) du \right),
+            \]
+            <p>where the third equation uses the fact that \( Q_x(r(x,Y_0)) \sim \mathcal{U}(0,1) \) when \( Y_0 \sim \pi_0(y|x) \).</p>
+        </div>
+        <div class="translation">
+            <p>上下文条件KL散度为</p>
+            \[
+            D_{KL}(\pi_r \| \pi_0|x) = \int \pi_r(y|x) \log \left( \frac{\pi_r(y|x)}{\pi_0(y|x)} \right) dy
+            \]
+            \[
+            = \int \frac{\pi_0(y|x) f(Q_x(r(x,y)))}{\int \pi_0(y|x) f(Q_x(r(x,y))) dy} \log \left( \frac{f(Q_x(r(x,y)))}{\int \pi_0(y|x) f(Q_x(r(x,y))) dy} \right) dy
+            \]
+            \[
+            = \int_0^1 \frac{f(u)}{\int_0^1 f(u) du} \log \left( \frac{f(u)}{\int_0^1 f(u) du} \right) du = \frac{\int_0^1 f(u) \log(f(u)) du}{\int_0^1 f(u) du} - \log\left( \int_0^1 f(u) du \right),
+            \]
+            <p>其中第三个等式利用了当 \( Y_0 \sim \pi_0(y|x) \) 时，\( Q_x(r(x,Y_0)) \sim \mathcal{U}(0,1) \) 的性质。</p>
+        </div>
+    </div>
+    
+    <!-- 内容理解 -->
+    <div class="section">
+        <h2>内容理解</h2>
+        <p>本节是论文的理论核心部分，主要贡献包括：</p>
+        <ol>
+            <li>提出了<strong class="term">奖励对齐模型（Reward-aligned policy）</strong>的通用数学框架（定义4），该框架通过函数<em>f</em>统一描述了不同策略（如最优策略和n次最优策略）的数学形式。</li>
+            <li>证明了关键引理（引理5），该引理建立了两个核心度量：
+                <ul>
+                    <li><strong class="term">上下文条件获胜率</strong>：量化新策略π<sub>r</sub>优于基准策略π<sub>0</sub>的概率</li>
+                    <li><strong class="term">上下文条件KL散度</strong>：衡量新策略与基准策略的差异程度</li>
+                </ul>
+            </li>
+            <li>揭示了重要性质：这两个度量均独立于输入<em>x</em>的分布，仅依赖于函数<em>f</em>的积分性质，大幅简化了后续分析。</li>
+            <li>通过严密的概率推导（基于均匀分布的性质），将复杂的策略比较问题转化为函数<em>f</em>的积分运算。</li>
+        </ol>
+        <p>理论价值：为不同强化学习对齐策略建立了统一分析框架，并为策略优化提供了可计算的数学工具。</p>
+    </div>
+    
+    <!-- 摘要总结 -->
+    <div class="section">
+        <h2>摘要总结</h2>
+        <div class="summary">
+            <p>本节核心内容可概括为以下三点：</p>
+            <ul>
+                <li><strong>通用策略框架</strong>：通过定义4提出奖励对齐模型 \( \pi_r(y|x) = \frac{1}{Z_r} \pi_0(y|x) f(Q_x(r(x,y))) \)，其中<em>f</em>为单调非负函数。该框架统一包含最优策略（指数函数）和n次最优策略（幂函数）。</li>
+                <li><strong>核心引理</strong>：引理5证明对于任意奖励对齐策略：
+                    <ol>
+                        <li>上下文条件获胜率： \( p_{\pi_r \succ \pi_0|x} = \frac{\int_0^1 u f(u) du}{\int_0^1 f(u) du} \)</li>
+                        <li>上下文条件KL散度： \( D_{KL} = \frac{\int_0^1 f(u) \log f(u) du}{\int_0^1 f(u) du} - \log\left( \int_0^1 f(u) du \right) \)</li>
+                    </ol>
+                </li>
+                <li><strong>关键性质</strong>：上述两个度量均独立于输入<em>x</em>的分布，仅由函数<em>f</em>的积分形式决定，该性质极大简化了策略分析的理论推导。</li>
+            </ul>
+        </div>
+    </div>
+    
+    <!-- 术语识别 -->
+    <div class="section">
+        <h2>术语识别</h2>
+        <ul class="term-list">
+            <li class="term-item">
+                <div class="term-name">奖励对齐模型 (Reward aligned model π<sup>f</sup><sub>r</sub>)</div>
+                <div>定义：一种通过奖励函数<em>r(x,y)</em>和单调函数<em>f</em>调整基础策略π<sub>0</sub>的通用策略框架，数学形式为 \( \pi_r(y|x) = \frac{1}{Z_r} \pi_0(y|x) f(Q_x(r(x,y))) \)。其中<em>Q<sub>x</sub></em>是奖励的累积分布函数，<em>Z<sub>r</sub></em>为归一化常数。</div>
+            </li>
+            <li class="term-item">
+                <div class="term-name">上下文条件获胜率 (Context-conditional win rate)</div>
+                <div>定义：给定输入<em>x</em>时，新策略π<sub>r</sub>生成的响应<em>Y</em>比基准策略π<sub>0</sub>生成的响应<em>Y<sub>0</sub></em>获得更高奖励的概率，即 \( \mathbb{P}(r(x,Y) \geq r(x,Y_0)) \)。引理5证明其值仅取决于<em>f</em>的积分比。</div>
+            </li>
+            <li class="term-item">
+                <div class="term-name">上下文条件KL散度 (Context-conditional KL divergence)</div>
+                <div>定义：给定输入<em>x</em>时，新策略π<sub>r</sub>与基准策略π<sub>0</sub>之间的Kullback-Leibler散度，度量策略差异。引理5给出其显式积分表达式 \( D_{KL}(\pi_r \| \pi_0|x) \)，该值独立于<em>x</em>的分布。</div>
+            </li>
+            <li class="term-item">
+                <div class="term-name">最优策略 (Optimal policy π<sup>optimal</sup><sub>r</sub>)</div>
+                <div>定义：奖励对齐模型的特例，当选择指数函数<em>f(u)=e<sup>βu</sup></em>时得到，对应强化学习中的最优策略形式。</div>
+            </li>
+            <li class="term-item">
+                <div class="term-name">n次最优策略 (Best-of-n policy)</div>
+                <div>定义：奖励对齐模型的特例，当选择幂函数<em>f(u)=u<sup>n-1</sup></em>时得到，表示从<em>n</em>个候选响应中选择奖励最高者的策略。</div>
+            </li>
+            <li class="term-item">
+                <div class="term-name">归一化常数 (Normalizing constant Z<sub>r</sub>)</div>
+                <div>定义：确保策略π<sub>r</sub>为有效概率分布的比例因子，计算为 \( Z_r = \int \pi_0(y|x) f(Q_x(r(x,y))) dy \)。</div>
+            </li>
+            <li class="term-item">
+                <div class="term-name">累积分布函数 (Cumulative distribution function Q<sub>x</sub>)</div>
+                <div>定义：在给定<em>x</em>下奖励函数<em>r(x,y)</em>的累积分布，满足 \( Q_x(t) = \mathbb{P}_{Y\sim\pi_0}(r(x,Y) \leq t) \)。关键性质：当 \( Y\sim\pi_0 \) 时，\( Q_x(r(x,Y)) \sim \mathcal{U}(0,1) \)。</div>
+            </li>
+        </ul>
+    </div>
+</body>
+</html>

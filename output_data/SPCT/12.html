@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>论文引文分析报告</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        h1 { color: #2c3e50; text-align: center; }
+        h2 { color: #3498db; border-bottom: 2px solid #3498db; padding-bottom: 5px; }
+        .original { background-color: #f5f5f5; border: 1px solid #cccccc; padding: 15px; margin-bottom: 10px; border-radius: 5px; }
+        .translation { background-color: #e8f5e9; border: 1px solid #4caf50; padding: 15px; margin-bottom: 20px; border-radius: 5px; }
+        .term-highlight { color: red; font-weight: bold; }
+        .citation-block { margin-bottom: 30px; }
+        .summary, .understanding { padding: 15px; background-color: #f9f9f9; border: 1px solid #ddd; border-radius: 5px; margin-bottom: 20px; }
+        .term-list { list-style-type: none; padding: 0; }
+        .term-list li { margin-bottom: 15px; padding: 10px; background-color: #fffde7; border-left: 4px solid #ffd54f; }
+        .formula-container { text-align: center; margin: 20px 0; padding: 15px; background-color: #fffde7; border: 1px solid #ffd54f; border-radius: 5px; }
+        .formula-number { display: block; font-style: italic; margin-top: 5px; }
+    </style>
+</head>
+<body>
+    <h1>论文引文分析报告</h1>
+    <p>本报告基于输入文本（一组学术论文引文）完成四个任务：内容理解、内容翻译、摘要总结和术语识别。文本涉及机器学习、自然语言处理领域的研究，聚焦大型语言模型（LLM）的评估、优化和错误检测。</p>
+
+    <h2>1. 内容理解</h2>
+    <div class="understanding">
+        <p>输入文本是一个学术参考文献列表，包含10篇论文的完整引文信息。这些论文发表于2021年至2025年间，覆盖机器学习（ML）和自然语言处理（NLP）的核心领域，特别是大型语言模型（<span class="term-highlight">LLM</span>）的相关研究。核心主题包括：<span class="term-highlight">奖励模型过度优化（reward model overoptimization）</span>、对话代理对齐（alignment of dialogue agents）、<span class="term-highlight">LLM排名器（LLM rankers）</span>的改进、数学问题解决能力评估、<span class="term-highlight">LLM集成方法（LLM ensembling）</span>、<span class="term-highlight">错误检测（error detection）</span>在LLM响应中的应用、成对比较统计方法，以及多个基准测试工具（如<span class="term-highlight">MATH数据集（MATH dataset）</span>、<span class="term-highlight">SWE-bench</span>和<span class="term-highlight">Rewardbench</span>）。引文格式标准化，提供了作者、标题、会议/期刊名称、出版日期、页码和URL等细节，表明这些是用于学术文献综述或研究的参考文献。文本中没有数学公式或图示，但突出了多个关键技术术语，这些术语反映了当前LLM研究的热点问题，如模型对齐、过优化风险和评估框架的创新。</p>
+    </div>
+
+    <h2>2. 内容翻译</h2>
+    <p>以下将输入文本翻译为中文，采用英文原文与中文翻译对照的段落格式（每个引文作为一个独立块）。原文使用浅灰色背景+灰色边框，翻译使用浅绿色背景+绿色边框。关键技术术语（如论文标题中的核心概念）用<span class="term-highlight">红色粗体</span>高亮显示，并包含英文原文。</p>
+
+    <div class="citation-block">
+        <div class="original">
+            Preprint. Under review.<br>
+            Leo Gao, John Schulman, and Jacob Hilton. <span class="term-highlight">Scaling laws for reward model overoptimization</span>.<br>
+            In Andreas Krause, Emma Brunskill, Kyunghyun Cho, Barbara Engelhardt, Sivan Sabato, and Jonathan Scarlett (eds.), Proceedings of the 40th International Conference on Machine Learning, volume 202 of Proceedings of Machine Learning Research, pp. 10835–10866. PMLR, 23–29 Jul 2023. URL https://proceedings.mlr.press/v202/gao23h.html.
+        </div>
+        <div class="translation">
+            预印本。审阅中。<br>
+            Leo Gao、John Schulman 和 Jacob Hilton。<span class="term-highlight">奖励模型过度优化的缩放定律（Scaling laws for reward model overoptimization）</span>。<br>
+            载于 Andreas Krause、Emma Brunskill、Kyunghyun Cho、Barbara Engelhardt、Sivan Sabato 和 Jonathan Scarlett（编），第40届国际机器学习会议论文集，第202卷机器学习研究论文集，第10835–10866页。PMLR，2023年7月23–29日。URL https://proceedings.mlr.press/v202/gao23h.html。
+        </div>
+    </div>
+
+    <div class="citation-block">
+        <div class="original">
+            Amelia Glaese, Nat McAleese, Maja Tr˛ ebacz, John Aslanides, Vlad Firoiu, Timo Ewalds, Maribeth Rauh, Laura Weidinger, Martin Chadwick, Phoebe Thacker, Lucy Campbell-Gillingham, Jonathan Uesato, Po-Sen Huang, Ramona Comanescu, Fan Yang, Abigail See, Sumanth Dathathri, Rory Greig, Charlie Chen, Doug Fritz, Jaume Sanchez Elias, Richard Green, Soˇ na Mokrá, Nicholas Fernando, Boxi Wu, Rachel Foley, Susannah Young, Iason Gabriel, William Isaac, John Mellor, Demis Hassabis, Koray Kavukcuoglu, Lisa Anne Hendricks, and Geoffrey Irving. <span class="term-highlight">Improving alignment of dialogue agents via targeted human judgements</span>.<br>
+            Computing Research Repository, arXiv:2209.14375, 2022. URL https://arxiv.org/abs/2209.14375.
+        </div>
+        <div class="translation">
+            Amelia Glaese、Nat McAleese、Maja Tr˛ ebacz、John Aslanides、Vlad Firoiu、Timo Ewalds、Maribeth Rauh、Laura Weidinger、Martin Chadwick、Phoebe Thacker、Lucy Campbell-Gillingham、Jonathan Uesato、Po-Sen Huang、Ramona Comanescu、Fan Yang、Abigail See、Sumanth Dathathri、Rory Greig、Charlie Chen、Doug Fritz、Jaume Sanchez Elias、Richard Green、Soˇ na Mokrá、Nicholas Fernando、Boxi Wu、Rachel Foley、Susannah Young、Iason Gabriel、William Isaac、John Mellor、Demis Hassabis、Koray Kavukcuoglu、Lisa Anne Hendricks 和 Geoffrey Irving。<span class="term-highlight">通过针对性人类判断改进对话代理对齐（Improving alignment of dialogue agents via targeted human judgements）</span>。<br>
+            计算研究仓库，arXiv:2209.14375，2022年。URL https://arxiv.org/abs/2209.14375。
+        </div>
+    </div>
+
+    <div class="citation-block">
+        <div class="original">
+            Fang Guo, Wenyu Li, Honglei Zhuang, Yun Luo, Yafu Li, Le Yan, Qi Zhu, and Yue Zhang. <span class="term-highlight">Mcranker: Generating diverse criteria on-the-fly to improve pointwise llm rankers</span>.<br>
+            In Proceedings of the Eighteenth ACM International Conference on Web Search and Data Mining, WSDM ’25, pp. 944–953, New York, NY, USA, 2025. Association for Computing Machinery. ISBN 9798400713293. doi: 10.1145/3701551.3703583. URL https://doi.org/10.1145/3701551.3703583.
+        </div>
+        <div class="translation">
+            Fang Guo、Wenyu Li、Honglei Zhuang、Yun Luo、Yafu Li、Le Yan、Qi Zhu 和 Yue Zhang。<span class="term-highlight">Mcranker：动态生成多样标准以改进点式LLM排名器（Mcranker: Generating diverse criteria on-the-fly to improve pointwise llm rankers）</span>。<br>
+            载于第十八届ACM国际网络搜索与数据挖掘会议论文集，WSDM ’25，第944–953页，美国纽约州纽约市，2025年。计算机械协会。ISBN 9798400713293。doi: 10.1145/3701551.3703583。URL https://doi.org/10.1145/3701551.3703583。
+        </div>
+    </div>
+
+    <div class="citation-block">
+        <div class="original">
+            Dan Hendrycks, Collin Burns, Saurav Kadavath, Akul Arora, Steven Basart, Eric Tang, Dawn Song, and Jacob Steinhardt. <span class="term-highlight">Measuring mathematical problem solving with the MATH dataset</span>.<br>
+            In Thirty-fifth Conference on Neural Information Processing Systems Datasets and Benchmarks Track (Round 2), 2021. URL https://openreview.net/forum?id=7Bywt2mQsCe.
+        </div>
+        <div class="translation">
+            Dan Hendrycks、Collin Burns、Saurav Kadavath、Akul Arora、Steven Basart、Eric Tang、Dawn Song 和 Jacob Steinhardt。<span class="term-highlight">使用MATH数据集测量数学问题解决能力（Measuring mathematical problem solving with the MATH dataset）</span>。<br>
+            载于第三十五届神经信息处理系统数据集与基准测试轨道（第二轮），2021年。URL https://openreview.net/forum?id=7Bywt2mQsCe。
+        </div>
+    </div>
+
+    <div class="citation-block">
+        <div class="original">
+            Dongfu Jiang, Xiang Ren, and Bill Yuchen Lin. <span class="term-highlight">LLM-blender: Ensembling large language models with pairwise ranking and generative fusion</span>.<br>
+            In Anna Rogers, Jordan Boyd-Graber, and Naoaki Okazaki (eds.), Proceedings of the 61st Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers), pp. 14165–14178, Toronto, Canada, July 2023. Association for Computational Linguistics. doi: 10.18653/v1/2023.acl-long.792. URL https://aclanthology.org/2023.acl-long.792/.
+        </div>
+        <div class="translation">
+            Dongfu Jiang、Xiang Ren 和 Bill Yuchen Lin。<span class="term-highlight">LLM-blender：通过成对排名和生成融合集成大型语言模型（LLM-blender: Ensembling large language models with pairwise ranking and generative fusion）</span>。<br>
+            载于 Anna Rogers、Jordan Boyd-Graber 和 Naoaki Okazaki（编），第61届计算语言学协会年会论文集（第1卷：长论文），第14165–14178页，加拿大多伦多，2023年7月。计算语言学协会。doi: 10.18653/v1/2023.acl-long.792。URL https://aclanthology.org/2023.acl-long.792/。
+        </div>
+    </div>
+
+    <div class="citation-block">
+        <div class="original">
+            Carlos E Jimenez, John Yang, Alexander Wettig, Shunyu Yao, Kexin Pei, Ofir Press, and Karthik R Narasimhan. <span class="term-highlight">SWE-bench: Can language models resolve real-world github issues?</span><br>
+            In The Twelfth International Conference on Learning Representations, 2024. URL https://openreview.net/forum?id=VTF8yNQM66.
+        </div>
+        <div class="translation">
+            Carlos E Jimenez、John Yang、Alexander Wettig、Shunyu Yao、Kexin Pei、Ofir Press 和 Karthik R Narasimhan。<span class="term-highlight">SWE-bench：语言模型能否解决真实世界的GitHub问题？（SWE-bench: Can language models resolve real-world github issues?）</span><br>
+            载于第十二届国际学习表示会议，2024年。URL https://openreview.net/forum?id=VTF8yNQM66。
+        </div>
+    </div>
+
+    <div class="citation-block">
+        <div class="original">
+            Ryo Kamoi, Sarkar Snigdha Sarathi Das, Renze Lou, Jihyun Janice Ahn, Yilun Zhao, Xiaoxin Lu, Nan Zhang, Yusen Zhang, Haoran Ranran Zhang, Sujeeth Reddy Vummanthala, Salika Dave, Shaobo Qin, Arman Cohan, Wenpeng Yin, and Rui Zhang. <span class="term-highlight">Evaluating LLMs at detecting errors in LLM responses</span>.<br>
+            In First Conference on Language Modeling, 2024. URL https://openreview.net/forum?id=dnwRScljXr.
+        </div>
+        <div class="translation">
+            Ryo Kamoi、Sarkar Snigdha Sarathi Das、Renze Lou、Jihyun Janice Ahn、Yilun Zhao、Xiaoxin Lu、Nan Zhang、Yusen Zhang、Haoran Ranran Zhang、Sujeeth Reddy Vummanthala、Salika Dave、Shaobo Qin、Arman Cohan、Wenpeng Yin 和 Rui Zhang。<span class="term-highlight">评估LLM在检测LLM响应错误方面的能力（Evaluating LLMs at detecting errors in LLM responses）</span>。<br>
+            载于第一届语言建模会议，2024年。URL https://openreview.net/forum?id=dnwRScljXr。
+        </div>
+    </div>
+
+    <div class="citation-block">
+        <div class="original">
+            M. G. Kendall and B. Babington Smith. <span class="term-highlight">On the method of paired comparisons</span>.<br>
+            Biometrika, 31(3/4):324–345, 1940. ISSN 00063444. URL http://www.jstor.org/stable/2332613.
+        </div>
+        <div class="translation">
+            M. G. Kendall 和 B. Babington Smith。<span class="term-highlight">论成对比较方法（On the method of paired comparisons）</span>。<br>
+            生物计量学，31(3/4):324–345，1940年。ISSN 00063444。URL http://www.jstor.org/stable/2332613。
+        </div>
+    </div>
+
+    <div class="citation-block">
+        <div class="original">
+            Seungone Kim, Juyoung Suk, Shayne Longpre, Bill Yuchen Lin, Jamin Shin, Sean Welleck, Graham Neubig, Moontae Lee, Kyungjae Lee, and Minjoon Seo. <span class="term-highlight">Prometheus 2: An open source language model specialized in evaluating other language models</span>.<br>
+            In Yaser Al-Onaizan, Mohit Bansal, and Yun-Nung Chen (eds.), Proceedings of the 2024 Conference on Empirical Methods in Natural Language Processing, pp. 4334–4353, Miami, Florida, USA, November 2024. Association for Computational Linguistics. doi: 10.18653/v1/2024.emnlp-main.248. URL https://aclanthology.org/2024.emnlp-main.248/.
+        </div>
+        <div class="translation">
+            Seungone Kim、Juyoung Suk、Shayne Longpre、Bill Yuchen Lin、Jamin Shin、Sean Welleck、Graham Neubig、Moontae Lee、Kyungjae Lee 和 Minjoon Seo。<span class="term-highlight">Prometheus 2：一个专门用于评估其他语言模型的开源语言模型（Prometheus 2: An open source language model specialized in evaluating other language models）</span>。<br>
+            载于 Yaser Al-Onaizan、Mohit Bansal 和 Yun-Nung Chen（编），2024年自然语言处理经验方法会议论文集，第4334–4353页，美国佛罗里达州迈阿密，2024年11月。计算语言学协会。doi: 10.18653/v1/2024.emnlp-main.248。URL https://aclanthology.org/2024.emnlp-main.248/。
+        </div>
+    </div>
+
+    <div class="citation-block">
+        <div class="original">
+            Nathan Lambert, Valentina Pyatkin, Jacob Morrison, LJ Miranda, Bill Yuchen Lin, Khyathi Chandu, Nouha Dziri, Sachin Kumar, Tom Zick, Yejin Choi, Noah A. Smith, and Hannaneh Hajishirzi. <span class="term-highlight">Rewardbench: Evaluating reward models for language modeling</span>.<br>
+            Computing Research Repository, arXiv:2403.13787, 2024. URL https://arxiv.org/abs/2403.13787.
+        </div>
+        <div class="translation">
+            Nathan Lambert、Valentina Pyatkin、Jacob Morrison、LJ Miranda、Bill Yuchen Lin、Khyathi Chandu、Nouha Dziri、Sachin Kumar、Tom Zick、Yejin Choi、Noah A. Smith 和 Hannaneh Hajishirzi。<span class="term-highlight">Rewardbench：评估语言建模的奖励模型（Rewardbench: Evaluating reward models for language modeling）</span>。<br>
+            计算研究仓库，arXiv:2403.13787，2024年。URL https://arxiv.org/abs/2403.13787。
+        </div>
+    </div>
+
+    <h2>3. 摘要总结</h2>
+    <div class="summary">
+        <p>输入文本的核心内容是一组10篇学术论文的参考文献列表，聚焦于大型语言模型（<span class="term-highlight">LLM</span>）和机器学习的前沿研究。主要主题包括：<span class="term-highlight">奖励模型过度优化（reward model overoptimization）</span>的缩放定律分析、通过人类判断改进对话代理的<span class="term-highlight">对齐（alignment）</span>、动态生成标准以增强<span class="term-highlight">LLM排名器（LLM rankers）</span>（如Mcranker）、使用<span class="term-highlight">MATH数据集（MATH dataset）</span>评估数学能力、<span class="term-highlight">LLM集成方法（LLM ensembling）</span>（如LLM-blender的成对排名和生成融合）、<span class="term-highlight">SWE-bench</span>测试语言模型解决真实GitHub问题的能力、<span class="term-highlight">错误检测（error detection）</span>在LLM响应中的评估、经典统计方法<span class="term-highlight">成对比较（paired comparisons）</span>，以及专用评估工具如<span class="term-highlight">Prometheus 2</span>和<span class="term-highlight">Rewardbench</span>。这些论文发表于顶级会议（如ICML、ACL、NeurIPS）和期刊，

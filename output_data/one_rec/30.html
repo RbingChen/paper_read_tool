@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>OneRec技术报告分析</title>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    body { font-family: Arial, sans-serif; line-height: 1.6; margin: 20px; }
+    .section { margin-bottom: 30px; }
+    .section-title { font-size: 1.5em; font-weight: bold; margin-bottom: 10px; color: #333; }
+    .original { background-color: #f0f0f0; border: 1px solid #cccccc; padding: 15px; margin-bottom: 10px; border-radius: 5px; }
+    .translation { background-color: #e0f7e0; border: 1px solid #4CAF50; padding: 15px; margin-bottom: 20px; border-radius: 5px; }
+    .figure { background-color: #ffffcc; padding: 15px; margin: 15px 0; border-radius: 5px; }
+    .term { color: red; font-weight: bold; }
+    table { width: 100%; border-collapse: collapse; margin: 15px 0; }
+    th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+    th { background-color: #f2f2f2; }
+    .formula-container { text-align: center; margin: 20px 0; }
+    .formula-number { font-style: italic; margin-top: 5px; }
+  </style>
+</head>
+<body>
+
+<div class="section">
+  <div class="section-title">1. 内容理解</div>
+  <p>该文本是OneRec技术报告的一部分，主要包含两个核心部分：在线A/B测试结果和一个关于Tokenization的案例研究。首先，文本通过表格展示了OneRec系统在快手应用（KuaishouApp和Kuaishou LiteApp）上的在线A/B测试数据，比较了OneRec与当前多阶段系统及缓存禁用实验组的性能差异。测试涉及多个用户参与指标（如停留时间、观看时间、点赞率等），所有数据均为绝对改进百分比，表明OneRec在所有指标上均有提升，尤其在评论和转发等指标上提升显著。其次，文本描述了案例研究部分，重点评估对齐的协作感知多模态表示（aligned collaborative-aware multimodal representations），并将其与传统推荐系统的协作表示（collaborative representations）和纯多模态表示（pure multimodal representations）进行对比，使用图例说明视频检索结果。整体上，文本强调了OneRec系统的有效性，它已成功替换原有缓存机制，并部署到快手主要场景中25%的流量。</p>
+</div>
+
+<div class="section">
+  <div class="section-title">2. 内容翻译（英文与中文对照）</div>
+  
+  <div class="original">OneRec Technical Report</div>
+  <div class="translation">OneRec技术报告</div>
+  
+  <div class="original">Table 13|The absolute improvement of OneRec compared to the current multi-stage system and caching disabled experimental group (all traffic requesting real-time recommendations) in the online A/B testing setting.</div>
+  <div class="translation">表13|OneRec与当前多阶段系统及缓存禁用实验组（所有流量请求实时推荐）在在线A/B测试设置中的绝对改进。</div>
+  
+  <div class="figure">
+    <table>
+      <tr>
+        <th>Scenarios</th>
+        <th>Online Metrics</th>
+        <th>vs. Current System</th>
+        <th>vs. Caching Disabled</th>
+      </tr>
+      <tr>
+        <td>KuaishouApp</td>
+        <td>Stay Time</td>
+        <td>+0.54%</td>
+        <td>+0.20%</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td>LT7</td>
+        <td>+0.05%</td>
+        <td>+0.03%</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td>Watch Time</td>
+        <td>+1.98%</td>
+        <td>+0.75%</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td>Video View</td>
+        <td>+2.52%</td>
+        <td>+1.79%</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td>Engagement Depth</td>
+        <td>+1.78%</td>
+        <td>+1.30%</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td>Like</td>
+        <td>+2.43%</td>
+        <td>+0.88%</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td>Follow</td>
+        <td>+3.24%</td>
+        <td>+1.29%</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td>Comment</td>
+        <td>+5.27%</td>
+        <td>+3.18%</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td>Collect</td>
+        <td>+2.93%</td>
+        <td>+0.73%</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td>Foward</td>
+        <td>+5.90%</td>
+        <td>+4.92%</td>
+      </tr>
+      <tr>
+        <td>Kuaishou LiteApp</td>
+        <td>Stay Time</td>
+        <td>+1.24%</td>
+        <td>+0.55%</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td>LT7</td>
+        <td>+0.08%</td>
+        <td>+0.02%</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td>Watch Time</td>
+        <td>+3.28%</td>
+        <td>+1.58%</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td>Video View</td>
+        <td>+3.39%</td>
+        <td>+1.71%</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td>Engagement Depth</td>
+        <td>+2.89%</td>
+        <td>+2.49%</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td>Like</td>
+        <td>+1.49%</td>
+        <td>-1.71%</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td>Follow</td>
+        <td>+2.28%</td>
+        <td>+0.89%</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td>Comment</td>
+        <td>+3.20%</td>
+        <td>+0.60%</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td>Collect</td>
+        <td>+1.91%</td>
+        <td>-1.03%</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td>Foward</td>
+        <td>+3.48%</td>
+        <td>+1.35%</td>
+      </tr>
+    </table>
+  </div>
+  <div class="figure">
+    <table>
+      <tr>
+        <th>场景</th>
+        <th>在线指标</th>
+        <th>对比当前系统</th>
+        <th>对比缓存禁用组</th>
+      </tr>
+      <tr>
+        <td>快手App</td>
+        <td>停留时间</td>
+        <td>+0.54%</td>
+        <td>+0.20%</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td>LT7（可能为低停留时间阈值指标）</td>
+        <td>+0.05%</td>
+        <td>+0.03%</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td>观看时间</td>
+        <td>+1.98%</td>
+        <td>+0.75%</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td>视频观看量</td>
+        <td>+2.52%</td>
+        <td>+1.79%</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td>参与深度</td>
+        <td>+1.78%</td>
+        <td>+1.30%</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td>点赞</td>
+        <td>+2.43%</td>
+        <td>+0.88%</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td>关注</td>
+        <td>+3.24%</td>
+        <td>+1.29%</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td>评论</td>
+        <td>+5.27%</td>
+        <td>+3.18%</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td>收藏</td>
+        <td>+2.93%</td>
+        <td>+0.73%</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td>转发</td>
+        <td>+5.90%</td>
+        <td>+4.92%</td>
+      </tr>
+      <tr>
+        <td>快手轻量版App</td>
+        <td>停留时间</td>
+        <td>+1.24%</td>
+        <td>+0.55%</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td>LT7</td>
+        <td>+0.08%</td>
+        <td>+0.02%</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td>观看时间</td>
+        <td>+3.28%</td>
+        <td>+1.58%</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td>视频观看量</td>
+        <td>+3.39%</td>
+        <td>+1.71%</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td>参与深度</td>
+        <td>+2.89%</td>
+        <td>+2.49%</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td>点赞</td>
+        <td>+1.49%</td>
+        <td>-1.71%</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td>关注</td>
+        <td>+2.28%</td>
+        <td>+0.89%</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td>评论</td>
+        <td>+3.20%</td>
+        <td>+0.60%</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td>收藏</td>
+        <td>+1.91%</td>
+        <td>-1.03%</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td>转发</td>
+        <td>+3.48%</td>
+        <td>+1.35%</td>
+      </tr>
+    </table>
+  </div>
+  
+  <div class="original">Through rigorous <span class="term">online A/B testing</span>, our OneRec system has successfully replaced the original caching mechanism and now serves 25% of the traffic in Kuaishou’s main scenarios.</div>
+  <div class="translation">通过严格的<span class="term">在线A/B测试（online A/B testing）</span>，我们的OneRec系统已成功替换了原始缓存机制，现在服务于快手主要场景中25%的流量。</div>
+  
+  <div class="original">C. Case Study for <span class="term">Tokenization</span></div>
+  <div class="translation">C. <span class="term">Tokenization案例研究（Tokenization）</span></div>
+  
+  <div class="original">C.1. Representation Cases</div>
+  <div class="translation">C.1. 表示案例</div>
+  
+  <div class="original">To assess our aligned <span class="term">collaborative-aware multimodal representations</span>, we contrast them with <span class="term">collaborative representations</span> from traditional <span class="term">RS</span> and pure <span class="term">multimodal representations</span> extracted from caption/visual/<span class="term">OCR features</span>. Figure 14, Figure 15, and Figure 16 present illustrative cases demonstrating video retrieval results from user history for query videos when leveraging different representations.</div>
+  <div class="translation">为了评估我们对齐的<span class="term">协作感知多模态表示（collaborative-aware multimodal representations）</span>，我们将其与传统<span class="term">推荐系统（RS, Recommender System）</span>的<span class="term">协作表示（collaborative representations）</span>和从标题/视觉/<span class="term">OCR特征（OCR features）</span>提取的纯<span class="term">多模态表示（multimodal representations）</span>进行对比。图14、图15和图16展示了利用不同表示时，从用户历史中检索查询视频结果的说明性案例。</div>
+</div>
+
+<div class="section">
+  <div class="section-title">3. 摘要总结</div>
+  <p>该文本的核心内容概括如下：OneRec系统在快手应用（包括主App和轻量版App）上进行了严格的在线A/B测试，结果显示其在多个用户参与指标上相比当前系统和缓存禁用组均有显著绝对改进（如评论提升最高达5.27%，转发提升5.90%）。这证明了OneRec的有效性，使其成功替换原有缓存机制，并部署到25%的流量中。此外，报告介绍了一个关于Tokenization的案例研究，重点对比了协作感知多模态表示与传统协作表示及纯多模态表示在视频检索中的性能，使用图例（图14-16）进行说明。</p>
+</div>
+
+<div class="section">
+  <div class="section-title">4. 术语识别</div>
+  <p>识别文本中的关键术语，并提供详细解释：</p>
+  <ul>
+    <li><span class="term">A/B testing (A/B测试)</span>: 一种实验方法，用于比较两个或多个版本的系统（如A组和B组）以评估性能差异。在推荐系统中，常用于测试算法改进的效果，通过分割流量进行实时比较。</li>
+    <li><span class="term">Tokenization (Tokenization)</span>: 在自然语言处理或推荐系统中，指将内容（如文本、视频特征）分解为离散单元（令牌）的过程。这有助于特征提取和模型处理，例如将用户行为序列转换为可学习的表示。</li>
+    <li><span class="term">Multimodal representations (多模态表示)</span>: 结合多种数据模态（如文本、图像、视频、音频）的特征表示。在推荐系统中，用于捕捉内容的丰富信息，提升推荐准确性和多样性。</li>
+    <li><span class="term">Collaborative representations (协作表示)</span>: 基于协同过滤的表示方法，利用用户-项目交互数据（如点击、评分）来学习隐含特征。传统推荐系统常用此方法捕捉用户偏好。</li>
+    <li><span class="term">Collaborative-aware multimodal representations (协作感知多模态表示)</span>: 一种高级表示方法，融合了多模态内容和用户协作信号，能同时理解内容语义和用户行为模式，提升推荐的上下文感知能力。</li>
+    <li><span class="term">OCR features (OCR特征)</span>: 通过光学字符识别（OCR）技术从图像或视频中提取的文本特征。在视频推荐中，用于解析字幕或画面中的文字信息，增强内容理解。</li>
+    <li><span class="term">RS (Recommender System, 推荐系统)</span>: 一种信息过滤系统，用于预测用户对项目的偏好，并推荐相关内容。常见于电商、社交媒体等平台。</li>
+    <li><span class="term">Online Metrics (在线指标)</span>: 在实时系统中监控的性能指标，如停留时间（Stay Time）、观看时间（Watch Time）、点赞率（Like）等，用于评估用户参与度和系统效果。</li>
+  </ul>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>论文解析：RLHF策略过滤减轻奖励模型噪声</title>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    body { font-family: Arial, sans-serif; line-height: 1.6; }
+    .section { margin-bottom: 30px; }
+    h2 { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 5px; }
+    .original { background-color: #f8f9fa; border: 1px solid #ced4da; padding: 15px; margin-bottom: 5px; border-radius: 5px; }
+    .translation { background-color: #e8f5e9; border: 1px solid #81c784; padding: 15px; margin-bottom: 20px; border-radius: 5px; }
+    .formula-container { background-color: #fffde7; padding: 15px; margin: 20px 0; text-align: center; border-radius: 5px; }
+    .term { color: #e53935; font-weight: bold; }
+    .algorithm { background-color: #fffde7; padding: 15px; margin: 20px 0; border-radius: 5px; }
+    ul { padding-left: 20px; }
+    li { margin-bottom: 10px; }
+  </style>
+</head>
+<body>
+
+<!-- 内容理解 -->
+<div class="section">
+  <h2>内容理解</h2>
+  <p>该文本探讨了强化学习人类反馈（RLHF）框架中的关键挑战：奖励模型的噪声问题。作者提出通过策略过滤机制筛选高可靠性奖励样本，结合策略约束优化方法（如KL散度正则化），共同应对奖励不准确性问题。技术内容分为三部分：</p>
+  <ol>
+    <li><span class="term">预备知识（Preliminary）</span>：明确定义符号系统、语言生成的MDP建模、RLHF三阶段流程（监督微调SFT、奖励模型学习、RL微调）及PPO算法实现。</li>
+    <li><span class="term">问题分析</span>：指出奖励模型对极端值（高/低奖励）预测更可靠（见图1），而中等奖励区域噪声较大，导致策略优化不稳定。</li>
+    <li><span class="term">方法动机</span>：提出在RL微调阶段避免使用奖励不可靠样本，突破现有仅依赖策略约束的优化范式。</li>
+  </ol>
+</div>
+
+<!-- 内容翻译 -->
+<div class="section">
+  <h2>内容翻译</h2>
+  
+  <div class="original">
+    Policy Filtration for RLHF to Mitigate Noise in Reward Models rect policy optimization algorithms (Rafailov et al., 2024; Zhao et al., 2023; Liu et al., 2023). Going beyond policy constraint, Moskovitz et al. (2023) only maximize rewards up to a threshold to avoid excessive deviation from a pre-trained policy. In this paper, we not only rely on the policy constraint to optimize in the face of inaccurate rewards but also try to avoid using samples with unreliable rewards.
+  </div>
+  <div class="translation">
+    用于减轻奖励模型噪声的RLHF策略过滤
+    现有策略优化算法（Rafailov等，2024；Zhao等，2023；Liu等，2023）。<span class="term">超越策略约束（policy constraint）</span>，Moskovitz等（2023）仅将奖励最大化至阈值以避免过度偏离预训练策略。本文中，我们不仅依赖策略约束在奖励不准确时进行优化，还尝试避免使用奖励不可靠的样本。
+  </div>
+  
+  <div class="original">
+    <h3>3. Preliminary</h3>
+    Notations. We use [a, b] to denote the set {a, a+1,···, b} and use [b] as the shorthand for [1, b]. We use ⊕ to denote the concatenation on tokens, and use x_{a:b} as the shorthand for the concatenation (x_a⊕x_{a+1}⊕···⊕x_b). We use c_i and y_i to indicate the i-th token in the context c (including task instruction, prompt, inputs, etc.) and the response y respectively.
+  </div>
+  <div class="translation">
+    <h3>3. 预备知识</h3>
+    <span class="term">符号系统（Notations）</span>：使用[a,b]表示集合{a,a+1,···,b}，[b]简写为[1,b]。⊕表示<span class="term">令牌拼接（token concatenation）</span>，x_{a:b}简写为拼接序列(x_a⊕x_{a+1}⊕···⊕x_b)。c_i和y_i分别表示上下文c（含任务指令、提示、输入等）和响应y中的第i个令牌。
+  </div>
+  
+  <div class="original">
+    MDP formulation. We adopt a Markov decision process (MDP) formulation for RLHF. Specifically, language generation is formulated as an MDP M = (S, A, P, R) with states s ∈ S, actions a ∈ A, transition probabilities P ∈ ∆(S)^{S×A}, and the next-state-based reward function R: S → [0,1]. Given a context c with T_c tokens, on each step t ∈ [T_c+1, T], the language model π_θ(a_t|s_t) selects a token a_t = y_{t-T_c} based on the state s_t := (c_{1:T_c}⊕y_{1:t-T_c-1}). Then, the language model enters the next state s_{t+1} := (c_{1:T_c}⊕y_{1:t-T_c}) until the language model completes the response y_{1:T-T_c}. For simplicity, we will also use contextual-bandit-style notations, e.g., we denote the language generation process as y ∼ π_θ(·|c).
+  </div>
+  <div class="translation">
+    <span class="term">MDP建模（MDP formulation）</span>：采用<span class="term">马尔可夫决策过程（Markov Decision Process, MDP）</span>对RLHF建模。语言生成被形式化为MDP M=(S,A,P,R)，其中s∈S为状态，a∈A为动作，P∈∆(S)^{S×A}为转移概率，R:S→[0,1]为基于下一状态的奖励函数。给定含T_c个令牌的上下文c，在每步t∈[T_c+1,T]中，语言模型π_θ(a_t|s_t)基于状态s_t:=(c_{1:T_c}⊕y_{1:t-T_c-1})选择令牌a_t=y_{t-T_c}，随后进入新状态s_{t+1}:=(c_{1:T_c}⊕y_{1:t-T_c})直至生成完整响应y_{1:T-T_c}。简记语言生成过程为y∼π_θ(·|c)。
+  </div>
+  
+  <div class="original">
+    RLHF. Reinforcement learning with human feedback (RLHF) is an important process to address objective mismatch between the next-token-prediction objective in pre-training and our expectation of LLMs to follow the instructions and assist humans to complete various tasks. We briefly review the pipeline of RLHF.
+  </div>
+  <div class="translation">
+    <span class="term">RLHF</span>：<span class="term">基于人类反馈的强化学习（Reinforcement Learning with Human Feedback, RLHF）</span>解决预训练中下一令牌预测目标与期望LLM遵循指令协助人类完成任务之间的目标失配问题。其流程如下：
+  </div>
+  
+  <div class="original">
+    • Supervised fine-tuning. In the supervised fine-tuning (SFT) phase, a pre-trained LLM is fine-tuned with a high-quality supervised dataset collected for specific downstream tasks. Typically, the LLM is fine-tuned with a maximum likelihood loss, and we denote the output of this phase as π_SFT. While subsequent RLHF procedure is necessary for training high-quality LLMs, this phase alone can also yield an LLM that reasonably follows human instructions (see e.g., Longpre et al., 2023).
+  </div>
+  <div class="translation">
+    • <span class="term">监督微调（Supervised Fine-Tuning, SFT）</span>：使用针对特定下游任务收集的高质量监督数据集微调预训练LLM。通常采用极大似然损失进行微调，输出模型记为π_SFT。虽然后续RLHF对训练高质量LLM必不可少，但仅此阶段也能获得基本遵循人类指令的LLM。
+  </div>
+  
+  <div class="original">
+    • Reward model learning. In the reward model learning phase, we learn a reward model R_ϕ(y|c) ∈ [−1,1] parameterized by ϕ that scores the response y to the context c based on collected preference data D_HF := {(c, y_w, y_l)} specifying that y_w is a preferred response to c than y_l. The reward model is initialized by π_SFT with an additional output layer. A preference model links the reward model with the preference data, and Bradley-Terry model (Bradley & Terry, 1952) is a common choice:
+  </div>
+  <div class="translation">
+    • <span class="term">奖励模型学习（Reward Model Learning）</span>：学习参数为ϕ的奖励模型R_ϕ(y|c)∈[−1,1]，基于收集的偏好数据D_HF:={(c,y_w,y_l)}（表明y_w比y_l更受偏好）对响应评分。奖励模型由π_SFT添加额外输出层初始化。<span class="term">偏好模型（preference model）</span>连接奖励模型与偏好数据，常用<span class="term">Bradley-Terry模型（Bradley-Terry Model）</span>：
+  </div>
+  
+  <div class="formula-container">
+    \[ P(y_w \succ y_l | c) = \sigma(R_\phi(y_w|c) - R_\phi(y_l|c)) \quad (1) \]
+    <p>其中σ为sigmoid函数</p>
+  </div>
+  
+  <div class="original">
+    where σ is the sigmoid function. The learning objective of reward model is to maximize the log-probability on preference data:
+  </div>
+  <div class="translation">
+    奖励模型的学习目标是最大化偏好数据的对数概率：
+  </div>
+  
+  <div class="formula-container">
+    \[ \max_{\phi} \mathbb{E}_{(c,y_w,y_l)\sim D_{HF}} [\log P(y_w \succ y_l | c)] \quad (2) \]
+  </div>
+  
+  <div class="original">
+    • RL fine-tuning. In this stage, we fine-tune the language model π_θ to maximize the rewards given by the reward model with a policy constraint. The optimization problem is formulated as
+  </div>
+  <div class="translation">
+    • <span class="term">RL微调（RL Fine-Tuning）</span>：微调语言模型π_θ以最大化奖励模型给出的奖励值，并施加策略约束：
+  </div>
+  
+  <div class="formula-container">
+    \[ \max_{\theta} \mathbb{E}_c \mathbb{E}_{y\sim\pi_\theta(\cdot|c)} \left[ r_\phi(y|c) - \beta D_{KL}(\pi_\theta(\cdot|c) \| \pi_{SFT}(\cdot|c)) \right] \quad (3) \]
+  </div>
+  
+  <div class="original">
+    The second term prevents the learned policy deviating too much from the SFT model, and this is a popular technique to alleviate reward over-optimization (Jaques et al., 2019; Stiennon et al., 2020).
+  </div>
+  <div class="translation">
+    第二项防止学习策略过度偏离SFT模型，这是缓解<span class="term">奖励过优化（reward over-optimization）</span>的常用技术。
+  </div>
+  
+  <div class="original">
+    PPO. Proximal policy optimization (PPO) (Schulman et al., 2017) is an RL algorithm that uses a clipped version of the policy gradient for more conservative and stable learning. It becomes a standard algorithm for RL fine-tuning in RLHF that optimizes the modified (cumulative) reward
+  </div>
+  <div class="translation">
+    <span class="term">PPO</span>：<span class="term">近端策略优化（Proximal Policy Optimization, PPO）</span>通过策略梯度的裁剪实现更保守稳定的学习，已成为RLHF中RL微调的标准算法，其优化的修正（累积）奖励为：
+  </div>
+  
+  <div class="formula-container">
+    \[ r_\phi(y|c) - \sum_{t=T_c+1}^T \beta \left( \log\pi_\theta(y_t|c\oplus y_{1:t-1}) - \log\pi_{SFT}(y_t|c\oplus y_{1:t-1}) \right) \quad (4) \]
+  </div>
+  
+  <div class="original">
+    where the reward model gives sparse rewards and the policy constraint yields dense rewards. PPO is an on-policy algorithm where the policy gradient is estimated based on the samples collected by the current policy π_θ.
+  </div>
+  <div class="translation">
+    其中奖励模型提供稀疏奖励，策略约束产生稠密奖励。PPO是<span class="term">同策略（on-policy）</span>算法，其策略梯度基于当前策略π_θ收集的样本估计。
+  </div>
+  
+  <div class="algorithm">
+    <strong>Algorithm 1 Proximal policy optimization (PPO)</strong>
+    <pre>
+    for iteration = 1,2,··· do
+        Fill the buffer B with samples collected by the current language model π_θ
+        Update π_θ using PPO w.r.t. the cumulative reward defined in Equation (4) based on B
+    end for
+    </pre>
+  </div>
+  
+  <div class="original">
+    <h3>4. Methods</h3>
+    Our method is motivated by the observation that the reward model is more reliable for the responses assigned with high/low rewards (cf. Figure 1). Consequently, we conjecture
+  </div>
+  <div class="translation">
+    <h3>4. 方法</h3>
+    我们的方法基于以下观察：奖励模型对分配高/低奖励的响应更可靠（见图1）。因此我们推测
+  </div>
+</div>
+
+<!-- 摘要总结 -->
+<div class="section">
+  <h2>摘要总结</h2>
+  <p>本文提出通过<span class="term">策略过滤（Policy Filtration）</span>机制增强RLHF的鲁棒性，核心创新点在于：</p>
+  <ul>
+    <li><strong>问题定位</strong>：识别奖励模型在中等奖励区间存在显著噪声，导致策略优化不稳定</li>
+    <li><strong>关键技术</strong>：利用奖励模型对极端值（高/低奖励）预测更可靠的特点，主动过滤不可靠样本</li>
+    <li><strong>方法架构</strong>：在PPO算法框架中，结合策略约束（KL散度正则化）与样本过滤双重机制</li>
+    <li><strong>理论依据</strong>：基于MDP形式化建模语言生成过程，通过Bradley-Terry模型构建奖励函数</li>
+  </ul>
+  <p>突破现有仅依赖策略约束的优化范式（如约束策略更新幅度），首次系统性地通过数据选择机制缓解奖励噪声问题。</p>
+</div>
+
+<!-- 术语识别 -->
+<div class="section">
+  <h2>术语识别</h2>
+  <ul>
+    <li><span class="term">RLHF（Reinforcement Learning with Human Feedback）</span>：基于人类反馈的强化学习。通过人类偏好数据训练奖励模型，引导语言模型对齐人类价值观的三阶段框架（SFT→奖励模型训练→RL微调）</li>
+    <li><span class="term">MDP（Markov Decision Process）</span>：马尔可夫决策过程。形式化定义为元组(S,A,P,R)，其中S为状态空间，A为动作空间，P为状态转移概率，R为奖励函数。用于建模语言生成的序列决策过程</li>
+    <li><span class="term">PPO（Proximal Policy Optimization）</span>：近端策略优化算法。通过裁剪策略梯度更新幅度的RL算法，在策略更新效率与稳定性间取得平衡，成为RLHF标准优化器</li>
+    <li><span class="term">KL散度（Kullback-Leibler Divergence）</span>：衡量两个概率分布差异的指标。式(3)中βD_KL项约束优化策略π_θ与初始策略π_SFT的偏差，防止过度优化虚假奖励</li>
+    <li><span class="term">Bradley-Terry模型</span>：偏好概率建模方法。如式(1)所示，将偏好概率表示为两个项目奖励差值的sigmoid函数，是奖励模型训练的理论基础</li>
+    <li><span class="term">奖励过优化（Reward Over-Optimization）</span>：因奖励模型缺陷导致的策略退化现象。当策略过度优化奖励代理目标时，实际表现反而下降，KL约束是主要缓解手段</li>
+    <li><span class="term">同策略（On-policy）</span>：RL算法类型。要求评估策略与行为策略一致，PPO属于此类，需持续采样新数据</li>
+  </ul>
+</div>
+
+</body>
+</html>

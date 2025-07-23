@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>OneRec 技术报告分析</title>
+  <style>
+    body { font-family: Arial, sans-serif; line-height: 1.6; margin: 20px; background-color: #fff; color: #333; }
+    .section { margin-bottom: 40px; }
+    .section-title { font-size: 1.8em; font-weight: bold; margin-bottom: 15px; color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 5px; }
+    .subsection-title { font-size: 1.4em; font-weight: bold; margin: 20px 0 10px; color: #2980b9; }
+    .paragraph-pair { margin-bottom: 25px; }
+    .original { background-color: #f0f0f0; border: 1px solid #cccccc; padding: 15px; margin-bottom: 10px; border-radius: 5px; }
+    .translation { background-color: #e0ffe0; border: 1px solid #00aa00; padding: 15px; border-radius: 5px; }
+    .term { color: red; font-weight: bold; }
+    .equation-container { text-align: center; margin: 25px 0; padding: 15px; background-color: #f9f9f9; border: 1px dashed #ccc; }
+    .equation-number { display: inline-block; margin-left: 15px; font-style: italic; color: #555; }
+    .table-container { background-color: #ffffcc; padding: 20px; margin: 30px 0; border-radius: 5px; border: 1px solid #e0e000; }
+    table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+    th, td { border: 1px solid #000000; padding: 10px; text-align: left; }
+    th { background-color: #f2f2f2; font-weight: bold; }
+    caption { font-weight: bold; margin-bottom: 10px; font-size: 1.1em; }
+    dl { margin: 15px 0; }
+    dt { font-weight: bold; margin-top: 10px; color: #444; }
+    dd { margin-left: 20px; margin-bottom: 10px; }
+  </style>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="section">
+    <div class="section-title">内容理解</div>
+    <p>本文本是 OneRec 技术报告的核心部分，详细描述了该推荐系统模型的训练方法、预训练和训练后阶段。首先，训练并行性采用了数据并行、ZERO1 内存优化和梯度累积的组合，旨在减少同步开销，因为模型参数可加载到单个 GPU 上。混合精度训练使用 <span class="term">BFloat16 (BFloat16)</span> 在特定 MLP 网络中优化性能，而编译优化针对注意力网络降低计算开销。这些技术显著提升了训练效率，模型训练 MFU 达到 23.7%，接近大型语言模型（LLM）的效率水平。</p>
+    <p>在预训练阶段，模型输入是多尺度用户行为表示，目标是通过生成模型预测用户的目标物品序列。每个训练样本的目标物品被分词为 3 个语义标识符，形成下一个令牌预测任务。训练流水线处理大规模数据（日均 180 亿样本），模型在约 1000 亿样本后收敛。关键超参数包括模型变体（密集和 MoE）、层数、隐藏维度等，其中 MoE 变体使用 SwiGLU 专家，隐藏维度计算确保 128 的倍数。最后，训练后阶段涉及在线训练，结合拒绝采样微调（RSFT）和强化学习（RL），基于播放时长过滤曝光会话。</p>
+    <p>整体上，文本展示了 OneRec 如何通过硬件和算法优化实现高效训练，适用于推荐任务，模型架构包括不同规模的变体以平衡性能和资源。</p>
+  </div>
+
+  <div class="section">
+    <div class="section-title">内容翻译</div>
+    
+    <div class="paragraph-pair">
+      <div class="original">OneRec Technical Report
+2) Training Parallelism: A combination of <span class="term">data parallelism (数据并行)</span>, <span class="term">ZERO1 (ZERO1)</span> (Rajbhandari et al., 2020), and <span class="term">gradient accumulation (梯度累积)</span> is employed for model training. ZERO1 is selected because the current model’s dense parameters can be loaded on a single GPU, minimizing synchronization overhead in data parallel groups when interleaving multiple <span class="term">macro batches (宏批次)</span>.</div>
+      <div class="translation">OneRec 技术报告
+2) 训练并行性：模型训练采用了 <span class="term">数据并行 (data parallelism)</span>、<span class="term">ZERO1 (ZERO1)</span>（Rajbhandari 等人，2020）和 <span class="term">梯度累积 (gradient accumulation)</span> 的组合。选择 ZERO1 是因为当前模型的密集参数可以加载到单个 GPU 上，从而在交错多个 <span class="term">宏批次 (macro batches)</span> 时最小化数据并行组中的同步开销。</div>
+    </div>
+
+    <div class="paragraph-pair">
+      <div class="original">3) <span class="term">Mixed Precision Training (混合精度训练)</span>: <span class="term">BFloat16
